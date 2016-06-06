@@ -1,0 +1,18 @@
+<html>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	</head>
+ 
+<body>
+Bonjour ${firstName},
+<br><br>
+La connexion à SIAT a échoué: nombre maximum de tentatives atteint (3).
+<br><br>
+Votre compte a été bloqué.
+<br><br> 
+Veuillez contacter votre administrateur système pour le débloquer.
+<br><br> 
+Merci,<br> 
+L'équipe GUCE <br>
+</body>
+</html>

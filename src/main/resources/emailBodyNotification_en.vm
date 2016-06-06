@@ -1,0 +1,18 @@
+<html>
+		<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" /> 
+	</head>
+ 
+<body>
+Hello ${firstName},
+<br><br>
+	A new folder is filed.<br><br>
+	Please login to view the file.
+</br>
+<span style="text-decoration: underline;display:${display};">SIAT N° :</span> ${referenceSiat}<br>
+
+<br><br> 
+Thanks,<br> 
+The GUCE Team <br>
+</body>
+</html>
