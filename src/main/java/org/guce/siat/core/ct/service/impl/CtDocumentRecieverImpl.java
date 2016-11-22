@@ -87,7 +87,7 @@ import org.xml.sax.SAXException;
 /**
  * The Class DocumentRecieverWSImpl.
  */
-@PropertySources(value = @PropertySource("classpath:siat-jms.properties"))
+@PropertySources(value = @PropertySource("classpath:global-config.properties"))
 @Service("ctDocumentReciever")
 @Transactional(readOnly = true)
 public class CtDocumentRecieverImpl implements CtDocumentReciever
@@ -841,9 +841,12 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever
 				LOG.debug("#################  {} Received ", documentType);
 				for (final FileItem fileItem : fileItems)
 				{
-					final ItemFlow itemflow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
-					itemflow.setReceived(AperakType.APERAK_D.getCharCode());
-					itemFlowDao.update(itemflow);
+					final ItemFlow itemFlow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
+					if (itemFlow != null)
+					{
+						itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
+						itemFlowDao.update(itemFlow);
+					}
 				}
 				return true;
 			}

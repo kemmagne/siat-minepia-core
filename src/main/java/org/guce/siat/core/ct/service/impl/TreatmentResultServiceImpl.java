@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("treatmentResultService")
 @Transactional(readOnly = true)
-@PropertySources(value = @PropertySource("classpath:siat-jms.properties"))
+@PropertySources(value = @PropertySource("classpath:global-config.properties"))
 public class TreatmentResultServiceImpl extends AbstractServiceImpl<TreatmentResult> implements TreatmentResultService
 {
 
@@ -37,7 +37,7 @@ public class TreatmentResultServiceImpl extends AbstractServiceImpl<TreatmentRes
 
 	/*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.common.service.AbstractServiceImpl#getJpaDao()
 	 */
 	@Override

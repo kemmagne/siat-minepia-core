@@ -1,3 +1,6 @@
+/*
+ *
+ */
 package org.guce.siat.core.ct.service.impl;
 
 import java.io.Serializable;
@@ -37,6 +40,7 @@ import org.guce.siat.common.dao.FileTypeDao;
 import org.guce.siat.common.dao.FlowDao;
 import org.guce.siat.common.dao.FlowGuceSiatDao;
 import org.guce.siat.common.dao.GuceSiatBureauDao;
+import org.guce.siat.common.dao.ItemDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.dao.ItemFlowDataDao;
 import org.guce.siat.common.dao.ServiceDao;
@@ -346,6 +350,11 @@ public class XmlConverterServiceImpl implements XmlConverterService
 	@Autowired
 	private MailService mailService;
 
+
+	/** The item dao. */
+	@Autowired
+	private ItemDao itemDao;
+
 	/**
 	 * Instantiates a new xml converter service impl.
 	 */
@@ -477,25 +486,75 @@ public class XmlConverterServiceImpl implements XmlConverterService
 			ServicesItem snsh = null;
 			// code sous famille saisit ==> le produit doit etre présenté
 			// obligatoirement avec le dossier
-			if (CollectionUtils.isNotEmpty(fileConverted.getFileItemsList())
-					&& fileConverted.getFileItemsList().get(0).getSubfamily() != null
-					&& fileConverted.getFileItemsList().get(0).getSubfamily().getNsh() != null
-					&& (ServiceItemType.NATIVE.getCode().equals(
-							fileConverted.getFileItemsList().get(0).getSubfamily().getType().toString()) || fileConverted
-							.getFileItemsList().get(0).getSubfamily().getCode() != null))
+			//			if (CollectionUtils.isNotEmpty(fileConverted.getFileItemsList())
+			//					&& fileConverted.getFileItemsList().get(0).getSubfamily() != null
+			//					&& fileConverted.getFileItemsList().get(0).getSubfamily().getNsh() != null
+			//					&& (ServiceItemType.NATIVE.getCode().equals(
+			//							fileConverted.getFileItemsList().get(0).getSubfamily().getType().toString()) || fileConverted
+			//							.getFileItemsList().get(0).getSubfamily().getCode() != null))
+			//			{
+			//				final String subfamilyCode = fileConverted.getFileItemsList().get(0).getSubfamily().getCode();
+			//
+			//				if (FileTypeCode.IDI.equals(fileConverted.getFileType().getCode())
+			//						|| FileTypeCode.IDE.equals(fileConverted.getFileType().getCode())
+			//						|| FileTypeCode.DE_MINCOMMERCE.equals(fileConverted.getFileType().getCode())
+			//						|| FileTypeCode.DI_MINCOMMERCE.equals(fileConverted.getFileType().getCode()))
+			//				{
+			//					final org.guce.siat.common.model.Service service = serviceDao.findServiceByFileType(fileConverted.getFileType());
+			//					fileConverted.setBureau(service.getCentralBureau());
+			//				}
+			//				else
+			//				{
+			//					nsh = fileConverted.getFileItemsList().get(0).getSubfamily().getNsh().getGoodsItemCode();
+			//
+			//					if (StringUtils.isNotBlank(subfamilyCode))
+			//					{
+			//						snsh = servicesItemDao.findByNshAndCode(nsh, subfamilyCode);
+			//					}
+			//					else
+			//					{
+			//						snsh = servicesItemDao.findNativeServiceItemByNSH(nsh);
+			//					}
+			//
+			//					fileConverted.setBureau(snsh.getService().getCentralBureau());
+			//				}
+			//			}
+			// cas de produit fictif
+			// En cas de FIMEX le bureau est NULL
+			//			else if (!FileTypeCode.FIMEX.equals(fileConverted.getFileType().getCode()))
+			//			{
+			//				final org.guce.siat.common.model.Service serviceFictif = serviceDao
+			//						.findServiceByFileType(fileConverted.getFileType());
+			//				// fileconverted.setService(serviceFictif);
+			//				fileConverted.setBureau(serviceFictif.getCentralBureau());
+			//			}
+			final List<org.guce.siat.common.model.Service> serviceList = serviceDao.findServiceByFileType(fileConverted
+					.getFileType());
+			//fileconverted.setService(serviceFictif);
+			if (serviceList != null && serviceList.size() == 1)
 			{
-				final String subfamilyCode = fileConverted.getFileItemsList().get(0).getSubfamily().getCode();
+				fileConverted.setBureau(serviceList.get(0).getCentralBureau());
+			}
+			else if (serviceList != null && serviceList.size() > 1)
+			{
 
-				if (FileTypeCode.IDI.equals(fileConverted.getFileType().getCode())
-						|| FileTypeCode.IDE.equals(fileConverted.getFileType().getCode())
-						|| FileTypeCode.DE_MINCOMMERCE.equals(fileConverted.getFileType().getCode())
-						|| FileTypeCode.DI_MINCOMMERCE.equals(fileConverted.getFileType().getCode()))
+				final org.guce.siat.common.model.Service serviceByMinistry = serviceDao.findServiceByFileTypeAndMinistry(
+						fileConverted.getFileType(), fileConverted.getDestinataire());
+				fileConverted.setBureau(serviceByMinistry.getCentralBureau());
+			}
+			else
+			{
+
+				if (CollectionUtils.isNotEmpty(fileConverted.getFileItemsList())
+						&& fileConverted.getFileItemsList().get(0).getSubfamily() != null
+						&& fileConverted.getFileItemsList().get(0).getSubfamily().getNsh() != null
+						&& (ServiceItemType.NATIVE.getCode().equals(
+								fileConverted.getFileItemsList().get(0).getSubfamily().getType().toString()) || fileConverted
+								.getFileItemsList().get(0).getSubfamily().getCode() != null))
 				{
-					final org.guce.siat.common.model.Service service = serviceDao.findServiceByFileType(fileConverted.getFileType());
-					fileConverted.setBureau(service.getCentralBureau());
-				}
-				else
-				{
+					final String subfamilyCode = fileConverted.getFileItemsList().get(0).getSubfamily().getCode();
+
+
 					nsh = fileConverted.getFileItemsList().get(0).getSubfamily().getNsh().getGoodsItemCode();
 
 					if (StringUtils.isNotBlank(subfamilyCode))
@@ -508,17 +567,12 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					}
 
 					fileConverted.setBureau(snsh.getService().getCentralBureau());
+
 				}
+
+
 			}
-			// cas de produit fictif
-			// En cas de FIMEX le bureau est NULL
-			else if (!FileTypeCode.FIMEX.equals(fileConverted.getFileType().getCode()))
-			{
-				final org.guce.siat.common.model.Service serviceFictif = serviceDao
-						.findServiceByFileType(fileConverted.getFileType());
-				// fileconverted.setService(serviceFictif);
-				fileConverted.setBureau(serviceFictif.getCentralBureau());
-			}
+
 			if (guceSiatBureau != null)
 			{
 				final Bureau bureau = bureauDao.findByServiceAndCode(fileConverted.getBureau().getService(),
@@ -528,28 +582,28 @@ public class XmlConverterServiceImpl implements XmlConverterService
 			for (final FileItem fileItem : fileItemList)
 			{
 
-				if (fileItem.getSubfamily() != null)
-				{
-					final String subfamilyCode = fileItem.getSubfamily().getCode();
-					nsh = fileItem.getSubfamily().getNsh().getGoodsItemCode();
-
-					if (StringUtils.isNotBlank(subfamilyCode))
-					{
-						snsh = servicesItemDao.findByNshAndCode(nsh, subfamilyCode);
-					}
-					else
-					{
-						snsh = servicesItemDao.findNativeServiceItemByNSH(nsh);
-					}
-				}
+				//				if (fileItem.getSubfamily() != null)
+				//				{
+				//					final String subfamilyCode = fileItem.getSubfamily().getCode();
+				//					nsh = fileItem.getSubfamily().getNsh().getGoodsItemCode();
+				//
+				//					if (StringUtils.isNotBlank(subfamilyCode))
+				//					{
+				//						snsh = servicesItemDao.findByNshAndCode(nsh, subfamilyCode);
+				//					}
+				//					else
+				//					{
+				//						snsh = servicesItemDao.findNativeServiceItemByNSH(nsh);
+				//					}
+				//				}
 
 				fileItem.setFile(fileConverted);
 
-				if (snsh != null)
-				{
-					fileItem.setSubfamily(snsh);
-					fileItem.setNsh(snsh.getNsh());
-				}
+				//				if (snsh != null)
+				//				{
+				//					fileItem.setSubfamily(snsh);
+				//					fileItem.setNsh(snsh.getNsh());
+				//				}
 
 				addedFileItemList.add(fileItem);
 			}
@@ -6738,33 +6792,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				// ADD Decisions des articles
 				if (marchandise.getDECISIONORGANISME() != null)
@@ -7168,33 +7222,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				// ADD Decisions des articles
 				if (marchandise.getDECISIONORGANISME() != null)
@@ -7598,33 +7652,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				if (marchandise.getDECISIONORGANISME() != null)
 				{
@@ -7947,33 +8001,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				if (marchandise.getDECISIONORGANISME() != null)
 				{
@@ -8292,33 +8346,21 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//final ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -8680,33 +8722,34 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -9052,33 +9095,35 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
 
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -9452,33 +9497,36 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//
+					//
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -9882,33 +9930,35 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -10300,33 +10350,34 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -10718,33 +10769,35 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
 
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -11043,33 +11096,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -11447,33 +11500,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
-
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -11850,33 +11903,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -12222,33 +12275,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -12625,33 +12678,34 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -12949,33 +13003,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -13353,33 +13407,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -13755,33 +13809,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -14157,33 +14211,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -14559,33 +14613,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -14883,33 +14937,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -15286,33 +15340,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -15683,33 +15737,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -16521,33 +16575,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -16903,33 +16957,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 				fileItems.add(fileItem);
 			}
 
@@ -17380,33 +17434,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 			}
@@ -17774,33 +17828,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -18097,33 +18151,34 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
 
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -18514,33 +18569,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -18907,33 +18962,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -19220,33 +19275,33 @@ public class XmlConverterServiceImpl implements XmlConverterService
 					fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
 				}
 
-				ServicesItem subfamily = null;
+				//				ServicesItem subfamily = null;
 				if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH()))
 				{
-
-					if (marchandise.getSOUSFAMILLE() != null
-							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-					{
-						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-
-					}
-					else
-					{
-						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-
-					}
+					fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+					//					if (marchandise.getSOUSFAMILLE() != null
+					//							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
+					//					{
+					//						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
+					//								.getSOUSFAMILLE().getCODESOUSFAMILLE());
+					//
+					//					}
+					//					else
+					//					{
+					//						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
+					//
+					//					}
 				}
 
-				if (subfamily != null)
-				{
-					fileItem.setNsh(subfamily.getNsh());
-					fileItem.setSubfamily(subfamily);
-				}
-				else
-				{
-					throw new ValidationException(ExceptionConstants.NSH);
-				}
+				//				if (subfamily != null)
+				//				{
+				//					fileItem.setNsh(subfamily.getNsh());
+				//					fileItem.setSubfamily(subfamily);
+				//				}
+				//				else
+				//				{
+				//					throw new ValidationException(ExceptionConstants.NSH);
+				//				}
 
 				fileItems.add(fileItem);
 
@@ -19504,6 +19559,27 @@ public class XmlConverterServiceImpl implements XmlConverterService
 	public void setMailService(final MailService mailService)
 	{
 		this.mailService = mailService;
+	}
+
+	/**
+	 * Gets the item dao.
+	 *
+	 * @return the item dao
+	 */
+	public ItemDao getItemDao()
+	{
+		return itemDao;
+	}
+
+	/**
+	 * Sets the item dao.
+	 *
+	 * @param itemDao
+	 *           the new item dao
+	 */
+	public void setItemDao(final ItemDao itemDao)
+	{
+		this.itemDao = itemDao;
 	}
 
 }

@@ -4,8 +4,6 @@
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
 // Généré le : 2015.10.12 à 03:34:41 PM GMT+01:00
 //
-
-
 package org.guce.siat.jaxb.ap.AI_MINSANTE;
 
 import java.io.Serializable;
@@ -25,11 +23,13 @@ import org.guce.siat.utility.jaxb.common.PIECESJOINTES;
 import org.guce.siat.utility.jaxb.common.REFERENCEDOSSIER;
 import org.guce.siat.utility.jaxb.common.ROUTAGE;
 
-
 /**
- * <p>Classe Java pour anonymous complex type.
+ * <p>
+ * Classe Java pour anonymous complex type.
  *
- * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+ * <p>
+ * Le fragment de schéma suivant indique le contenu attendu figurant dans cette
+ * classe.
  *
  * <pre>
  * &lt;complexType>
@@ -266,6 +266,13 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                     &lt;simpleType>
  *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *                         &lt;maxLength value="50"/>
+ *                       &lt;/restriction>
+ *                     &lt;/simpleType>
+ *                   &lt;/element>
+ *                   &lt;element name="TYPE_PRODUIT" minOccurs="0">
+ *                     &lt;simpleType>
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                         &lt;maxLength value="35"/>
  *                       &lt;/restriction>
  *                     &lt;/simpleType>
  *                   &lt;/element>
@@ -1494,8 +1501,7 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
 })
 @XmlRootElement(name = "DOCUMENT")
 public class DOCUMENT
-    implements Serializable
-{
+        implements Serializable {
 
     @XmlElement(name = "TYPE_DOCUMENT", required = true)
     protected String typedocument;
@@ -1513,9 +1519,7 @@ public class DOCUMENT
     /**
      * Obtient la valeur de la propriété typedocument.
      *
-     * @return
-     *     possible object is
-     *     {@link String }
+     * @return possible object is {@link String }
      *
      */
     public String getTYPEDOCUMENT() {
@@ -1525,9 +1529,7 @@ public class DOCUMENT
     /**
      * Définit la valeur de la propriété typedocument.
      *
-     * @param value
-     *     allowed object is
-     *     {@link String }
+     * @param value allowed object is {@link String }
      *
      */
     public void setTYPEDOCUMENT(final String value) {
@@ -1537,9 +1539,7 @@ public class DOCUMENT
     /**
      * Obtient la valeur de la propriété message.
      *
-     * @return
-     *     possible object is
-     *     {@link MESSAGE }
+     * @return possible object is {@link MESSAGE }
      *
      */
     public MESSAGE getMESSAGE() {
@@ -1549,9 +1549,7 @@ public class DOCUMENT
     /**
      * Définit la valeur de la propriété message.
      *
-     * @param value
-     *     allowed object is
-     *     {@link MESSAGE }
+     * @param value allowed object is {@link MESSAGE }
      *
      */
     public void setMESSAGE(final MESSAGE value) {
@@ -1561,9 +1559,7 @@ public class DOCUMENT
     /**
      * Obtient la valeur de la propriété referencedossier.
      *
-     * @return
-     *     possible object is
-     *     {@link REFERENCEDOSSIER }
+     * @return possible object is {@link REFERENCEDOSSIER }
      *
      */
     public REFERENCEDOSSIER getREFERENCEDOSSIER() {
@@ -1573,9 +1569,7 @@ public class DOCUMENT
     /**
      * Définit la valeur de la propriété referencedossier.
      *
-     * @param value
-     *     allowed object is
-     *     {@link REFERENCEDOSSIER }
+     * @param value allowed object is {@link REFERENCEDOSSIER }
      *
      */
     public void setREFERENCEDOSSIER(final REFERENCEDOSSIER value) {
@@ -1585,9 +1579,7 @@ public class DOCUMENT
     /**
      * Obtient la valeur de la propriété routage.
      *
-     * @return
-     *     possible object is
-     *     {@link ROUTAGE }
+     * @return possible object is {@link ROUTAGE }
      *
      */
     public ROUTAGE getROUTAGE() {
@@ -1597,9 +1589,7 @@ public class DOCUMENT
     /**
      * Définit la valeur de la propriété routage.
      *
-     * @param value
-     *     allowed object is
-     *     {@link ROUTAGE }
+     * @param value allowed object is {@link ROUTAGE }
      *
      */
     public void setROUTAGE(final ROUTAGE value) {
@@ -1609,9 +1599,7 @@ public class DOCUMENT
     /**
      * Obtient la valeur de la propriété erreurs.
      *
-     * @return
-     *     possible object is
-     *     {@link ERREURS }
+     * @return possible object is {@link ERREURS }
      *
      */
     public ERREURS getERREURS() {
@@ -1621,9 +1609,7 @@ public class DOCUMENT
     /**
      * Définit la valeur de la propriété erreurs.
      *
-     * @param value
-     *     allowed object is
-     *     {@link ERREURS }
+     * @param value allowed object is {@link ERREURS }
      *
      */
     public void setERREURS(final ERREURS value) {
@@ -1633,9 +1619,7 @@ public class DOCUMENT
     /**
      * Obtient la valeur de la propriété content.
      *
-     * @return
-     *     possible object is
-     *     {@link DOCUMENT.CONTENT }
+     * @return possible object is {@link DOCUMENT.CONTENT }
      *
      */
     public DOCUMENT.CONTENT getCONTENT() {
@@ -1645,20 +1629,20 @@ public class DOCUMENT
     /**
      * Définit la valeur de la propriété content.
      *
-     * @param value
-     *     allowed object is
-     *     {@link DOCUMENT.CONTENT }
+     * @param value allowed object is {@link DOCUMENT.CONTENT }
      *
      */
     public void setCONTENT(final DOCUMENT.CONTENT value) {
         this.content = value;
     }
 
-
     /**
-     * <p>Classe Java pour anonymous complex type.
+     * <p>
+     * Classe Java pour anonymous complex type.
      *
-     * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+     * <p>
+     * Le fragment de schéma suivant indique le contenu attendu figurant dans
+     * cette classe.
      *
      * <pre>
      * &lt;complexType>
@@ -1707,6 +1691,13 @@ public class DOCUMENT
      *           &lt;simpleType>
      *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
      *               &lt;maxLength value="50"/>
+     *             &lt;/restriction>
+     *           &lt;/simpleType>
+     *         &lt;/element>
+     *         &lt;element name="TYPE_PRODUIT" minOccurs="0">
+     *           &lt;simpleType>
+     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *               &lt;maxLength value="35"/>
      *             &lt;/restriction>
      *           &lt;/simpleType>
      *         &lt;/element>
@@ -2923,13 +2914,17 @@ public class DOCUMENT
     @XmlType(name = "", propOrder = {
         "decisionorganisme",
         "codebureau",
+        "typeproduit",
         "client",
         "transitaire",
         "signataire",
         "fournisseur",
+        "pharmacien",
+        "laboratoirefabricant",
         "facture",
         "provenance",
         "detenteurmarque",
+        "amm",
         "commentaires",
         "marchandises",
         "decision",
@@ -2939,13 +2934,14 @@ public class DOCUMENT
         "piecesjointes"
     })
     public static class CONTENT
-        implements Serializable
-    {
+            implements Serializable {
 
         @XmlElement(name = "DECISION_ORGANISME")
         protected DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "CODE_BUREAU")
         protected String codebureau;
+        @XmlElement(name = "TYPE_PRODUIT")
+        protected String typeproduit;
         @XmlElement(name = "CLIENT")
         protected DOCUMENT.CONTENT.CLIENT client;
         @XmlElement(name = "TRANSITAIRE")
@@ -2954,12 +2950,18 @@ public class DOCUMENT
         protected DOCUMENT.CONTENT.SIGNATAIRE signataire;
         @XmlElement(name = "FOURNISSEUR")
         protected DOCUMENT.CONTENT.FOURNISSEUR fournisseur;
+        @XmlElement(name = "PHARMACIEN")
+        protected DOCUMENT.CONTENT.PHARMACIEN pharmacien;
+        @XmlElement(name = "LABORATOIRE_FABRICANT")
+        protected DOCUMENT.CONTENT.LABORATOIREFABRICANT laboratoirefabricant;
         @XmlElement(name = "FACTURE")
         protected DOCUMENT.CONTENT.FACTURE facture;
         @XmlElement(name = "PROVENANCE")
         protected DOCUMENT.CONTENT.PROVENANCE provenance;
         @XmlElement(name = "DETENTEUR_MARQUE")
         protected DOCUMENT.CONTENT.DETENTEURMARQUE detenteurmarque;
+        @XmlElement(name = "AMM")
+        protected DOCUMENT.CONTENT.AMM amm;
         @XmlElement(name = "COMMENTAIRES")
         protected String commentaires;
         @XmlElement(name = "MARCHANDISES")
@@ -2978,9 +2980,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété decisionorganisme.
          *
-         * @return
-         *     possible object is
-         *     {@link DECISIONORGANISME }
+         * @return possible object is {@link DECISIONORGANISME }
          *
          */
         public DECISIONORGANISME getDECISIONORGANISME() {
@@ -2990,9 +2990,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété decisionorganisme.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DECISIONORGANISME }
+         * @param value allowed object is {@link DECISIONORGANISME }
          *
          */
         public void setDECISIONORGANISME(final DECISIONORGANISME value) {
@@ -3002,9 +3000,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété codebureau.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
+         * @return possible object is {@link String }
          *
          */
         public String getCODEBUREAU() {
@@ -3012,11 +3008,29 @@ public class DOCUMENT
         }
 
         /**
+         * Obtient la valeur de la propriété typeproduit.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getTYPEPRODUIT() {
+            return typeproduit;
+        }
+
+        /**
+         * Définit la valeur de la propriété typeproduit.
+         *
+         * @param value allowed object is {@link String }
+         *
+         */
+        public void setTYPEPRODUIT(String value) {
+            this.typeproduit = value;
+        }
+
+        /**
          * Définit la valeur de la propriété codebureau.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
+         * @param value allowed object is {@link String }
          *
          */
         public void setCODEBUREAU(final String value) {
@@ -3026,9 +3040,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété client.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.CLIENT }
+         * @return possible object is {@link DOCUMENT.CONTENT.CLIENT }
          *
          */
         public DOCUMENT.CONTENT.CLIENT getCLIENT() {
@@ -3038,9 +3050,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété client.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.CLIENT }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.CLIENT }
          *
          */
         public void setCLIENT(final DOCUMENT.CONTENT.CLIENT value) {
@@ -3050,9 +3060,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété transitaire.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.TRANSITAIRE }
+         * @return possible object is {@link DOCUMENT.CONTENT.TRANSITAIRE }
          *
          */
         public DOCUMENT.CONTENT.TRANSITAIRE getTRANSITAIRE() {
@@ -3062,9 +3070,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété transitaire.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.TRANSITAIRE }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.TRANSITAIRE }
          *
          */
         public void setTRANSITAIRE(final DOCUMENT.CONTENT.TRANSITAIRE value) {
@@ -3074,9 +3080,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété signataire.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.SIGNATAIRE }
+         * @return possible object is {@link DOCUMENT.CONTENT.SIGNATAIRE }
          *
          */
         public DOCUMENT.CONTENT.SIGNATAIRE getSIGNATAIRE() {
@@ -3086,9 +3090,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété signataire.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.SIGNATAIRE }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.SIGNATAIRE }
          *
          */
         public void setSIGNATAIRE(final DOCUMENT.CONTENT.SIGNATAIRE value) {
@@ -3098,9 +3100,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété fournisseur.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.FOURNISSEUR }
+         * @return possible object is {@link DOCUMENT.CONTENT.FOURNISSEUR }
          *
          */
         public DOCUMENT.CONTENT.FOURNISSEUR getFOURNISSEUR() {
@@ -3110,9 +3110,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété fournisseur.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.FOURNISSEUR }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.FOURNISSEUR }
          *
          */
         public void setFOURNISSEUR(final DOCUMENT.CONTENT.FOURNISSEUR value) {
@@ -3120,11 +3118,51 @@ public class DOCUMENT
         }
 
         /**
+         * Obtient la valeur de la propriété pharmacien.
+         *
+         * @return possible object is {@link DOCUMENT.CONTENT.PHARMACIEN }
+         *
+         */
+        public DOCUMENT.CONTENT.PHARMACIEN getPHARMACIEN() {
+            return pharmacien;
+        }
+
+        /**
+         * Définit la valeur de la propriété pharmacien.
+         *
+         * @param value allowed object is {@link DOCUMENT.CONTENT.PHARMACIEN }
+         *
+         */
+        public void setPHARMACIEN(DOCUMENT.CONTENT.PHARMACIEN value) {
+            this.pharmacien = value;
+        }
+
+        /**
+         * Obtient la valeur de la propriété laboratoirefabricant.
+         *
+         * @return possible object is
+         *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT }
+         *
+         */
+        public DOCUMENT.CONTENT.LABORATOIREFABRICANT getLABORATOIREFABRICANT() {
+            return laboratoirefabricant;
+        }
+
+        /**
+         * Définit la valeur de la propriété laboratoirefabricant.
+         *
+         * @param value allowed object is
+         *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT }
+         *
+         */
+        public void setLABORATOIREFABRICANT(DOCUMENT.CONTENT.LABORATOIREFABRICANT value) {
+            this.laboratoirefabricant = value;
+        }
+
+        /**
          * Obtient la valeur de la propriété facture.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.FACTURE }
+         * @return possible object is {@link DOCUMENT.CONTENT.FACTURE }
          *
          */
         public DOCUMENT.CONTENT.FACTURE getFACTURE() {
@@ -3134,9 +3172,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété facture.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.FACTURE }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.FACTURE }
          *
          */
         public void setFACTURE(final DOCUMENT.CONTENT.FACTURE value) {
@@ -3146,9 +3182,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété provenance.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.PROVENANCE }
+         * @return possible object is {@link DOCUMENT.CONTENT.PROVENANCE }
          *
          */
         public DOCUMENT.CONTENT.PROVENANCE getPROVENANCE() {
@@ -3158,9 +3192,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété provenance.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.PROVENANCE }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.PROVENANCE }
          *
          */
         public void setPROVENANCE(final DOCUMENT.CONTENT.PROVENANCE value) {
@@ -3170,9 +3202,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété detenteurmarque.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.DETENTEURMARQUE }
+         * @return possible object is {@link DOCUMENT.CONTENT.DETENTEURMARQUE }
          *
          */
         public DOCUMENT.CONTENT.DETENTEURMARQUE getDETENTEURMARQUE() {
@@ -3182,8 +3212,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété detenteurmarque.
          *
-         * @param value
-         *     allowed object is
+         * @param value allowed object is
          *     {@link DOCUMENT.CONTENT.DETENTEURMARQUE }
          *
          */
@@ -3192,11 +3221,29 @@ public class DOCUMENT
         }
 
         /**
+         * Obtient la valeur de la propriété amm.
+         *
+         * @return possible object is {@link DOCUMENT.CONTENT.AMM }
+         *
+         */
+        public DOCUMENT.CONTENT.AMM getAMM() {
+            return amm;
+        }
+
+        /**
+         * Définit la valeur de la propriété amm.
+         *
+         * @param value allowed object is {@link DOCUMENT.CONTENT.AMM }
+         *
+         */
+        public void setAMM(DOCUMENT.CONTENT.AMM value) {
+            this.amm = value;
+        }
+
+        /**
          * Obtient la valeur de la propriété commentaires.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
+         * @return possible object is {@link String }
          *
          */
         public String getCOMMENTAIRES() {
@@ -3206,9 +3253,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété commentaires.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
+         * @param value allowed object is {@link String }
          *
          */
         public void setCOMMENTAIRES(final String value) {
@@ -3218,9 +3263,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété marchandises.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.MARCHANDISES }
+         * @return possible object is {@link DOCUMENT.CONTENT.MARCHANDISES }
          *
          */
         public DOCUMENT.CONTENT.MARCHANDISES getMARCHANDISES() {
@@ -3230,9 +3273,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété marchandises.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.MARCHANDISES }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.MARCHANDISES }
          *
          */
         public void setMARCHANDISES(final DOCUMENT.CONTENT.MARCHANDISES value) {
@@ -3242,9 +3283,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété decision.
          *
-         * @return
-         *     possible object is
-         *     {@link DOCUMENT.CONTENT.DECISION }
+         * @return possible object is {@link DOCUMENT.CONTENT.DECISION }
          *
          */
         public DOCUMENT.CONTENT.DECISION getDECISION() {
@@ -3254,9 +3293,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété decision.
          *
-         * @param value
-         *     allowed object is
-         *     {@link DOCUMENT.CONTENT.DECISION }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.DECISION }
          *
          */
         public void setDECISION(final DOCUMENT.CONTENT.DECISION value) {
@@ -3266,9 +3303,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété causes.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
+         * @return possible object is {@link String }
          *
          */
         public String getCAUSES() {
@@ -3278,9 +3313,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété causes.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
+         * @param value allowed object is {@link String }
          *
          */
         public void setCAUSES(final String value) {
@@ -3290,9 +3323,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété numeroaiminsante.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
+         * @return possible object is {@link String }
          *
          */
         public String getNUMEROAIMINSANTE() {
@@ -3302,9 +3333,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété numeroaiminsante.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
+         * @param value allowed object is {@link String }
          *
          */
         public void setNUMEROAIMINSANTE(final String value) {
@@ -3314,9 +3343,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété observations.
          *
-         * @return
-         *     possible object is
-         *     {@link String }
+         * @return possible object is {@link String }
          *
          */
         public String getOBSERVATIONS() {
@@ -3326,9 +3353,7 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété observations.
          *
-         * @param value
-         *     allowed object is
-         *     {@link String }
+         * @param value allowed object is {@link String }
          *
          */
         public void setOBSERVATIONS(final String value) {
@@ -3338,9 +3363,7 @@ public class DOCUMENT
         /**
          * Obtient la valeur de la propriété piecesjointes.
          *
-         * @return
-         *     possible object is
-         *     {@link PIECESJOINTES }
+         * @return possible object is {@link PIECESJOINTES }
          *
          */
         public PIECESJOINTES getPIECESJOINTES() {
@@ -3350,20 +3373,139 @@ public class DOCUMENT
         /**
          * Définit la valeur de la propriété piecesjointes.
          *
-         * @param value
-         *     allowed object is
-         *     {@link PIECESJOINTES }
+         * @param value allowed object is {@link PIECESJOINTES }
          *
          */
         public void setPIECESJOINTES(final PIECESJOINTES value) {
             this.piecesjointes = value;
         }
 
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="NUMERO_AMM" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="35"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *         &lt;element name="DATE_EMISSION" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="8"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *         &lt;element name="DATE_FIN" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="8"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "numeroamm",
+            "dateemission",
+            "datefin"
+        })
+        public static class AMM implements Serializable {
+
+            @XmlElement(name = "NUMERO_AMM")
+            protected String numeroamm;
+            @XmlElement(name = "DATE_EMISSION")
+            protected String dateemission;
+            @XmlElement(name = "DATE_FIN")
+            protected String datefin;
+
+            /**
+             * Obtient la valeur de la propriété numeroamm.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNUMEROAMM() {
+                return numeroamm;
+            }
+
+            /**
+             * Définit la valeur de la propriété numeroamm.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNUMEROAMM(String value) {
+                this.numeroamm = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété dateemission.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getDATEEMISSION() {
+                return dateemission;
+            }
+
+            /**
+             * Définit la valeur de la propriété dateemission.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setDATEEMISSION(String value) {
+                this.dateemission = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété datefin.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getDATEFIN() {
+                return datefin;
+            }
+
+            /**
+             * Définit la valeur de la propriété datefin.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setDATEFIN(String value) {
+                this.datefin = value;
+            }
+
+        }
 
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -3697,8 +3839,7 @@ public class DOCUMENT
             "fax"
         })
         public static class CLIENT
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "NUMERO_CONTRIBUABLE")
             protected String numerocontribuable;
@@ -3728,9 +3869,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété numerocontribuable.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getNUMEROCONTRIBUABLE() {
@@ -3740,9 +3879,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété numerocontribuable.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setNUMEROCONTRIBUABLE(final String value) {
@@ -3752,9 +3889,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété raisonsociale.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getRAISONSOCIALE() {
@@ -3764,9 +3899,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété raisonsociale.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setRAISONSOCIALE(final String value) {
@@ -3776,8 +3909,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété agrementcommerce.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.CLIENT.AGREMENTCOMMERCE }
              *
              */
@@ -3788,8 +3920,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété agrementcommerce.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.AGREMENTCOMMERCE }
              *
              */
@@ -3800,8 +3931,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété agrementmetier.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.CLIENT.AGREMENTMETIER }
              *
              */
@@ -3812,8 +3942,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété agrementmetier.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.AGREMENTMETIER }
              *
              */
@@ -3824,8 +3953,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété permis.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.CLIENT.PERMIS }
              *
              */
@@ -3836,8 +3964,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété permis.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.PERMIS }
              *
              */
@@ -3848,9 +3975,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété profession.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getPROFESSION() {
@@ -3860,9 +3985,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété profession.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setPROFESSION(final String value) {
@@ -3872,9 +3995,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété numeroregistrecommerce.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getNUMEROREGISTRECOMMERCE() {
@@ -3884,9 +4005,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété numeroregistrecommerce.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setNUMEROREGISTRECOMMERCE(final String value) {
@@ -3896,9 +4015,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété cni.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getCNI() {
@@ -3908,9 +4025,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété cni.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setCNI(final String value) {
@@ -3920,8 +4035,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété adresse.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.CLIENT.ADRESSE }
              *
              */
@@ -3932,8 +4046,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété adresse.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.ADRESSE }
              *
              */
@@ -3944,8 +4057,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephonefixe.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.CLIENT.TELEPHONEFIXE }
              *
              */
@@ -3956,8 +4068,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephonefixe.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.TELEPHONEFIXE }
              *
              */
@@ -3968,8 +4079,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephonemobile.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.CLIENT.TELEPHONEMOBILE }
              *
              */
@@ -3980,8 +4090,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephonemobile.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.TELEPHONEMOBILE }
              *
              */
@@ -3992,9 +4101,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété fax.
              *
-             * @return
-             *     possible object is
-             *     {@link DOCUMENT.CONTENT.CLIENT.FAX }
+             * @return possible object is {@link DOCUMENT.CONTENT.CLIENT.FAX }
              *
              */
             public DOCUMENT.CONTENT.CLIENT.FAX getFAX() {
@@ -4004,8 +4111,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété fax.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.CLIENT.FAX }
              *
              */
@@ -4013,11 +4119,13 @@ public class DOCUMENT
                 this.fax = value;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -4109,8 +4217,7 @@ public class DOCUMENT
                 "siteweb"
             })
             public static class ADRESSE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "ADRESSE1")
                 protected String adresse1;
@@ -4130,9 +4237,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété adresse1.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getADRESSE1() {
@@ -4142,9 +4247,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété adresse1.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setADRESSE1(final String value) {
@@ -4154,9 +4257,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété adresse2.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getADRESSE2() {
@@ -4166,9 +4267,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété adresse2.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setADRESSE2(final String value) {
@@ -4178,9 +4277,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété bp.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getBP() {
@@ -4190,9 +4287,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété bp.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setBP(final String value) {
@@ -4202,8 +4297,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété paysadresse.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE }
                  *
                  */
@@ -4214,8 +4308,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété paysadresse.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE }
                  *
                  */
@@ -4226,9 +4319,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété ville.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getVILLE() {
@@ -4238,9 +4329,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété ville.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setVILLE(final String value) {
@@ -4250,9 +4339,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété email.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getEMAIL() {
@@ -4262,9 +4349,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété email.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setEMAIL(final String value) {
@@ -4274,9 +4359,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété siteweb.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getSITEWEB() {
@@ -4286,20 +4369,20 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété siteweb.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setSITEWEB(final String value) {
                     this.siteweb = value;
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -4334,8 +4417,7 @@ public class DOCUMENT
                     "nompays"
                 })
                 public static class PAYSADRESSE
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE_PAYS")
                     protected String codepays;
@@ -4345,9 +4427,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété codepays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODEPAYS() {
@@ -4357,9 +4437,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété codepays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODEPAYS(final String value) {
@@ -4369,9 +4447,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété nompays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getNOMPAYS() {
@@ -4381,9 +4457,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété nompays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setNOMPAYS(final String value) {
@@ -4394,11 +4468,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -4451,8 +4527,7 @@ public class DOCUMENT
                 "numerocartecommercant"
             })
             public static class AGREMENTCOMMERCE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "NUMERO_INSCRIPTION_FICHIER")
                 protected String numeroinscriptionfichier;
@@ -4466,9 +4541,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numeroinscriptionfichier.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMEROINSCRIPTIONFICHIER() {
@@ -4478,9 +4551,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numeroinscriptionfichier.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMEROINSCRIPTIONFICHIER(final String value) {
@@ -4490,9 +4561,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété dateobtention.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDATEOBTENTION() {
@@ -4502,9 +4571,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété dateobtention.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDATEOBTENTION(final String value) {
@@ -4514,9 +4581,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété datevalidite.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDATEVALIDITE() {
@@ -4526,9 +4591,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété datevalidite.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDATEVALIDITE(final String value) {
@@ -4538,9 +4601,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numerocartecommercant.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMEROCARTECOMMERCANT() {
@@ -4550,9 +4611,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numerocartecommercant.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMEROCARTECOMMERCANT(final String value) {
@@ -4561,11 +4620,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -4618,8 +4679,7 @@ public class DOCUMENT
                 "datevalidite"
             })
             public static class AGREMENTMETIER
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "TYPE_AGREMENT")
                 protected String typeagrement;
@@ -4633,9 +4693,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété typeagrement.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getTYPEAGREMENT() {
@@ -4645,9 +4703,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété typeagrement.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setTYPEAGREMENT(final String value) {
@@ -4657,9 +4713,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numeroagrement.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMEROAGREMENT() {
@@ -4669,9 +4723,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numeroagrement.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMEROAGREMENT(final String value) {
@@ -4681,9 +4733,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété dateagrement.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDATEAGREMENT() {
@@ -4693,9 +4743,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété dateagrement.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDATEAGREMENT(final String value) {
@@ -4705,9 +4753,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété datevalidite.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDATEVALIDITE() {
@@ -4717,9 +4763,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété datevalidite.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDATEVALIDITE(final String value) {
@@ -4728,11 +4772,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -4767,8 +4813,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class FAX
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -4778,9 +4823,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -4790,9 +4833,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -4802,9 +4843,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -4814,9 +4853,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -4825,11 +4862,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -4882,8 +4921,7 @@ public class DOCUMENT
                 "type"
             })
             public static class PERMIS
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "NUMERO_PERMIS")
                 protected String numeropermis;
@@ -4897,9 +4935,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numeropermis.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMEROPERMIS() {
@@ -4909,9 +4945,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numeropermis.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMEROPERMIS(final String value) {
@@ -4921,9 +4955,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété dateobtention.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDATEOBTENTION() {
@@ -4933,9 +4965,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété dateobtention.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDATEOBTENTION(final String value) {
@@ -4945,9 +4975,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété datevalidite.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDATEVALIDITE() {
@@ -4957,9 +4985,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété datevalidite.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDATEVALIDITE(final String value) {
@@ -4969,9 +4995,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété type.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getTYPE() {
@@ -4981,9 +5005,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété type.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setTYPE(final String value) {
@@ -4992,11 +5014,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -5031,8 +5055,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONEFIXE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -5042,9 +5065,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -5054,9 +5075,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -5066,9 +5085,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -5078,9 +5095,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -5089,11 +5104,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -5128,8 +5145,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONEMOBILE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -5139,9 +5155,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -5151,9 +5165,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -5163,9 +5175,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -5175,9 +5185,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -5188,11 +5196,13 @@ public class DOCUMENT
 
         }
 
-
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -5268,8 +5278,7 @@ public class DOCUMENT
             "datevalidite"
         })
         public static class DECISION
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "DECISION_GENERALE")
             protected String decisiongenerale;
@@ -5289,9 +5298,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété decisiongenerale.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getDECISIONGENERALE() {
@@ -5301,9 +5308,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété decisiongenerale.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setDECISIONGENERALE(final String value) {
@@ -5313,9 +5318,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété specificationtechnique.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getSPECIFICATIONTECHNIQUE() {
@@ -5325,9 +5328,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété specificationtechnique.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setSPECIFICATIONTECHNIQUE(final String value) {
@@ -5337,9 +5338,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété condition.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getCONDITION() {
@@ -5349,9 +5348,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété condition.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setCONDITION(final String value) {
@@ -5361,9 +5358,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété consigne.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getCONSIGNE() {
@@ -5373,9 +5368,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété consigne.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setCONSIGNE(final String value) {
@@ -5385,9 +5378,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété observationdecision.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getOBSERVATIONDECISION() {
@@ -5397,9 +5388,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété observationdecision.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setOBSERVATIONDECISION(final String value) {
@@ -5409,9 +5398,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété quantiteaccorde.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getQUANTITEACCORDE() {
@@ -5421,9 +5408,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété quantiteaccorde.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setQUANTITEACCORDE(final String value) {
@@ -5433,9 +5418,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété datevalidite.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getDATEVALIDITE() {
@@ -5445,9 +5428,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété datevalidite.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setDATEVALIDITE(final String value) {
@@ -5456,11 +5437,13 @@ public class DOCUMENT
 
         }
 
-
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -5561,8 +5544,7 @@ public class DOCUMENT
             "siteweb"
         })
         public static class DETENTEURMARQUE
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "NOM")
             protected String nom;
@@ -5580,9 +5562,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété nom.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getNOM() {
@@ -5592,9 +5572,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété nom.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setNOM(final String value) {
@@ -5604,9 +5582,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété aortique.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getAORTIQUE() {
@@ -5616,9 +5592,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété aortique.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setAORTIQUE(final String value) {
@@ -5628,8 +5602,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephone.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.DETENTEURMARQUE.TELEPHONE }
              *
              */
@@ -5640,8 +5613,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephone.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.DETENTEURMARQUE.TELEPHONE }
              *
              */
@@ -5652,8 +5624,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété fax.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.DETENTEURMARQUE.FAX }
              *
              */
@@ -5664,8 +5635,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété fax.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.DETENTEURMARQUE.FAX }
              *
              */
@@ -5676,9 +5646,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété email.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getEMAIL() {
@@ -5688,9 +5656,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété email.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setEMAIL(final String value) {
@@ -5700,9 +5666,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété siteweb.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getSITEWEB() {
@@ -5712,20 +5676,20 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété siteweb.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setSITEWEB(final String value) {
                 this.siteweb = value;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -5760,8 +5724,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class FAX
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -5771,9 +5734,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -5783,9 +5744,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -5795,9 +5754,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -5807,9 +5764,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -5818,11 +5773,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -5857,8 +5814,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -5868,9 +5824,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -5880,9 +5834,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -5892,9 +5844,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -5904,9 +5854,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -5917,11 +5865,13 @@ public class DOCUMENT
 
         }
 
-
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -5957,8 +5907,7 @@ public class DOCUMENT
             "date"
         })
         public static class FACTURE
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "NUMERO_FACTURE")
             protected String numerofacture;
@@ -5968,9 +5917,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété numerofacture.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getNUMEROFACTURE() {
@@ -5980,9 +5927,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété numerofacture.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setNUMEROFACTURE(final String value) {
@@ -5992,9 +5937,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété date.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getDATE() {
@@ -6004,9 +5947,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété date.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setDATE(final String value) {
@@ -6015,11 +5956,13 @@ public class DOCUMENT
 
         }
 
-
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -6206,8 +6149,7 @@ public class DOCUMENT
             "fax"
         })
         public static class FOURNISSEUR
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "RAISON_SOCIALE")
             protected String raisonsociale;
@@ -6225,9 +6167,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété raisonsociale.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getRAISONSOCIALE() {
@@ -6237,9 +6177,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété raisonsociale.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setRAISONSOCIALE(final String value) {
@@ -6249,9 +6187,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété sigle.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getSIGLE() {
@@ -6261,9 +6197,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété sigle.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setSIGLE(final String value) {
@@ -6273,8 +6207,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété adresse.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.ADRESSE }
              *
              */
@@ -6285,8 +6218,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété adresse.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.ADRESSE }
              *
              */
@@ -6297,8 +6229,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephonefixe.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.TELEPHONEFIXE }
              *
              */
@@ -6309,8 +6240,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephonefixe.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.TELEPHONEFIXE }
              *
              */
@@ -6321,8 +6251,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephonemobile.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.TELEPHONEMOBILE }
              *
              */
@@ -6333,8 +6262,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephonemobile.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.TELEPHONEMOBILE }
              *
              */
@@ -6345,8 +6273,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété fax.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.FAX }
              *
              */
@@ -6357,8 +6284,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété fax.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.FOURNISSEUR.FAX }
              *
              */
@@ -6366,11 +6292,13 @@ public class DOCUMENT
                 this.fax = value;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -6462,8 +6390,7 @@ public class DOCUMENT
                 "siteweb"
             })
             public static class ADRESSE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "ADRESSE1")
                 protected String adresse1;
@@ -6483,9 +6410,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété adresse1.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getADRESSE1() {
@@ -6495,9 +6420,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété adresse1.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setADRESSE1(final String value) {
@@ -6507,9 +6430,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété adresse2.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getADRESSE2() {
@@ -6519,9 +6440,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété adresse2.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setADRESSE2(final String value) {
@@ -6531,9 +6450,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété bp.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getBP() {
@@ -6543,9 +6460,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété bp.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setBP(final String value) {
@@ -6555,8 +6470,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété paysadresse.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.FOURNISSEUR.ADRESSE.PAYSADRESSE }
                  *
                  */
@@ -6567,8 +6481,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété paysadresse.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.FOURNISSEUR.ADRESSE.PAYSADRESSE }
                  *
                  */
@@ -6579,9 +6492,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété ville.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getVILLE() {
@@ -6591,9 +6502,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété ville.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setVILLE(final String value) {
@@ -6603,9 +6512,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété email.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getEMAIL() {
@@ -6615,9 +6522,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété email.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setEMAIL(final String value) {
@@ -6627,9 +6532,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété siteweb.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getSITEWEB() {
@@ -6639,20 +6542,20 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété siteweb.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setSITEWEB(final String value) {
                     this.siteweb = value;
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -6687,8 +6590,7 @@ public class DOCUMENT
                     "nompays"
                 })
                 public static class PAYSADRESSE
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE_PAYS")
                     protected String codepays;
@@ -6698,9 +6600,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété codepays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODEPAYS() {
@@ -6710,9 +6610,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété codepays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODEPAYS(final String value) {
@@ -6722,9 +6620,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété nompays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getNOMPAYS() {
@@ -6734,9 +6630,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété nompays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setNOMPAYS(final String value) {
@@ -6747,11 +6641,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -6786,8 +6682,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class FAX
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -6797,9 +6692,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -6809,9 +6702,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -6821,9 +6712,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -6833,9 +6722,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -6844,11 +6731,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -6883,8 +6772,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONEFIXE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -6894,9 +6782,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -6906,9 +6792,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -6918,9 +6802,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -6930,9 +6812,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -6941,11 +6821,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -6980,8 +6862,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONEMOBILE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -6991,9 +6872,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -7003,9 +6882,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -7015,9 +6892,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -7027,9 +6902,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -7040,11 +6913,964 @@ public class DOCUMENT
 
         }
 
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="NUMERO_CONTRIBUABLE" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="35"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *         &lt;element name="RAISON_SOCIALE" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="50"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *         &lt;element name="ADRESSE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="ADRESSE1" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="ADRESSE2" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="BP" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="10"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="PAYS_ADRESSE" minOccurs="0">
+         *                     &lt;complexType>
+         *                       &lt;complexContent>
+         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                           &lt;sequence>
+         *                             &lt;element name="CODE_PAYS" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="3"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="NOM_PAYS" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="35"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                           &lt;/sequence>
+         *                         &lt;/restriction>
+         *                       &lt;/complexContent>
+         *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                   &lt;element name="VILLE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="EMAIL" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="SITE_WEB" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="TELEPHONE_FIXE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="INDICATIF_PAYS" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="5"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="NUMERO" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="15"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="TELEPHONE_MOBILE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="INDICATIF_PAYS" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="5"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="NUMERO" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="15"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="FAX" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="INDICATIF_PAYS" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="5"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="NUMERO" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="15"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "numerocontribuable",
+            "raisonsociale",
+            "adresse",
+            "telephonefixe",
+            "telephonemobile",
+            "fax"
+        })
+        public static class LABORATOIREFABRICANT implements Serializable {
+
+            @XmlElement(name = "NUMERO_CONTRIBUABLE")
+            protected String numerocontribuable;
+            @XmlElement(name = "RAISON_SOCIALE")
+            protected String raisonsociale;
+            @XmlElement(name = "ADRESSE")
+            protected DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE adresse;
+            @XmlElement(name = "TELEPHONE_FIXE")
+            protected DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEFIXE telephonefixe;
+            @XmlElement(name = "TELEPHONE_MOBILE")
+            protected DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEMOBILE telephonemobile;
+            @XmlElement(name = "FAX")
+            protected DOCUMENT.CONTENT.LABORATOIREFABRICANT.FAX fax;
+
+            /**
+             * Obtient la valeur de la propriété numerocontribuable.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNUMEROCONTRIBUABLE() {
+                return numerocontribuable;
+            }
+
+            /**
+             * Définit la valeur de la propriété numerocontribuable.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNUMEROCONTRIBUABLE(String value) {
+                this.numerocontribuable = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété raisonsociale.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getRAISONSOCIALE() {
+                return raisonsociale;
+            }
+
+            /**
+             * Définit la valeur de la propriété raisonsociale.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setRAISONSOCIALE(String value) {
+                this.raisonsociale = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété adresse.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE }
+             *
+             */
+            public DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE getADRESSE() {
+                return adresse;
+            }
+
+            /**
+             * Définit la valeur de la propriété adresse.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE }
+             *
+             */
+            public void setADRESSE(DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE value) {
+                this.adresse = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété telephonefixe.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEFIXE }
+             *
+             */
+            public DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEFIXE getTELEPHONEFIXE() {
+                return telephonefixe;
+            }
+
+            /**
+             * Définit la valeur de la propriété telephonefixe.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEFIXE }
+             *
+             */
+            public void setTELEPHONEFIXE(DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEFIXE value) {
+                this.telephonefixe = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété telephonemobile.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEMOBILE }
+             *
+             */
+            public DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEMOBILE getTELEPHONEMOBILE() {
+                return telephonemobile;
+            }
+
+            /**
+             * Définit la valeur de la propriété telephonemobile.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEMOBILE }
+             *
+             */
+            public void setTELEPHONEMOBILE(DOCUMENT.CONTENT.LABORATOIREFABRICANT.TELEPHONEMOBILE value) {
+                this.telephonemobile = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété fax.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.FAX }
+             *
+             */
+            public DOCUMENT.CONTENT.LABORATOIREFABRICANT.FAX getFAX() {
+                return fax;
+            }
+
+            /**
+             * Définit la valeur de la propriété fax.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.FAX }
+             *
+             */
+            public void setFAX(DOCUMENT.CONTENT.LABORATOIREFABRICANT.FAX value) {
+                this.fax = value;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="ADRESSE1" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="ADRESSE2" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="BP" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="10"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="PAYS_ADRESSE" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="CODE_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="3"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="NOM_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *         &lt;element name="VILLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="EMAIL" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="SITE_WEB" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "adresse1",
+                "adresse2",
+                "bp",
+                "paysadresse",
+                "ville",
+                "email",
+                "siteweb"
+            })
+            public static class ADRESSE implements Serializable {
+
+                @XmlElement(name = "ADRESSE1")
+                protected String adresse1;
+                @XmlElement(name = "ADRESSE2")
+                protected String adresse2;
+                @XmlElement(name = "BP")
+                protected String bp;
+                @XmlElement(name = "PAYS_ADRESSE")
+                protected DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE.PAYSADRESSE paysadresse;
+                @XmlElement(name = "VILLE")
+                protected String ville;
+                @XmlElement(name = "EMAIL")
+                protected String email;
+                @XmlElement(name = "SITE_WEB")
+                protected String siteweb;
+
+                /**
+                 * Obtient la valeur de la propriété adresse1.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getADRESSE1() {
+                    return adresse1;
+                }
+
+                /**
+                 * Définit la valeur de la propriété adresse1.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setADRESSE1(String value) {
+                    this.adresse1 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété adresse2.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getADRESSE2() {
+                    return adresse2;
+                }
+
+                /**
+                 * Définit la valeur de la propriété adresse2.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setADRESSE2(String value) {
+                    this.adresse2 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété bp.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getBP() {
+                    return bp;
+                }
+
+                /**
+                 * Définit la valeur de la propriété bp.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setBP(String value) {
+                    this.bp = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété paysadresse.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE.PAYSADRESSE }
+                 *
+                 */
+                public DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE.PAYSADRESSE getPAYSADRESSE() {
+                    return paysadresse;
+                }
+
+                /**
+                 * Définit la valeur de la propriété paysadresse.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE.PAYSADRESSE }
+                 *
+                 */
+                public void setPAYSADRESSE(DOCUMENT.CONTENT.LABORATOIREFABRICANT.ADRESSE.PAYSADRESSE value) {
+                    this.paysadresse = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété ville.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getVILLE() {
+                    return ville;
+                }
+
+                /**
+                 * Définit la valeur de la propriété ville.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setVILLE(String value) {
+                    this.ville = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété email.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getEMAIL() {
+                    return email;
+                }
+
+                /**
+                 * Définit la valeur de la propriété email.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setEMAIL(String value) {
+                    this.email = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété siteweb.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getSITEWEB() {
+                    return siteweb;
+                }
+
+                /**
+                 * Définit la valeur de la propriété siteweb.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setSITEWEB(String value) {
+                    this.siteweb = value;
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="CODE_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="3"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="NOM_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "codepays",
+                    "nompays"
+                })
+                public static class PAYSADRESSE implements Serializable {
+
+                    @XmlElement(name = "CODE_PAYS")
+                    protected String codepays;
+                    @XmlElement(name = "NOM_PAYS")
+                    protected String nompays;
+
+                    /**
+                     * Obtient la valeur de la propriété codepays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getCODEPAYS() {
+                        return codepays;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété codepays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setCODEPAYS(String value) {
+                        this.codepays = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété nompays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNOMPAYS() {
+                        return nompays;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété nompays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNOMPAYS(String value) {
+                        this.nompays = value;
+                    }
+
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="5"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="15"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "indicatifpays",
+                "numero"
+            })
+            public static class FAX implements Serializable {
+
+                @XmlElement(name = "INDICATIF_PAYS")
+                protected String indicatifpays;
+                @XmlElement(name = "NUMERO")
+                protected String numero;
+
+                /**
+                 * Obtient la valeur de la propriété indicatifpays.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATIFPAYS() {
+                    return indicatifpays;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicatifpays.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATIFPAYS(String value) {
+                    this.indicatifpays = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété numero.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERO() {
+                    return numero;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numero.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERO(String value) {
+                    this.numero = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="5"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="15"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "indicatifpays",
+                "numero"
+            })
+            public static class TELEPHONEFIXE implements Serializable {
+
+                @XmlElement(name = "INDICATIF_PAYS")
+                protected String indicatifpays;
+                @XmlElement(name = "NUMERO")
+                protected String numero;
+
+                /**
+                 * Obtient la valeur de la propriété indicatifpays.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATIFPAYS() {
+                    return indicatifpays;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicatifpays.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATIFPAYS(String value) {
+                    this.indicatifpays = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété numero.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERO() {
+                    return numero;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numero.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERO(String value) {
+                    this.numero = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="5"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="15"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "indicatifpays",
+                "numero"
+            })
+            public static class TELEPHONEMOBILE implements Serializable {
+
+                @XmlElement(name = "INDICATIF_PAYS")
+                protected String indicatifpays;
+                @XmlElement(name = "NUMERO")
+                protected String numero;
+
+                /**
+                 * Obtient la valeur de la propriété indicatifpays.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATIFPAYS() {
+                    return indicatifpays;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicatifpays.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATIFPAYS(String value) {
+                    this.indicatifpays = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété numero.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERO() {
+                    return numero;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numero.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERO(String value) {
+                    this.numero = value;
+                }
+
+            }
+
+        }
 
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -7269,8 +8095,7 @@ public class DOCUMENT
             "marchandise"
         })
         public static class MARCHANDISES
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "MARCHANDISE")
             protected List<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> marchandise;
@@ -7279,10 +8104,10 @@ public class DOCUMENT
              * Gets the value of the marchandise property.
              *
              * <p>
-             * This accessor method returns a reference to the live list,
-             * not a snapshot. Therefore any modification you make to the
-             * returned list will be present inside the JAXB object.
-             * This is why there is not a <CODE>set</CODE> method for the marchandise property.
+             * This accessor method returns a reference to the live list, not a
+             * snapshot. Therefore any modification you make to the returned
+             * list will be present inside the JAXB object. This is why there is
+             * not a <CODE>set</CODE> method for the marchandise property.
              *
              * <p>
              * For example, to add a new item, do as follows:
@@ -7304,11 +8129,13 @@ public class DOCUMENT
                 return this.marchandise;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -7541,8 +8368,7 @@ public class DOCUMENT
                 "paysorigine"
             })
             public static class MARCHANDISE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "LINE_NUMBER")
                 protected Integer linenumber;
@@ -7586,9 +8412,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété linenumber.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link Integer }
+                 * @return possible object is {@link Integer }
                  *
                  */
                 public Integer getLINENUMBER() {
@@ -7598,9 +8422,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété linenumber.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link Integer }
+                 * @param value allowed object is {@link Integer }
                  *
                  */
                 public void setLINENUMBER(final Integer value) {
@@ -7610,8 +8432,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété codetarif.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF }
                  *
                  */
@@ -7622,8 +8443,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété codetarif.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF }
                  *
                  */
@@ -7634,8 +8454,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété sousfamille.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE }
                  *
                  */
@@ -7646,8 +8465,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété sousfamille.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE }
                  *
                  */
@@ -7658,9 +8476,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété dci.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDCI() {
@@ -7670,9 +8486,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété dci.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDCI(final String value) {
@@ -7682,9 +8496,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété dosage.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getDOSAGE() {
@@ -7694,9 +8506,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété dosage.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setDOSAGE(final String value) {
@@ -7706,9 +8516,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété forme.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getFORME() {
@@ -7718,9 +8526,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété forme.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setFORME(final String value) {
@@ -7730,9 +8536,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété presentation.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getPRESENTATION() {
@@ -7742,9 +8546,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété presentation.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setPRESENTATION(final String value) {
@@ -7754,9 +8556,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété specificationtechnique.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getSPECIFICATIONTECHNIQUE() {
@@ -7766,9 +8566,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété specificationtechnique.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setSPECIFICATIONTECHNIQUE(final String value) {
@@ -7778,9 +8576,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété quantite.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getQUANTITE() {
@@ -7790,9 +8586,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété quantite.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setQUANTITE(final String value) {
@@ -7802,9 +8596,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété quantiteimportee.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getQUANTITEIMPORTEE() {
@@ -7814,9 +8606,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété quantiteimportee.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setQUANTITEIMPORTEE(final String value) {
@@ -7826,8 +8616,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété modestockage.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.MODESTOCKAGE }
                  *
                  */
@@ -7838,8 +8627,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété modestockage.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.MODESTOCKAGE }
                  *
                  */
@@ -7850,9 +8638,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété unite.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getUNITE() {
@@ -7862,9 +8648,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété unite.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setUNITE(final String value) {
@@ -7874,9 +8658,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété poids.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getPOIDS() {
@@ -7886,9 +8668,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété poids.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setPOIDS(final String value) {
@@ -7898,9 +8678,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété volume.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getVOLUME() {
@@ -7910,9 +8688,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété volume.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setVOLUME(final String value) {
@@ -7922,9 +8698,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété valeurfobdevise.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getVALEURFOBDEVISE() {
@@ -7934,9 +8708,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété valeurfobdevise.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setVALEURFOBDEVISE(final String value) {
@@ -7946,9 +8718,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété nomcommercial.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNOMCOMMERCIAL() {
@@ -7958,9 +8728,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété nomcommercial.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNOMCOMMERCIAL(final String value) {
@@ -7970,9 +8738,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété nomscientifique.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNOMSCIENTIFIQUE() {
@@ -7982,9 +8748,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété nomscientifique.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNOMSCIENTIFIQUE(final String value) {
@@ -7994,9 +8758,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété formulechimique.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getFORMULECHIMIQUE() {
@@ -8006,9 +8768,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété formulechimique.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setFORMULECHIMIQUE(final String value) {
@@ -8018,8 +8778,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété paysorigine.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE }
                  *
                  */
@@ -8030,8 +8789,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété paysorigine.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE }
                  *
                  */
@@ -8039,11 +8797,13 @@ public class DOCUMENT
                     this.paysorigine = value;
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -8078,8 +8838,7 @@ public class DOCUMENT
                     "designation"
                 })
                 public static class CODETARIF
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE_NSH")
                     protected String codensh;
@@ -8089,9 +8848,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété codensh.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODENSH() {
@@ -8101,9 +8858,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété codensh.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODENSH(final String value) {
@@ -8113,9 +8868,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété designation.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getDESIGNATION() {
@@ -8125,9 +8878,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété designation.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setDESIGNATION(final String value) {
@@ -8136,11 +8887,13 @@ public class DOCUMENT
 
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -8175,8 +8928,7 @@ public class DOCUMENT
                     "libelle"
                 })
                 public static class MODESTOCKAGE
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE")
                     protected String code;
@@ -8186,9 +8938,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété code.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODE() {
@@ -8198,9 +8948,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété code.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODE(final String value) {
@@ -8210,9 +8958,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété libelle.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getLIBELLE() {
@@ -8222,9 +8968,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété libelle.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setLIBELLE(final String value) {
@@ -8233,11 +8977,13 @@ public class DOCUMENT
 
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -8272,8 +9018,7 @@ public class DOCUMENT
                     "nompays"
                 })
                 public static class PAYSORIGINE
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE_PAYS")
                     protected String codepays;
@@ -8283,9 +9028,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété codepays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODEPAYS() {
@@ -8295,9 +9038,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété codepays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODEPAYS(final String value) {
@@ -8307,9 +9048,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété nompays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getNOMPAYS() {
@@ -8319,9 +9058,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété nompays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setNOMPAYS(final String value) {
@@ -8330,11 +9067,13 @@ public class DOCUMENT
 
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -8369,8 +9108,7 @@ public class DOCUMENT
                     "nom"
                 })
                 public static class SOUSFAMILLE
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE_SOUS_FAMILLE")
                     protected String codesousfamille;
@@ -8380,9 +9118,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété codesousfamille.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODESOUSFAMILLE() {
@@ -8392,9 +9128,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété codesousfamille.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODESOUSFAMILLE(final String value) {
@@ -8404,9 +9138,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété nom.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getNOM() {
@@ -8416,9 +9148,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété nom.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setNOM(final String value) {
@@ -8431,11 +9161,896 @@ public class DOCUMENT
 
         }
 
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "numerocontribuable",
+            "raisonsociale",
+            "nomstructurepharmacien",
+            "numinscriptionordrepharmacien",
+            "numeroagrement",
+            "dateemissionagrement",
+            "datefinagrement",
+            "adresse",
+            "telephonefixe",
+            "telephonemobile",
+            "fax"
+        })
+        public static class PHARMACIEN implements Serializable {
+
+            @XmlElement(name = "NUMERO_CONTRIBUABLE")
+            protected String numerocontribuable;
+            @XmlElement(name = "RAISON_SOCIALE")
+            protected String raisonsociale;
+            @XmlElement(name = "NOM_STRUCTURE_PHARMACIEN")
+            protected String nomstructurepharmacien;
+            @XmlElement(name = "NUM_INSCRIPTION_ORDRE_PHARMACIEN")
+            protected String numinscriptionordrepharmacien;
+            @XmlElement(name = "NUMERO_AGREMENT")
+            protected String numeroagrement;
+            @XmlElement(name = "DATE_EMISSION_AGREMENT")
+            protected String dateemissionagrement;
+            @XmlElement(name = "DATE_FIN_AGREMENT")
+            protected String datefinagrement;
+            @XmlElement(name = "ADRESSE")
+            protected DOCUMENT.CONTENT.PHARMACIEN.ADRESSE adresse;
+            @XmlElement(name = "TELEPHONE_FIXE")
+            protected DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEFIXE telephonefixe;
+            @XmlElement(name = "TELEPHONE_MOBILE")
+            protected DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEMOBILE telephonemobile;
+            @XmlElement(name = "FAX")
+            protected DOCUMENT.CONTENT.PHARMACIEN.FAX fax;
+
+            /**
+             * Obtient la valeur de la propriété numerocontribuable.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNUMEROCONTRIBUABLE() {
+                return numerocontribuable;
+            }
+
+            /**
+             * Définit la valeur de la propriété numerocontribuable.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNUMEROCONTRIBUABLE(String value) {
+                this.numerocontribuable = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété raisonsociale.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getRAISONSOCIALE() {
+                return raisonsociale;
+            }
+
+            /**
+             * Définit la valeur de la propriété raisonsociale.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setRAISONSOCIALE(String value) {
+                this.raisonsociale = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété nomstructurepharmacien.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNOMSTRUCTUREPHARMACIEN() {
+                return nomstructurepharmacien;
+            }
+
+            /**
+             * Définit la valeur de la propriété nomstructurepharmacien.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNOMSTRUCTUREPHARMACIEN(String value) {
+                this.nomstructurepharmacien = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété numinscriptionordrepharmacien.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNUMINSCRIPTIONORDREPHARMACIEN() {
+                return numinscriptionordrepharmacien;
+            }
+
+            /**
+             * Définit la valeur de la propriété numinscriptionordrepharmacien.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNUMINSCRIPTIONORDREPHARMACIEN(String value) {
+                this.numinscriptionordrepharmacien = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété numeroagrement.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNUMEROAGREMENT() {
+                return numeroagrement;
+            }
+
+            /**
+             * Définit la valeur de la propriété numeroagrement.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNUMEROAGREMENT(String value) {
+                this.numeroagrement = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété dateemissionagrement.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getDATEEMISSIONAGREMENT() {
+                return dateemissionagrement;
+            }
+
+            /**
+             * Définit la valeur de la propriété dateemissionagrement.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setDATEEMISSIONAGREMENT(String value) {
+                this.dateemissionagrement = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété datefinagrement.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getDATEFINAGREMENT() {
+                return datefinagrement;
+            }
+
+            /**
+             * Définit la valeur de la propriété datefinagrement.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setDATEFINAGREMENT(String value) {
+                this.datefinagrement = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété adresse.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.ADRESSE }
+             *
+             */
+            public DOCUMENT.CONTENT.PHARMACIEN.ADRESSE getADRESSE() {
+                return adresse;
+            }
+
+            /**
+             * Définit la valeur de la propriété adresse.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.ADRESSE }
+             *
+             */
+            public void setADRESSE(DOCUMENT.CONTENT.PHARMACIEN.ADRESSE value) {
+                this.adresse = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété telephonefixe.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEFIXE }
+             *
+             */
+            public DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEFIXE getTELEPHONEFIXE() {
+                return telephonefixe;
+            }
+
+            /**
+             * Définit la valeur de la propriété telephonefixe.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEFIXE }
+             *
+             */
+            public void setTELEPHONEFIXE(DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEFIXE value) {
+                this.telephonefixe = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété telephonemobile.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEMOBILE }
+             *
+             */
+            public DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEMOBILE getTELEPHONEMOBILE() {
+                return telephonemobile;
+            }
+
+            /**
+             * Définit la valeur de la propriété telephonemobile.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEMOBILE }
+             *
+             */
+            public void setTELEPHONEMOBILE(DOCUMENT.CONTENT.PHARMACIEN.TELEPHONEMOBILE value) {
+                this.telephonemobile = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété fax.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.FAX }
+             *
+             */
+            public DOCUMENT.CONTENT.PHARMACIEN.FAX getFAX() {
+                return fax;
+            }
+
+            /**
+             * Définit la valeur de la propriété fax.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PHARMACIEN.FAX }
+             *
+             */
+            public void setFAX(DOCUMENT.CONTENT.PHARMACIEN.FAX value) {
+                this.fax = value;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="ADRESSE1" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="ADRESSE2" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="BP" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="10"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="PAYS_ADRESSE" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="CODE_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="3"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="NOM_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *         &lt;element name="VILLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="EMAIL" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="SITE_WEB" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "adresse1",
+                "adresse2",
+                "bp",
+                "paysadresse",
+                "ville",
+                "email",
+                "siteweb"
+            })
+            public static class ADRESSE implements Serializable {
+
+                @XmlElement(name = "ADRESSE1")
+                protected String adresse1;
+                @XmlElement(name = "ADRESSE2")
+                protected String adresse2;
+                @XmlElement(name = "BP")
+                protected String bp;
+                @XmlElement(name = "PAYS_ADRESSE")
+                protected DOCUMENT.CONTENT.PHARMACIEN.ADRESSE.PAYSADRESSE paysadresse;
+                @XmlElement(name = "VILLE")
+                protected String ville;
+                @XmlElement(name = "EMAIL")
+                protected String email;
+                @XmlElement(name = "SITE_WEB")
+                protected String siteweb;
+
+                /**
+                 * Obtient la valeur de la propriété adresse1.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getADRESSE1() {
+                    return adresse1;
+                }
+
+                /**
+                 * Définit la valeur de la propriété adresse1.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setADRESSE1(String value) {
+                    this.adresse1 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété adresse2.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getADRESSE2() {
+                    return adresse2;
+                }
+
+                /**
+                 * Définit la valeur de la propriété adresse2.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setADRESSE2(String value) {
+                    this.adresse2 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété bp.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getBP() {
+                    return bp;
+                }
+
+                /**
+                 * Définit la valeur de la propriété bp.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setBP(String value) {
+                    this.bp = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété paysadresse.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.PHARMACIEN.ADRESSE.PAYSADRESSE }
+                 *
+                 */
+                public DOCUMENT.CONTENT.PHARMACIEN.ADRESSE.PAYSADRESSE getPAYSADRESSE() {
+                    return paysadresse;
+                }
+
+                /**
+                 * Définit la valeur de la propriété paysadresse.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.PHARMACIEN.ADRESSE.PAYSADRESSE }
+                 *
+                 */
+                public void setPAYSADRESSE(DOCUMENT.CONTENT.PHARMACIEN.ADRESSE.PAYSADRESSE value) {
+                    this.paysadresse = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété ville.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getVILLE() {
+                    return ville;
+                }
+
+                /**
+                 * Définit la valeur de la propriété ville.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setVILLE(String value) {
+                    this.ville = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété email.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getEMAIL() {
+                    return email;
+                }
+
+                /**
+                 * Définit la valeur de la propriété email.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setEMAIL(String value) {
+                    this.email = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété siteweb.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getSITEWEB() {
+                    return siteweb;
+                }
+
+                /**
+                 * Définit la valeur de la propriété siteweb.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setSITEWEB(String value) {
+                    this.siteweb = value;
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="CODE_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="3"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="NOM_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "codepays",
+                    "nompays"
+                })
+                public static class PAYSADRESSE implements Serializable {
+
+                    @XmlElement(name = "CODE_PAYS")
+                    protected String codepays;
+                    @XmlElement(name = "NOM_PAYS")
+                    protected String nompays;
+
+                    /**
+                     * Obtient la valeur de la propriété codepays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getCODEPAYS() {
+                        return codepays;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété codepays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setCODEPAYS(String value) {
+                        this.codepays = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété nompays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNOMPAYS() {
+                        return nompays;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété nompays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNOMPAYS(String value) {
+                        this.nompays = value;
+                    }
+
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="5"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="15"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "indicatifpays",
+                "numero"
+            })
+            public static class FAX implements Serializable {
+
+                @XmlElement(name = "INDICATIF_PAYS")
+                protected String indicatifpays;
+                @XmlElement(name = "NUMERO")
+                protected String numero;
+
+                /**
+                 * Obtient la valeur de la propriété indicatifpays.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATIFPAYS() {
+                    return indicatifpays;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicatifpays.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATIFPAYS(String value) {
+                    this.indicatifpays = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété numero.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERO() {
+                    return numero;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numero.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERO(String value) {
+                    this.numero = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="5"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="15"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "indicatifpays",
+                "numero"
+            })
+            public static class TELEPHONEFIXE implements Serializable {
+
+                @XmlElement(name = "INDICATIF_PAYS")
+                protected String indicatifpays;
+                @XmlElement(name = "NUMERO")
+                protected String numero;
+
+                /**
+                 * Obtient la valeur de la propriété indicatifpays.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATIFPAYS() {
+                    return indicatifpays;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicatifpays.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATIFPAYS(String value) {
+                    this.indicatifpays = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété numero.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERO() {
+                    return numero;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numero.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERO(String value) {
+                    this.numero = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="5"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="15"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "indicatifpays",
+                "numero"
+            })
+            public static class TELEPHONEMOBILE implements Serializable {
+
+                @XmlElement(name = "INDICATIF_PAYS")
+                protected String indicatifpays;
+                @XmlElement(name = "NUMERO")
+                protected String numero;
+
+                /**
+                 * Obtient la valeur de la propriété indicatifpays.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATIFPAYS() {
+                    return indicatifpays;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicatifpays.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATIFPAYS(String value) {
+                    this.indicatifpays = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété numero.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERO() {
+                    return numero;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numero.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERO(String value) {
+                    this.numero = value;
+                }
+
+            }
+
+        }
 
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -8504,8 +10119,7 @@ public class DOCUMENT
             "paysprovenance"
         })
         public static class PROVENANCE
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "PAYS_ORIGINE")
             protected DOCUMENT.CONTENT.PROVENANCE.PAYSORIGINE paysorigine;
@@ -8515,8 +10129,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété paysorigine.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.PROVENANCE.PAYSORIGINE }
              *
              */
@@ -8527,8 +10140,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété paysorigine.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.PROVENANCE.PAYSORIGINE }
              *
              */
@@ -8539,8 +10151,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété paysprovenance.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.PROVENANCE.PAYSPROVENANCE }
              *
              */
@@ -8551,8 +10162,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété paysprovenance.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.PROVENANCE.PAYSPROVENANCE }
              *
              */
@@ -8560,11 +10170,13 @@ public class DOCUMENT
                 this.paysprovenance = value;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -8599,8 +10211,7 @@ public class DOCUMENT
                 "nompays"
             })
             public static class PAYSORIGINE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "CODE_PAYS")
                 protected String codepays;
@@ -8610,9 +10221,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété codepays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getCODEPAYS() {
@@ -8622,9 +10231,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété codepays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setCODEPAYS(final String value) {
@@ -8634,9 +10241,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété nompays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNOMPAYS() {
@@ -8646,9 +10251,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété nompays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNOMPAYS(final String value) {
@@ -8657,11 +10260,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -8696,8 +10301,7 @@ public class DOCUMENT
                 "nompays"
             })
             public static class PAYSPROVENANCE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "CODE_PAYS")
                 protected String codepays;
@@ -8707,9 +10311,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété codepays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getCODEPAYS() {
@@ -8719,9 +10321,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété codepays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setCODEPAYS(final String value) {
@@ -8731,9 +10331,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété nompays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNOMPAYS() {
@@ -8743,9 +10341,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété nompays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNOMPAYS(final String value) {
@@ -8756,11 +10352,13 @@ public class DOCUMENT
 
         }
 
-
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -8811,8 +10409,7 @@ public class DOCUMENT
             "date"
         })
         public static class SIGNATAIRE
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "NOM")
             protected String nom;
@@ -8826,9 +10423,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété nom.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getNOM() {
@@ -8838,9 +10433,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété nom.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setNOM(final String value) {
@@ -8850,9 +10443,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété qualite.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getQUALITE() {
@@ -8862,9 +10453,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété qualite.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setQUALITE(final String value) {
@@ -8874,9 +10463,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété lieu.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getLIEU() {
@@ -8886,9 +10473,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété lieu.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setLIEU(final String value) {
@@ -8898,9 +10483,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété date.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getDATE() {
@@ -8910,9 +10493,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété date.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setDATE(final String value) {
@@ -8921,11 +10502,13 @@ public class DOCUMENT
 
         }
 
-
         /**
-         * <p>Classe Java pour anonymous complex type.
+         * <p>
+         * Classe Java pour anonymous complex type.
          *
-         * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
          *
          * <pre>
          * &lt;complexType>
@@ -9112,8 +10695,7 @@ public class DOCUMENT
             "fax"
         })
         public static class TRANSITAIRE
-            implements Serializable
-        {
+                implements Serializable {
 
             @XmlElement(name = "NUMERO_CONTRIBUABLE")
             protected String numerocontribuable;
@@ -9131,9 +10713,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété numerocontribuable.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getNUMEROCONTRIBUABLE() {
@@ -9143,9 +10723,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété numerocontribuable.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setNUMEROCONTRIBUABLE(final String value) {
@@ -9155,9 +10733,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété raisonsociale.
              *
-             * @return
-             *     possible object is
-             *     {@link String }
+             * @return possible object is {@link String }
              *
              */
             public String getRAISONSOCIALE() {
@@ -9167,9 +10743,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété raisonsociale.
              *
-             * @param value
-             *     allowed object is
-             *     {@link String }
+             * @param value allowed object is {@link String }
              *
              */
             public void setRAISONSOCIALE(final String value) {
@@ -9179,8 +10753,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété adresse.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE }
              *
              */
@@ -9191,8 +10764,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété adresse.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE }
              *
              */
@@ -9203,8 +10775,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephonefixe.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEFIXE }
              *
              */
@@ -9215,8 +10786,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephonefixe.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEFIXE }
              *
              */
@@ -9227,8 +10797,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété telephonemobile.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEMOBILE }
              *
              */
@@ -9239,8 +10808,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété telephonemobile.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEMOBILE }
              *
              */
@@ -9251,8 +10819,7 @@ public class DOCUMENT
             /**
              * Obtient la valeur de la propriété fax.
              *
-             * @return
-             *     possible object is
+             * @return possible object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.FAX }
              *
              */
@@ -9263,8 +10830,7 @@ public class DOCUMENT
             /**
              * Définit la valeur de la propriété fax.
              *
-             * @param value
-             *     allowed object is
+             * @param value allowed object is
              *     {@link DOCUMENT.CONTENT.TRANSITAIRE.FAX }
              *
              */
@@ -9272,11 +10838,13 @@ public class DOCUMENT
                 this.fax = value;
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -9368,8 +10936,7 @@ public class DOCUMENT
                 "siteweb"
             })
             public static class ADRESSE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "ADRESSE1")
                 protected String adresse1;
@@ -9389,9 +10956,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété adresse1.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getADRESSE1() {
@@ -9401,9 +10966,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété adresse1.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setADRESSE1(final String value) {
@@ -9413,9 +10976,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété adresse2.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getADRESSE2() {
@@ -9425,9 +10986,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété adresse2.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setADRESSE2(final String value) {
@@ -9437,9 +10996,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété bp.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getBP() {
@@ -9449,9 +11006,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété bp.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setBP(final String value) {
@@ -9461,8 +11016,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété paysadresse.
                  *
-                 * @return
-                 *     possible object is
+                 * @return possible object is
                  *     {@link DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE.PAYSADRESSE }
                  *
                  */
@@ -9473,8 +11027,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété paysadresse.
                  *
-                 * @param value
-                 *     allowed object is
+                 * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE.PAYSADRESSE }
                  *
                  */
@@ -9485,9 +11038,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété ville.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getVILLE() {
@@ -9497,9 +11048,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété ville.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setVILLE(final String value) {
@@ -9509,9 +11058,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété email.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getEMAIL() {
@@ -9521,9 +11068,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété email.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setEMAIL(final String value) {
@@ -9533,9 +11078,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété siteweb.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getSITEWEB() {
@@ -9545,20 +11088,20 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété siteweb.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setSITEWEB(final String value) {
                     this.siteweb = value;
                 }
 
-
                 /**
-                 * <p>Classe Java pour anonymous complex type.
+                 * <p>
+                 * Classe Java pour anonymous complex type.
                  *
-                 * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
                  *
                  * <pre>
                  * &lt;complexType>
@@ -9593,8 +11136,7 @@ public class DOCUMENT
                     "nompays"
                 })
                 public static class PAYSADRESSE
-                    implements Serializable
-                {
+                        implements Serializable {
 
                     @XmlElement(name = "CODE_PAYS")
                     protected String codepays;
@@ -9604,9 +11146,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété codepays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getCODEPAYS() {
@@ -9616,9 +11156,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété codepays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setCODEPAYS(final String value) {
@@ -9628,9 +11166,7 @@ public class DOCUMENT
                     /**
                      * Obtient la valeur de la propriété nompays.
                      *
-                     * @return
-                     *     possible object is
-                     *     {@link String }
+                     * @return possible object is {@link String }
                      *
                      */
                     public String getNOMPAYS() {
@@ -9640,9 +11176,7 @@ public class DOCUMENT
                     /**
                      * Définit la valeur de la propriété nompays.
                      *
-                     * @param value
-                     *     allowed object is
-                     *     {@link String }
+                     * @param value allowed object is {@link String }
                      *
                      */
                     public void setNOMPAYS(final String value) {
@@ -9653,11 +11187,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -9692,8 +11228,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class FAX
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -9703,9 +11238,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -9715,9 +11248,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -9727,9 +11258,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -9739,9 +11268,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -9750,11 +11277,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -9789,8 +11318,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONEFIXE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -9800,9 +11328,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -9812,9 +11338,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -9824,9 +11348,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -9836,9 +11358,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {
@@ -9847,11 +11367,13 @@ public class DOCUMENT
 
             }
 
-
             /**
-             * <p>Classe Java pour anonymous complex type.
+             * <p>
+             * Classe Java pour anonymous complex type.
              *
-             * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
              *
              * <pre>
              * &lt;complexType>
@@ -9886,8 +11408,7 @@ public class DOCUMENT
                 "numero"
             })
             public static class TELEPHONEMOBILE
-                implements Serializable
-            {
+                    implements Serializable {
 
                 @XmlElement(name = "INDICATIF_PAYS")
                 protected String indicatifpays;
@@ -9897,9 +11418,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété indicatifpays.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getINDICATIFPAYS() {
@@ -9909,9 +11428,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété indicatifpays.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setINDICATIFPAYS(final String value) {
@@ -9921,9 +11438,7 @@ public class DOCUMENT
                 /**
                  * Obtient la valeur de la propriété numero.
                  *
-                 * @return
-                 *     possible object is
-                 *     {@link String }
+                 * @return possible object is {@link String }
                  *
                  */
                 public String getNUMERO() {
@@ -9933,9 +11448,7 @@ public class DOCUMENT
                 /**
                  * Définit la valeur de la propriété numero.
                  *
-                 * @param value
-                 *     allowed object is
-                 *     {@link String }
+                 * @param value allowed object is {@link String }
                  *
                  */
                 public void setNUMERO(final String value) {

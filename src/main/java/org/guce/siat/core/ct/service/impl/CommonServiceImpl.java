@@ -81,7 +81,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("commonService")
 @Transactional(readOnly = true)
-@PropertySources(value = @PropertySource("classpath:siat-jms.properties"))
+@PropertySources(value = @PropertySource("classpath:global-config.properties"))
 public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements CommonService
 {
 

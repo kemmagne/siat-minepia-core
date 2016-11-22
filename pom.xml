@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.guce.siat</groupId>
 		<artifactId>siat</artifactId>
-		<version>1.0</version>
+		<version>1.2.0</version>
 	</parent>
 	<artifactId>siat-ct-core</artifactId>
 	<name>siat-ct-core</name>
@@ -14,47 +14,16 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<resource.dir>src/main/resources</resource.dir>
 	</properties>
-    <distributionManagement>
-        <repository>
-            <id>guce-repository</id>
-            <name>Depot Maven du GUCE</name>
-            <url>https://srvdev.guce.local/nexus/content/repositories/releases</url>
-        </repository>
-        <snapshotRepository>
-            <id>guce-repository</id>
-            <name>Depot Maven du GUCE</name>
-            <url>https://srvdev.guce.local/nexus/content/repositories/snapshots</url>
-        </snapshotRepository>
-    </distributionManagement>
+
 	<profiles>
 		<profile>
 			<id>profile-development</id>
-				<properties>
+			<properties>
 				<environment>dev</environment>
-				<db.username>siat_ct</db.username>
-				<db.password>siat</db.password>
-				<db.url>jdbc:oracle:thin:@localhost:1521:XE</db.url>
-				<ged.url>http://172.24.2.134:8080</ged.url>
-				<jms.url>tcp://localhost:61616</jms.url>
-				<version>${application.version}</version>
-				<ged.username>admin</ged.username>
-				<ged.password>admin</ged.password>
 				<uri.in>amq:CT</uri.in>
 				<uri.out>SIAT</uri.out>
 				<uri.dead.in>direct:dead</uri.dead.in>
 				<uri.dead.out>amq:SIAT</uri.dead.out>
-				<ebxml.folder>d:/eGuce/ebxml</ebxml.folder>
-				<xml.folder>d:/eGuce/xml</xml.folder>
-				<attachement.folder>d:/eGuce/attachement</attachement.folder>
-				<hibernate.default_schema>SIAT_CT</hibernate.default_schema>
-				<jms.username>admin</jms.username>
-				<jms.password>admin</jms.password>
-				<mailSender.host>smtp.gmail.com</mailSender.host>
-				<mailSender.port>587</mailSender.port>
-				<mailSender.username>guce.technical.notifier</mailSender.username>
-				<mailSender.password>P@ssword2015</mailSender.password>
-				<mailSender.from>guce.technical.notifier@gmail.com</mailSender.from>
-				<mailSender.replyTo></mailSender.replyTo>
 			</properties>
 			<activation>
 				<activeByDefault>true</activeByDefault>
@@ -68,30 +37,10 @@
 			<id>profile-recette</id>
 			<properties>
 				<environment>recette</environment>
-				<db.username>SIAT_CT</db.username>
-				<db.password>siat</db.password>
-				<db.url>jdbc:oracle:thin:@10.44.162.138:1521:SIAT</db.url>
-				<ged.url>http://172.24.2.134:8080</ged.url>
-				<jms.url>tcp://10.44.162.136:61616</jms.url>
-				<version>${application.version}</version>
-				<ged.username>admin</ged.username>
-				<ged.password>admin</ged.password>
 				<uri.in>amq:CT</uri.in>
 				<uri.out>SIAT</uri.out>
 				<uri.dead.in>direct:dead</uri.dead.in>
 				<uri.dead.out>amq:SIAT</uri.dead.out>
-				<ebxml.folder>/eGuce/ebxml</ebxml.folder>
-				<xml.folder>/eGuce/xml</xml.folder>
-				<attachement.folder>/eGuce/attachement</attachement.folder>
-				<hibernate.default_schema>SIAT_CT</hibernate.default_schema>
-				<jms.username>admin</jms.username>
-				<jms.password>admin</jms.password>
-				<mailSender.host>smtp.gmail.com</mailSender.host>
-				<mailSender.port>587</mailSender.port>
-				<mailSender.username>guce.technical.notifier</mailSender.username>
-				<mailSender.password>P@ssword2015</mailSender.password>
-				<mailSender.from>guce.technical.notifier@gmail.com</mailSender.from>
-				<mailSender.replyTo>amine.ayed@businessdecision.com;farouk.bensaria@businessdecision.com;</mailSender.replyTo>
 			</properties>
 			<activation>
 				<property>
@@ -104,30 +53,10 @@
 			<id>profile-preprod</id>
 			<properties>
 				<environment>preprod</environment>
-				<db.username>siat_ct</db.username>
-				<db.password>siat</db.password>
-				<db.url>jdbc:oracle:thin:@172.24.3.23:1528:SIAT</db.url>
-				<ged.url>http://172.24.2.134:8080</ged.url>
-				<jms.url>failover:(tcp://172.24.2.120:61618,tcp://172.24.2.121:61618)</jms.url>
-				<version>${application.version}</version>
-				<ged.username>admin</ged.username>
-				<ged.password>admin</ged.password>
 				<uri.in>amq:CT</uri.in>
 				<uri.out>SIAT</uri.out>
 				<uri.dead.in>direct:dead</uri.dead.in>
-				<uri.dead.out>amq:deadQueue</uri.dead.out>
-				<ebxml.folder>/siat/eGuce/ebxml</ebxml.folder>
-				<xml.folder>/siat/eGuce/xml</xml.folder>
-				<attachement.folder>/siat/eGuce/attachement</attachement.folder>
-				<hibernate.default_schema>SIAT_CT</hibernate.default_schema>
-				<jms.username>admin</jms.username>
-				<jms.password>admin</jms.password>
-				<mailSender.host>guce-mail1.guce.local</mailSender.host>
-				<mailSender.port>587</mailSender.port>
-				<mailSender.username>siat</mailSender.username>
-				<mailSender.password>siat1234</mailSender.password>
-				<mailSender.from>siat@guichetunique.org</mailSender.from>
-				<mailSender.replyTo>siat@guichetunique.org</mailSender.replyTo>
+				<uri.dead.out>amq:SIAT</uri.dead.out>
 			</properties>
 			<activation>
 				<property>
@@ -136,35 +65,15 @@
 				</property>
 			</activation>
 		</profile>
-<!-- User Acceptance Testing (UAT) -->
+		<!-- User Acceptance Testing (UAT) -->
 		<profile>
 			<id>profile-uat</id>
 			<properties>
 				<environment>uat</environment>
-				<db.username>SIAT_CT</db.username>
-				<db.password>siat</db.password>
-				<db.url>jdbc:oracle:thin:@172.20.3.31:1518:GUCETEST</db.url>
-				<ged.url>http://localhost:8080</ged.url>
-				<jms.url>tcp://localhost:61616</jms.url>
-				<version>${application.version}</version>
-				<ged.username>admin</ged.username>
-				<ged.password>admin</ged.password>
 				<uri.in>amq:CT</uri.in>
 				<uri.out>SIAT</uri.out>
 				<uri.dead.in>direct:dead</uri.dead.in>
 				<uri.dead.out>amq:SIAT</uri.dead.out>
-				<ebxml.folder>/siat/eGuce/ebxml</ebxml.folder>
-				<xml.folder>/siat/eGuce/xml</xml.folder>
-				<attachement.folder>/siat/eGuce/attachement</attachement.folder>
-				<hibernate.default_schema>SIAT_CT</hibernate.default_schema>
-				<jms.username>admin</jms.username>
-				<jms.password>admin</jms.password>
-				<mailSender.host>guce-mail1.guce.local</mailSender.host>
-				<mailSender.port>587</mailSender.port>
-				<mailSender.username>siat</mailSender.username>
-				<mailSender.password>siat1234</mailSender.password>
-				<mailSender.from>siat@guichetunique.org</mailSender.from>
-				<mailSender.replyTo>siat@guichetunique.org</mailSender.replyTo>
 			</properties>
 			<activation>
 				<property>
@@ -174,13 +83,18 @@
 			</activation>
 		</profile>
 	</profiles>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.guce.siat.common</groupId>
 			<artifactId>siat-common</artifactId>
-			<version>1.0</version>
+			<version>${project.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>commons-beanutils</groupId>
+			<artifactId>commons-beanutils</artifactId>
+			<version>1.9.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
@@ -200,7 +114,7 @@
 			<version>${spring.version}</version>
 			<scope>test</scope>
 		</dependency>
-	
+
 		<!-- BoneCP -->
 		<dependency>
 			<groupId>com.jolbox</groupId>
@@ -213,6 +127,8 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+
 	</dependencies>
 	<build>
 		<resources>

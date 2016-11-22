@@ -8,7 +8,7 @@
 
 	<import resource="classpath:mail-config.xml" />
 
-	<context:property-placeholder location="classpath:siat-jms.properties" />
+	<context:property-placeholder location="classpath:global-config.properties" />
 
 	<camel:camelContext id="guceContext" xmlns="http://camel.apache.org/schema/spring" trace="true"
 		errorHandlerRef="myDeadLetterErrorHandler">

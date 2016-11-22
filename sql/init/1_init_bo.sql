@@ -1077,17 +1077,6 @@ INSERT INTO BUREAU(ID, BUREAU_TYPE) VALUES (330, 'BUREAU_REGIONAL');
 INSERT INTO BUREAU(ID, BUREAU_TYPE) VALUES (331, 'BUREAU_REGIONAL');
 COMMIT;
 
-/*==============================================================*/
-/* Table : FILE_TYPE_SERVICE                                    */
-/*==============================================================*/
-INSERT INTO FILE_TYPE_SERVICE( ID, FILE_TYPE_ID, SERVICE_ID ) VALUES (1, 24, 251);
-INSERT INTO FILE_TYPE_SERVICE( ID, FILE_TYPE_ID, SERVICE_ID ) VALUES (2, 25, 251);
-INSERT INTO FILE_TYPE_SERVICE( ID, FILE_TYPE_ID, SERVICE_ID ) VALUES (3, 26, 251);
-INSERT INTO FILE_TYPE_SERVICE( ID, FILE_TYPE_ID, SERVICE_ID ) VALUES (4, 27, 251);
-INSERT INTO FILE_TYPE_SERVICE( ID, FILE_TYPE_ID, SERVICE_ID ) VALUES (5, 35, 251);
-
-COMMIT;
-
 /*==================================================================================*/
 /* Table : Laboratory  --> Données de test à supprimer avant le déploiement final   */
 /*==================================================================================*/

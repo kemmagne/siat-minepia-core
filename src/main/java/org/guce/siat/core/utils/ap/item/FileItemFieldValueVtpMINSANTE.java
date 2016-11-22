@@ -75,11 +75,6 @@ public class FileItemFieldValueVtpMINSANTE
 				fileItemFieldValue.setValue(marchandise.getNOMSCIENTIFIQUE());
 				break;
 			}
-			case "FORMULE_CHIMIQUE":
-			{
-				fileItemFieldValue.setValue(marchandise.getFORMULECHIMIQUE());
-				break;
-			}
 			case "SPECIFICATION_TECHNIQUE":
 			{
 				fileItemFieldValue.setValue(marchandise.getSPECIFICATIONTECHNIQUE());
@@ -102,6 +97,14 @@ public class FileItemFieldValueVtpMINSANTE
 				}
 				break;
 			}
+                        case "QUANTITE_IMPORTEE": {
+                                fileItemFieldValue.setValue(marchandise.getQUANTITEIMPORTEE());
+                                break;
+                        }
+                        case "MODE_EMBALLAGE": {
+                                fileItemFieldValue.setValue(marchandise.getMODEEMBALLAGE());
+                                break;
+                        }
 			case "FABRICANT_RAISONSOCIALE":
 			{
 				if (marchandise.getFABRICANT() != null)

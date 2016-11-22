@@ -77,7 +77,8 @@ public final class PaiementGenerator
 			for (final PaymentItemFlow elmt : paymentData.getPaymentItemFlowList())
 			{
 				final DETAILFACTURE detailFacture = new DETAILFACTURE();
-				detailFacture.setLIBELLEARTICLE(elmt.getItemFlow().getFileItem().getNsh().getGoodsItemDesc());
+				detailFacture.setLIBELLEARTICLE(elmt.getItemFlow().getFileItem().getNsh() != null ? elmt.getItemFlow().getFileItem()
+						.getNsh().getGoodsItemDesc() : "");
 				detailFacture.setNUMEROLIGNE(elmt.getItemFlow().getFileItem().getLineNumber() != null ? elmt.getItemFlow()
 						.getFileItem().getLineNumber().toString() : null);
 				detailFacture.setMONTANTHT(elmt.getMontantHt() != null ? elmt.getMontantHt().toString() : null);
@@ -85,7 +86,8 @@ public final class PaiementGenerator
 				final Long ttc = (elmt.getMontantTva() != null ? elmt.getMontantTva() : 0L)
 						+ (elmt.getMontantHt() != null ? elmt.getMontantHt() : 0L);
 				detailFacture.setMONTANTTTC(ttc.toString());
-				detailFacture.setCODEARTICLE(elmt.getItemFlow().getFileItem().getNsh().getGoodsItemCode());
+				detailFacture.setCODEARTICLE(elmt.getItemFlow().getFileItem().getNsh() != null ? elmt.getItemFlow().getFileItem()
+						.getNsh().getGoodsItemCode() : "");
 				paiement.getFACTURE().getDETAILFACTURES().getDETAILFACTURE().add(detailFacture);
 			}
 			final Entity bureau = paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile().getBureau();

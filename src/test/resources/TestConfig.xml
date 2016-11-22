@@ -21,7 +21,7 @@
 
 
 	<!-- For consider the using of annotations for defining Spring Bean -->
-	<context:property-placeholder location="classpath:params-mail-core.properties, classpath:alfresco-config.properties" />
+	<context:property-placeholder location="classpath:global-config.properties" />
 	<context:annotation-config />
 	<aop:aspectj-autoproxy />
 	<!-- For defining Spring Bean -->

@@ -456,6 +456,11 @@ public class FileFieldValueAiMINSANTE
 				break;
 			}
 			default:
+				int fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_STRING;
+				if (fileField.getCode().contains("_DATE") || fileField.getCode().contains("DATE_") || fileField.getCode().equals("DATE")) {
+					fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_DATE;
+				}
+				fileFieldValue.setValue(org.guce.siat.core.utils.FileFieldValueUtils.retrieveValue(document.getCONTENT(), fileField.getCode(), fieldType));
 				break;
 		}
 
