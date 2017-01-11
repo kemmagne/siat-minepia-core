@@ -112,9 +112,9 @@ public class RiskDaoImpl implements RiskDao
 
 		final TypedQuery<Alert> query = entityManager.createQuery(hqlString.toString(), Alert.class);
 
-		query.setParameter("servicesItemId", fileItem.getSubfamily().getId());
-		query.setParameter("startDate", DateUtils.formatSimpleDate(new Date()));
-		query.setParameter("endDate", DateUtils.formatSimpleDate(new Date()));
+		query.setParameter("servicesItemId", fileItem.getSubfamily() != null ? fileItem.getSubfamily().getId() : null);
+		query.setParameter("startDate", DateUtils.formatSimpleDate(Calendar.getInstance().getTime()));
+		query.setParameter("endDate", DateUtils.formatSimpleDate(Calendar.getInstance().getTime()));
 
 		return query.getResultList().size() >= Constants.ONE;
 	}
@@ -141,7 +141,7 @@ public class RiskDaoImpl implements RiskDao
 
 		final TypedQuery<Ciblage> query = entityManager.createQuery(hqlString.toString(), Ciblage.class);
 
-		query.setParameter("servicesItemId", fileItem.getSubfamily().getId());
+		query.setParameter("servicesItemId", fileItem.getSubfamily() != null ? fileItem.getSubfamily().getId() : null);
 		query.setParameter("startDate", DateUtils.formatSimpleDate(new Date()));
 		query.setParameter("endDate", DateUtils.formatSimpleDate(new Date()));
 
@@ -165,7 +165,7 @@ public class RiskDaoImpl implements RiskDao
 		hqlString.append("WHERE a.servicesItem.id = :servicesItemId ");
 		final TypedQuery<Alert> query = entityManager.createQuery(hqlString.toString(), Alert.class);
 
-		query.setParameter("servicesItemId", fileItem.getSubfamily().getId());
+		query.setParameter("servicesItemId", fileItem.getSubfamily() != null ? fileItem.getSubfamily().getId() : null);
 
 		return query.getResultList().size() >= Constants.ONE;
 	}
@@ -187,7 +187,7 @@ public class RiskDaoImpl implements RiskDao
 		final TypedQuery<ItemFlow> query = entityManager.createQuery(hqlString.toString(), ItemFlow.class);
 
 		query.setParameter("clientId", fileItem.getFile().getClient().getId());
-		query.setParameter("subfamilyId", fileItem.getSubfamily().getId());
+		query.setParameter("subfamilyId", fileItem.getSubfamily() != null ? fileItem.getSubfamily().getId() : null);
 
 		final List<StepCode> stepCodes = new ArrayList<StepCode>();
 
@@ -337,7 +337,7 @@ public class RiskDaoImpl implements RiskDao
 
 		final TypedQuery<AnalyseResult> query = entityManager.createQuery(hqlBuilder.toString(), AnalyseResult.class);
 		query.setParameter("cDate", DateUtils.formatSimpleDateForOracle(calendar.getTime()));
-		query.setParameter("subfamilyId", fileItem.getSubfamily().getId());
+		query.setParameter("subfamilyId", fileItem.getSubfamily() != null ? fileItem.getSubfamily().getId() : null);
 
 		if (CollectionUtils.isEmpty(query.getResultList()))
 		{

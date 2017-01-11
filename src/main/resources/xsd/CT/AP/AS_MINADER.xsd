@@ -1620,21 +1620,21 @@
 													<xs:element name="MONTANT" minOccurs="0">
 														<xs:simpleType>
 															<xs:restriction base="xs:string">
-																<xs:maxLength value="10"/>
+																<xs:maxLength value="35"/>
 															</xs:restriction>
 														</xs:simpleType>
 													</xs:element>
 													<xs:element name="MONTANT_TOTAL_DEVISE" minOccurs="0">
 														<xs:simpleType>
 															<xs:restriction base="xs:string">
-																<xs:maxLength value="10"/>
+																<xs:maxLength value="35"/>
 															</xs:restriction>
 														</xs:simpleType>
 													</xs:element>
 													<xs:element name="MONTANT_TOTAL_FCFA" minOccurs="0">
 														<xs:simpleType>
 															<xs:restriction base="xs:string">
-																<xs:maxLength value="10"/>
+																<xs:maxLength value="35"/>
 															</xs:restriction>
 														</xs:simpleType>
 													</xs:element>
