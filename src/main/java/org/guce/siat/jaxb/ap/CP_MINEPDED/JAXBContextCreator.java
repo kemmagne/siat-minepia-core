@@ -43,7 +43,7 @@ public final class JAXBContextCreator
 		}
 		catch (final JAXBException e)
 		{
-			LOG.error(Objects.toString(e));
+			LOG.error(Objects.toString(e), e);
 		}
 		return instance;
 	}

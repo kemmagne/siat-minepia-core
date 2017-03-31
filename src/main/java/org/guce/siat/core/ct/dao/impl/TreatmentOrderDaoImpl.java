@@ -19,23 +19,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class TreatmentOrderDaoImpl.
  */
 @Repository("treatmentOrderDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class TreatmentOrderDaoImpl extends AbstractJpaDaoImpl<TreatmentOrder> implements TreatmentOrderDao
-{
+public class TreatmentOrderDaoImpl extends AbstractJpaDaoImpl<TreatmentOrder> implements TreatmentOrderDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(TreatmentOrderDaoImpl.class);
 
 	/**
 	 * Instantiates a new analys Order dao impl.
 	 */
-	public TreatmentOrderDaoImpl()
-	{
+	public TreatmentOrderDaoImpl() {
 		super();
 		setClasse(TreatmentOrder.class);
 	}
@@ -46,12 +45,9 @@ public class TreatmentOrderDaoImpl extends AbstractJpaDaoImpl<TreatmentOrder> im
 	 * @see org.guce.siat.core.ct.dao.TreatmentOrderDao#findTreatmentOrderByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public TreatmentOrder findTreatmentOrderByItemFlow(final ItemFlow itemFlow)
-	{
-		if (itemFlow != null)
-		{
-			try
-			{
+	public TreatmentOrder findTreatmentOrderByItemFlow(final ItemFlow itemFlow) {
+		if (itemFlow != null) {
+			try {
 				final StringBuilder hqlBuilder = new StringBuilder();
 
 				hqlBuilder.append("FROM TreatmentOrder a ");
@@ -60,10 +56,8 @@ public class TreatmentOrderDaoImpl extends AbstractJpaDaoImpl<TreatmentOrder> im
 				final TypedQuery<TreatmentOrder> query = super.entityManager.createQuery(hqlBuilder.toString(), TreatmentOrder.class);
 				query.setParameter("itemFlowId", itemFlow.getId());
 				return query.getSingleResult();
-			}
-			catch (NoResultException | NonUniqueResultException e)
-			{
-				LOG.error(Objects.toString(e));
+			} catch (NoResultException | NonUniqueResultException e) {
+				LOG.error(Objects.toString(e), e);
 			}
 		}
 		return null;

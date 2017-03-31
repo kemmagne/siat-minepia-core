@@ -20,17 +20,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.xml.sax.SAXException;
 
-
 /**
  * The Class RetrieveCTMessageProcessor.
  */
-public class RetrieveCTMessageProcessor implements Processor
-{
+public class RetrieveCTMessageProcessor implements Processor {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(RetrieveCTMessageProcessor.class);
 
-	/** The ct document reciever. */
+	/**
+	 * The ct document reciever.
+	 */
 	@Autowired
 	private CtDocumentReciever ctDocumentReciever;
 
@@ -41,24 +43,19 @@ public class RetrieveCTMessageProcessor implements Processor
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void process(final Exchange exchange) throws ValidationException, IOException
-	{
+	public void process(final Exchange exchange) throws ValidationException, IOException {
 		final HashMap<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
 		LOG.warn("####start Bean Process result : Done");
-		try
-		{
+		try {
 			final HashMap<String, Object> result = ctDocumentReciever.uploadEbxmlFile(ebxmlBytes);
-			if (result != null)
-			{
+			if (result != null) {
 				exchange.getOut().setBody(result);
 			}
 			LOG.warn("####end Bean Process result : Done");
-		}
-		catch (final ValidationException | ParseException | TransformerException | SOAPException | SAXException
+		} catch (final ValidationException | ParseException | TransformerException | SOAPException | SAXException
 				| ParserConfigurationException | JAXBException | XPathExpressionException | IndexOutOfBoundsException
-				| PersistenceException | NullPointerException e)
-		{
-			LOG.error("####Process Recieved exception : {0}", e.getMessage());
+				| PersistenceException | NullPointerException e) {
+			LOG.error("####Process Recieved exception : " + e.getMessage(), e);
 			throw new ValidationException(e.getMessage());
 
 		}

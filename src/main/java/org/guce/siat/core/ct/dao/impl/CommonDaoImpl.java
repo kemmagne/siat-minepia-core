@@ -48,23 +48,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class CommonDaoImpl.
  */
 @Repository("commonDaoImpl")
 @Transactional(propagation = Propagation.REQUIRED)
-public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements CommonDao
-{
+public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements CommonDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(CommonDaoImpl.class);
 
 	/**
 	 * Instantiates a new common dao impl.
 	 */
-	public CommonDaoImpl()
-	{
+	public CommonDaoImpl() {
 		setClasse(ItemFlow.class);
 	}
 
@@ -74,10 +73,8 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findSampleByFileItem(org.guce.siat.common.model.FileItem)
 	 */
 	@Override
-	public Sample findSampleByFileItem(final FileItem fileItem)
-	{
-		try
-		{
+	public Sample findSampleByFileItem(final FileItem fileItem) {
+		try {
 			final StringBuilder hqlBuilder = new StringBuilder();
 			hqlBuilder.append("FROM Sample s ");
 			hqlBuilder.append("WHERE s.fileItem.id = :fileItemId");
@@ -86,10 +83,8 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 			query.setParameter("fileItemId", fileItem.getId());
 
 			return query.getSingleResult();
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
-			LOG.info(Objects.toString(e));
+		} catch (final NoResultException | NonUniqueResultException e) {
+			LOG.info(Objects.toString(e), e);
 			return null;
 		}
 	}
@@ -102,8 +97,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 */
 	@Override
 	public List<FileItem> findByFilter(final Filter filter, final Administration administration,
-			final List<FileTypeCode> fileTypeCodes)
-	{
+			final List<FileTypeCode> fileTypeCodes) {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		final StringBuilder hqlQuery = new StringBuilder();
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
@@ -115,55 +109,44 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("WHERE fi.file.fileType.code IN (:fileTypeCodes) ");
 		params.put("fileTypeCodes", fileTypeCodes);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append(" AND fi.file.bureau IN (:bureausList)");
 			params.put("bureausList", bureausList);
 		}
-		if (filter.getFromDate() != null && filter.getToDate() == null)
-		{
+		if (filter.getFromDate() != null && filter.getToDate() == null) {
 			hqlQuery.append(" AND fi.file.createdDate >= TO_DATE(:createdDate,'");
 			hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 			hqlQuery.append("')");
 			params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
 		}
 
-		if (filter.getFromDate() == null && filter.getToDate() != null)
-		{
+		if (filter.getFromDate() == null && filter.getToDate() != null) {
 			hqlQuery.append(" AND fi.file.createdDate < :createDate ");
 
 			params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
 		}
 
-		if (filter.getFromDate() != null && filter.getToDate() != null)
-		{
+		if (filter.getFromDate() != null && filter.getToDate() != null) {
 			hqlQuery.append(" AND fi.file.createdDate >= :fromDate");
 			hqlQuery.append(" AND fi.file.createdDate < :toDate ");
 			params.put("fromDate", filter.getFromDate());
 			params.put("toDate", DateUtils.addDays(filter.getToDate(), 1));
 		}
-		if (filter instanceof FileItemFilter)
-		{
+		if (filter instanceof FileItemFilter) {
 			final FileItemFilter fileItemFilter = (FileItemFilter) filter;
 
-			if (fileItemFilter.getStep() != null)
-			{
+			if (fileItemFilter.getStep() != null) {
 				hqlQuery.append(" AND  fi.step.id = :stepId");
 				params.put("stepId", fileItemFilter.getStep().getId());
 			}
 
-			if (fileItemFilter.getFileType() != null)
-			{
+			if (fileItemFilter.getFileType() != null) {
 				hqlQuery.append(" AND  fi.file.fileType.id = :fileTypeId");
 				params.put("fileTypeId", fileItemFilter.getFileType().getId());
 			}
 
-
-
 			hqlQuery.append(advancedFileItemFilter(fileItemFilter, params));
-		}
-		else if (filter instanceof PaymentFilter)
-		{
+		} else if (filter instanceof PaymentFilter) {
 			final List<StepCode> stepCodes = new ArrayList<StepCode>();
 			stepCodes.add(StepCode.ST_AP_64);
 			stepCodes.add(StepCode.ST_CT_42);
@@ -174,18 +157,15 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final PaymentFilter paymentFilter = (PaymentFilter) filter;
 
-			if (paymentFilter.getOperator() != null)
-			{
+			if (paymentFilter.getOperator() != null) {
 				hqlQuery.append(" AND  fi.file.client.numContribuable = :numContribuable");
 				params.put("numContribuable", paymentFilter.getOperator().getNumContribuable());
 			}
 
-
 		}
 		final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-		for (final Entry<String, Object> entry : params.entrySet())
-		{
+		for (final Entry<String, Object> entry : params.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 		return query.getResultList();
@@ -195,69 +175,57 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	/**
 	 * Advanced file item filter.
 	 *
-	 * @param filter
-	 *           the filter
-	 * @param params
-	 *           the params
+	 * @param filter the filter
+	 * @param params the params
 	 * @return the string
 	 */
-	private String advancedFileItemFilter(final FileItemFilter filter, final Map<String, Object> params)
-	{
+	private String advancedFileItemFilter(final FileItemFilter filter, final Map<String, Object> params) {
 		final StringBuilder advacedFilterBuilder = new StringBuilder();
 
-		if (filter.getOperator() != null)
-		{
+		if (filter.getOperator() != null) {
 			advacedFilterBuilder.append(" AND  fi.file.client.numContribuable = :numContribuable");
 			params.put("numContribuable", filter.getOperator().getNumContribuable());
 		}
 
-		if (filter.getSubfamily() != null && !filter.getSubfamily().isEmpty())
-		{
+		if (filter.getSubfamily() != null && !filter.getSubfamily().isEmpty()) {
 			advacedFilterBuilder.append(" AND  fi.nsh.goodsItemCode = :goodsItemCode");
 			params.put("goodsItemCode", filter.getSubfamily());
 		}
 
-		if (filter.getTransportType() != null)
-		{
+		if (filter.getTransportType() != null) {
 			advacedFilterBuilder
 					.append(" AND  ffv.primaryKey.fileField.code ='INFORMATIONS_GENERALES_TRANSPORT_MOYEN_TRANSPORT_CODE' AND ffv.value=:codeModeDeTransport");
 			params.put("codeModeDeTransport", filter.getTransportType().getTypeMeanTransportCode());
 		}
 
-		if (filter.getOriginCountry() != null)
-		{
+		if (filter.getOriginCountry() != null) {
 			advacedFilterBuilder.append(" AND  fi.file.countryOfOrigin.countryIdAlpha2 = :countryCode");
 			params.put("countryCode", filter.getOriginCountry().getCountryIdAlpha2());
 		}
 
-		if (filter.getArrivalPort() != null)
-		{
+		if (filter.getArrivalPort() != null) {
 			advacedFilterBuilder.append(" AND  ffv.primaryKey.fileField.code ='POINT_ENTREE' AND ffv.value=:locationCode");
 			params.put("locationCode", filter.getArrivalPort().getLocationCode());
 		}
 
-		if (filter.getFile() != null)
-		{
+		if (filter.getFile() != null) {
 			advacedFilterBuilder.append(" AND  fi.file.referenceSiat  = :referenceSiat");
 			params.put("referenceSiat", filter.getFile());
 		}
 
-		if (filter.getAnalyseType() != null)
-		{
+		if (filter.getAnalyseType() != null) {
 			advacedFilterBuilder
 					.append(" AND fi IN (SELECT DISTINCT ao.itemFlow.fileItem FROM AnalyseOrder ao LEFT OUTER JOIN ao.analysePartsList ap WHERE ap.analyseType.id = :analyseTypeId) ");
 			params.put("analyseTypeId", filter.getAnalyseType().getId());
 		}
 
-		if (filter.getController() != null)
-		{
+		if (filter.getController() != null) {
 			advacedFilterBuilder
 					.append(" AND fi IN (SELECT DISTINCT appif.primaryKey.itemFlow.fileItem FROM Appointment app LEFT OUTER JOIN app.appointmentItemFlowList appif WHERE app.controller.id = :controllerId)");
 			params.put("controllerId", filter.getController().getId());
 		}
 
-		if (filter.getLaboratory() != null)
-		{
+		if (filter.getLaboratory() != null) {
 			advacedFilterBuilder
 					.append(" AND fi IN (SELECT DISTINCT ao.itemFlow.fileItem FROM AnalyseOrder ao WHERE ao.laboratory.id = :laboratoryId) ");
 			params.put("laboratoryId", filter.getLaboratory().getId());
@@ -272,40 +240,33 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findStatisticByFilter(org.guce.siat.core.ct.filter.Filter)
 	 */
 	@Override
-	public List<AnalyseOrder> findStatisticByFilter(final Filter filter)
-	{
-		if (filter != null)
-		{
+	public List<AnalyseOrder> findStatisticByFilter(final Filter filter) {
+		if (filter != null) {
 			final Map<String, Object> params = new HashMap<String, Object>();
 			final StringBuilder hqlQuery = new StringBuilder();
 
-			if (filter instanceof AnalyseFilter)
-			{
+			if (filter instanceof AnalyseFilter) {
 				final AnalyseFilter analyseFilter = (AnalyseFilter) filter;
 				hqlQuery.append("SELECT DISTINCT a FROM AnalyseOrder a WHERE 1=1 ");
 
-				if (analyseFilter.getLaboratory() != null)
-				{
+				if (analyseFilter.getLaboratory() != null) {
 					hqlQuery.append(" AND a.laboratory.id = :laboratoryId");
 					params.put("laboratoryId", analyseFilter.getLaboratory().getId());
 				}
-				if (analyseFilter.getFromDate() != null && analyseFilter.getToDate() == null)
-				{
+				if (analyseFilter.getFromDate() != null && analyseFilter.getToDate() == null) {
 					hqlQuery.append(" AND a.date >= TO_DATE(:createdDate,'");
 					hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 					hqlQuery.append("')");
 					params.put("createdDate", DateUtils.formatSimpleDateForOracle(analyseFilter.getFromDate()));
 				}
 
-				if (analyseFilter.getFromDate() == null && analyseFilter.getToDate() != null)
-				{
+				if (analyseFilter.getFromDate() == null && analyseFilter.getToDate() != null) {
 					hqlQuery.append(" AND a.date <:toDate");
 
 					params.put("toDate", DateUtils.addDays(analyseFilter.getToDate(), 1));
 				}
 
-				if (analyseFilter.getFromDate() != null && analyseFilter.getToDate() != null)
-				{
+				if (analyseFilter.getFromDate() != null && analyseFilter.getToDate() != null) {
 					hqlQuery.append(" AND a.date >= :fromDate");
 
 					hqlQuery.append(" AND a.date <:toDate");
@@ -313,45 +274,37 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 					params.put("fromDate", analyseFilter.getFromDate());
 					params.put("toDate", DateUtils.addDays(analyseFilter.getToDate(), 1));
 				}
-			}
-			else if (filter instanceof SampleFilter)
-			{
+			} else if (filter instanceof SampleFilter) {
 				final SampleFilter sampleFilter = (SampleFilter) filter;
 				hqlQuery.append("SELECT DISTINCT a FROM AnalyseOrder a WHERE 1=1 ");
 
-				if (sampleFilter.getLaboratory() != null)
-				{
+				if (sampleFilter.getLaboratory() != null) {
 					hqlQuery.append(" AND a.laboratory.id = :laboratoryId");
 					params.put("laboratoryId", sampleFilter.getLaboratory().getId());
 				}
-				if (sampleFilter.getFromDate() != null && sampleFilter.getToDate() == null)
-				{
+				if (sampleFilter.getFromDate() != null && sampleFilter.getToDate() == null) {
 					hqlQuery.append(" AND a.date >= TO_DATE(:createdDate,'");
 					hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 					hqlQuery.append("')");
 					params.put("createdDate", DateUtils.formatSimpleDateForOracle(sampleFilter.getFromDate()));
 				}
 
-				if (sampleFilter.getFromDate() == null && sampleFilter.getToDate() != null)
-				{
+				if (sampleFilter.getFromDate() == null && sampleFilter.getToDate() != null) {
 					hqlQuery.append(" AND a.date <:toDate");
 					params.put("toDate", DateUtils.addDays(sampleFilter.getToDate(), 1));
 				}
 
-				if (sampleFilter.getFromDate() != null && sampleFilter.getToDate() != null)
-				{
+				if (sampleFilter.getFromDate() != null && sampleFilter.getToDate() != null) {
 					hqlQuery.append(" AND a.date >= :fromDate");
 					hqlQuery.append(" AND a.date < :toDate");
 					params.put("fromDate", sampleFilter.getFromDate());
 					params.put("toDate", DateUtils.addDays(sampleFilter.getToDate(), 1));
 				}
 
-
 			}
 			final TypedQuery<AnalyseOrder> query = super.entityManager.createQuery(hqlQuery.toString(), AnalyseOrder.class);
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			return query.getResultList();
@@ -367,8 +320,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 */
 	@Override
 	public List<FileItem> fileItemByDesicionByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-			final List<String> flowCodeList, final List<String> restrectionFlowCode, final Administration administration)
-	{
+			final List<String> flowCodeList, final List<String> restrectionFlowCode, final Administration administration) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 		final Map<String, Object> params = new HashMap<String, Object>();
@@ -377,28 +329,23 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("WHERE i.fileItem.file.fileType.code IN (:fileTypeCodes) ");
 		params.put("fileTypeCodes", fileTypeCodes);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append("AND i.fileItem.file.bureau IN (:bureausList) ");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter != null)
-		{
-			if (filter.getFromDate() != null && filter.getToDate() == null)
-			{
+		if (filter != null) {
+			if (filter.getFromDate() != null && filter.getToDate() == null) {
 				hqlQuery.append(" AND i.fileItem.file.createdDate >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
 			}
-			if (filter.getFromDate() == null && filter.getToDate() != null)
-			{
+			if (filter.getFromDate() == null && filter.getToDate() != null) {
 				hqlQuery.append(" AND i.fileItem.file.createdDate < :createDate ");
 				params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
 			}
-			if (filter.getFromDate() != null && filter.getToDate() != null)
-			{
+			if (filter.getFromDate() != null && filter.getToDate() != null) {
 				hqlQuery.append(" AND i.fileItem.file.createdDate >= :fromDate ");
 
 				hqlQuery.append(" AND i.fileItem.file.createdDate <:toDate ");
@@ -411,8 +358,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append(" AND i.flow.code IN :flowCodeList ");
 		params.put("flowCodeList", flowCodeList);
 
-		if (CollectionUtils.isNotEmpty(restrectionFlowCode))
-		{
+		if (CollectionUtils.isNotEmpty(restrectionFlowCode)) {
 			hqlQuery
 					.append("AND i.fileItem NOT IN (SELECT DISTINCT it.fileItem FROM ItemFlow it WHERE it.flow.code IN (:confirmRDDCode))");
 			params.put("confirmRDDCode", restrectionFlowCode);
@@ -420,8 +366,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 		final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-		for (final Entry<String, Object> entry : params.entrySet())
-		{
+		for (final Entry<String, Object> entry : params.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 		return query.getResultList();
@@ -436,8 +381,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 */
 	@Override
 	public List<FileItem> fileItemByCompanyAndDecicionByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-			final Administration administration)
-	{
+			final Administration administration) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 
@@ -449,41 +393,34 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append(" f.file.fileType.code IN (:fileTypeCodes) ");
 		params.put("fileTypeCodes", fileTypeCodes);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append("AND f.file.bureau IN (:bureausList) ");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter instanceof HistoricClientFilter)
-		{
-			if (historicClientFilter.getFlow() != null)
-			{
+		if (filter instanceof HistoricClientFilter) {
+			if (historicClientFilter.getFlow() != null) {
 				hqlQuery.append("AND f.step = :step ");
 				params.put("step", historicClientFilter.getFlow().getToStep());
 			}
-			if (historicClientFilter.getClient() != null)
-			{
+			if (historicClientFilter.getClient() != null) {
 				hqlQuery.append(" AND f.file.client.id = :companyId");
 				params.put("companyId", historicClientFilter.getClient().getId());
 			}
 
-			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() == null)
-			{
+			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() == null) {
 				hqlQuery.append(" AND f.file.createdDate >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(historicClientFilter.getFromDate()));
 			}
 
-			if (historicClientFilter.getFromDate() == null && historicClientFilter.getToDate() != null)
-			{
+			if (historicClientFilter.getFromDate() == null && historicClientFilter.getToDate() != null) {
 				hqlQuery.append(" AND f.file.createdDate < :createDate");
 				params.put("createDate", DateUtils.addDays(historicClientFilter.getToDate(), 1));
 			}
 
-			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() != null)
-			{
+			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() != null) {
 				hqlQuery.append(" AND f.file.createdDate >= :fromDate");
 				hqlQuery.append("  AND f.file.createdDate < :toDate");
 				params.put("fromDate", historicClientFilter.getFromDate());
@@ -492,8 +429,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			return query.getResultList();
@@ -510,8 +446,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 */
 	@Override
 	public List<FileItem> fileItemByCompanyAndProductByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-			final Administration administration)
-	{
+			final Administration administration) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 
@@ -522,42 +457,35 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("WHERE f.file.fileType.code IN (:fileTypeCodes) ");
 		params.put("fileTypeCodes", fileTypeCodes);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append("AND f.file.bureau IN (:bureausList) ");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter instanceof HistoricClientFilter)
-		{
-			if (historicClientFilter.getClient() != null)
-			{
+		if (filter instanceof HistoricClientFilter) {
+			if (historicClientFilter.getClient() != null) {
 				hqlQuery.append(" AND f.file.client.id = :companyId");
 				params.put("companyId", historicClientFilter.getClient().getId());
 			}
 
-			if (historicClientFilter.getNsh() != null)
-			{
+			if (historicClientFilter.getNsh() != null) {
 				hqlQuery.append(" AND f.nsh.goodsItemCode = :goodsItemCode");
 				params.put("goodsItemCode", historicClientFilter.getNsh().getGoodsItemCode());
 			}
 
-			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() == null)
-			{
+			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() == null) {
 				hqlQuery.append(" AND f.file.createdDate >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(historicClientFilter.getFromDate()));
 			}
 
-			if (historicClientFilter.getFromDate() == null && historicClientFilter.getToDate() != null)
-			{
+			if (historicClientFilter.getFromDate() == null && historicClientFilter.getToDate() != null) {
 				hqlQuery.append(" AND f.file.createdDate < :createDate");
 				params.put("createDate", DateUtils.addDays(historicClientFilter.getToDate(), 1));
 			}
 
-			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() != null)
-			{
+			if (historicClientFilter.getFromDate() != null && historicClientFilter.getToDate() != null) {
 				hqlQuery.append(" AND f.file.createdDate >= :fromDate");
 				hqlQuery.append(" AND f.file.createdDate <:toDate");
 				params.put("fromDate", historicClientFilter.getFromDate());
@@ -566,8 +494,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			return query.getResultList();
@@ -584,8 +511,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 */
 	@Override
 	public List<FileItem> fileItemByInspectionDestribByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-			final Administration administration)
-	{
+			final Administration administration) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 
@@ -597,30 +523,25 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 				.append("WHERE i.fileItem.file.fileType.code IN (:fileTypeCodes)  AND i.id IN (SELECT DISTINCT ins.fileItem.id FROM InspectionReport ins)");
 		params.put("fileTypeCodes", fileTypeCodes);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append("AND i.fileItem.file.bureau IN (:bureausList) ");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter instanceof InspectionDestribFilter)
-		{
-			if (inspectionDestribFilter.getFromDate() != null && inspectionDestribFilter.getToDate() == null)
-			{
+		if (filter instanceof InspectionDestribFilter) {
+			if (inspectionDestribFilter.getFromDate() != null && inspectionDestribFilter.getToDate() == null) {
 				hqlQuery.append(" AND i.fileItem.file.createdDate >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(inspectionDestribFilter.getFromDate()));
 			}
 
-			if (inspectionDestribFilter.getFromDate() == null && inspectionDestribFilter.getToDate() != null)
-			{
+			if (inspectionDestribFilter.getFromDate() == null && inspectionDestribFilter.getToDate() != null) {
 				hqlQuery.append(" AND i.fileItem.file.createdDate <:createDate");
 				params.put("createDate", DateUtils.addDays(inspectionDestribFilter.getToDate(), 1));
 			}
 
-			if (inspectionDestribFilter.getFromDate() != null && inspectionDestribFilter.getToDate() != null)
-			{
+			if (inspectionDestribFilter.getFromDate() != null && inspectionDestribFilter.getToDate() != null) {
 				hqlQuery.append(" AND i.fileItem.file.createdDate >= :fromDate");
 				hqlQuery.append(" AND i.fileItem.file.createdDate <:toDate");
 				params.put("fromDate", inspectionDestribFilter.getFromDate());
@@ -629,8 +550,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			return query.getResultList();
@@ -649,8 +569,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object[]> serviceItemProductsQuantitiesByFilter(final Filter filter, final List<Long> fileTypeIdList,
-			final Administration administration)
-	{
+			final Administration administration) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 
@@ -664,30 +583,25 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("WHERE FILES.FILE_TYPE_ID IN (:fileTypeIdList)");
 		params.put("fileTypeIdList", fileTypeIdList);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append(" AND FILES.BUREAU_ID IN (:bureausList)");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter != null)
-		{
-			if (filter.getFromDate() != null && filter.getToDate() == null)
-			{
+		if (filter != null) {
+			if (filter.getFromDate() != null && filter.getToDate() == null) {
 				hqlQuery.append(" AND FILES.CREATED_DATE >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
 			}
 
-			if (filter.getFromDate() == null && filter.getToDate() != null)
-			{
+			if (filter.getFromDate() == null && filter.getToDate() != null) {
 				hqlQuery.append(" AND FILES.CREATED_DATE <:createDate");
 				params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
 			}
 
-			if (filter.getFromDate() != null && filter.getToDate() != null)
-			{
+			if (filter.getFromDate() != null && filter.getToDate() != null) {
 				hqlQuery.append(" AND FILES.CREATED_DATE >= :fromDate");
 				hqlQuery.append(" AND FILES.CREATED_DATE <:toDate");
 				params.put("fromDate", filter.getFromDate());
@@ -698,8 +612,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			final List<Object[]> list = query.getResultList();
@@ -719,8 +632,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Object[]> serviceItemProductsQuantitiesByDrdByFilter(final Filter filter, final List<Long> flowIdList,
-			final List<Long> fileTypeIdList, final Administration administration)
-	{
+			final List<Long> fileTypeIdList, final Administration administration) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 
@@ -735,36 +647,30 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("WHERE FILES.FILE_TYPE_ID IN (:fileTypeIdList)");
 		params.put("fileTypeIdList", fileTypeIdList);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append(" AND FILES.BUREAU_ID IN (:bureausList)");
 			params.put("bureausList", bureausList);
 		}
 
-		if (CollectionUtils.isNotEmpty(flowIdList))
-		{
+		if (CollectionUtils.isNotEmpty(flowIdList)) {
 			hqlQuery.append(" AND ITEM_FLOW.FLOW_ID IN (:flowIdList)");
 			params.put("flowIdList", flowIdList);
 		}
 
-		if (filter != null)
-		{
-			if (filter.getFromDate() != null && filter.getToDate() == null)
-			{
+		if (filter != null) {
+			if (filter.getFromDate() != null && filter.getToDate() == null) {
 				hqlQuery.append(" AND FILES.CREATED_DATE >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
 			}
 
-			if (filter.getFromDate() == null && filter.getToDate() != null)
-			{
+			if (filter.getFromDate() == null && filter.getToDate() != null) {
 				hqlQuery.append(" AND FILES.CREATED_DATE < :createDate");
 				params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
 			}
 
-			if (filter.getFromDate() != null && filter.getToDate() != null)
-			{
+			if (filter.getFromDate() != null && filter.getToDate() != null) {
 				hqlQuery.append(" AND FILES.CREATED_DATE >= :fromDate");
 				hqlQuery.append(" AND FILES.CREATED_DATE <:toDate");
 				params.put("fromDate", filter.getFromDate());
@@ -775,8 +681,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 
@@ -792,27 +697,23 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findQuotsByCreteria(org.guce.siat.core.ct.util.quota.QuotaDto)
 	 */
 	@Override
-	public List<QuotaDto> findQuotsByCreteria(final QuotaDto searchFilter)
-	{
+	public List<QuotaDto> findQuotsByCreteria(final QuotaDto searchFilter) {
 		final StringBuilder hqlBuilder = new StringBuilder();
 		final Map<String, Object> params = new HashMap<String, Object>();
 		hqlBuilder.append("SELECT new org.guce.siat.core.ct.util.quota.QuotaDto(f.file.client.numContribuable,f) FROM FileItem f");
 		hqlBuilder
 				.append(" JOIN f.itemFlowsList if WHERE  if.flow.code IN ('FL_AP_101','FL_AP_102','FL_AP_103','FL_AP_104','FL_AP_105','FL_AP_106') AND if.sent=true");
-		if (StringUtils.isNotBlank(searchFilter.getNumContribuable()))
-		{
+		if (StringUtils.isNotBlank(searchFilter.getNumContribuable())) {
 			hqlBuilder.append(" AND f.file.client.numContribuable= :numContribuable");
 			params.put("numContribuable", searchFilter.getNumContribuable());
 		}
-		if (searchFilter.getBeginDateFilter() != null)
-		{
+		if (searchFilter.getBeginDateFilter() != null) {
 			hqlBuilder.append(" AND if.created > :beginDate");
 			params.put("beginDate", searchFilter.getBeginDateFilter());
 		}
 		final TypedQuery<org.guce.siat.core.ct.util.quota.QuotaDto> query = entityManager.createQuery(hqlBuilder.toString(),
 				org.guce.siat.core.ct.util.quota.QuotaDto.class);
-		for (final Entry<String, Object> entry : params.entrySet())
-		{
+		for (final Entry<String, Object> entry : params.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 		return query.getResultList();
@@ -824,30 +725,22 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#getImportedExportedQuatityByQuotaList(java.util.List)
 	 */
 	@Override
-	public List<QuotaDto> getImportedExportedQuatityByQuotaList(final List<QuotaDto> quotaList)
-	{
+	public List<QuotaDto> getImportedExportedQuatityByQuotaList(final List<QuotaDto> quotaList) {
 		final List<QuotaDto> quotaDtoList = new ArrayList<QuotaDto>();
-		for (final QuotaDto quota : quotaList)
-		{
+		for (final QuotaDto quota : quotaList) {
 			final List<FileTypeCode> imputaionList = Arrays.asList(FileTypeCode.IDE, FileTypeCode.IDI);
 			final TypedQuery<String> query = entityManager.createQuery(
 					"SELECT f.quantity FROM FileItem f WHERE f.nsh=:nsh AND f.file.fileType.code IN (:fileTypeList)", String.class);
 			query.setParameter("nsh", quota.getProduct().getNsh());
 			query.setParameter("fileTypeList", imputaionList);
-			try
-			{
-				if (query.getSingleResult() != null)
-				{
+			try {
+				if (query.getSingleResult() != null) {
 					quota.setImpExpQuantity(Integer.valueOf(query.getSingleResult()));
-				}
-				else
-				{
+				} else {
 					quota.setImpExpQuantity(0);
 				}
-			}
-			catch (NonUniqueResultException | NoResultException noResultException)
-			{
-				LOG.info(Objects.toString(noResultException));
+			} catch (NonUniqueResultException | NoResultException noResultException) {
+				LOG.info(Objects.toString(noResultException), noResultException);
 				quota.setImpExpQuantity(0);
 			}
 			quotaDtoList.add(quota);
@@ -861,36 +754,28 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#getGrantedQuantityByQuotaList(java.util.List)
 	 */
 	@Override
-	public List<QuotaDto> getGrantedQuantityByQuotaList(final List<QuotaDto> quotaList, final QuotaDto searchFilter)
-	{
+	public List<QuotaDto> getGrantedQuantityByQuotaList(final List<QuotaDto> quotaList, final QuotaDto searchFilter) {
 		final List<QuotaDto> quotaDtoList = new ArrayList<QuotaDto>();
 
-		for (final QuotaDto quota : quotaList)
-		{
+		for (final QuotaDto quota : quotaList) {
 			final StringBuilder hqlBuilder = new StringBuilder();
 			hqlBuilder
 					.append("SELECT i FROM ItemFlowData i WHERE i.itemFlow.fileItem= :fileItem AND i.itemFlow.flow.code IN('FL_AP_101','FL_AP_102','FL_AP_103','FL_AP_104','FL_AP_105','FL_AP_106')");
 			final TypedQuery<ItemFlowData> query = entityManager.createQuery(hqlBuilder.toString(), ItemFlowData.class);
 			query.setParameter("fileItem", quota.getProduct());
 			final List<ItemFlowData> result = query.getResultList();
-			final String dateValidite = ((ItemFlowData) CollectionUtils.find(result, new Predicate()
-			{
+			final String dateValidite = ((ItemFlowData) CollectionUtils.find(result, new Predicate() {
 				@Override
-				public boolean evaluate(final Object object)
-				{
+				public boolean evaluate(final Object object) {
 					return ((ItemFlowData) object).getDataType().getLabel().equals("Date validité");
 				}
 			})).getValue();
-			try
-			{
+			try {
 				if (searchFilter.getEndDateFilter() != null
-						&& searchFilter.getEndDateFilter().after(new SimpleDateFormat(DateUtils.FRENCH_DATE).parse(dateValidite)))
-				{
-					quota.setQuantity(Integer.valueOf(((ItemFlowData) CollectionUtils.find(result, new Predicate()
-					{
+						&& searchFilter.getEndDateFilter().after(new SimpleDateFormat(DateUtils.FRENCH_DATE).parse(dateValidite))) {
+					quota.setQuantity(Integer.valueOf(((ItemFlowData) CollectionUtils.find(result, new Predicate() {
 						@Override
-						public boolean evaluate(final Object object)
-						{
+						public boolean evaluate(final Object object) {
 							return ((ItemFlowData) object).getDataType().getLabel().equals("Quantité accordé");
 						}
 					})).getValue()));
@@ -898,9 +783,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 					quota.setDeadline(new SimpleDateFormat(DateUtils.FRENCH_DATE).parse(dateValidite));
 					quotaDtoList.add(quota);
 				}
-			}
-			catch (NumberFormatException | ParseException e)
-			{
+			} catch (NumberFormatException | ParseException e) {
 				LOG.error("############# {}", e);
 			}
 		}
@@ -915,8 +798,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 */
 	@Override
 	public List<FileItem> fileItemByStatisticBusinessByFilter(final Filter filter, final Administration administration,
-			final List<FileTypeCode> fileTypeCodes)
-	{
+			final List<FileTypeCode> fileTypeCodes) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(administration)));
 
@@ -927,54 +809,45 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("WHERE f.file.fileType.code IN (:fileTypeCodes) ");
 		params.put("fileTypeCodes", fileTypeCodes);
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append("AND f.file.bureau IN (:bureausList) ");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter instanceof StatisticBusinessFilter)
-		{
-			if (statisticBusinessFilter.getClient() != null)
-			{
+		if (filter instanceof StatisticBusinessFilter) {
+			if (statisticBusinessFilter.getClient() != null) {
 				hqlQuery.append(" AND f.file.client.id = :companyId");
 				params.put("companyId", statisticBusinessFilter.getClient().getId());
 			}
 
-			if (statisticBusinessFilter.getNsh() != null)
-			{
+			if (statisticBusinessFilter.getNsh() != null) {
 				hqlQuery.append(" AND f.nsh.goodsItemCode = :goodsItemCode");
 				params.put("goodsItemCode", statisticBusinessFilter.getNsh().getGoodsItemCode());
 			}
 
-			if (statisticBusinessFilter.getCountryOfProvenance() != null)
-			{
+			if (statisticBusinessFilter.getCountryOfProvenance() != null) {
 				hqlQuery.append(" AND f.file.countryOfProvenance.id = :countryOfProvenanceId");
 				params.put("countryOfProvenanceId", statisticBusinessFilter.getCountryOfProvenance().getCountryIdAlpha2());
 			}
 
-			if (statisticBusinessFilter.getCountryOfDestination() != null)
-			{
+			if (statisticBusinessFilter.getCountryOfDestination() != null) {
 				hqlQuery.append(" AND f.file.countryOfDestination.id = :countryOfDestinationId");
 				params.put("countryOfDestinationId", statisticBusinessFilter.getCountryOfDestination().getCountryIdAlpha2());
 			}
 
-			if (statisticBusinessFilter.getFromDate() != null && statisticBusinessFilter.getToDate() == null)
-			{
+			if (statisticBusinessFilter.getFromDate() != null && statisticBusinessFilter.getToDate() == null) {
 				hqlQuery.append(" AND f.file.createdDate >= TO_DATE(:createdDate,'");
 				hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 				hqlQuery.append("')");
 				params.put("createdDate", DateUtils.formatSimpleDateForOracle(statisticBusinessFilter.getFromDate()));
 			}
 
-			if (statisticBusinessFilter.getFromDate() == null && statisticBusinessFilter.getToDate() != null)
-			{
+			if (statisticBusinessFilter.getFromDate() == null && statisticBusinessFilter.getToDate() != null) {
 				hqlQuery.append(" AND f.file.createdDate <:createDate");
 				params.put("createDate", DateUtils.addDays(statisticBusinessFilter.getToDate(), 1));
 			}
 
-			if (statisticBusinessFilter.getFromDate() != null && statisticBusinessFilter.getToDate() != null)
-			{
+			if (statisticBusinessFilter.getFromDate() != null && statisticBusinessFilter.getToDate() != null) {
 				hqlQuery.append(" AND f.file.createdDate >= :fromDate");
 				hqlQuery.append(" AND f.file.createdDate < :toDate");
 				params.put("fromDate", statisticBusinessFilter.getFromDate());
@@ -983,8 +856,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 			final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-			for (final Entry<String, Object> entry : params.entrySet())
-			{
+			for (final Entry<String, Object> entry : params.entrySet()) {
 				query.setParameter(entry.getKey(), entry.getValue());
 			}
 			return query.getResultList();
@@ -999,8 +871,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * org.guce.siat.common.model.User, java.util.List)
 	 */
 	@Override
-	public List<FileItem> findPindingFileItem(final Filter filter, final User user)
-	{
+	public List<FileItem> findPindingFileItem(final Filter filter, final User user) {
 		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
 				Collections.singletonList(user.getAdministration())));
 
@@ -1009,28 +880,24 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		hqlQuery.append("SELECT DISTINCT f FROM FileItem f ");
 		hqlQuery.append("WHERE f.step.isFinal=false ");
 
-		if (CollectionUtils.isNotEmpty(bureausList))
-		{
+		if (CollectionUtils.isNotEmpty(bureausList)) {
 			hqlQuery.append("AND f.file.bureau IN (:bureausList) ");
 			params.put("bureausList", bureausList);
 		}
 
-		if (filter.getFromDate() != null && filter.getToDate() == null)
-		{
+		if (filter.getFromDate() != null && filter.getToDate() == null) {
 			hqlQuery.append(" AND f.file.createdDate >= TO_DATE(:createdDate,'");
 			hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
 			hqlQuery.append("')");
 			params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
 		}
 
-		if (filter.getFromDate() == null && filter.getToDate() != null)
-		{
+		if (filter.getFromDate() == null && filter.getToDate() != null) {
 			hqlQuery.append(" AND f.file.createdDate <:createDate");
 			params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
 		}
 
-		if (filter.getFromDate() != null && filter.getToDate() != null)
-		{
+		if (filter.getFromDate() != null && filter.getToDate() != null) {
 			hqlQuery.append(" AND f.file.createdDate >= :fromDate");
 			hqlQuery.append(" AND f.file.createdDate <:toDate");
 
@@ -1040,8 +907,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
 		final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-		for (final Entry<String, Object> entry : params.entrySet())
-		{
+		for (final Entry<String, Object> entry : params.entrySet()) {
 			query.setParameter(entry.getKey(), entry.getValue());
 		}
 		return query.getResultList();

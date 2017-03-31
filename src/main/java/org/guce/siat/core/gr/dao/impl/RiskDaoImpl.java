@@ -36,19 +36,21 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class RisckDaoImpl.
  */
 @Repository("risckDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class RiskDaoImpl implements RiskDao
-{
+public class RiskDaoImpl implements RiskDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(RiskDaoImpl.class);
 
-	/** The entity manager. */
+	/**
+	 * The entity manager.
+	 */
 	@PersistenceContext
 	private EntityManager entityManager;
 
@@ -61,8 +63,7 @@ public class RiskDaoImpl implements RiskDao
 	 * @see org.guce.siat.core.gr.dao.RiskDao#getPendingRequests(java.lang.Long)
 	 */
 	@Override
-	public List<ItemFlow> getPendingRequests(final Long importerId)
-	{
+	public List<ItemFlow> getPendingRequests(final Long importerId) {
 		final StringBuilder hqlString = new StringBuilder();
 
 		hqlString.append("SELECT i FROM ItemFlow i JOIN i.fileItem.step.roleList rl ");
@@ -78,16 +79,13 @@ public class RiskDaoImpl implements RiskDao
 		return query.getResultList();
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see org.guce.siat.core.gr.dao.RiskDao#getPendingRequestCount(java.lang.Long)
 	 */
 	@Override
-	public int getPendingRequestCount(final Long importerId)
-	{
+	public int getPendingRequestCount(final Long importerId) {
 		return getPendingRequests(importerId).size();
 	}
 
@@ -97,8 +95,7 @@ public class RiskDaoImpl implements RiskDao
 	 * @see org.guce.siat.core.gr.dao.RiskDao#checkProductHasAlert(org.guce.siat.core.ct.model.FileItem)
 	 */
 	@Override
-	public Boolean checkProductHasAlert(final FileItem fileItem)
-	{
+	public Boolean checkProductHasAlert(final FileItem fileItem) {
 		final StringBuilder hqlString = new StringBuilder();
 		hqlString.append(" FROM Alert a ");
 		hqlString.append("WHERE a.servicesItem.id = :servicesItemId ");
@@ -125,8 +122,7 @@ public class RiskDaoImpl implements RiskDao
 	 * @see org.guce.siat.core.gr.dao.RiskDao#checkProductHasTarget(org.guce.siat.core.ct.model.FileItem)
 	 */
 	@Override
-	public Boolean checkProductHasTarget(final FileItem fileItem)
-	{
+	public Boolean checkProductHasTarget(final FileItem fileItem) {
 
 		final StringBuilder hqlString = new StringBuilder();
 		hqlString.append(" FROM Ciblage c ");
@@ -148,8 +144,6 @@ public class RiskDaoImpl implements RiskDao
 		return query.getResultList().size() >= Constants.ONE;
 	}
 
-
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -157,8 +151,7 @@ public class RiskDaoImpl implements RiskDao
 	 * org.guce.siat.core.gr.utils.SynthesisConfig)
 	 */
 	@Override
-	public Boolean checkProductHasSuspiciousOrigins(final FileItem fileItem, final SynthesisConfig config)
-	{
+	public Boolean checkProductHasSuspiciousOrigins(final FileItem fileItem, final SynthesisConfig config) {
 
 		final StringBuilder hqlString = new StringBuilder();
 		hqlString.append(" FROM Alert a ");
@@ -176,8 +169,7 @@ public class RiskDaoImpl implements RiskDao
 	 * @see org.guce.siat.core.gr.dao.RiskDao#checkExporterHasNegativeDecisions(org.guce.siat.core.ct.model.FileItem)
 	 */
 	@Override
-	public Boolean checkExporterHasNegativeDecisions(final FileItem fileItem)
-	{
+	public Boolean checkExporterHasNegativeDecisions(final FileItem fileItem) {
 
 		final StringBuilder hqlString = new StringBuilder();
 		hqlString.append("FROM ItemFlow i ");
@@ -206,8 +198,7 @@ public class RiskDaoImpl implements RiskDao
 	 * @see org.guce.siat.core.gr.dao.RiskDao#checkImporterHasTarget(org.guce.siat.core.ct.model.FileItem)
 	 */
 	@Override
-	public Boolean checkImporterHasTarget(final FileItem fileItem)
-	{
+	public Boolean checkImporterHasTarget(final FileItem fileItem) {
 		final StringBuilder hqlString = new StringBuilder();
 		hqlString.append(" FROM Ciblage c ");
 		hqlString.append("WHERE c.company.id = :companyId ");
@@ -218,7 +209,6 @@ public class RiskDaoImpl implements RiskDao
 		hqlString.append(" TO_DATE(:endDate,'");
 		hqlString.append(DateUtils.PATTERN_YYYY_MM_DD);
 		hqlString.append("')) ");
-
 
 		final TypedQuery<Ciblage> query = entityManager.createQuery(hqlString.toString(), Ciblage.class);
 		query.setParameter("companyId", fileItem.getFile().getClient().getId());
@@ -235,25 +225,20 @@ public class RiskDaoImpl implements RiskDao
 	 * org.guce.siat.core.gr.utils.SynthesisConfig)
 	 */
 	@Override
-	public Boolean checkImporterHasOutDatedRequests(final FileItem fileItem, final SynthesisConfig config)
-	{
+	public Boolean checkImporterHasOutDatedRequests(final FileItem fileItem, final SynthesisConfig config) {
 
 		List<ItemFlow> result = null;
 
-		if (fileItem.getFile().getClient() != null)
-		{
+		if (fileItem.getFile().getClient() != null) {
 			result = getPendingRequests(fileItem.getFile().getClient().getId());
 		}
 
-		if (CollectionUtils.isEmpty(result))
-		{
+		if (CollectionUtils.isEmpty(result)) {
 			return false;
 		}
 
-		for (final ItemFlow itemFlow : result)
-		{
-			if (GrUtils.isPendingRequestFlow(itemFlow, config))
-			{
+		for (final ItemFlow itemFlow : result) {
+			if (GrUtils.isPendingRequestFlow(itemFlow, config)) {
 				return true;
 			}
 		}
@@ -268,23 +253,18 @@ public class RiskDaoImpl implements RiskDao
 	 * org.guce.siat.core.gr.utils.SynthesisConfig)
 	 */
 	@Override
-	public int calculateOutDatedRequests(final FileItem fileItem, final SynthesisConfig config)
-	{
+	public int calculateOutDatedRequests(final FileItem fileItem, final SynthesisConfig config) {
 
 		List<ItemFlow> result = null;
 		int outDatedRequests = 0;
 
-		if (fileItem.getFile().getClient() != null)
-		{
+		if (fileItem.getFile().getClient() != null) {
 			result = getPendingRequests(fileItem.getFile().getClient().getId());
 		}
 
-		if (CollectionUtils.isNotEmpty(result))
-		{
-			for (final ItemFlow itemFlow : result)
-			{
-				if (GrUtils.isPendingRequestFlow(itemFlow, config))
-				{
+		if (CollectionUtils.isNotEmpty(result)) {
+			for (final ItemFlow itemFlow : result) {
+				if (GrUtils.isPendingRequestFlow(itemFlow, config)) {
 					outDatedRequests++;
 				}
 			}
@@ -298,8 +278,7 @@ public class RiskDaoImpl implements RiskDao
 	 * @see org.guce.siat.core.gr.dao.RiskDao#getFileCount(org.guce.siat.core.ct.model.FileItem)
 	 */
 	@Override
-	public int getFileCount(final FileItem fileItem, final SynthesisConfig config)
-	{
+	public int getFileCount(final FileItem fileItem, final SynthesisConfig config) {
 		final Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -1 * config.getImporterKnownPeriod());
 
@@ -322,8 +301,7 @@ public class RiskDaoImpl implements RiskDao
 	 * org.guce.siat.core.gr.utils.SynthesisConfig)
 	 */
 	@Override
-	public Boolean checkProductIsTested(final FileItem fileItem, final SynthesisConfig config)
-	{
+	public Boolean checkProductIsTested(final FileItem fileItem, final SynthesisConfig config) {
 		final Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -1 * config.getProductTestedPeriod());
 
@@ -339,19 +317,12 @@ public class RiskDaoImpl implements RiskDao
 		query.setParameter("cDate", DateUtils.formatSimpleDateForOracle(calendar.getTime()));
 		query.setParameter("subfamilyId", fileItem.getSubfamily() != null ? fileItem.getSubfamily().getId() : null);
 
-		if (CollectionUtils.isEmpty(query.getResultList()))
-		{
+		if (CollectionUtils.isEmpty(query.getResultList())) {
 			return null;
-		}
-
-		else
-		{
-			for (final AnalyseResult analyseResult : query.getResultList())
-			{
-				for (final AnalysePart analysePart : (analyseResult).getAnalyseOrder().getAnalysePartsList())
-				{
-					if ((Boolean.FALSE).equals(analysePart.getCompliant()))
-					{
+		} else {
+			for (final AnalyseResult analyseResult : query.getResultList()) {
+				for (final AnalysePart analysePart : (analyseResult).getAnalyseOrder().getAnalysePartsList()) {
+					if ((Boolean.FALSE).equals(analysePart.getCompliant())) {
 						return false;
 					}
 				}
@@ -367,10 +338,8 @@ public class RiskDaoImpl implements RiskDao
 	 * org.guce.siat.core.gr.utils.SynthesisConfig)
 	 */
 	@Override
-	public Boolean checkProductQuantityIsSmall(final FileItem fileItem, final SynthesisConfig config)
-	{
-		try
-		{
+	public Boolean checkProductQuantityIsSmall(final FileItem fileItem, final SynthesisConfig config) {
+		try {
 			final StringBuilder hqlString = new StringBuilder();
 			hqlString.append("SELECT MAX(fiv.value) FROM ItemFlow if JOIN if.fileItem.fileItemFieldValueList fiv ");
 			hqlString.append("WHERE if.fileItem.subfamily.id = :subfamilyId ");
@@ -384,22 +353,17 @@ public class RiskDaoImpl implements RiskDao
 			final String maxQuantityString = query.getSingleResult();
 			Long maxQuantity = null;
 
-			if (StringUtils.isEmpty(maxQuantityString))
-			{
+			if (StringUtils.isEmpty(maxQuantityString)) {
 				maxQuantity = new Long(0);
-			}
-			else
-			{
+			} else {
 				maxQuantity = Long.parseLong(maxQuantityString);
 			}
 			final FileItemFieldValue fileItemFieldValue = fileItemDao.findFileItemFieldValueByFieldCode(fileItem, "QUANTITE");
 			return Integer.parseInt(fileItemFieldValue != null ? fileItemFieldValue.getValue() : "0") <= ((config
 					.getQuantityCoefficient()) * maxQuantity);
 
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
-			LOG.info(Objects.toString(e));
+		} catch (final NoResultException | NonUniqueResultException e) {
+			LOG.info(Objects.toString(e), e);
 			return null;
 		}
 	}
@@ -411,8 +375,7 @@ public class RiskDaoImpl implements RiskDao
 	 * org.guce.siat.core.gr.utils.SynthesisConfig)
 	 */
 	@Override
-	public Integer getFileItemCount(final FileItem fileItem, final SynthesisConfig config)
-	{
+	public Integer getFileItemCount(final FileItem fileItem, final SynthesisConfig config) {
 
 		final Calendar calendar = Calendar.getInstance();
 		calendar.add(Calendar.DAY_OF_YEAR, -1 * config.getProductKnownPeriod());

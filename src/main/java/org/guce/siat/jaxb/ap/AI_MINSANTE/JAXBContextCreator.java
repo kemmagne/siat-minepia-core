@@ -8,23 +8,25 @@ import javax.xml.bind.JAXBException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * The Class JAXBContextCreator.
  */
-public final class JAXBContextCreator
-{
-	/** The Constant LOG. */
+public final class JAXBContextCreator {
+
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(JAXBContextCreator.class);
 
-	/** The instance. */
+	/**
+	 * The instance.
+	 */
 	private static JAXBContext instance;
 
 	/**
 	 * Instantiates a new JAXB context creator.
 	 */
-	private JAXBContextCreator()
-	{
+	private JAXBContextCreator() {
 	}
 
 	/**
@@ -32,18 +34,13 @@ public final class JAXBContextCreator
 	 *
 	 * @return single instance of JAXBContextCreator
 	 */
-	public static synchronized JAXBContext getInstance()
-	{
-		try
-		{
-			if (instance == null)
-			{
+	public static synchronized JAXBContext getInstance() {
+		try {
+			if (instance == null) {
 				instance = JAXBContext.newInstance(DOCUMENT.class);
 			}
-		}
-		catch (final JAXBException e)
-		{
-			LOG.error(Objects.toString(e));
+		} catch (final JAXBException e) {
+			LOG.error(Objects.toString(e), e);
 		}
 		return instance;
 	}

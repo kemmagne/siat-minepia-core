@@ -16,23 +16,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class AnalyseResultApDaoImpl.
  */
 @Repository("analyseResultApDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class AnalyseResultApDaoImpl extends AbstractJpaDaoImpl<AnalyseResultAp> implements AnalyseResultApDao
-{
+public class AnalyseResultApDaoImpl extends AbstractJpaDaoImpl<AnalyseResultAp> implements AnalyseResultApDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(AnalyseResultApDaoImpl.class);
 
 	/**
 	 * Instantiates a new analyse type dao impl.
 	 */
-	public AnalyseResultApDaoImpl()
-	{
+	public AnalyseResultApDaoImpl() {
 		super();
 		setClasse(AnalyseResultAp.class);
 	}
@@ -44,12 +43,9 @@ public class AnalyseResultApDaoImpl extends AbstractJpaDaoImpl<AnalyseResultAp> 
 	 * org.guce.siat.core.ct.dao.AnalyseResultApDao#findAnalyseResultApByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public AnalyseResultAp findAnalyseResultApByItemFlow(final ItemFlow itemFlow)
-	{
-		try
-		{
-			if (itemFlow != null)
-			{
+	public AnalyseResultAp findAnalyseResultApByItemFlow(final ItemFlow itemFlow) {
+		try {
+			if (itemFlow != null) {
 				final StringBuilder hqlBuilder = new StringBuilder();
 
 				hqlBuilder.append("SELECT a FROM AnalyseResultAp a ");
@@ -60,10 +56,8 @@ public class AnalyseResultApDaoImpl extends AbstractJpaDaoImpl<AnalyseResultAp> 
 				query.setParameter("itemFlowId", itemFlow.getId());
 				return query.getSingleResult();
 			}
-		}
-		catch (final NoResultException | NonUniqueResultException e)
-		{
-			LOG.info(Objects.toString(e));
+		} catch (final NoResultException | NonUniqueResultException e) {
+			LOG.info(Objects.toString(e), e);
 		}
 		return null;
 	}

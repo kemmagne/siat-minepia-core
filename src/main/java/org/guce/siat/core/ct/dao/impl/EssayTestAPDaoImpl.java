@@ -16,23 +16,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class EssayTestAPDaoImpl.
  */
 @Repository("essayTestAPDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class EssayTestAPDaoImpl extends AbstractJpaDaoImpl<EssayTestAP> implements EssayTestAPDao
-{
+public class EssayTestAPDaoImpl extends AbstractJpaDaoImpl<EssayTestAP> implements EssayTestAPDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(EssayTestAPDaoImpl.class);
 
 	/**
 	 * Instantiates a new analyse type dao impl.
 	 */
-	public EssayTestAPDaoImpl()
-	{
+	public EssayTestAPDaoImpl() {
 		super();
 		setClasse(EssayTestAP.class);
 	}
@@ -43,12 +42,9 @@ public class EssayTestAPDaoImpl extends AbstractJpaDaoImpl<EssayTestAP> implemen
 	 * @see org.guce.siat.core.ct.dao.EssayTestAPDao#findByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public EssayTestAP findByItemFlow(final ItemFlow itemFlow)
-	{
-		try
-		{
-			if (itemFlow != null)
-			{
+	public EssayTestAP findByItemFlow(final ItemFlow itemFlow) {
+		try {
+			if (itemFlow != null) {
 				final StringBuilder hqlBuilder = new StringBuilder();
 
 				hqlBuilder.append("SELECT a FROM EssayTestAP a ");
@@ -58,10 +54,8 @@ public class EssayTestAPDaoImpl extends AbstractJpaDaoImpl<EssayTestAP> implemen
 				query.setParameter("itemFlowId", itemFlow.getId());
 				return query.getSingleResult();
 			}
-		}
-		catch (NoResultException | NonUniqueResultException e)
-		{
-			LOG.error(Objects.toString(e));
+		} catch (NoResultException | NonUniqueResultException e) {
+			LOG.error(Objects.toString(e), e);
 		}
 
 		return null;

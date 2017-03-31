@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class TradeBalanceConfigDaoImpl extends
 		AbstractJpaDaoImpl<TradeBalanceConfig> implements TradeBalanceConfigDao {
+
 	private static final Logger LOG = LoggerFactory
 			.getLogger(TradeBalanceConfigDaoImpl.class);
 
@@ -94,9 +95,9 @@ public class TradeBalanceConfigDaoImpl extends
 	public Date findMinDateFromFile() {
 		final Query query = entityManager
 				.createQuery("SELECT min(f.createdDate) FROM File f");
-		try{
-		return (Date) query.getSingleResult();
-		}catch(final Exception exception){
+		try {
+			return (Date) query.getSingleResult();
+		} catch (final Exception exception) {
 			return null;
 		}
 	}
@@ -211,7 +212,7 @@ public class TradeBalanceConfigDaoImpl extends
 			return query.getSingleResult();
 
 		} catch (final Exception e) {
-			LOG.error(Objects.toString(e));
+			LOG.error(Objects.toString(e), e);
 			return null;
 		}
 	}

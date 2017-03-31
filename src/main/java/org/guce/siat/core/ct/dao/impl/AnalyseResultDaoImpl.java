@@ -16,23 +16,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class AnalyseResultDaoImpl.
  */
 @Repository("analyseResultDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class AnalyseResultDaoImpl extends AbstractJpaDaoImpl<AnalyseResult> implements AnalyseResultDao
-{
+public class AnalyseResultDaoImpl extends AbstractJpaDaoImpl<AnalyseResult> implements AnalyseResultDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(AnalyseResultDaoImpl.class);
 
 	/**
 	 * Instantiates a new analyse result dao impl.
 	 */
-	public AnalyseResultDaoImpl()
-	{
+	public AnalyseResultDaoImpl() {
 		super();
 		setClasse(AnalyseResult.class);
 	}
@@ -43,10 +42,8 @@ public class AnalyseResultDaoImpl extends AbstractJpaDaoImpl<AnalyseResult> impl
 	 * @see org.guce.siat.core.ct.dao.AnalyseResultDao#findAnalyseResultByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public AnalyseResult findAnalyseResultByItemFlow(final ItemFlow itemFlow)
-	{
-		if (!Objects.equals(itemFlow, null))
-		{
+	public AnalyseResult findAnalyseResultByItemFlow(final ItemFlow itemFlow) {
+		if (!Objects.equals(itemFlow, null)) {
 			final StringBuilder hqlBuilder = new StringBuilder();
 
 			hqlBuilder.append("SELECT a FROM AnalyseResult a ");
@@ -56,13 +53,10 @@ public class AnalyseResultDaoImpl extends AbstractJpaDaoImpl<AnalyseResult> impl
 
 			query.setParameter("itemFlowId", itemFlow.getId());
 
-			try
-			{
+			try {
 				return query.getSingleResult();
-			}
-			catch (NoResultException | NonUniqueResultException e)
-			{
-				LOG.error(Objects.toString(e));
+			} catch (NoResultException | NonUniqueResultException e) {
+				LOG.error(Objects.toString(e), e);
 			}
 
 		}

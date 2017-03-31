@@ -1,7 +1,5 @@
 package org.guce.siat.core;
 
-
-
 import java.util.Objects;
 import java.util.Properties;
 
@@ -16,25 +14,22 @@ import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * The Class SendMailSSL.
  */
-public class SendMailSSL
-{
+public class SendMailSSL {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(SendMailSSL.class);
-
 
 	/**
 	 * The main method.
 	 *
-	 * @param args
-	 *           the arguments
+	 * @param args the arguments
 	 */
-	public static void main(final String[] args)
-	{
+	public static void main(final String[] args) {
 
 		final String to = "chawki.mguedmini@businessdecision.com";//change accordingly
 
@@ -46,18 +41,15 @@ public class SendMailSSL
 		props.put("mail.smtp.auth", "true");
 		props.put("mail.smtp.port", "465");
 
-		final Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator()
-		{
+		final Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
 			@Override
-			protected PasswordAuthentication getPasswordAuthentication()
-			{
+			protected PasswordAuthentication getPasswordAuthentication() {
 				return new PasswordAuthentication("chawki.mguedmini@gmail.com", "chaw$007");//change accordingly
 			}
 		});
 
 		//compose message
-		try
-		{
+		try {
 			final MimeMessage message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("chawki.mguedmini@gmail.com"));//change accordingly
 			message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
@@ -68,10 +60,8 @@ public class SendMailSSL
 			Transport.send(message);
 
 			LOG.info("message sent successfully");
-		}
-		catch (final MessagingException e)
-		{
-			LOG.info("Error sending mail : " + Objects.toString(e));
+		} catch (final MessagingException e) {
+			LOG.info("Error sending mail : " + Objects.toString(e), e);
 			throw new RuntimeException(e);
 		}
 

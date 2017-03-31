@@ -16,24 +16,22 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-
 /**
  * The Class AnalyseResultDaoImpl.
  */
 @Repository("treatmentResultDao")
 @Transactional(propagation = Propagation.REQUIRED)
-public class TreatmentResultDaoImpl extends AbstractJpaDaoImpl<TreatmentResult> implements TreatmentResultDao
-{
+public class TreatmentResultDaoImpl extends AbstractJpaDaoImpl<TreatmentResult> implements TreatmentResultDao {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(TreatmentResultDaoImpl.class);
-
 
 	/**
 	 * Instantiates a new treatment result dao impl.
 	 */
-	public TreatmentResultDaoImpl()
-	{
+	public TreatmentResultDaoImpl() {
 		super();
 		setClasse(TreatmentResult.class);
 	}
@@ -46,10 +44,8 @@ public class TreatmentResultDaoImpl extends AbstractJpaDaoImpl<TreatmentResult> 
 	 * org.guce.siat.core.ct.dao.TreatmentResultDao#findTreatmentResultByItemFlow(org.guce.siat.common.model.ItemFlow)
 	 */
 	@Override
-	public TreatmentResult findTreatmentResultByItemFlow(final ItemFlow itemFlow)
-	{
-		if (!Objects.equals(itemFlow, null))
-		{
+	public TreatmentResult findTreatmentResultByItemFlow(final ItemFlow itemFlow) {
+		if (!Objects.equals(itemFlow, null)) {
 
 			final StringBuilder hqlBuilder = new StringBuilder();
 
@@ -60,13 +56,10 @@ public class TreatmentResultDaoImpl extends AbstractJpaDaoImpl<TreatmentResult> 
 
 			query.setParameter("itemFlowId", itemFlow.getId());
 
-			try
-			{
+			try {
 				return query.getSingleResult();
-			}
-			catch (NoResultException | NonUniqueResultException e)
-			{
-				LOG.error(Objects.toString(e));
+			} catch (NoResultException | NonUniqueResultException e) {
+				LOG.error(Objects.toString(e), e);
 			}
 
 		}

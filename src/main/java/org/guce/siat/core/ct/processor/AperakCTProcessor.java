@@ -10,17 +10,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 /**
  * The Class AperakCTProcessor.
  */
-public class AperakCTProcessor implements Processor
-{
+public class AperakCTProcessor implements Processor {
 
-	/** The Constant LOG. */
+	/**
+	 * The Constant LOG.
+	 */
 	private static final Logger LOG = LoggerFactory.getLogger(AperakCTProcessor.class);
 
-	/** The ct document reciever. */
+	/**
+	 * The ct document reciever.
+	 */
 	@Autowired
 	private CtDocumentReciever ctDocumentReciever;
 
@@ -32,10 +34,9 @@ public class AperakCTProcessor implements Processor
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void process(final Exchange exchange) throws Exception
-	{
+	public void process(final Exchange exchange) throws Exception {
 		final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
-		LOG.error("Send Aperak C due to : " + Objects.toString(cause.getMessage()));
+		LOG.error("Send Aperak C due to : " + Objects.toString(cause.getMessage()), cause);
 		final HashMap<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
 		final HashMap<String, Object> result = ctDocumentReciever.generateAperakCFile(ebxmlBytes, cause.getMessage());
 		exchange.getOut().setBody(result);
