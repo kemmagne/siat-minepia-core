@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>siat-ct-core</artifactId>
 	<name>siat-ct-core</name>
-	<version>1.2.1</version>
+	<version>1.2.2</version>
 	<url>http://maven.apache.org</url>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -100,7 +100,7 @@
 		<dependency>
 			<groupId>org.guce.siat.common</groupId>
 			<artifactId>siat-common</artifactId>
-			<version>1.2.0</version>
+			<version>1.2.3</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-beanutils</groupId>
