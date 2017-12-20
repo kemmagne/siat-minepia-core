@@ -64,8 +64,9 @@ public final class FileFieldValueUtils {
 			}
 		} catch (final Exception ex) {
 			Logger.getLogger(FileFieldValueUtils.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			return res;
 		}
-		return res;
 	}
 
 	/**
@@ -90,6 +91,9 @@ public final class FileFieldValueUtils {
 			o = org.apache.commons.beanutils.PropertyUtils.getProperty(bean, name);
 		} catch (final NestedNullException e) {
 		}
-		return o;
+		finally {
+			return o;
+		}
+		
 	}
 }

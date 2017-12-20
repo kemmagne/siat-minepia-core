@@ -560,6 +560,10 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
 			// Unmarshalling the document
 			final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
 			document = (org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+		} else if (FileTypeCode.IRMP_MINCOMMERCE.equals(flowGuceSiat.getFileType().getCode())) {
+			final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.JAXBContextCreator.getInstance();
+			final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+			document = (org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
 		}
 		return document;
 	}

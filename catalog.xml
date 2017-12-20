@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:////DC-GUCE2k8/GUCE_DATA/yenke/Mes%20documents/NetBeansProjects/siat/siat-ct-core/src/main/resources/xsd/CT/MONITORING/IRPM_MINCOMMERCE.xsd" uri="src/main/resources/jaxb/DOCUMENT/IRPM_MINCOMMERCE.xsd"/>
+</catalog>

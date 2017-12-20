@@ -12,6 +12,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -194,7 +195,187 @@ public class InspectionReport extends AbstractModel implements Serializable
 	/** The Inspection controller list. */
 	@OneToMany(cascade = CascadeType.REMOVE, mappedBy = "inspection")
 	private List<InspectionController> inspectionControllerList;
+	
+	/*
+		 * Respect des normes nationales et internationales
+	 */
+	@Column(name = "RESPCT_NORME")
+	private Boolean respectNorme;
+	
+	/**
+	 * Source de propagation de la peste
+	 */
+	@Column(name = "SOURCE_PROPAGATION_PESTE")
+	private Boolean sourcePropagationPeste;
+	
+	/**
+	 * Existence des documents d'auto-controle
+	 */
+	@Column(name = "DOCUMENT_AUTO_CONTOLE")
+	private String autocontrolDocument;
+	
+	/**
+	 * Suivi des équipements d'auto-controle
+	 */
+	@Column(name = "EQUIPEMENT_AUTO_CONTROLE")
+	private String autocontrolEquipement;
+	
+	/**
+	 * Analyse du processus
+	 */
+	@Column(name = "ANALYSE_PROCESSUS")
+	private String processAnalyse;
 
+	/**
+	 * Existance Casque
+	 */
+	@Column(name = "CASQUE")
+	private Boolean casque;
+	
+	/**
+	 * Gants
+	 */
+	@Column(name = "GANTS")
+	private Boolean gants;
+	
+	/**
+	 * Combinaison
+	 */
+	@Column(name = "COMBINAISON")
+	private Boolean combinaison;
+	
+	/**
+	 * Chaussures de sécurités
+	 */
+	@Column(name = "CHAUSSURE_SECURITE")
+	private Boolean chaussureSecurite;
+	
+	/**
+	 * Eau
+	 */
+	@Column(name = "EAU")
+	private String water;
+	
+	/**
+	 * Evacuation des déchet
+	 */
+	@Column(name = "EVAUCATION_DECHET")
+	private String dechet;
+	
+	/**
+	 * Procédures
+	 */
+	@Column(name = "PROCEDURE")
+	private String procedure;
+	
+	/**
+		* pulvérisation
+		*/
+	   @Column(name = "PULVERISATION")
+	   private Boolean pulverisation;
+
+	   /**
+		* fumigation
+		*/
+	   @Column(name = "FUMIGATION")
+	   private Boolean fumigation;
+	   
+	   /**
+		* Trempage
+		*/
+	   @Column(name = "TREMPAGE")
+	   private Boolean trempage;
+	   
+	   /**
+		* chaleur
+		*/
+	   @Column(name = "CHALEUR")
+	   private Boolean chaleur;
+	   
+	   /**
+		* Date dernier traitement déclarée
+		*/
+	   @Column(name = "DATE_TRAITEMENT_DECLARE")
+	   private Boolean dateTraitementDeclare;
+	   
+	   /**
+		* Date dernier traitement effectue
+		*/
+	   @Column(name = "DATE_TRAITEMENT_EFFECTUE")
+	   private Boolean dateTraitementEffectue;
+	   
+	   /**
+		* Produit utilisé
+		*/
+	   @Column(name = "PRODUIT_UTILISE")
+	   private String produitUtilise;
+	   
+	   /**
+		* Dosage
+		*/
+	   @Column(name = "DOSAGE")
+	   private String dosage;
+	   
+	   /**
+		* Environnement de stockage air libre
+		*/
+	   @Column(name = "STOCKAGE_AIR_LIBRE")
+	   private Boolean stockageAirLibre;
+	   
+	   /**
+		* Environnement de stockage magasin
+		*/
+	   @Column(name = "STOCKAGE_MAGASIN")
+	   private Boolean stockageMagasin;
+	   
+	   /**
+		* Environnement de stockage conteneur
+		*/
+	   @Column(name = "STOCKAGE_CONTENEUR")
+	   private Boolean stockageConteneur;
+	   
+	   /**
+		* Environnement de transport vrac
+		*/
+	   @Column(name = "TRANSPORT_VRAC")
+	   private Boolean transportVrac;
+	   
+	   /**
+		* Environnement de transport conteneur
+		*/
+	   @Column(name = "TRANSPORT_CONTENEUR")
+	   private Boolean transportConteneur;
+	   
+	   /**
+		* Condition climatique saison seche
+		*/
+	   @Column(name = "SAISON_SECHE")
+	   private Boolean saisonSeche;
+	   
+	   /**
+		* Condition climatique saison pluvieuse
+		*/
+	   @Column(name = "SAISON_PLUVIEUSE")
+	   private Boolean saisonPluivieuse;
+	   
+	   /**
+		* Condition climatique présence de vent
+		*/
+	   @Column(name = "PRESESENCE_VENT")
+	   private Boolean presenceVent;
+	   
+	   /**
+		* Mesure de protection par information
+		*/
+	   @Column(name = "PROTECTION_INFORMATION")
+	   private Boolean protectionInformation;
+	   
+	   /**
+		* Mesure de protection par utilisation des plaques de signalisation
+		*/
+	   @Column(name = "PROTECTION_PLAQUE_SIGNALISATION")
+	   private Boolean protectionPlaqueSignalisation;
+	   
 	/**
 	 * Instantiates a new inspection report.
 	 */
@@ -850,6 +1031,248 @@ public class InspectionReport extends AbstractModel implements Serializable
 	{
 		this.inspectionControllerList = inspectionControllerList;
 	}
+
+	public Boolean getRespectNorme() {
+		return respectNorme;
+	}
+
+	public void setRespectNorme(Boolean respectNorme) {
+		this.respectNorme = respectNorme;
+	}
+
+	public Boolean getSourcePropagationPeste() {
+		return sourcePropagationPeste;
+	}
+
+	public void setSourcePropagationPeste(Boolean sourcePropagationPeste) {
+		this.sourcePropagationPeste = sourcePropagationPeste;
+	}
+
+	public String getAutocontrolDocument() {
+		return autocontrolDocument;
+	}
+
+	public void setAutocontrolDocument(String autocontrolDocument) {
+		this.autocontrolDocument = autocontrolDocument;
+	}
+
+	public String getAutocontrolEquipement() {
+		return autocontrolEquipement;
+	}
+
+	public void setAutocontrolEquipement(String autocontrolEquipement) {
+		this.autocontrolEquipement = autocontrolEquipement;
+	}
+
+	public String getProcessAnalyse() {
+		return processAnalyse;
+	}
+
+	public void setProcessAnalyse(String processAnalyse) {
+		this.processAnalyse = processAnalyse;
+	}
+
+	public Boolean getCasque() {
+		return casque;
+	}
+
+	public void setCasque(Boolean casque) {
+		this.casque = casque;
+	}
+
+	public Boolean getGants() {
+		return gants;
+	}
+
+	public void setGants(Boolean gants) {
+		this.gants = gants;
+	}
+
+	public Boolean getCombinaison() {
+		return combinaison;
+	}
+
+	public void setCombinaison(Boolean combinaison) {
+		this.combinaison = combinaison;
+	}
+
+	public Boolean getChaussureSecurite() {
+		return chaussureSecurite;
+	}
+
+	public void setChaussureSecurite(Boolean chaussureSecurite) {
+		this.chaussureSecurite = chaussureSecurite;
+	}
+
+	public String getWater() {
+		return water;
+	}
+
+	public void setWater(String water) {
+		this.water = water;
+	}
+
+	public String getDechet() {
+		return dechet;
+	}
+
+	public void setDechet(String dechet) {
+		this.dechet = dechet;
+	}
+
+	public String getProcedure() {
+		return procedure;
+	}
+
+	public void setProcedure(String procedure) {
+		this.procedure = procedure;
+	}
+
+	public Boolean getPulverisation() {
+		return pulverisation;
+	}
+
+	public void setPulverisation(Boolean pulverisation) {
+		this.pulverisation = pulverisation;
+	}
+
+	public Boolean getFumigation() {
+		return fumigation;
+	}
+
+	public void setFumigation(Boolean fumigation) {
+		this.fumigation = fumigation;
+	}
+
+	public Boolean getTrempage() {
+		return trempage;
+	}
+
+	public void setTrempage(Boolean trempage) {
+		this.trempage = trempage;
+	}
+
+	public Boolean getChaleur() {
+		return chaleur;
+	}
+
+	public void setChaleur(Boolean chaleur) {
+		this.chaleur = chaleur;
+	}
+
+	public Boolean getDateTraitementDeclare() {
+		return dateTraitementDeclare;
+	}
+
+	public void setDateTraitementDeclare(Boolean dateTraitementDeclare) {
+		this.dateTraitementDeclare = dateTraitementDeclare;
+	}
+
+	public Boolean getDateTraitementEffectue() {
+		return dateTraitementEffectue;
+	}
+
+	public void setDateTraitementEffectue(Boolean dateTraitementEffectue) {
+		this.dateTraitementEffectue = dateTraitementEffectue;
+	}
+
+	public String getProduitUtilise() {
+		return produitUtilise;
+	}
+
+	public void setProduitUtilise(String produitUtilise) {
+		this.produitUtilise = produitUtilise;
+	}
+
+	public String getDosage() {
+		return dosage;
+	}
+
+	public void setDosage(String dosage) {
+		this.dosage = dosage;
+	}
+
+	public Boolean getStockageAirLibre() {
+		return stockageAirLibre;
+	}
+
+	public void setStockageAirLibre(Boolean stockageAirLibre) {
+		this.stockageAirLibre = stockageAirLibre;
+	}
+
+	public Boolean getStockageMagasin() {
+		return stockageMagasin;
+	}
+
+	public void setStockageMagasin(Boolean stockageMagasin) {
+		this.stockageMagasin = stockageMagasin;
+	}
+
+	public Boolean getStockageConteneur() {
+		return stockageConteneur;
+	}
+
+	public void setStockageConteneur(Boolean stockageConteneur) {
+		this.stockageConteneur = stockageConteneur;
+	}
+
+	public Boolean getTransportVrac() {
+		return transportVrac;
+	}
+
+	public void setTransportVrac(Boolean transportVrac) {
+		this.transportVrac = transportVrac;
+	}
+
+	public Boolean getTransportConteneur() {
+		return transportConteneur;
+	}
+
+	public void setTransportConteneur(Boolean transportConteneur) {
+		this.transportConteneur = transportConteneur;
+	}
+
+	public Boolean getSaisonSeche() {
+		return saisonSeche;
+	}
+
+	public void setSaisonSeche(Boolean saisonSeche) {
+		this.saisonSeche = saisonSeche;
+	}
+
+	public Boolean getSaisonPluivieuse() {
+		return saisonPluivieuse;
+	}
+
+	public void setSaisonPluivieuse(Boolean saisonPluivieuse) {
+		this.saisonPluivieuse = saisonPluivieuse;
+	}
+
+	public Boolean getPresenceVent() {
+		return presenceVent;
+	}
+
+	public void setPresenceVent(Boolean presenceVent) {
+		this.presenceVent = presenceVent;
+	}
+
+	public Boolean getProtectionInformation() {
+		return protectionInformation;
+	}
+
+	public void setProtectionInformation(Boolean protectionInformation) {
+		this.protectionInformation = protectionInformation;
+	}
+
+	public Boolean getProtectionPlaqueSignalisation() {
+		return protectionPlaqueSignalisation;
+	}
+
+	public void setProtectionPlaqueSignalisation(Boolean protectionPlaqueSignalisation) {
+		this.protectionPlaqueSignalisation = protectionPlaqueSignalisation;
+	}
+	
+	
 
 	/*
 	 * (non-Javadoc)
