@@ -127,13 +127,13 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     private Date treatmentTime;
     @Column(name = "TSS_STORAGE_ENV")
     private String treatmentEnvironment;
-    @Column(name = "TSS_OTHER_STORAGE_ENV")
+    @Column(name = "TSS_OTHER_TREAT_ENV")
     private String otherTreatmentEnvironment;
     @Column(name = "TSS_OPTIMAL_TEMPERATURE")
     private String optimalTemperature;
     @Column(name = "TSS_STORAGE_PLACE")
     private String storagePlace;
-    @Column(name = "TSS_OTHER_STORAGE_ENV")
+    @Column(name = "TSS_OTHER_STORAGE_PLACE")
     private String otherStoragePlace;
     @Column(name = "TSS_SANITARY_PLACE")
     private boolean sanitaryState;

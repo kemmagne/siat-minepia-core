@@ -338,17 +338,6 @@ public class InspectionReport extends AbstractModel implements Serializable {
     /**
      * Champs relatifs au procès verbal d'inspection phytosanitaire
      */
-    /*private String articleReglemente;
-    private String proprietaire;
-    private String utilisation;*/
-    /**
-     * situation de l'article (stoké ou en mouvement)
-     */
-    /*private String situationArticle;
-    private Boolean couvertDocumentation;
-    private String reference;
-    private String natureArticle;
-    private String dispositionsPrises;*/
     /**
      *
      */
@@ -384,6 +373,22 @@ public class InspectionReport extends AbstractModel implements Serializable {
 
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @Column(name = "PVI_ARTICLE_REGLEMENTE")
+    private String articleReglemente;
+    @Column(name = "PVI_DESTINATION")
+    private String pviDestination;
+    @Column(name = "PVI_SITUATION_ARTICLE")
+    private String pviSituationArticle;
+    @Column(name = "PVI_COUVERT_DOC")
+    private boolean pviCouvertDoc;
+    @Column(name = "PVI_REFERENCE")
+    private String pviReference;
+    @Column(name = "PVI_NATURE_ARTICLE_INSPECTE")
+    private String pviNatureArticleInspecte;
+    @Column(name = "PVI_QUANTITE")
+    private String pviQuantite;
+    @Column(name = "PVI_DISPO_PRISES")
+    private String pviDispositionsPrises;
 
     /**
      * Instantiates a new inspection report.
@@ -1115,6 +1120,70 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.observations = observations;
     }
 
+    public String getArticleReglemente() {
+        return articleReglemente;
+    }
+
+    public void setArticleReglemente(String articleReglemente) {
+        this.articleReglemente = articleReglemente;
+    }
+
+    public String getPviDestination() {
+        return pviDestination;
+    }
+
+    public void setPviDestination(String pviDestination) {
+        this.pviDestination = pviDestination;
+    }
+
+    public String getPviSituationArticle() {
+        return pviSituationArticle;
+    }
+
+    public void setPviSituationArticle(String pviSituationArticle) {
+        this.pviSituationArticle = pviSituationArticle;
+    }
+
+    public boolean isPviCouvertDoc() {
+        return pviCouvertDoc;
+    }
+
+    public void setPviCouvertDoc(boolean pviCouvertDoc) {
+        this.pviCouvertDoc = pviCouvertDoc;
+    }
+
+    public String getPviReference() {
+        return pviReference;
+    }
+
+    public void setPviReference(String pviReference) {
+        this.pviReference = pviReference;
+    }
+
+    public String getPviNatureArticleInspecte() {
+        return pviNatureArticleInspecte;
+    }
+
+    public void setPviNatureArticleInspecte(String pviNatureArticleInspecte) {
+        this.pviNatureArticleInspecte = pviNatureArticleInspecte;
+    }
+
+    public String getPviQuantite() {
+        return pviQuantite;
+    }
+
+    public void setPviQuantite(String pviQuantite) {
+        this.pviQuantite = pviQuantite;
+    }
+
+    public String getPviDispositionsPrises() {
+        return pviDispositionsPrises;
+    }
+
+    public void setPviDispositionsPrises(String pviDispositionsPrises) {
+        this.pviDispositionsPrises = pviDispositionsPrises;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -1176,3 +1245,4 @@ public class InspectionReport extends AbstractModel implements Serializable {
     }
 
 }
+
