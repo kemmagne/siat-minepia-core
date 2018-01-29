@@ -12,55 +12,51 @@ import org.springframework.context.annotation.PropertySources;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
-
 /**
  * The Class AnalyseResultServiceImpl.
  */
 @Service("treatmentResultService")
 @Transactional(readOnly = true)
 @PropertySources(value = @PropertySource("classpath:global-config.properties"))
-public class TreatmentResultServiceImpl extends AbstractServiceImpl<TreatmentResult> implements TreatmentResultService
-{
+public class TreatmentResultServiceImpl extends AbstractServiceImpl<TreatmentResult> implements TreatmentResultService {
 
-	/** The treatment result dao. */
-	@Autowired
-	private TreatmentResultDao treatmentResultDao;
+    /**
+     * The treatment result dao.
+     */
+    @Autowired
+    private TreatmentResultDao treatmentResultDao;
 
-	/**
-	 * Instantiates a new analyse result service impl.
-	 */
-	public TreatmentResultServiceImpl()
-	{
-		super();
-	}
+    /**
+     * Instantiates a new analyse result service impl.
+     */
+    public TreatmentResultServiceImpl() {
+        super();
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.service.AbstractServiceImpl#getJpaDao()
-	 */
-	@Override
-	public AbstractJpaDao<TreatmentResult> getJpaDao()
-	{
-		return treatmentResultDao;
-	}
+     */
+    @Override
+    public AbstractJpaDao<TreatmentResult> getJpaDao() {
+        return treatmentResultDao;
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#setJpaDao(org.guce.siat.common.dao.AbstractJpaDao)
-	 */
-	@Override
-	public void setJpaDao(final AbstractJpaDao<TreatmentResult> jpaDao)
-	{
-		this.treatmentResultDao = (TreatmentResultDao) jpaDao;
-	}
+     */
+    @Override
+    public void setJpaDao(final AbstractJpaDao<TreatmentResult> jpaDao) {
+        this.treatmentResultDao = (TreatmentResultDao) jpaDao;
+    }
 
-	@Override
-	public TreatmentResult findTreatmentResultByItemFlow(final ItemFlow itemFlow)
-	{
-		return treatmentResultDao.findTreatmentResultByItemFlow(itemFlow);
-	}
+    @Override
+    public TreatmentResult findTreatmentResultByItemFlow(final ItemFlow itemFlow) {
+        return treatmentResultDao.findTreatmentResultByItemFlow(itemFlow);
+    }
 
 }
+
