@@ -339,6 +339,8 @@ public class AnalyseOrder extends AbstractModel implements Serializable
 		builder.append(quantity);
 		builder.append(", observation=");
 		builder.append(observation);
+		builder.append(", sample=");
+		builder.append(sample);
 		builder.append(']');
 		return builder.toString();
 	}

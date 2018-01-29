@@ -48,6 +48,7 @@ import org.guce.siat.core.ct.dao.EssayTestAPDao;
 import org.guce.siat.core.ct.dao.InspectionControllerDao;
 import org.guce.siat.core.ct.dao.InspectionReportDao;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
+import org.guce.siat.core.ct.dao.SampleDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
 import org.guce.siat.core.ct.dao.TreatmentPartDao;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
@@ -135,6 +136,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 */
 	@Autowired
 	private AnalyseOrderDao analyseOrderDao;
+	
+	@Autowired
+	private SampleDao sampleDao;
 
 	/**
 	 * The treatment result dao.
@@ -601,6 +605,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
 		if (CollectionUtils.isNotEmpty(itemFlows) && itemFlows.size() == Constants.ONE) {
 			final ItemFlow itemFlow = itemFlowDao.save(itemFlows.get(0));
+			sampleDao.update(analyseOrder.getSample());
 			analyseOrderDao.update(analyseOrder);
 			for (final AnalysePart analysePart : analyseParts) {
 				analysePartDao.update(analysePart);

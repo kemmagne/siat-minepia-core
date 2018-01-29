@@ -253,6 +253,8 @@ public class AnalyseResult extends AbstractModel implements Serializable
 		builder.append(amount);
 		builder.append(", observation=");
 		builder.append(observation);
+		builder.append(", AnalyseOrder=");
+		builder.append(analyseOrder);
 		builder.append(']');
 		return builder.toString();
 	}
