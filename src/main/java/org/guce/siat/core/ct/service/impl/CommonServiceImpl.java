@@ -658,14 +658,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Transactional(readOnly = false)
     public void takeDecisionAndSaveInterceptionNotification(final InterceptionNotification interceptionNotif, final List<ItemFlow> itemFlows) {
         if (CollectionUtils.isNotEmpty(itemFlows) && itemFlows.size() == Constants.ONE) {
-            final ItemFlow itemFlow = itemFlowDao.save(itemFlows.get(0));
-            interceptionNotificationDao.update(interceptionNotif);
+            final ItemFlow itemFlow = itemFlows.get(0);
             interceptionNotif.setItemFlow(itemFlow);
             interceptionNotificationDao.save(interceptionNotif);
-
-            // Update fileItems : Set draft = true
-            itemFlow.getFileItem().setDraft(Boolean.TRUE);
-            fileItemDao.update(itemFlow.getFileItem());
         } else {
             throw new UnsupportedOperationException("Multiple Items not Allowed");
         }
