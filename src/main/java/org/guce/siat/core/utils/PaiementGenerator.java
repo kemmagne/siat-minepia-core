@@ -63,7 +63,7 @@ public final class PaiementGenerator
 		final org.guce.siat.utility.jaxb.common.PAIEMENT.SIGNATAIRE signataire = new org.guce.siat.utility.jaxb.common.PAIEMENT.SIGNATAIRE();
 		if (Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
 				FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_CT_92.name(),
-				FlowCode.FL_AP_167.name()).contains(
+				FlowCode.FL_AP_167.name(), FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name()).contains(
 				flowCode))
 		{
 			paiement.setFACTURE(new FACTURE());

@@ -2636,7 +2636,8 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 		}
 		if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
 				&& Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
-						FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
+						FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
+						FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name())
 						.contains(flowToExecute.getCode())) {
 			ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT());
 			final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
