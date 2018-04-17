@@ -390,6 +390,9 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @Column(name = "PVI_DISPO_PRISES")
     private String pviDispositionsPrises;
 
+    @Column(name = "PVI_CONTROLLER_NAME")
+    private String controllerName;
+
     /**
      * Instantiates a new inspection report.
      */
@@ -1184,6 +1187,14 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.pviDispositionsPrises = pviDispositionsPrises;
     }
 
+    public String getControllerName() {
+        return controllerName;
+    }
+
+    public void setControllerName(String controllerName) {
+        this.controllerName = controllerName;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -1245,4 +1256,3 @@ public class InspectionReport extends AbstractModel implements Serializable {
     }
 
 }
-

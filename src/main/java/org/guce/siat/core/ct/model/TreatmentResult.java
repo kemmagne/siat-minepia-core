@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -50,6 +51,10 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     @Column(name = "TREATMENT_DATE")
     @Temporal(TemporalType.DATE)
     private Date treatmentDate;
+
+    @Column(name = "SAVED_DATE")
+    @Temporal(TemporalType.DATE)
+    private Date savedDate;
 
     /**
      * The amount.
@@ -160,6 +165,20 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     @Column(name = "TSS_TREATMENT_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date uncoveringDate;
+    @Column(name = "TREATMENT_COMPANY_NAME")
+    private String treatmentCompanyName;
+    @Column(name = "TREATMENT_COMPANY_ADDRESS")
+    private String treatmentCompanyAddress;
+    @Column(name = "TREATMENT_COMPANY_TEL")
+    private String treatmentCompanyTel;
+    @Column(name = "TREATMENT_COMPANY_BP")
+    private String treatmentCompanyBp;
+    @Column(name = "TREATMENT_COMPANY_FAX")
+    private String treatmentCompanyFax;
+    @Column(name = "TREATMENT_COMPANY_EMAIL")
+    private String treatmentCompanyEmail;
+    @Column(name = "TREATMENT_SUPERVISOR")
+    private String supervisor;
 
     /**
      * Gets the id.
@@ -554,6 +573,67 @@ public class TreatmentResult extends AbstractModel implements Serializable {
 
     public void setPreventionPlaquePresent(boolean preventionPlaquePresent) {
         this.preventionPlaquePresent = preventionPlaquePresent;
+    }
+
+    public String getTreatmentCompanyName() {
+        return treatmentCompanyName;
+    }
+
+    public void setTreatmentCompanyName(String treatmentCompanyName) {
+        this.treatmentCompanyName = treatmentCompanyName;
+    }
+
+    public String getTreatmentCompanyAddress() {
+        return treatmentCompanyAddress;
+    }
+
+    public void setTreatmentCompanyAddress(String treatmentCompanyAddress) {
+        this.treatmentCompanyAddress = treatmentCompanyAddress;
+    }
+
+    public String getTreatmentCompanyTel() {
+        return treatmentCompanyTel;
+    }
+
+    public void setTreatmentCompanyTel(String treatmentCompanyTel) {
+        this.treatmentCompanyTel = treatmentCompanyTel;
+    }
+
+    public String getTreatmentCompanyFax() {
+        return treatmentCompanyFax;
+    }
+
+    public void setTreatmentCompanyFax(String treatmentCompanyFax) {
+        this.treatmentCompanyFax = treatmentCompanyFax;
+    }
+
+    public String getTreatmentCompanyEmail() {
+        return treatmentCompanyEmail;
+    }
+
+    public void setTreatmentCompanyEmail(String treatmentCompanyEmail) {
+        this.treatmentCompanyEmail = treatmentCompanyEmail;
+    }
+
+    public String getSupervisor() {
+        return supervisor;
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
+    }
+
+    public String getTreatmentCompanyBp() {
+        return treatmentCompanyBp;
+    }
+
+    public void setTreatmentCompanyBp(String treatmentCompanyBp) {
+        this.treatmentCompanyBp = treatmentCompanyBp;
+    }
+
+    @PrePersist
+    private void prePersist() {
+        savedDate = java.util.Calendar.getInstance().getTime();
     }
 
     /*

@@ -50,6 +50,7 @@ import org.guce.siat.core.ct.dao.InspectionReportDao;
 import org.guce.siat.core.ct.dao.InterceptionNotificationDao;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
 import org.guce.siat.core.ct.dao.SampleDao;
+import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
 import org.guce.siat.core.ct.dao.TreatmentPartDao;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
@@ -65,6 +66,7 @@ import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
 import org.guce.siat.core.ct.model.Sample;
+import org.guce.siat.core.ct.model.TreatmentInfos;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
@@ -133,14 +135,14 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Autowired
     private EssayTestAPDao essayTestAPDao;
 
-	/**
-	 * The analyse order dao.
-	 */
-	@Autowired
-	private AnalyseOrderDao analyseOrderDao;
-	
-	@Autowired
-	private SampleDao sampleDao;
+    /**
+     * The analyse order dao.
+     */
+    @Autowired
+    private AnalyseOrderDao analyseOrderDao;
+
+    @Autowired
+    private SampleDao sampleDao;
 
     /**
      * The treatment result dao.
@@ -200,6 +202,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
      */
     @Autowired
     private FlowService flowService;
+
+    @Autowired
+    private TreatmentInfosDao treatmentInfosDao;
 
     @Autowired
     private InterceptionNotificationDao interceptionNotificationDao;
@@ -281,31 +286,46 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     public void takeDecisionAndSaveInspectionReports(final List<InspectionReport> reports, final List<ItemFlow> itemFlowsToAdd) {
         final List<ItemFlow> itemFlows = new ArrayList<>();
 
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlows.add(itemFlowDao.save(itemFlow));
 
             @SuppressWarnings("unchecked")
-            final InspectionReport inspectionReport = ((List<InspectionReport>) CollectionUtils.select(reports, new Predicate() {
+            final List<InspectionReport> inspectionReports = (List<InspectionReport>) CollectionUtils.select(reports, new Predicate() {
                 @Override
                 public boolean evaluate(final Object object) {
-                    return ((InspectionReport) object).getFileItem().getId().equals(itemFlow.getFileItem().getId());
+                    return ((InspectionReport) object).getFileItem() != null
+                            && ((InspectionReport) object).getFileItem().getId().equals(itemFlow.getFileItem().getId());
                 }
-            })).get(0);
+            });
+            InspectionReport inspectionReport = null;
+            if (CollectionUtils.isNotEmpty(inspectionReports)) {
+                inspectionReport = inspectionReports.get(0);
+            }
+            if (inspectionReport == null && CollectionUtils.isNotEmpty(reports)) {
+                inspectionReport = reports.get(0);
+            }
+            if (inspectionReport == null) {
+                return;
+            }
 
             inspectionReport.setItemFlow(itemFlow);
             final List<InspectionController> inspectionControllers = inspectionReport.getInspectionControllerList();
-            for (final InspectionController inspectionController : inspectionControllers) {
-                inspectionController.setInspection(null);
+            if (inspectionControllers != null) {
+                for (final InspectionController inspectionController : inspectionControllers) {
+                    inspectionController.setInspection(null);
+                }
+                inspectionReport.setInspectionControllerList(cloneInspectionControllerList(inspectionReport
+                        .getInspectionControllerList()));
             }
-            inspectionReport.setInspectionControllerList(cloneInspectionControllerList(inspectionReport
-                    .getInspectionControllerList()));
 
             inspectionReportDao.save(inspectionReport);
-            for (final InspectionController inspectionController : inspectionReport.getInspectionControllerList()) {
-                inspectionController.setInspection(inspectionReport);
-                inspectionControllerDao.save(inspectionController);
+            if (inspectionControllers != null) {
+                for (final InspectionController inspectionController : inspectionControllers) {
+                    inspectionController.setInspection(inspectionReport);
+                    inspectionControllerDao.save(inspectionController);
+                }
             }
 
             // Set draft = true to be updated
@@ -552,7 +572,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         itemFlowDao.deleteList(itemFlows);
 
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlows) {
             // Set draft = false to be updated
@@ -575,7 +595,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     public void takeDecisionAndSaveTreatmentRequest(final List<TreatmentPart> treatmentPartsList,
             final TreatmentOrder treatmentOrder, final List<ItemFlow> itemFlowsToAdd) {
 
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlowDao.save(itemFlow);
 
@@ -594,6 +614,30 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         fileItemDao.saveOrUpdateList(fileItemList);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void saveTreatmentOrder(final TreatmentOrder treatmentOrder, final ItemFlow itemFlow) {
+        itemFlowDao.save(itemFlow);
+
+        treatmentOrder.setItemFlow(itemFlow);
+        treatmentOrderDao.save(treatmentOrder);
+
+        itemFlow.getFileItem().setDraft(Boolean.TRUE);
+        fileItemDao.saveOrUpdateList(Arrays.asList(itemFlow.getFileItem()));
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void saveTreatmentInfos(final TreatmentInfos treatmentInfos, final ItemFlow itemFlow) {
+        itemFlowDao.save(itemFlow);
+
+        treatmentInfos.setItemFlow(itemFlow);
+        treatmentInfosDao.save(treatmentInfos);
+
+        itemFlow.getFileItem().setDraft(Boolean.TRUE);
+        fileItemDao.saveOrUpdateList(Arrays.asList(itemFlow.getFileItem()));
+    }
+
 
     /*
 	 * (non-Javadoc)
@@ -608,15 +652,15 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         final List<AnalysePart> analyseParts = analyseOrder.getAnalysePartsList();
 
-		if (CollectionUtils.isNotEmpty(itemFlows) && itemFlows.size() == Constants.ONE) {
-			final ItemFlow itemFlow = itemFlowDao.save(itemFlows.get(0));
-			sampleDao.update(analyseOrder.getSample());
-			analyseOrderDao.update(analyseOrder);
-			for (final AnalysePart analysePart : analyseParts) {
-				analysePartDao.update(analysePart);
-			}
-			analyseResult.setItemFlow(itemFlow);
-			analyseResultDao.save(analyseResult);
+        if (CollectionUtils.isNotEmpty(itemFlows) && itemFlows.size() == Constants.ONE) {
+            final ItemFlow itemFlow = itemFlowDao.save(itemFlows.get(0));
+            sampleDao.update(analyseOrder.getSample());
+            analyseOrderDao.update(analyseOrder);
+            for (final AnalysePart analysePart : analyseParts) {
+                analysePartDao.update(analysePart);
+            }
+            analyseResult.setItemFlow(itemFlow);
+            analyseResultDao.save(analyseResult);
 
             // Update fileItems : Set draft = true
             itemFlow.getFileItem().setDraft(Boolean.TRUE);
@@ -639,14 +683,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     public void takeDecisionAndSaveTreatmentResult(final TreatmentResult treatmentResult, final List<ItemFlow> itemFlows) {
         final TreatmentOrder treatmentOrder = treatmentResult.getTreatmentOrder();
 
-        final List<TreatmentPart> treatmentParts = treatmentOrder.getTreatmentPartsList();
-
         if (CollectionUtils.isNotEmpty(itemFlows) && itemFlows.size() == Constants.ONE) {
-            final ItemFlow itemFlow = itemFlowDao.save(itemFlows.get(0));
-            treatmentOrderDao.update(treatmentOrder);
-            for (final TreatmentPart treatmentPart : treatmentParts) {
-                treatmentPartDao.update(treatmentPart);
+            if (treatmentOrder != null) {
+                treatmentOrderDao.update(treatmentOrder);
+                final List<TreatmentPart> treatmentParts = treatmentOrder.getTreatmentPartsList();
+                for (final TreatmentPart treatmentPart : treatmentParts) {
+                    treatmentPartDao.update(treatmentPart);
+                }
             }
+
+            final ItemFlow itemFlow = itemFlowDao.save(itemFlows.get(0));
             treatmentResult.setItemFlow(itemFlow);
             treatmentResultDao.save(treatmentResult);
 
@@ -670,6 +716,26 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             throw new UnsupportedOperationException("Multiple Items not Allowed");
         }
 
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void takeDecisionAndSaveTreatmentInfos(final TreatmentInfos treatmentInfos, final List<ItemFlow> itemFlowsToAdd) {
+
+        final List<FileItem> fileItemList = new ArrayList<>();
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            treatmentInfos.setItemFlow(itemFlow);
+            treatmentInfosDao.save(treatmentInfos);
+
+            // Set draft = true to be updated
+            itemFlow.getFileItem().setDraft(Boolean.TRUE);
+            fileItemList.add(itemFlow.getFileItem());
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
     }
 
 

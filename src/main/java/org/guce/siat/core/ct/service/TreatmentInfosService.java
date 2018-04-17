@@ -2,12 +2,12 @@ package org.guce.siat.core.ct.service;
 
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.AbstractService;
-import org.guce.siat.core.ct.model.TreatmentOrder;
+import org.guce.siat.core.ct.model.TreatmentInfos;
 
 /**
  * The Interface TreatmentOrderService.
  */
-public interface TreatmentOrderService extends AbstractService<TreatmentOrder> {
+public interface TreatmentInfosService extends AbstractService<TreatmentInfos> {
 
     /**
      * Find treatment order by item flow.
@@ -15,7 +15,7 @@ public interface TreatmentOrderService extends AbstractService<TreatmentOrder> {
      * @param itemFlow the item flow
      * @return the treatment order
      */
-    TreatmentOrder findTreatmentOrderByItemFlow(ItemFlow itemFlow);
+    TreatmentInfos findTreatmentInfosByItemFlow(ItemFlow itemFlow);
 
 }
 

@@ -15,31 +15,32 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class AperakCTProcessor implements Processor {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(AperakCTProcessor.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(AperakCTProcessor.class);
 
-	/**
-	 * The ct document reciever.
-	 */
-	@Autowired
-	private CtDocumentReciever ctDocumentReciever;
+    /**
+     * The ct document reciever.
+     */
+    @Autowired
+    private CtDocumentReciever ctDocumentReciever;
 
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.apache.camel.Processor#process(org.apache.camel.Exchange)
-	 */
-	@SuppressWarnings("unchecked")
-	@Override
-	public void process(final Exchange exchange) throws Exception {
-		final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
-		LOG.error("Send Aperak C due to : " + Objects.toString(cause.getMessage()), cause);
-		final HashMap<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
-		final HashMap<String, Object> result = ctDocumentReciever.generateAperakCFile(ebxmlBytes, cause.getMessage());
-		exchange.getOut().setBody(result);
-	}
+     */
+    @SuppressWarnings("unchecked")
+    @Override
+    public void process(final Exchange exchange) throws Exception {
+        final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
+        LOG.error("Send Aperak C due to : " + Objects.toString(cause.getMessage()), cause);
+        final HashMap<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
+        final HashMap<String, Object> result = ctDocumentReciever.generateAperakCFile(ebxmlBytes, cause.getMessage());
+        exchange.getOut().setBody(result);
+    }
 
 }
+

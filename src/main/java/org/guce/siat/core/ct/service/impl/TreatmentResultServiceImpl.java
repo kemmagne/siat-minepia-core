@@ -1,6 +1,7 @@
 package org.guce.siat.core.ct.service.impl;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
@@ -56,6 +57,11 @@ public class TreatmentResultServiceImpl extends AbstractServiceImpl<TreatmentRes
     @Override
     public TreatmentResult findTreatmentResultByItemFlow(final ItemFlow itemFlow) {
         return treatmentResultDao.findTreatmentResultByItemFlow(itemFlow);
+    }
+
+    @Override
+    public TreatmentResult findLastTreatmentResultByFileItem(final FileItem fileItem) {
+        return treatmentResultDao.findLastTreatmentResultByFileItem(fileItem);
     }
 
 }

@@ -17,6 +17,7 @@ import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.Sample;
+import org.guce.siat.core.ct.model.TreatmentInfos;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
@@ -86,6 +87,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void takeDecisionAndSaveTreatmentResult(TreatmentResult treatmentResult, List<ItemFlow> itemFlows);
 
     void takeDecisionAndSaveInterceptionNotification(InterceptionNotification interceptionNotif, List<ItemFlow> itemFlows);
+
+    void takeDecisionAndSaveTreatmentInfos(TreatmentInfos treatmentInfos, List<ItemFlow> itemFlows);
 
     /**
      * Take decision and appointment.
@@ -240,4 +243,9 @@ public interface CommonService extends AbstractService<ItemFlow> {
      * can treat the file
      */
     boolean showEnabledFileItem(final FileItem item, final ItemFlow itemFlow, User user);
+
+    void saveTreatmentOrder(TreatmentOrder treatmentOrder, ItemFlow itemFlow);
+
+    void saveTreatmentInfos(TreatmentInfos treatmentInfos, ItemFlow itemFlow);
 }
+
