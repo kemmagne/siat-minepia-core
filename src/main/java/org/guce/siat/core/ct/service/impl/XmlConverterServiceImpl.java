@@ -1976,7 +1976,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                flowToExecute.getCode())) {
+                        flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2126,7 +2126,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2190,7 +2190,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             //			}
         } else if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                flowToExecute.getCode())) {
+                        flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2208,9 +2208,10 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                 ciDocument.getCONTENT().getMARCHANDISES().getMARCHANDISE().add(marchandise);
 
             }
-        } else if (FlowCode.FL_CT_105.name().equals(flowToExecute.getCode())) {
-            final ItemFlow itemFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(), FlowCode.FL_CT_104);
-            ciDocument.getCONTENT().getTRAITEMENT().setDATETRAITEMENT(itemFlow.getItemFlowsDataList().get(0).getValue());
+        } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode())) {
+//            final ItemFlow itemFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(), FlowCode.FL_CT_104);
+            ciDocument.getCONTENT().setTRAITEMENT(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.TRAITEMENT());
+            ciDocument.getCONTENT().getTRAITEMENT().setDATETRAITEMENT(itemFlowList.get(0).getItemFlowsDataList().get(0).getValue());
         } else if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && FlowCode.FL_CT_64.name().equals(flowToExecute.getCode())) {
             // copy recepient traitement
@@ -2323,7 +2324,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2359,7 +2360,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                flowToExecute.getCode())) {
+                        flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CC_CT.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2452,7 +2453,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                         .setLIEU(
                                 itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                                 .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                .getLabelFr().subSequence(0, 34).toString());
+                                        .getLabelFr().subSequence(0, 34).toString());
                 ciDocument
                         .getCONTENT()
                         .getSIGNATAIRE()
@@ -2490,7 +2491,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                flowToExecute.getCode())) {
+                        flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2581,7 +2582,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                         .setLIEU(
                                 itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                                 .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                .getLabelFr().subSequence(0, 34).toString());
+                                        .getLabelFr().subSequence(0, 34).toString());
                 ciDocument
                         .getCONTENT()
                         .getSIGNATAIRE()
@@ -2650,7 +2651,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
                         FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -2681,7 +2682,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2789,7 +2790,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -2821,7 +2822,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2949,7 +2950,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3080,7 +3081,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3249,7 +3250,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3378,7 +3379,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3508,7 +3509,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3645,7 +3646,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3751,7 +3752,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.CAT_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -3783,7 +3784,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3917,7 +3918,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -3949,7 +3950,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4098,7 +4099,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -4130,7 +4131,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4236,7 +4237,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.AE_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -4268,7 +4269,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4396,7 +4397,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4525,7 +4526,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4654,7 +4655,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4848,7 +4849,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4976,7 +4977,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5105,7 +5106,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5214,7 +5215,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5388,7 +5389,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5521,7 +5522,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5605,7 +5606,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                .contains(flowToExecute.getCode())) {
+                        .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.CO_MINFOF_FAUNE.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -5623,7 +5624,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5647,7 +5648,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
     public File convertDocumentToFileCctCT(final DOCUMENT document) throws ParseException, ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         // Set file type
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CCT_CT);
 
@@ -6002,9 +6003,14 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         // Set file type
-        final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CCT_CT_E);
+        FileType fileType;
+        if (flowGuceSiat != null) {
+            fileType = flowGuceSiat.getFileType();
+        } else {
+            fileType = fileTypeDao.findByCode(FileTypeCode.CCT_CT_E);
+        }
 
         for (final FileField fileField : fileType.getFileFieldList()) {
             final FileFieldValue fileFieldValue = FileFieldValueCctExp.generateFileFieldValueCctCtExp(file, fileField, document,
@@ -6165,13 +6171,13 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document.getCONTENT()
                     .getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCctExp.generateFileItemFieldValueCctCtExp(
@@ -6247,7 +6253,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -16335,7 +16341,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -16594,7 +16600,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                            .getLabelFr().subSequence(0, 34).toString());
+                                    .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()

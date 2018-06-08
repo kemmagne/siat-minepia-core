@@ -1189,14 +1189,21 @@
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:element>
-                                        <xs:element name="DATE_TRAITEMENT_PROPOSEE">
+                                        <xs:element name="LIEU_TRAITEMENT" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:maxLength value="100"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="DATE_TRAITEMENT_PROPOSEE" minOccurs="0">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:string">
                                                     <xs:maxLength value="50"/>
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:element>
-                                        <xs:element name="DATE_TRAITEMENT">
+                                        <xs:element name="DATE_TRAITEMENT" minOccurs="0">
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:string">
                                                     <xs:maxLength value="50"/>

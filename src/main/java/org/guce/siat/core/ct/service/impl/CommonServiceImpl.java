@@ -72,6 +72,7 @@ import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
 import org.guce.siat.core.ct.service.CommonService;
 import org.guce.siat.core.ct.util.quota.QuotaDto;
+import org.guce.siat.core.utils.CommonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -338,13 +339,45 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     /**
+     *
+     * @param report
+     * @param itemFlowsToAdd
+     * @throws Exception
+     *
+     * @see
+     * org.guce.siat.core.ct.service.CommonService#takeDecisionAndSaveInspectionReport(org.guce.siat.core.ct.model.InspectionReport,
+     * java.util.List)
+     */
+    @Override
+    public void takeDecisionAndSaveInspectionReport(final InspectionReport report, final List<ItemFlow> itemFlowsToAdd) throws Exception {
+
+        final List<FileItem> fileItemList = new ArrayList<>();
+
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            final InspectionReport ir = CommonUtils.clone(report);
+
+            ir.setItemFlow(itemFlow);
+            inspectionReportDao.save(ir);
+
+            // Set draft = true to be updated
+            itemFlow.getFileItem().setDraft(Boolean.TRUE);
+            fileItemList.add(itemFlow.getFileItem());
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
+    /**
      * Clone inspection controller list.
      *
      * @param inspectionControllerList the inspection controller list
      * @return the list
      */
     private List<InspectionController> cloneInspectionControllerList(final List<InspectionController> inspectionControllerList) {
-        final List<InspectionController> insContList = new ArrayList<InspectionController>();
+        final List<InspectionController> insContList = new ArrayList<>();
 
         for (final InspectionController inspectionController : inspectionControllerList) {
             final InspectionController insCont = new InspectionController();
@@ -705,6 +738,39 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     }
 
+    /**
+     *
+     * @param treatmentResult
+     * @param itemFlowsToAdd
+     * @throws Exception
+     *
+     * @see
+     * org.guce.siat.core.ct.service.CommonService#takeDecisionAndSaveTreatmentResult2(org.guce.siat.core.ct.model.TreatmentResult,
+     * java.util.List)
+     */
+    @Override
+    @Transactional(readOnly = false)
+    public void takeDecisionAndSaveTreatmentResult2(final TreatmentResult treatmentResult, final List<ItemFlow> itemFlowsToAdd) throws Exception {
+
+        final List<FileItem> fileItemList = new ArrayList<>();
+
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            final TreatmentResult tr = CommonUtils.clone(treatmentResult);
+
+            tr.setItemFlow(itemFlow);
+            treatmentResultDao.save(tr);
+
+            // Set draft = true to be updated
+            itemFlow.getFileItem().setDraft(Boolean.TRUE);
+            fileItemList.add(itemFlow.getFileItem());
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
     @Override
     @Transactional(readOnly = false)
     public void takeDecisionAndSaveInterceptionNotification(final InterceptionNotification interceptionNotif, final List<ItemFlow> itemFlows) {
@@ -720,14 +786,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     @Override
     @Transactional(readOnly = false)
-    public void takeDecisionAndSaveTreatmentInfos(final TreatmentInfos treatmentInfos, final List<ItemFlow> itemFlowsToAdd) {
+    public void takeDecisionAndSaveTreatmentInfos(final TreatmentInfos treatmentInfos, final List<ItemFlow> itemFlowsToAdd) throws Exception {
 
         final List<FileItem> fileItemList = new ArrayList<>();
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlowDao.save(itemFlow);
 
-            treatmentInfos.setItemFlow(itemFlow);
-            treatmentInfosDao.save(treatmentInfos);
+            final TreatmentInfos ti = CommonUtils.clone(treatmentInfos);
+
+            ti.setItemFlow(itemFlow);
+            treatmentInfosDao.save(ti);
 
             // Set draft = true to be updated
             itemFlow.getFileItem().setDraft(Boolean.TRUE);

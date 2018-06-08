@@ -421,6 +421,12 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "TRAITEMENT_LIEU_TRAITEMENT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getLIEUTRAITEMENT());
+                }
+                break;
+            }
             case "TRAITEMENT_DATE_TRAITEMENT_PROPOSEE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getDATETRAITEMENTPROPOSEE());

@@ -17,7 +17,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.ItemFlow;
@@ -47,7 +46,7 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
      * The date.
      */
     @Column(name = "REGISTRATION_DATE")
-    @Temporal(value = TemporalType.DATE)
+    @Temporal(value = TemporalType.TIMESTAMP)
     private Date date;
 
     /**

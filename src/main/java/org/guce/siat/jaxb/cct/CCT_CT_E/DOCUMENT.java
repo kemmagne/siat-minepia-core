@@ -11354,6 +11354,7 @@ public class DOCUMENT implements Serializable {
         @XmlType(name = "", propOrder = {
             "societetraitement",
             "typetraitement",
+            "lieutraitement",
             "datetraitementproposee",
             "datetraitement"
         })
@@ -11363,6 +11364,8 @@ public class DOCUMENT implements Serializable {
             protected DOCUMENT.CONTENT.TRAITEMENT.SOCIETETRAITEMENT societetraitement;
             @XmlElement(name = "TYPE_TRAITEMENT")
             protected String typetraitement;
+            @XmlElement(name = "LIEU_TRAITEMENT")
+            protected String lieutraitement;
             @XmlElement(name = "DATE_TRAITEMENT_PROPOSEE", required = true)
             protected String datetraitementproposee;
             @XmlElement(name = "DATE_TRAITEMENT", required = true)
@@ -11408,6 +11411,14 @@ public class DOCUMENT implements Serializable {
              */
             public void setTYPETRAITEMENT(String value) {
                 this.typetraitement = value;
+            }
+
+            public String getLIEUTRAITEMENT() {
+                return lieutraitement;
+            }
+
+            public void setLIEUTRAITEMENT(String value) {
+                this.lieutraitement = value;
             }
 
             /**

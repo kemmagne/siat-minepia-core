@@ -53,7 +53,7 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     private Date treatmentDate;
 
     @Column(name = "SAVED_DATE")
-    @Temporal(TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date savedDate;
 
     /**
@@ -177,6 +177,9 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     private String treatmentCompanyFax;
     @Column(name = "TREATMENT_COMPANY_EMAIL")
     private String treatmentCompanyEmail;
+    @ManyToOne
+    @JoinColumn(name = "TREATMENT_COMPANY_ID", referencedColumnName = "id")
+    private TreatmentCompany treatmentCompany;
     @Column(name = "TREATMENT_SUPERVISOR")
     private String supervisor;
 
@@ -631,6 +634,22 @@ public class TreatmentResult extends AbstractModel implements Serializable {
         this.treatmentCompanyBp = treatmentCompanyBp;
     }
 
+    public TreatmentCompany getTreatmentCompany() {
+        return treatmentCompany;
+    }
+
+    public void setTreatmentCompany(TreatmentCompany treatmentCompany) {
+        this.treatmentCompany = treatmentCompany;
+    }
+
+    public Date getSavedDate() {
+        return savedDate;
+    }
+
+    public void setSavedDate(Date savedDate) {
+        this.savedDate = savedDate;
+    }
+
     @PrePersist
     private void prePersist() {
         savedDate = java.util.Calendar.getInstance().getTime();
@@ -659,10 +678,7 @@ public class TreatmentResult extends AbstractModel implements Serializable {
             return false;
         }
         final TreatmentResult other = (TreatmentResult) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*

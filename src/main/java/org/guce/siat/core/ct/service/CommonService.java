@@ -50,6 +50,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
      */
     void takeDecisionAndSaveInspectionReports(List<InspectionReport> reports, List<ItemFlow> itemFlowsToAdd);
 
+    void takeDecisionAndSaveInspectionReport(final InspectionReport report, final List<ItemFlow> itemFlowsToAdd) throws Exception;
+
     /**
      * Take decision and save analyse request.
      *
@@ -86,9 +88,17 @@ public interface CommonService extends AbstractService<ItemFlow> {
      */
     void takeDecisionAndSaveTreatmentResult(TreatmentResult treatmentResult, List<ItemFlow> itemFlows);
 
+    /**
+     *
+     * @param treatmentResult
+     * @param itemFlowsToAdd
+     * @throws Exception
+     */
+    void takeDecisionAndSaveTreatmentResult2(final TreatmentResult treatmentResult, final List<ItemFlow> itemFlowsToAdd) throws Exception;
+
     void takeDecisionAndSaveInterceptionNotification(InterceptionNotification interceptionNotif, List<ItemFlow> itemFlows);
 
-    void takeDecisionAndSaveTreatmentInfos(TreatmentInfos treatmentInfos, List<ItemFlow> itemFlows);
+    void takeDecisionAndSaveTreatmentInfos(TreatmentInfos treatmentInfos, List<ItemFlow> itemFlows) throws Exception;
 
     /**
      * Take decision and appointment.
@@ -248,4 +258,3 @@ public interface CommonService extends AbstractService<ItemFlow> {
 
     void saveTreatmentInfos(TreatmentInfos treatmentInfos, ItemFlow itemFlow);
 }
-
