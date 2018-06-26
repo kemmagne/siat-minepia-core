@@ -1,3 +1,9 @@
+//
+// Ce fichier a �t� g�n�r� par l'impl�mentation de r�f�rence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802
+// Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
+// Toute modification apport�e � ce fichier sera perdue lors de la recompilation du sch�ma source.
+// G�n�r� le : 2018.06.22 � 03:06:02 PM WAT
+//
 package org.guce.siat.jaxb.cct.CCT_CT_E;
 
 import java.io.Serializable;
@@ -14,7 +20,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.guce.siat.utility.jaxb.common.DECISIONORGANISME;
 import org.guce.siat.utility.jaxb.common.ERREURS;
 import org.guce.siat.utility.jaxb.common.MESSAGE;
-import org.guce.siat.utility.jaxb.common.PAIEMENT;
 import org.guce.siat.utility.jaxb.common.PIECESJOINTES;
 import org.guce.siat.utility.jaxb.common.REFERENCEDOSSIER;
 import org.guce.siat.utility.jaxb.common.ROUTAGE;
@@ -285,6 +290,37 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                         &lt;maxLength value="40"/>
  *                       &lt;/restriction>
  *                     &lt;/simpleType>
+ *                   &lt;/element>
+ *                   &lt;element name="TYPE_DOSSIER" minOccurs="0">
+ *                     &lt;simpleType>
+ *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                         &lt;maxLength value="10"/>
+ *                       &lt;/restriction>
+ *                     &lt;/simpleType>
+ *                   &lt;/element>
+ *                   &lt;element name="TYPE_PRODUIT" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence>
+ *                             &lt;element name="CODE" minOccurs="0">
+ *                               &lt;simpleType>
+ *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                   &lt;maxLength value="35"/>
+ *                                 &lt;/restriction>
+ *                               &lt;/simpleType>
+ *                             &lt;/element>
+ *                             &lt;element name="NOM" minOccurs="0">
+ *                               &lt;simpleType>
+ *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                   &lt;maxLength value="70"/>
+ *                                 &lt;/restriction>
+ *                               &lt;/simpleType>
+ *                             &lt;/element>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
  *                   &lt;/element>
  *                   &lt;element name="CLIENT" minOccurs="0">
  *                     &lt;complexType>
@@ -1187,27 +1223,61 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                                 &lt;complexContent>
  *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                     &lt;sequence>
- *                                       &lt;element name="NUMERO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                       &lt;element name="PLOMB" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                       &lt;choice minOccurs="0">
- *                                         &lt;element name="TONNAGE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                         &lt;element name="VOLUME" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                       &lt;/choice>
- *                                       &lt;element name="TYPE" minOccurs="0">
- *                                         &lt;complexType>
- *                                           &lt;complexContent>
- *                                             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
- *                                               &lt;sequence>
- *                                                 &lt;element name="typeContCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                                 &lt;element name="typeContLibelle" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                               &lt;/sequence>
- *                                             &lt;/restriction>
- *                                           &lt;/complexContent>
- *                                         &lt;/complexType>
+ *                                       &lt;element name="NUMERO" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="11"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
  *                                       &lt;/element>
- *                                       &lt;element name="QUANTITE_COLIS" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                       &lt;element name="MARQUE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *                                       &lt;element name="ESSENCE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *                                       &lt;element name="SCELLE_1" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="10"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="SCELLE_2" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="10"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="SCELLE_3" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="10"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="TONNAGE" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *                                       &lt;element name="VOLUME" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *                                       &lt;element name="TYPE" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="5"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="PLEIN" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *                                       &lt;element name="QUANTITE_COLIS" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *                                       &lt;element name="MARQUE" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="35"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="REFRIGERE" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+ *                                       &lt;element name="INDICATEUR_DANGEROSITE" type="{http://www.w3.org/2001/XMLSchema}short" minOccurs="0"/>
+ *                                       &lt;element name="ESSENCE" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="255"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
  *                                     &lt;/sequence>
  *                                   &lt;/restriction>
  *                                 &lt;/complexContent>
@@ -1299,7 +1369,7 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                                 &lt;complexContent>
  *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                                     &lt;sequence>
- *                                       &lt;element name="CODE" minOccurs="0">
+ *                                       &lt;element name="CODE">
  *                                         &lt;simpleType>
  *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *                                             &lt;maxLength value="50"/>
@@ -1310,6 +1380,20 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                                         &lt;simpleType>
  *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *                                             &lt;maxLength value="50"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="ZONE_COMPETENCE" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="100"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="TELEPHONE" minOccurs="0">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="20"/>
  *                                           &lt;/restriction>
  *                                         &lt;/simpleType>
  *                                       &lt;/element>
@@ -1325,14 +1409,21 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                                 &lt;/restriction>
  *                               &lt;/simpleType>
  *                             &lt;/element>
- *                             &lt;element name="DATE_TRAITEMENT_PROPOSEE">
+ *                             &lt;element name="LIEU_TRAITEMENT" minOccurs="0">
+ *                               &lt;simpleType>
+ *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                   &lt;maxLength value="100"/>
+ *                                 &lt;/restriction>
+ *                               &lt;/simpleType>
+ *                             &lt;/element>
+ *                             &lt;element name="DATE_TRAITEMENT_PROPOSEE" minOccurs="0">
  *                               &lt;simpleType>
  *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *                                   &lt;maxLength value="50"/>
  *                                 &lt;/restriction>
  *                               &lt;/simpleType>
  *                             &lt;/element>
- *                             &lt;element name="DATE_TRAITEMENT">
+ *                             &lt;element name="DATE_TRAITEMENT" minOccurs="0">
  *                               &lt;simpleType>
  *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
  *                                   &lt;maxLength value="50"/>
@@ -1944,6 +2035,8 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                                           &lt;/complexContent>
  *                                         &lt;/complexType>
  *                                       &lt;/element>
+ *                                       &lt;element name="NOMBRE_GRUMES" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+ *                                       &lt;element name="POIDS_BRUT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
  *                                       &lt;element name="QUALITE" minOccurs="0">
  *                                         &lt;simpleType>
  *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -2138,6 +2231,61 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                         &lt;maxLength value="255"/>
  *                       &lt;/restriction>
  *                     &lt;/simpleType>
+ *                   &lt;/element>
+ *                   &lt;element name="DETAILS_DECISIONS_SIAT" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence minOccurs="0">
+ *                             &lt;element name="DETAILS_DECISION" maxOccurs="unbounded" minOccurs="0">
+ *                               &lt;complexType>
+ *                                 &lt;complexContent>
+ *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                                     &lt;sequence minOccurs="0">
+ *                                       &lt;element name="CODE_PROCEDURE_SIAT">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="30"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="CODE">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="50"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="LABEL_FR">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="255"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="LABEL_EN">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="255"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                       &lt;element name="VALEUR">
+ *                                         &lt;simpleType>
+ *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                             &lt;maxLength value="255"/>
+ *                                           &lt;/restriction>
+ *                                         &lt;/simpleType>
+ *                                       &lt;/element>
+ *                                     &lt;/sequence>
+ *                                   &lt;/restriction>
+ *                                 &lt;/complexContent>
+ *                               &lt;/complexType>
+ *                             &lt;/element>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
  *                   &lt;/element>
  *                   &lt;element name="PIECES_JOINTES" minOccurs="0">
  *                     &lt;complexType>
@@ -2391,6 +2539,13 @@ public class DOCUMENT implements Serializable {
      *             &lt;/restriction>
      *           &lt;/simpleType>
      *         &lt;/element>
+     *         &lt;element name="MINISTERE" minOccurs="0">
+     *           &lt;simpleType>
+     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *               &lt;maxLength value="50"/>
+     *             &lt;/restriction>
+     *           &lt;/simpleType>
+     *         &lt;/element>
      *         &lt;element name="EXIGENCES_PHYTOSANITAIRES" minOccurs="0">
      *           &lt;simpleType>
      *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -2404,6 +2559,37 @@ public class DOCUMENT implements Serializable {
      *               &lt;maxLength value="40"/>
      *             &lt;/restriction>
      *           &lt;/simpleType>
+     *         &lt;/element>
+     *         &lt;element name="TYPE_DOSSIER" minOccurs="0">
+     *           &lt;simpleType>
+     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *               &lt;maxLength value="10"/>
+     *             &lt;/restriction>
+     *           &lt;/simpleType>
+     *         &lt;/element>
+     *         &lt;element name="TYPE_PRODUIT" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                 &lt;sequence>
+     *                   &lt;element name="CODE" minOccurs="0">
+     *                     &lt;simpleType>
+     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                         &lt;maxLength value="35"/>
+     *                       &lt;/restriction>
+     *                     &lt;/simpleType>
+     *                   &lt;/element>
+     *                   &lt;element name="NOM" minOccurs="0">
+     *                     &lt;simpleType>
+     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                         &lt;maxLength value="70"/>
+     *                       &lt;/restriction>
+     *                     &lt;/simpleType>
+     *                   &lt;/element>
+     *                 &lt;/sequence>
+     *               &lt;/restriction>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
      *         &lt;/element>
      *         &lt;element name="CLIENT" minOccurs="0">
      *           &lt;complexType>
@@ -3306,27 +3492,61 @@ public class DOCUMENT implements Serializable {
      *                       &lt;complexContent>
      *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                           &lt;sequence>
-     *                             &lt;element name="NUMERO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                             &lt;element name="PLOMB" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                             &lt;choice minOccurs="0">
-     *                               &lt;element name="TONNAGE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                               &lt;element name="VOLUME" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                             &lt;/choice>
-     *                             &lt;element name="TYPE" minOccurs="0">
-     *                               &lt;complexType>
-     *                                 &lt;complexContent>
-     *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-     *                                     &lt;sequence>
-     *                                       &lt;element name="typeContCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                                       &lt;element name="typeContLibelle" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                                     &lt;/sequence>
-     *                                   &lt;/restriction>
-     *                                 &lt;/complexContent>
-     *                               &lt;/complexType>
+     *                             &lt;element name="NUMERO" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="11"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
      *                             &lt;/element>
-     *                             &lt;element name="QUANTITE_COLIS" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                             &lt;element name="MARQUE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-     *                             &lt;element name="ESSENCE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+     *                             &lt;element name="SCELLE_1" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="10"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="SCELLE_2" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="10"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="SCELLE_3" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="10"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="TONNAGE" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+     *                             &lt;element name="VOLUME" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+     *                             &lt;element name="TYPE" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="5"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="PLEIN" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+     *                             &lt;element name="QUANTITE_COLIS" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+     *                             &lt;element name="MARQUE" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="35"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="REFRIGERE" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+     *                             &lt;element name="INDICATEUR_DANGEROSITE" type="{http://www.w3.org/2001/XMLSchema}short" minOccurs="0"/>
+     *                             &lt;element name="ESSENCE" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="255"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
      *                           &lt;/sequence>
      *                         &lt;/restriction>
      *                       &lt;/complexContent>
@@ -3418,7 +3638,7 @@ public class DOCUMENT implements Serializable {
      *                       &lt;complexContent>
      *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
      *                           &lt;sequence>
-     *                             &lt;element name="CODE" minOccurs="0">
+     *                             &lt;element name="CODE">
      *                               &lt;simpleType>
      *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
      *                                   &lt;maxLength value="50"/>
@@ -3429,6 +3649,20 @@ public class DOCUMENT implements Serializable {
      *                               &lt;simpleType>
      *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
      *                                   &lt;maxLength value="50"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="ZONE_COMPETENCE" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="100"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="TELEPHONE" minOccurs="0">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="20"/>
      *                                 &lt;/restriction>
      *                               &lt;/simpleType>
      *                             &lt;/element>
@@ -3444,14 +3678,21 @@ public class DOCUMENT implements Serializable {
      *                       &lt;/restriction>
      *                     &lt;/simpleType>
      *                   &lt;/element>
-     *                   &lt;element name="DATE_TRAITEMENT_PROPOSEE">
+     *                   &lt;element name="LIEU_TRAITEMENT" minOccurs="0">
+     *                     &lt;simpleType>
+     *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                         &lt;maxLength value="100"/>
+     *                       &lt;/restriction>
+     *                     &lt;/simpleType>
+     *                   &lt;/element>
+     *                   &lt;element name="DATE_TRAITEMENT_PROPOSEE" minOccurs="0">
      *                     &lt;simpleType>
      *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
      *                         &lt;maxLength value="50"/>
      *                       &lt;/restriction>
      *                     &lt;/simpleType>
      *                   &lt;/element>
-     *                   &lt;element name="DATE_TRAITEMENT">
+     *                   &lt;element name="DATE_TRAITEMENT" minOccurs="0">
      *                     &lt;simpleType>
      *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
      *                         &lt;maxLength value="50"/>
@@ -4063,6 +4304,8 @@ public class DOCUMENT implements Serializable {
      *                                 &lt;/complexContent>
      *                               &lt;/complexType>
      *                             &lt;/element>
+     *                             &lt;element name="NOMBRE_GRUMES" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+     *                             &lt;element name="POIDS_BRUT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
      *                             &lt;element name="QUALITE" minOccurs="0">
      *                               &lt;simpleType>
      *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -4258,6 +4501,61 @@ public class DOCUMENT implements Serializable {
      *             &lt;/restriction>
      *           &lt;/simpleType>
      *         &lt;/element>
+     *         &lt;element name="DETAILS_DECISIONS_SIAT" minOccurs="0">
+     *           &lt;complexType>
+     *             &lt;complexContent>
+     *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                 &lt;sequence minOccurs="0">
+     *                   &lt;element name="DETAILS_DECISION" maxOccurs="unbounded" minOccurs="0">
+     *                     &lt;complexType>
+     *                       &lt;complexContent>
+     *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+     *                           &lt;sequence minOccurs="0">
+     *                             &lt;element name="CODE_PROCEDURE_SIAT">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="30"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="CODE">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="50"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="LABEL_FR">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="255"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="LABEL_EN">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="255"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                             &lt;element name="VALEUR">
+     *                               &lt;simpleType>
+     *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+     *                                   &lt;maxLength value="255"/>
+     *                                 &lt;/restriction>
+     *                               &lt;/simpleType>
+     *                             &lt;/element>
+     *                           &lt;/sequence>
+     *                         &lt;/restriction>
+     *                       &lt;/complexContent>
+     *                     &lt;/complexType>
+     *                   &lt;/element>
+     *                 &lt;/sequence>
+     *               &lt;/restriction>
+     *             &lt;/complexContent>
+     *           &lt;/complexType>
+     *         &lt;/element>
      *         &lt;element name="PIECES_JOINTES" minOccurs="0">
      *           &lt;complexType>
      *             &lt;complexContent>
@@ -4304,11 +4602,11 @@ public class DOCUMENT implements Serializable {
     @XmlType(name = "", propOrder = {
         "decisionorganisme",
         "codebureau",
-        "typedossier",
-        "typeproduit",
         "ministere",
         "exigencesphytosanitaires",
         "naturedemande",
+        "typedossier",
+        "typeproduit",
         "client",
         "transitaire",
         "signataire",
@@ -4322,6 +4620,7 @@ public class DOCUMENT implements Serializable {
         "paiement",
         "marchandises",
         "observations",
+        "detailsdecisionssiat",
         "piecesjointes"
     })
     public static class CONTENT {
@@ -4330,16 +4629,16 @@ public class DOCUMENT implements Serializable {
         protected DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "CODE_BUREAU")
         protected String codebureau;
-        @XmlElement(name = "TYPE_DOSSIER")
-        protected String typedossier;
-        @XmlElement(name = "TYPE_PRODUIT")
-        protected DOCUMENT.CONTENT.TYPEPRODUIT typeproduit;
         @XmlElement(name = "MINISTERE")
         protected String ministere;
         @XmlElement(name = "EXIGENCES_PHYTOSANITAIRES")
         protected String exigencesphytosanitaires;
         @XmlElement(name = "NATURE_DEMANDE")
         protected String naturedemande;
+        @XmlElement(name = "TYPE_DOSSIER")
+        protected String typedossier;
+        @XmlElement(name = "TYPE_PRODUIT")
+        protected DOCUMENT.CONTENT.TYPEPRODUIT typeproduit;
         @XmlElement(name = "CLIENT")
         protected DOCUMENT.CONTENT.CLIENT client;
         @XmlElement(name = "TRANSITAIRE")
@@ -4361,11 +4660,13 @@ public class DOCUMENT implements Serializable {
         @XmlElement(name = "NUMERO_CCT_CT")
         protected String numerocctct;
         @XmlElement(name = "PAIEMENT")
-        protected PAIEMENT paiement;
+        protected DOCUMENT.CONTENT.PAIEMENT paiement;
         @XmlElement(name = "MARCHANDISES")
         protected DOCUMENT.CONTENT.MARCHANDISES marchandises;
         @XmlElement(name = "OBSERVATIONS")
         protected String observations;
+        @XmlElement(name = "DETAILS_DECISIONS_SIAT")
+        protected DOCUMENT.CONTENT.DETAILSDECISIONSSIAT detailsdecisionssiat;
         @XmlElement(name = "PIECES_JOINTES")
         protected PIECESJOINTES piecesjointes;
 
@@ -4409,26 +4710,22 @@ public class DOCUMENT implements Serializable {
             this.codebureau = value;
         }
 
-        public String getTYPEDOSSIER() {
-            return typedossier;
-        }
-
-        public void setTYPEDOSSIER(String value) {
-            this.typedossier = value;
-        }
-
-        public DOCUMENT.CONTENT.TYPEPRODUIT getTYPEPRODUIT() {
-            return typeproduit;
-        }
-
-        public void setTYPEPRODUIT(DOCUMENT.CONTENT.TYPEPRODUIT value) {
-            this.typeproduit = value;
-        }
-
+        /**
+         * Obtient la valeur de la propri�t� ministere.
+         *
+         * @return possible object is {@link String }
+         *
+         */
         public String getMINISTERE() {
             return ministere;
         }
 
+        /**
+         * D�finit la valeur de la propri�t� ministere.
+         *
+         * @param value allowed object is {@link String }
+         *
+         */
         public void setMINISTERE(String value) {
             this.ministere = value;
         }
@@ -4471,6 +4768,46 @@ public class DOCUMENT implements Serializable {
          */
         public void setNATUREDEMANDE(String value) {
             this.naturedemande = value;
+        }
+
+        /**
+         * Obtient la valeur de la propri�t� typedossier.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getTYPEDOSSIER() {
+            return typedossier;
+        }
+
+        /**
+         * D�finit la valeur de la propri�t� typedossier.
+         *
+         * @param value allowed object is {@link String }
+         *
+         */
+        public void setTYPEDOSSIER(String value) {
+            this.typedossier = value;
+        }
+
+        /**
+         * Obtient la valeur de la propri�t� typeproduit.
+         *
+         * @return possible object is {@link DOCUMENT.CONTENT.TYPEPRODUIT }
+         *
+         */
+        public DOCUMENT.CONTENT.TYPEPRODUIT getTYPEPRODUIT() {
+            return typeproduit;
+        }
+
+        /**
+         * D�finit la valeur de la propri�t� typeproduit.
+         *
+         * @param value allowed object is {@link DOCUMENT.CONTENT.TYPEPRODUIT }
+         *
+         */
+        public void setTYPEPRODUIT(DOCUMENT.CONTENT.TYPEPRODUIT value) {
+            this.typeproduit = value;
         }
 
         /**
@@ -4678,20 +5015,20 @@ public class DOCUMENT implements Serializable {
         /**
          * Obtient la valeur de la propri�t� paiement.
          *
-         * @return possible object is {@link PAIEMENT }
+         * @return possible object is {@link DOCUMENT.CONTENT.PAIEMENT }
          *
          */
-        public PAIEMENT getPAIEMENT() {
+        public DOCUMENT.CONTENT.PAIEMENT getPAIEMENT() {
             return paiement;
         }
 
         /**
          * D�finit la valeur de la propri�t� paiement.
          *
-         * @param value allowed object is {@link PAIEMENT }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.PAIEMENT }
          *
          */
-        public void setPAIEMENT(PAIEMENT value) {
+        public void setPAIEMENT(DOCUMENT.CONTENT.PAIEMENT value) {
             this.paiement = value;
         }
 
@@ -4733,6 +5070,28 @@ public class DOCUMENT implements Serializable {
          */
         public void setOBSERVATIONS(String value) {
             this.observations = value;
+        }
+
+        /**
+         * Obtient la valeur de la propri�t� detailsdecisionssiat.
+         *
+         * @return possible object is
+         *     {@link DOCUMENT.CONTENT.DETAILSDECISIONSSIAT }
+         *
+         */
+        public DOCUMENT.CONTENT.DETAILSDECISIONSSIAT getDETAILSDECISIONSSIAT() {
+            return detailsdecisionssiat;
+        }
+
+        /**
+         * D�finit la valeur de la propri�t� detailsdecisionssiat.
+         *
+         * @param value allowed object is
+         *     {@link DOCUMENT.CONTENT.DETAILSDECISIONSSIAT }
+         *
+         */
+        public void setDETAILSDECISIONSSIAT(DOCUMENT.CONTENT.DETAILSDECISIONSSIAT value) {
+            this.detailsdecisionssiat = value;
         }
 
         /**
@@ -6461,27 +6820,61 @@ public class DOCUMENT implements Serializable {
          *             &lt;complexContent>
          *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *                 &lt;sequence>
-         *                   &lt;element name="NUMERO" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                   &lt;element name="PLOMB" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                   &lt;choice minOccurs="0">
-         *                     &lt;element name="TONNAGE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                     &lt;element name="VOLUME" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                   &lt;/choice>
-         *                   &lt;element name="TYPE" minOccurs="0">
-         *                     &lt;complexType>
-         *                       &lt;complexContent>
-         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *                           &lt;sequence>
-         *                             &lt;element name="typeContCode" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                             &lt;element name="typeContLibelle" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                           &lt;/sequence>
-         *                         &lt;/restriction>
-         *                       &lt;/complexContent>
-         *                     &lt;/complexType>
+         *                   &lt;element name="NUMERO" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="11"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
          *                   &lt;/element>
-         *                   &lt;element name="QUANTITE_COLIS" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                   &lt;element name="MARQUE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
-         *                   &lt;element name="ESSENCE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *                   &lt;element name="SCELLE_1" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="10"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="SCELLE_2" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="10"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="SCELLE_3" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="10"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="TONNAGE" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+         *                   &lt;element name="VOLUME" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+         *                   &lt;element name="TYPE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="5"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="PLEIN" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+         *                   &lt;element name="QUANTITE_COLIS" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+         *                   &lt;element name="MARQUE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="REFRIGERE" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+         *                   &lt;element name="INDICATEUR_DANGEROSITE" type="{http://www.w3.org/2001/XMLSchema}short" minOccurs="0"/>
+         *                   &lt;element name="ESSENCE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
          *                 &lt;/sequence>
          *               &lt;/restriction>
          *             &lt;/complexContent>
@@ -6538,7 +6931,7 @@ public class DOCUMENT implements Serializable {
              * Classe Java pour anonymous complex type.
              *
              * <p>
-             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
              * dans cette classe.
              *
              * <pre>
@@ -6655,7 +7048,7 @@ public class DOCUMENT implements Serializable {
                 protected String essence;
 
                 /**
-                 * Obtient la valeur de la propriété numero.
+                 * Obtient la valeur de la propri�t� numero.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6665,7 +7058,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété numero.
+                 * D�finit la valeur de la propri�t� numero.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -6675,7 +7068,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété scelle1.
+                 * Obtient la valeur de la propri�t� scelle1.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6685,7 +7078,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété scelle1.
+                 * D�finit la valeur de la propri�t� scelle1.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -6695,7 +7088,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété scelle2.
+                 * Obtient la valeur de la propri�t� scelle2.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6705,7 +7098,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété scelle2.
+                 * D�finit la valeur de la propri�t� scelle2.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -6715,7 +7108,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété scelle3.
+                 * Obtient la valeur de la propri�t� scelle3.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6725,7 +7118,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété scelle3.
+                 * D�finit la valeur de la propri�t� scelle3.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -6735,7 +7128,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété tonnage.
+                 * Obtient la valeur de la propri�t� tonnage.
                  *
                  * @return possible object is {@link BigDecimal }
                  *
@@ -6745,7 +7138,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété tonnage.
+                 * D�finit la valeur de la propri�t� tonnage.
                  *
                  * @param value allowed object is {@link BigDecimal }
                  *
@@ -6755,7 +7148,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété volume.
+                 * Obtient la valeur de la propri�t� volume.
                  *
                  * @return possible object is {@link BigDecimal }
                  *
@@ -6765,7 +7158,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété volume.
+                 * D�finit la valeur de la propri�t� volume.
                  *
                  * @param value allowed object is {@link BigDecimal }
                  *
@@ -6775,7 +7168,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété type.
+                 * Obtient la valeur de la propri�t� type.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6785,7 +7178,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété type.
+                 * D�finit la valeur de la propri�t� type.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -6795,7 +7188,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété plein.
+                 * Obtient la valeur de la propri�t� plein.
                  *
                  * @return possible object is {@link Boolean }
                  *
@@ -6805,7 +7198,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété plein.
+                 * D�finit la valeur de la propri�t� plein.
                  *
                  * @param value allowed object is {@link Boolean }
                  *
@@ -6815,7 +7208,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété quantitecolis.
+                 * Obtient la valeur de la propri�t� quantitecolis.
                  *
                  * @return possible object is {@link BigDecimal }
                  *
@@ -6825,7 +7218,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété quantitecolis.
+                 * D�finit la valeur de la propri�t� quantitecolis.
                  *
                  * @param value allowed object is {@link BigDecimal }
                  *
@@ -6835,7 +7228,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété marque.
+                 * Obtient la valeur de la propri�t� marque.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6845,7 +7238,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété marque.
+                 * D�finit la valeur de la propri�t� marque.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -6855,7 +7248,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété refrigere.
+                 * Obtient la valeur de la propri�t� refrigere.
                  *
                  * @return possible object is {@link Boolean }
                  *
@@ -6865,7 +7258,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété refrigere.
+                 * D�finit la valeur de la propri�t� refrigere.
                  *
                  * @param value allowed object is {@link Boolean }
                  *
@@ -6875,7 +7268,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété indicateurdangerosite.
+                 * Obtient la valeur de la propri�t� indicateurdangerosite.
                  *
                  * @return possible object is {@link Short }
                  *
@@ -6885,7 +7278,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété indicateurdangerosite.
+                 * D�finit la valeur de la propri�t� indicateurdangerosite.
                  *
                  * @param value allowed object is {@link Short }
                  *
@@ -6895,7 +7288,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété essence.
+                 * Obtient la valeur de la propri�t� essence.
                  *
                  * @return possible object is {@link String }
                  *
@@ -6905,7 +7298,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété essence.
+                 * D�finit la valeur de la propri�t� essence.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -7833,6 +8226,291 @@ public class DOCUMENT implements Serializable {
                  */
                 public void setNUMERO(String value) {
                     this.numero = value;
+                }
+
+            }
+
+        }
+
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de sch�ma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence minOccurs="0">
+         *         &lt;element name="DETAILS_DECISION" maxOccurs="unbounded" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence minOccurs="0">
+         *                   &lt;element name="CODE_PROCEDURE_SIAT">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="30"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="CODE">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="LABEL_FR">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="LABEL_EN">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="VALEUR">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "detailsdecision"
+        })
+        public static class DETAILSDECISIONSSIAT {
+
+            @XmlElement(name = "DETAILS_DECISION")
+            protected List<DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION> detailsdecision;
+
+            /**
+             * Gets the value of the detailsdecision property.
+             *
+             * <p>
+             * This accessor method returns a reference to the live list, not a
+             * snapshot. Therefore any modification you make to the returned
+             * list will be present inside the JAXB object. This is why there is
+             * not a <CODE>set</CODE> method for the detailsdecision property.
+             *
+             * <p>
+             * For example, to add a new item, do as follows:
+             * <pre>
+             *    getDETAILSDECISION().add(newItem);
+             * </pre>
+             *
+             *
+             * <p>
+             * Objects of the following type(s) are allowed in the list
+             * {@link DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION }
+             *
+             *
+             */
+            public List<DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION> getDETAILSDECISION() {
+                if (detailsdecision == null) {
+                    detailsdecision = new ArrayList<DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION>();
+                }
+                return this.detailsdecision;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence minOccurs="0">
+             *         &lt;element name="CODE_PROCEDURE_SIAT">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="30"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="CODE">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="LABEL_FR">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="LABEL_EN">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="VALEUR">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "codeproceduresiat",
+                "code",
+                "labelfr",
+                "labelen",
+                "valeur"
+            })
+            public static class DETAILSDECISION {
+
+                @XmlElement(name = "CODE_PROCEDURE_SIAT")
+                protected String codeproceduresiat;
+                @XmlElement(name = "CODE")
+                protected String code;
+                @XmlElement(name = "LABEL_FR")
+                protected String labelfr;
+                @XmlElement(name = "LABEL_EN")
+                protected String labelen;
+                @XmlElement(name = "VALEUR")
+                protected String valeur;
+
+                /**
+                 * Obtient la valeur de la propri�t� codeproceduresiat.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getCODEPROCEDURESIAT() {
+                    return codeproceduresiat;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� codeproceduresiat.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setCODEPROCEDURESIAT(String value) {
+                    this.codeproceduresiat = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� code.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getCODE() {
+                    return code;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� code.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setCODE(String value) {
+                    this.code = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� labelfr.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getLABELFR() {
+                    return labelfr;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� labelfr.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setLABELFR(String value) {
+                    this.labelfr = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� labelen.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getLABELEN() {
+                    return labelen;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� labelen.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setLABELEN(String value) {
+                    this.labelen = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� valeur.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getVALEUR() {
+                    return valeur;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� valeur.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setVALEUR(String value) {
+                    this.valeur = value;
                 }
 
             }
@@ -9727,6 +10405,8 @@ public class DOCUMENT implements Serializable {
          *                       &lt;/complexContent>
          *                     &lt;/complexType>
          *                   &lt;/element>
+         *                   &lt;element name="NOMBRE_GRUMES" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+         *                   &lt;element name="POIDS_BRUT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
          *                   &lt;element name="QUALITE" minOccurs="0">
          *                     &lt;simpleType>
          *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -9961,7 +10641,7 @@ public class DOCUMENT implements Serializable {
              * Classe Java pour anonymous complex type.
              *
              * <p>
-             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
              * dans cette classe.
              *
              * <pre>
@@ -10297,7 +10977,7 @@ public class DOCUMENT implements Serializable {
                 protected String marque;
 
                 /**
-                 * Obtient la valeur de la propriété linenumber.
+                 * Obtient la valeur de la propri�t� linenumber.
                  *
                  * @return possible object is {@link Integer }
                  *
@@ -10307,7 +10987,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété linenumber.
+                 * D�finit la valeur de la propri�t� linenumber.
                  *
                  * @param value allowed object is {@link Integer }
                  *
@@ -10317,7 +10997,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété codetarif.
+                 * Obtient la valeur de la propri�t� codetarif.
                  *
                  * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF }
@@ -10328,7 +11008,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété codetarif.
+                 * D�finit la valeur de la propri�t� codetarif.
                  *
                  * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF }
@@ -10339,7 +11019,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété sousfamille.
+                 * Obtient la valeur de la propri�t� sousfamille.
                  *
                  * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE }
@@ -10350,7 +11030,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété sousfamille.
+                 * D�finit la valeur de la propri�t� sousfamille.
                  *
                  * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE }
@@ -10361,7 +11041,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété nombregrumes.
+                 * Obtient la valeur de la propri�t� nombregrumes.
                  *
                  * @return possible object is {@link BigDecimal }
                  *
@@ -10371,7 +11051,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété nombregrumes.
+                 * D�finit la valeur de la propri�t� nombregrumes.
                  *
                  * @param value allowed object is {@link BigDecimal }
                  *
@@ -10381,7 +11061,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété poidsbrut.
+                 * Obtient la valeur de la propri�t� poidsbrut.
                  *
                  * @return possible object is {@link BigDecimal }
                  *
@@ -10391,7 +11071,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété poidsbrut.
+                 * D�finit la valeur de la propri�t� poidsbrut.
                  *
                  * @param value allowed object is {@link BigDecimal }
                  *
@@ -10401,7 +11081,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété qualite.
+                 * Obtient la valeur de la propri�t� qualite.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10411,7 +11091,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété qualite.
+                 * D�finit la valeur de la propri�t� qualite.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10421,7 +11101,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété quantite.
+                 * Obtient la valeur de la propri�t� quantite.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10431,7 +11111,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété quantite.
+                 * D�finit la valeur de la propri�t� quantite.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10441,7 +11121,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété campagne.
+                 * Obtient la valeur de la propri�t� campagne.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10451,7 +11131,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété campagne.
+                 * D�finit la valeur de la propri�t� campagne.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10461,7 +11141,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété valeurfobdevise.
+                 * Obtient la valeur de la propri�t� valeurfobdevise.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10471,7 +11151,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété valeurfobdevise.
+                 * D�finit la valeur de la propri�t� valeurfobdevise.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10481,7 +11161,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété tonnage.
+                 * Obtient la valeur de la propri�t� tonnage.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10491,7 +11171,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété tonnage.
+                 * D�finit la valeur de la propri�t� tonnage.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10501,7 +11181,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété unite.
+                 * Obtient la valeur de la propri�t� unite.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10511,7 +11191,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété unite.
+                 * D�finit la valeur de la propri�t� unite.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10521,7 +11201,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété poids.
+                 * Obtient la valeur de la propri�t� poids.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10531,7 +11211,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété poids.
+                 * D�finit la valeur de la propri�t� poids.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10541,7 +11221,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété volume.
+                 * Obtient la valeur de la propri�t� volume.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10551,7 +11231,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété volume.
+                 * D�finit la valeur de la propri�t� volume.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10561,7 +11241,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété nomcommercial.
+                 * Obtient la valeur de la propri�t� nomcommercial.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10571,7 +11251,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété nomcommercial.
+                 * D�finit la valeur de la propri�t� nomcommercial.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10581,7 +11261,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété nomscientifique.
+                 * Obtient la valeur de la propri�t� nomscientifique.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10591,7 +11271,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété nomscientifique.
+                 * D�finit la valeur de la propri�t� nomscientifique.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10601,7 +11281,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété classification.
+                 * Obtient la valeur de la propri�t� classification.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10611,7 +11291,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété classification.
+                 * D�finit la valeur de la propri�t� classification.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10621,7 +11301,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété formulechimique.
+                 * Obtient la valeur de la propri�t� formulechimique.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10631,7 +11311,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété formulechimique.
+                 * D�finit la valeur de la propri�t� formulechimique.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10641,7 +11321,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété specificationtechnique.
+                 * Obtient la valeur de la propri�t� specificationtechnique.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10651,7 +11331,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété specificationtechnique.
+                 * D�finit la valeur de la propri�t� specificationtechnique.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10661,7 +11341,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété paysorigine.
+                 * Obtient la valeur de la propri�t� paysorigine.
                  *
                  * @return possible object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE }
@@ -10672,7 +11352,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété paysorigine.
+                 * D�finit la valeur de la propri�t� paysorigine.
                  *
                  * @param value allowed object is
                  *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE }
@@ -10683,7 +11363,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété usage.
+                 * Obtient la valeur de la propri�t� usage.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10693,7 +11373,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété usage.
+                 * D�finit la valeur de la propri�t� usage.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10703,7 +11383,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété numlot.
+                 * Obtient la valeur de la propri�t� numlot.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10713,7 +11393,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété numlot.
+                 * D�finit la valeur de la propri�t� numlot.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10723,7 +11403,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété modepreparation.
+                 * Obtient la valeur de la propri�t� modepreparation.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10733,7 +11413,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété modepreparation.
+                 * D�finit la valeur de la propri�t� modepreparation.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10743,7 +11423,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété nombresacs.
+                 * Obtient la valeur de la propri�t� nombresacs.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10753,7 +11433,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété nombresacs.
+                 * D�finit la valeur de la propri�t� nombresacs.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10763,7 +11443,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété nombreconteneursventiles.
+                 * Obtient la valeur de la propri�t� nombreconteneursventiles.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10773,7 +11453,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété nombreconteneursventiles.
+                 * D�finit la valeur de la propri�t� nombreconteneursventiles.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10783,7 +11463,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété
+                 * Obtient la valeur de la propri�t�
                  * nombreconteneursnomventiles.
                  *
                  * @return possible object is {@link String }
@@ -10794,7 +11474,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété
+                 * D�finit la valeur de la propri�t�
                  * nombreconteneursnomventiles.
                  *
                  * @param value allowed object is {@link String }
@@ -10805,7 +11485,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété poidsdeclaretotalbrut.
+                 * Obtient la valeur de la propri�t� poidsdeclaretotalbrut.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10815,7 +11495,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété poidsdeclaretotalbrut.
+                 * D�finit la valeur de la propri�t� poidsdeclaretotalbrut.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10825,7 +11505,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété poidstotalnet.
+                 * Obtient la valeur de la propri�t� poidstotalnet.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10835,7 +11515,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété poidstotalnet.
+                 * D�finit la valeur de la propri�t� poidstotalnet.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10845,7 +11525,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Obtient la valeur de la propriété marque.
+                 * Obtient la valeur de la propri�t� marque.
                  *
                  * @return possible object is {@link String }
                  *
@@ -10855,7 +11535,7 @@ public class DOCUMENT implements Serializable {
                 }
 
                 /**
-                 * Définit la valeur de la propriété marque.
+                 * D�finit la valeur de la propri�t� marque.
                  *
                  * @param value allowed object is {@link String }
                  *
@@ -10869,7 +11549,7 @@ public class DOCUMENT implements Serializable {
                  * Classe Java pour anonymous complex type.
                  *
                  * <p>
-                 * Le fragment de schéma suivant indique le contenu attendu
+                 * Le fragment de sch�ma suivant indique le contenu attendu
                  * figurant dans cette classe.
                  *
                  * <pre>
@@ -10912,7 +11592,7 @@ public class DOCUMENT implements Serializable {
                     protected String designation;
 
                     /**
-                     * Obtient la valeur de la propriété codensh.
+                     * Obtient la valeur de la propri�t� codensh.
                      *
                      * @return possible object is {@link String }
                      *
@@ -10922,7 +11602,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Définit la valeur de la propriété codensh.
+                     * D�finit la valeur de la propri�t� codensh.
                      *
                      * @param value allowed object is {@link String }
                      *
@@ -10932,7 +11612,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Obtient la valeur de la propriété designation.
+                     * Obtient la valeur de la propri�t� designation.
                      *
                      * @return possible object is {@link String }
                      *
@@ -10942,7 +11622,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Définit la valeur de la propriété designation.
+                     * D�finit la valeur de la propri�t� designation.
                      *
                      * @param value allowed object is {@link String }
                      *
@@ -10958,7 +11638,7 @@ public class DOCUMENT implements Serializable {
                  * Classe Java pour anonymous complex type.
                  *
                  * <p>
-                 * Le fragment de schéma suivant indique le contenu attendu
+                 * Le fragment de sch�ma suivant indique le contenu attendu
                  * figurant dans cette classe.
                  *
                  * <pre>
@@ -11001,7 +11681,7 @@ public class DOCUMENT implements Serializable {
                     protected String nompays;
 
                     /**
-                     * Obtient la valeur de la propriété codepays.
+                     * Obtient la valeur de la propri�t� codepays.
                      *
                      * @return possible object is {@link String }
                      *
@@ -11011,7 +11691,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Définit la valeur de la propriété codepays.
+                     * D�finit la valeur de la propri�t� codepays.
                      *
                      * @param value allowed object is {@link String }
                      *
@@ -11021,7 +11701,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Obtient la valeur de la propriété nompays.
+                     * Obtient la valeur de la propri�t� nompays.
                      *
                      * @return possible object is {@link String }
                      *
@@ -11031,7 +11711,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Définit la valeur de la propriété nompays.
+                     * D�finit la valeur de la propri�t� nompays.
                      *
                      * @param value allowed object is {@link String }
                      *
@@ -11047,7 +11727,7 @@ public class DOCUMENT implements Serializable {
                  * Classe Java pour anonymous complex type.
                  *
                  * <p>
-                 * Le fragment de schéma suivant indique le contenu attendu
+                 * Le fragment de sch�ma suivant indique le contenu attendu
                  * figurant dans cette classe.
                  *
                  * <pre>
@@ -11090,7 +11770,7 @@ public class DOCUMENT implements Serializable {
                     protected String nom;
 
                     /**
-                     * Obtient la valeur de la propriété codesousfamille.
+                     * Obtient la valeur de la propri�t� codesousfamille.
                      *
                      * @return possible object is {@link String }
                      *
@@ -11100,7 +11780,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Définit la valeur de la propriété codesousfamille.
+                     * D�finit la valeur de la propri�t� codesousfamille.
                      *
                      * @param value allowed object is {@link String }
                      *
@@ -11110,7 +11790,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Obtient la valeur de la propriété nom.
+                     * Obtient la valeur de la propri�t� nom.
                      *
                      * @return possible object is {@link String }
                      *
@@ -11120,7 +11800,7 @@ public class DOCUMENT implements Serializable {
                     }
 
                     /**
-                     * Définit la valeur de la propriété nom.
+                     * D�finit la valeur de la propri�t� nom.
                      *
                      * @param value allowed object is {@link String }
                      *
@@ -11129,6 +11809,3001 @@ public class DOCUMENT implements Serializable {
                         this.nom = value;
                     }
 
+                }
+
+            }
+
+        }
+
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de sch�ma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="FACTURE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="REFERENCE_FACTURE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="DETAIL_FACTURES" minOccurs="0">
+         *                     &lt;complexType>
+         *                       &lt;complexContent>
+         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                           &lt;sequence minOccurs="0">
+         *                             &lt;element name="DETAIL_FACTURE" maxOccurs="unbounded" minOccurs="0">
+         *                               &lt;complexType>
+         *                                 &lt;complexContent>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                                     &lt;sequence minOccurs="0">
+         *                                       &lt;element name="NUMERO_LIGNE" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="255"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                       &lt;element name="CODE_ARTICLE" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="35"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                       &lt;element name="LIBELLE_ARTICLE" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="255"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                       &lt;element name="MONTANT_HT" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="35"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                       &lt;element name="MONTANT_TVA" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="35"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                       &lt;element name="MONTANT_TTC" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="35"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                     &lt;/sequence>
+         *                                   &lt;/restriction>
+         *                                 &lt;/complexContent>
+         *                               &lt;/complexType>
+         *                             &lt;/element>
+         *                           &lt;/sequence>
+         *                         &lt;/restriction>
+         *                       &lt;/complexContent>
+         *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                   &lt;element name="MONTANT_HT" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="MONTANT_TVA" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="MONTANT_TTC" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="AUTRE_MONTANT" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="TYPE_FACTURE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="SIGNATAIRE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="NOM" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="100"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="QUALITE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="100"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="LIEU" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="100"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="DATE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="SOCIETE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="100"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="ENCAISSEMENT" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="NUMERO_RECU" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="NATURE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="DATE_ENCAISSEMENT" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="MONTANT" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="OBSERVATIONS" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="CANAL_ENCAISSEMENT" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="FICHE_RECETTE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="NUMERO_ROLE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="IMPUTATION" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="ARTICLE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="NUMERO_QUITTANCE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="NATURE_RECETTE_RUBRIQUE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="PARTIE_VERSANTE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="NUMERO_CONTRIBUABLE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="RAISON_SOCIALE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="CHARGEUR" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="NUMERO_CONTRIBUABLE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="RAISON_SOCIALE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="ADRESSE" minOccurs="0">
+         *                     &lt;complexType>
+         *                       &lt;complexContent>
+         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                           &lt;sequence>
+         *                             &lt;element name="ADRESSE1" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="255"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="ADRESSE2" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="255"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="BP" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="10"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="PAYS_ADRESSE" minOccurs="0">
+         *                               &lt;complexType>
+         *                                 &lt;complexContent>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                                     &lt;sequence>
+         *                                       &lt;element name="CODE_PAYS" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="3"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                       &lt;element name="NOM_PAYS" minOccurs="0">
+         *                                         &lt;simpleType>
+         *                                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                             &lt;maxLength value="35"/>
+         *                                           &lt;/restriction>
+         *                                         &lt;/simpleType>
+         *                                       &lt;/element>
+         *                                     &lt;/sequence>
+         *                                   &lt;/restriction>
+         *                                 &lt;/complexContent>
+         *                               &lt;/complexType>
+         *                             &lt;/element>
+         *                             &lt;element name="VILLE" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="35"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="EMAIL" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="50"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="SITE_WEB" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="50"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                           &lt;/sequence>
+         *                         &lt;/restriction>
+         *                       &lt;/complexContent>
+         *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                   &lt;element name="TELEPHONE_FIXE" minOccurs="0">
+         *                     &lt;complexType>
+         *                       &lt;complexContent>
+         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                           &lt;sequence>
+         *                             &lt;element name="INDICATIF_PAYS" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="5"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="NUMERO" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="15"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                           &lt;/sequence>
+         *                         &lt;/restriction>
+         *                       &lt;/complexContent>
+         *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                   &lt;element name="TELEPHONE_MOBILE" minOccurs="0">
+         *                     &lt;complexType>
+         *                       &lt;complexContent>
+         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                           &lt;sequence>
+         *                             &lt;element name="INDICATIF_PAYS" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="5"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="NUMERO" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="15"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                           &lt;/sequence>
+         *                         &lt;/restriction>
+         *                       &lt;/complexContent>
+         *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                   &lt;element name="FAX" minOccurs="0">
+         *                     &lt;complexType>
+         *                       &lt;complexContent>
+         *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                           &lt;sequence>
+         *                             &lt;element name="INDICATIF_PAYS" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="5"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                             &lt;element name="NUMERO" minOccurs="0">
+         *                               &lt;simpleType>
+         *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                   &lt;maxLength value="15"/>
+         *                                 &lt;/restriction>
+         *                               &lt;/simpleType>
+         *                             &lt;/element>
+         *                           &lt;/sequence>
+         *                         &lt;/restriction>
+         *                       &lt;/complexContent>
+         *                     &lt;/complexType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="BENEFICIAIRE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="CODE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="35"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="LIBELLE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "facture",
+            "signataire",
+            "encaissement",
+            "ficherecette",
+            "partieversante",
+            "chargeur",
+            "beneficiaire"
+        })
+        public static class PAIEMENT {
+
+            @XmlElement(name = "FACTURE")
+            protected DOCUMENT.CONTENT.PAIEMENT.FACTURE facture;
+            @XmlElement(name = "SIGNATAIRE")
+            protected DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE signataire;
+            @XmlElement(name = "ENCAISSEMENT")
+            protected DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT encaissement;
+            @XmlElement(name = "FICHE_RECETTE")
+            protected DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE ficherecette;
+            @XmlElement(name = "PARTIE_VERSANTE")
+            protected DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE partieversante;
+            @XmlElement(name = "CHARGEUR")
+            protected DOCUMENT.CONTENT.PAIEMENT.CHARGEUR chargeur;
+            @XmlElement(name = "BENEFICIAIRE")
+            protected DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE beneficiaire;
+
+            /**
+             * Obtient la valeur de la propri�t� facture.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.FACTURE getFACTURE() {
+                return facture;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� facture.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE }
+             *
+             */
+            public void setFACTURE(DOCUMENT.CONTENT.PAIEMENT.FACTURE value) {
+                this.facture = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� signataire.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE getSIGNATAIRE() {
+                return signataire;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� signataire.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE }
+             *
+             */
+            public void setSIGNATAIRE(DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE value) {
+                this.signataire = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� encaissement.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT getENCAISSEMENT() {
+                return encaissement;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� encaissement.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT }
+             *
+             */
+            public void setENCAISSEMENT(DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT value) {
+                this.encaissement = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� ficherecette.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE getFICHERECETTE() {
+                return ficherecette;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� ficherecette.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE }
+             *
+             */
+            public void setFICHERECETTE(DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE value) {
+                this.ficherecette = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� partieversante.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE getPARTIEVERSANTE() {
+                return partieversante;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� partieversante.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE }
+             *
+             */
+            public void setPARTIEVERSANTE(DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE value) {
+                this.partieversante = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� chargeur.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR getCHARGEUR() {
+                return chargeur;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� chargeur.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR }
+             *
+             */
+            public void setCHARGEUR(DOCUMENT.CONTENT.PAIEMENT.CHARGEUR value) {
+                this.chargeur = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� beneficiaire.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE }
+             *
+             */
+            public DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE getBENEFICIAIRE() {
+                return beneficiaire;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� beneficiaire.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE }
+             *
+             */
+            public void setBENEFICIAIRE(DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE value) {
+                this.beneficiaire = value;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="CODE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="LIBELLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "code",
+                "libelle"
+            })
+            public static class BENEFICIAIRE {
+
+                @XmlElement(name = "CODE")
+                protected String code;
+                @XmlElement(name = "LIBELLE")
+                protected String libelle;
+
+                /**
+                 * Obtient la valeur de la propri�t� code.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getCODE() {
+                    return code;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� code.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setCODE(String value) {
+                    this.code = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� libelle.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getLIBELLE() {
+                    return libelle;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� libelle.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setLIBELLE(String value) {
+                    this.libelle = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NUMERO_CONTRIBUABLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="RAISON_SOCIALE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="ADRESSE" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="ADRESSE1" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="255"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="ADRESSE2" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="255"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="BP" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="10"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="PAYS_ADRESSE" minOccurs="0">
+             *                     &lt;complexType>
+             *                       &lt;complexContent>
+             *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                           &lt;sequence>
+             *                             &lt;element name="CODE_PAYS" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="3"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                             &lt;element name="NOM_PAYS" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="35"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                           &lt;/sequence>
+             *                         &lt;/restriction>
+             *                       &lt;/complexContent>
+             *                     &lt;/complexType>
+             *                   &lt;/element>
+             *                   &lt;element name="VILLE" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="EMAIL" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="50"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="SITE_WEB" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="50"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *         &lt;element name="TELEPHONE_FIXE" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="5"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="NUMERO" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="15"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *         &lt;element name="TELEPHONE_MOBILE" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="5"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="NUMERO" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="15"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *         &lt;element name="FAX" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="INDICATIF_PAYS" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="5"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="NUMERO" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="15"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "numerocontribuable",
+                "raisonsociale",
+                "adresse",
+                "telephonefixe",
+                "telephonemobile",
+                "fax"
+            })
+            public static class CHARGEUR {
+
+                @XmlElement(name = "NUMERO_CONTRIBUABLE")
+                protected String numerocontribuable;
+                @XmlElement(name = "RAISON_SOCIALE")
+                protected String raisonsociale;
+                @XmlElement(name = "ADRESSE")
+                protected DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE adresse;
+                @XmlElement(name = "TELEPHONE_FIXE")
+                protected DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE telephonefixe;
+                @XmlElement(name = "TELEPHONE_MOBILE")
+                protected DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE telephonemobile;
+                @XmlElement(name = "FAX")
+                protected DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX fax;
+
+                /**
+                 * Obtient la valeur de la propri�t� numerocontribuable.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMEROCONTRIBUABLE() {
+                    return numerocontribuable;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� numerocontribuable.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMEROCONTRIBUABLE(String value) {
+                    this.numerocontribuable = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� raisonsociale.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getRAISONSOCIALE() {
+                    return raisonsociale;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� raisonsociale.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setRAISONSOCIALE(String value) {
+                    this.raisonsociale = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� adresse.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE }
+                 *
+                 */
+                public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE getADRESSE() {
+                    return adresse;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� adresse.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE }
+                 *
+                 */
+                public void setADRESSE(DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE value) {
+                    this.adresse = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� telephonefixe.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE }
+                 *
+                 */
+                public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE getTELEPHONEFIXE() {
+                    return telephonefixe;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� telephonefixe.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE }
+                 *
+                 */
+                public void setTELEPHONEFIXE(DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE value) {
+                    this.telephonefixe = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� telephonemobile.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE }
+                 *
+                 */
+                public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE getTELEPHONEMOBILE() {
+                    return telephonemobile;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� telephonemobile.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE }
+                 *
+                 */
+                public void setTELEPHONEMOBILE(DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE value) {
+                    this.telephonemobile = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� fax.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX }
+                 *
+                 */
+                public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX getFAX() {
+                    return fax;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� fax.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX }
+                 *
+                 */
+                public void setFAX(DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX value) {
+                    this.fax = value;
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de sch�ma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="ADRESSE1" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="255"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="ADRESSE2" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="255"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="BP" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="10"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="PAYS_ADRESSE" minOccurs="0">
+                 *           &lt;complexType>
+                 *             &lt;complexContent>
+                 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *                 &lt;sequence>
+                 *                   &lt;element name="CODE_PAYS" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="3"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                   &lt;element name="NOM_PAYS" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="35"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                 &lt;/sequence>
+                 *               &lt;/restriction>
+                 *             &lt;/complexContent>
+                 *           &lt;/complexType>
+                 *         &lt;/element>
+                 *         &lt;element name="VILLE" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="EMAIL" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="50"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="SITE_WEB" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="50"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "adresse1",
+                    "adresse2",
+                    "bp",
+                    "paysadresse",
+                    "ville",
+                    "email",
+                    "siteweb"
+                })
+                public static class ADRESSE {
+
+                    @XmlElement(name = "ADRESSE1")
+                    protected String adresse1;
+                    @XmlElement(name = "ADRESSE2")
+                    protected String adresse2;
+                    @XmlElement(name = "BP")
+                    protected String bp;
+                    @XmlElement(name = "PAYS_ADRESSE")
+                    protected DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE paysadresse;
+                    @XmlElement(name = "VILLE")
+                    protected String ville;
+                    @XmlElement(name = "EMAIL")
+                    protected String email;
+                    @XmlElement(name = "SITE_WEB")
+                    protected String siteweb;
+
+                    /**
+                     * Obtient la valeur de la propri�t� adresse1.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getADRESSE1() {
+                        return adresse1;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� adresse1.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setADRESSE1(String value) {
+                        this.adresse1 = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� adresse2.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getADRESSE2() {
+                        return adresse2;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� adresse2.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setADRESSE2(String value) {
+                        this.adresse2 = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� bp.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getBP() {
+                        return bp;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� bp.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setBP(String value) {
+                        this.bp = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� paysadresse.
+                     *
+                     * @return possible object is
+                     *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE }
+                     *
+                     */
+                    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE getPAYSADRESSE() {
+                        return paysadresse;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� paysadresse.
+                     *
+                     * @param value allowed object is
+                     *     {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE }
+                     *
+                     */
+                    public void setPAYSADRESSE(DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE value) {
+                        this.paysadresse = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� ville.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getVILLE() {
+                        return ville;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� ville.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setVILLE(String value) {
+                        this.ville = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� email.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getEMAIL() {
+                        return email;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� email.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setEMAIL(String value) {
+                        this.email = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� siteweb.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getSITEWEB() {
+                        return siteweb;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� siteweb.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setSITEWEB(String value) {
+                        this.siteweb = value;
+                    }
+
+                    /**
+                     * <p>
+                     * Classe Java pour anonymous complex type.
+                     *
+                     * <p>
+                     * Le fragment de sch�ma suivant indique le contenu attendu
+                     * figurant dans cette classe.
+                     *
+                     * <pre>
+                     * &lt;complexType>
+                     *   &lt;complexContent>
+                     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                     *       &lt;sequence>
+                     *         &lt;element name="CODE_PAYS" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="3"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *         &lt;element name="NOM_PAYS" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="35"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *       &lt;/sequence>
+                     *     &lt;/restriction>
+                     *   &lt;/complexContent>
+                     * &lt;/complexType>
+                     * </pre>
+                     *
+                     *
+                     */
+                    @XmlAccessorType(XmlAccessType.FIELD)
+                    @XmlType(name = "", propOrder = {
+                        "codepays",
+                        "nompays"
+                    })
+                    public static class PAYSADRESSE {
+
+                        @XmlElement(name = "CODE_PAYS")
+                        protected String codepays;
+                        @XmlElement(name = "NOM_PAYS")
+                        protected String nompays;
+
+                        /**
+                         * Obtient la valeur de la propri�t� codepays.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getCODEPAYS() {
+                            return codepays;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� codepays.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setCODEPAYS(String value) {
+                            this.codepays = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propri�t� nompays.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getNOMPAYS() {
+                            return nompays;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� nompays.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setNOMPAYS(String value) {
+                            this.nompays = value;
+                        }
+
+                    }
+
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de sch�ma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="5"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="NUMERO" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="15"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "indicatifpays",
+                    "numero"
+                })
+                public static class FAX {
+
+                    @XmlElement(name = "INDICATIF_PAYS")
+                    protected String indicatifpays;
+                    @XmlElement(name = "NUMERO")
+                    protected String numero;
+
+                    /**
+                     * Obtient la valeur de la propri�t� indicatifpays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getINDICATIFPAYS() {
+                        return indicatifpays;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� indicatifpays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setINDICATIFPAYS(String value) {
+                        this.indicatifpays = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� numero.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNUMERO() {
+                        return numero;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� numero.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNUMERO(String value) {
+                        this.numero = value;
+                    }
+
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de sch�ma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="5"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="NUMERO" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="15"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "indicatifpays",
+                    "numero"
+                })
+                public static class TELEPHONEFIXE {
+
+                    @XmlElement(name = "INDICATIF_PAYS")
+                    protected String indicatifpays;
+                    @XmlElement(name = "NUMERO")
+                    protected String numero;
+
+                    /**
+                     * Obtient la valeur de la propri�t� indicatifpays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getINDICATIFPAYS() {
+                        return indicatifpays;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� indicatifpays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setINDICATIFPAYS(String value) {
+                        this.indicatifpays = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� numero.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNUMERO() {
+                        return numero;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� numero.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNUMERO(String value) {
+                        this.numero = value;
+                    }
+
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de sch�ma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="INDICATIF_PAYS" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="5"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="NUMERO" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="15"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "indicatifpays",
+                    "numero"
+                })
+                public static class TELEPHONEMOBILE {
+
+                    @XmlElement(name = "INDICATIF_PAYS")
+                    protected String indicatifpays;
+                    @XmlElement(name = "NUMERO")
+                    protected String numero;
+
+                    /**
+                     * Obtient la valeur de la propri�t� indicatifpays.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getINDICATIFPAYS() {
+                        return indicatifpays;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� indicatifpays.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setINDICATIFPAYS(String value) {
+                        this.indicatifpays = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propri�t� numero.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNUMERO() {
+                        return numero;
+                    }
+
+                    /**
+                     * D�finit la valeur de la propri�t� numero.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNUMERO(String value) {
+                        this.numero = value;
+                    }
+
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NUMERO_RECU" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NATURE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="DATE_ENCAISSEMENT" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="MONTANT" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="OBSERVATIONS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="CANAL_ENCAISSEMENT" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "numerorecu",
+                "nature",
+                "dateencaissement",
+                "montant",
+                "observations",
+                "canalencaissement"
+            })
+            public static class ENCAISSEMENT {
+
+                @XmlElement(name = "NUMERO_RECU")
+                protected String numerorecu;
+                @XmlElement(name = "NATURE")
+                protected String nature;
+                @XmlElement(name = "DATE_ENCAISSEMENT")
+                protected String dateencaissement;
+                @XmlElement(name = "MONTANT")
+                protected String montant;
+                @XmlElement(name = "OBSERVATIONS")
+                protected String observations;
+                @XmlElement(name = "CANAL_ENCAISSEMENT")
+                protected String canalencaissement;
+
+                /**
+                 * Obtient la valeur de la propri�t� numerorecu.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMERORECU() {
+                    return numerorecu;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� numerorecu.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMERORECU(String value) {
+                    this.numerorecu = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� nature.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNATURE() {
+                    return nature;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� nature.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNATURE(String value) {
+                    this.nature = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� dateencaissement.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getDATEENCAISSEMENT() {
+                    return dateencaissement;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� dateencaissement.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setDATEENCAISSEMENT(String value) {
+                    this.dateencaissement = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� montant.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getMONTANT() {
+                    return montant;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� montant.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setMONTANT(String value) {
+                    this.montant = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� observations.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getOBSERVATIONS() {
+                    return observations;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� observations.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setOBSERVATIONS(String value) {
+                    this.observations = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� canalencaissement.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getCANALENCAISSEMENT() {
+                    return canalencaissement;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� canalencaissement.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setCANALENCAISSEMENT(String value) {
+                    this.canalencaissement = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="REFERENCE_FACTURE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="DETAIL_FACTURES" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence minOccurs="0">
+             *                   &lt;element name="DETAIL_FACTURE" maxOccurs="unbounded" minOccurs="0">
+             *                     &lt;complexType>
+             *                       &lt;complexContent>
+             *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                           &lt;sequence minOccurs="0">
+             *                             &lt;element name="NUMERO_LIGNE" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="255"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                             &lt;element name="CODE_ARTICLE" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="35"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                             &lt;element name="LIBELLE_ARTICLE" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="255"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                             &lt;element name="MONTANT_HT" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="35"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                             &lt;element name="MONTANT_TVA" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="35"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                             &lt;element name="MONTANT_TTC" minOccurs="0">
+             *                               &lt;simpleType>
+             *                                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                                   &lt;maxLength value="35"/>
+             *                                 &lt;/restriction>
+             *                               &lt;/simpleType>
+             *                             &lt;/element>
+             *                           &lt;/sequence>
+             *                         &lt;/restriction>
+             *                       &lt;/complexContent>
+             *                     &lt;/complexType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *         &lt;element name="MONTANT_HT" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="MONTANT_TVA" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="MONTANT_TTC" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="AUTRE_MONTANT" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="TYPE_FACTURE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "referencefacture",
+                "detailfactures",
+                "montantht",
+                "montanttva",
+                "montantttc",
+                "autremontant",
+                "typefacture"
+            })
+            public static class FACTURE {
+
+                @XmlElement(name = "REFERENCE_FACTURE")
+                protected String referencefacture;
+                @XmlElement(name = "DETAIL_FACTURES")
+                protected DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES detailfactures;
+                @XmlElement(name = "MONTANT_HT")
+                protected String montantht;
+                @XmlElement(name = "MONTANT_TVA")
+                protected String montanttva;
+                @XmlElement(name = "MONTANT_TTC")
+                protected String montantttc;
+                @XmlElement(name = "AUTRE_MONTANT")
+                protected String autremontant;
+                @XmlElement(name = "TYPE_FACTURE")
+                protected String typefacture;
+
+                /**
+                 * Obtient la valeur de la propri�t� referencefacture.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getREFERENCEFACTURE() {
+                    return referencefacture;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� referencefacture.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setREFERENCEFACTURE(String value) {
+                    this.referencefacture = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� detailfactures.
+                 *
+                 * @return possible object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES }
+                 *
+                 */
+                public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES getDETAILFACTURES() {
+                    return detailfactures;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� detailfactures.
+                 *
+                 * @param value allowed object is
+                 *     {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES }
+                 *
+                 */
+                public void setDETAILFACTURES(DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES value) {
+                    this.detailfactures = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� montantht.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getMONTANTHT() {
+                    return montantht;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� montantht.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setMONTANTHT(String value) {
+                    this.montantht = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� montanttva.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getMONTANTTVA() {
+                    return montanttva;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� montanttva.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setMONTANTTVA(String value) {
+                    this.montanttva = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� montantttc.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getMONTANTTTC() {
+                    return montantttc;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� montantttc.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setMONTANTTTC(String value) {
+                    this.montantttc = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� autremontant.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getAUTREMONTANT() {
+                    return autremontant;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� autremontant.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setAUTREMONTANT(String value) {
+                    this.autremontant = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� typefacture.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getTYPEFACTURE() {
+                    return typefacture;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� typefacture.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setTYPEFACTURE(String value) {
+                    this.typefacture = value;
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de sch�ma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence minOccurs="0">
+                 *         &lt;element name="DETAIL_FACTURE" maxOccurs="unbounded" minOccurs="0">
+                 *           &lt;complexType>
+                 *             &lt;complexContent>
+                 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *                 &lt;sequence minOccurs="0">
+                 *                   &lt;element name="NUMERO_LIGNE" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="255"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                   &lt;element name="CODE_ARTICLE" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="35"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                   &lt;element name="LIBELLE_ARTICLE" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="255"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                   &lt;element name="MONTANT_HT" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="35"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                   &lt;element name="MONTANT_TVA" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="35"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                   &lt;element name="MONTANT_TTC" minOccurs="0">
+                 *                     &lt;simpleType>
+                 *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *                         &lt;maxLength value="35"/>
+                 *                       &lt;/restriction>
+                 *                     &lt;/simpleType>
+                 *                   &lt;/element>
+                 *                 &lt;/sequence>
+                 *               &lt;/restriction>
+                 *             &lt;/complexContent>
+                 *           &lt;/complexType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "detailfacture"
+                })
+                public static class DETAILFACTURES {
+
+                    @XmlElement(name = "DETAIL_FACTURE")
+                    protected List<DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE> detailfacture;
+
+                    /**
+                     * Gets the value of the detailfacture property.
+                     *
+                     * <p>
+                     * This accessor method returns a reference to the live
+                     * list, not a snapshot. Therefore any modification you make
+                     * to the returned list will be present inside the JAXB
+                     * object. This is why there is not a <CODE>set</CODE>
+                     * method for the detailfacture property.
+                     *
+                     * <p>
+                     * For example, to add a new item, do as follows:
+                     * <pre>
+                     *    getDETAILFACTURE().add(newItem);
+                     * </pre>
+                     *
+                     *
+                     * <p>
+                     * Objects of the following type(s) are allowed in the list
+                     * {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE }
+                     *
+                     *
+                     */
+                    public List<DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE> getDETAILFACTURE() {
+                        if (detailfacture == null) {
+                            detailfacture = new ArrayList<DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE>();
+                        }
+                        return this.detailfacture;
+                    }
+
+                    /**
+                     * <p>
+                     * Classe Java pour anonymous complex type.
+                     *
+                     * <p>
+                     * Le fragment de sch�ma suivant indique le contenu attendu
+                     * figurant dans cette classe.
+                     *
+                     * <pre>
+                     * &lt;complexType>
+                     *   &lt;complexContent>
+                     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                     *       &lt;sequence minOccurs="0">
+                     *         &lt;element name="NUMERO_LIGNE" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="255"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *         &lt;element name="CODE_ARTICLE" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="35"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *         &lt;element name="LIBELLE_ARTICLE" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="255"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *         &lt;element name="MONTANT_HT" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="35"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *         &lt;element name="MONTANT_TVA" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="35"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *         &lt;element name="MONTANT_TTC" minOccurs="0">
+                     *           &lt;simpleType>
+                     *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                     *               &lt;maxLength value="35"/>
+                     *             &lt;/restriction>
+                     *           &lt;/simpleType>
+                     *         &lt;/element>
+                     *       &lt;/sequence>
+                     *     &lt;/restriction>
+                     *   &lt;/complexContent>
+                     * &lt;/complexType>
+                     * </pre>
+                     *
+                     *
+                     */
+                    @XmlAccessorType(XmlAccessType.FIELD)
+                    @XmlType(name = "", propOrder = {
+                        "numeroligne",
+                        "codearticle",
+                        "libellearticle",
+                        "montantht",
+                        "montanttva",
+                        "montantttc"
+                    })
+                    public static class DETAILFACTURE {
+
+                        @XmlElement(name = "NUMERO_LIGNE")
+                        protected String numeroligne;
+                        @XmlElement(name = "CODE_ARTICLE")
+                        protected String codearticle;
+                        @XmlElement(name = "LIBELLE_ARTICLE")
+                        protected String libellearticle;
+                        @XmlElement(name = "MONTANT_HT")
+                        protected String montantht;
+                        @XmlElement(name = "MONTANT_TVA")
+                        protected String montanttva;
+                        @XmlElement(name = "MONTANT_TTC")
+                        protected String montantttc;
+
+                        /**
+                         * Obtient la valeur de la propri�t� numeroligne.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getNUMEROLIGNE() {
+                            return numeroligne;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� numeroligne.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setNUMEROLIGNE(String value) {
+                            this.numeroligne = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propri�t� codearticle.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getCODEARTICLE() {
+                            return codearticle;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� codearticle.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setCODEARTICLE(String value) {
+                            this.codearticle = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propri�t� libellearticle.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getLIBELLEARTICLE() {
+                            return libellearticle;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� libellearticle.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setLIBELLEARTICLE(String value) {
+                            this.libellearticle = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propri�t� montantht.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getMONTANTHT() {
+                            return montantht;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� montantht.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setMONTANTHT(String value) {
+                            this.montantht = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propri�t� montanttva.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getMONTANTTVA() {
+                            return montanttva;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� montanttva.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setMONTANTTVA(String value) {
+                            this.montanttva = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propri�t� montantttc.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getMONTANTTTC() {
+                            return montantttc;
+                        }
+
+                        /**
+                         * D�finit la valeur de la propri�t� montantttc.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setMONTANTTTC(String value) {
+                            this.montantttc = value;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NUMERO_ROLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="IMPUTATION" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="ARTICLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NUMERO_QUITTANCE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="NATURE_RECETTE_RUBRIQUE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "numerorole",
+                "imputation",
+                "article",
+                "numeroquittance",
+                "naturerecetterubrique"
+            })
+            public static class FICHERECETTE {
+
+                @XmlElement(name = "NUMERO_ROLE")
+                protected String numerorole;
+                @XmlElement(name = "IMPUTATION")
+                protected String imputation;
+                @XmlElement(name = "ARTICLE")
+                protected String article;
+                @XmlElement(name = "NUMERO_QUITTANCE")
+                protected String numeroquittance;
+                @XmlElement(name = "NATURE_RECETTE_RUBRIQUE")
+                protected String naturerecetterubrique;
+
+                /**
+                 * Obtient la valeur de la propri�t� numerorole.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMEROROLE() {
+                    return numerorole;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� numerorole.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMEROROLE(String value) {
+                    this.numerorole = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� imputation.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getIMPUTATION() {
+                    return imputation;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� imputation.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setIMPUTATION(String value) {
+                    this.imputation = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� article.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getARTICLE() {
+                    return article;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� article.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setARTICLE(String value) {
+                    this.article = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� numeroquittance.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMEROQUITTANCE() {
+                    return numeroquittance;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� numeroquittance.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMEROQUITTANCE(String value) {
+                    this.numeroquittance = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� naturerecetterubrique.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNATURERECETTERUBRIQUE() {
+                    return naturerecetterubrique;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� naturerecetterubrique.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNATURERECETTERUBRIQUE(String value) {
+                    this.naturerecetterubrique = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NUMERO_CONTRIBUABLE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="RAISON_SOCIALE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "numerocontribuable",
+                "raisonsociale"
+            })
+            public static class PARTIEVERSANTE {
+
+                @XmlElement(name = "NUMERO_CONTRIBUABLE")
+                protected String numerocontribuable;
+                @XmlElement(name = "RAISON_SOCIALE")
+                protected String raisonsociale;
+
+                /**
+                 * Obtient la valeur de la propri�t� numerocontribuable.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMEROCONTRIBUABLE() {
+                    return numerocontribuable;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� numerocontribuable.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMEROCONTRIBUABLE(String value) {
+                    this.numerocontribuable = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� raisonsociale.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getRAISONSOCIALE() {
+                    return raisonsociale;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� raisonsociale.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setRAISONSOCIALE(String value) {
+                    this.raisonsociale = value;
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de sch�ma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NOM" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="100"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="QUALITE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="100"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="LIEU" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="100"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="DATE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="SOCIETE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="100"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "nom",
+                "qualite",
+                "lieu",
+                "date",
+                "societe"
+            })
+            public static class SIGNATAIRE {
+
+                @XmlElement(name = "NOM")
+                protected String nom;
+                @XmlElement(name = "QUALITE")
+                protected String qualite;
+                @XmlElement(name = "LIEU")
+                protected String lieu;
+                @XmlElement(name = "DATE")
+                protected String date;
+                @XmlElement(name = "SOCIETE")
+                protected String societe;
+
+                /**
+                 * Obtient la valeur de la propri�t� nom.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNOM() {
+                    return nom;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� nom.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNOM(String value) {
+                    this.nom = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� qualite.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getQUALITE() {
+                    return qualite;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� qualite.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setQUALITE(String value) {
+                    this.qualite = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� lieu.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getLIEU() {
+                    return lieu;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� lieu.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setLIEU(String value) {
+                    this.lieu = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� date.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getDATE() {
+                    return date;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� date.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setDATE(String value) {
+                    this.date = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propri�t� societe.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getSOCIETE() {
+                    return societe;
+                }
+
+                /**
+                 * D�finit la valeur de la propri�t� societe.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setSOCIETE(String value) {
+                    this.societe = value;
                 }
 
             }
@@ -11302,7 +14977,7 @@ public class DOCUMENT implements Serializable {
          *             &lt;complexContent>
          *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
          *                 &lt;sequence>
-         *                   &lt;element name="CODE" minOccurs="0">
+         *                   &lt;element name="CODE">
          *                     &lt;simpleType>
          *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
          *                         &lt;maxLength value="50"/>
@@ -11313,6 +14988,20 @@ public class DOCUMENT implements Serializable {
          *                     &lt;simpleType>
          *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
          *                         &lt;maxLength value="50"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="ZONE_COMPETENCE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="100"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="TELEPHONE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="20"/>
          *                       &lt;/restriction>
          *                     &lt;/simpleType>
          *                   &lt;/element>
@@ -11328,14 +15017,21 @@ public class DOCUMENT implements Serializable {
          *             &lt;/restriction>
          *           &lt;/simpleType>
          *         &lt;/element>
-         *         &lt;element name="DATE_TRAITEMENT_PROPOSEE">
+         *         &lt;element name="LIEU_TRAITEMENT" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="100"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *         &lt;element name="DATE_TRAITEMENT_PROPOSEE" minOccurs="0">
          *           &lt;simpleType>
          *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
          *               &lt;maxLength value="50"/>
          *             &lt;/restriction>
          *           &lt;/simpleType>
          *         &lt;/element>
-         *         &lt;element name="DATE_TRAITEMENT">
+         *         &lt;element name="DATE_TRAITEMENT" minOccurs="0">
          *           &lt;simpleType>
          *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
          *               &lt;maxLength value="50"/>
@@ -11366,9 +15062,9 @@ public class DOCUMENT implements Serializable {
             protected String typetraitement;
             @XmlElement(name = "LIEU_TRAITEMENT")
             protected String lieutraitement;
-            @XmlElement(name = "DATE_TRAITEMENT_PROPOSEE", required = true)
+            @XmlElement(name = "DATE_TRAITEMENT_PROPOSEE")
             protected String datetraitementproposee;
-            @XmlElement(name = "DATE_TRAITEMENT", required = true)
+            @XmlElement(name = "DATE_TRAITEMENT")
             protected String datetraitement;
 
             /**
@@ -11413,10 +15109,22 @@ public class DOCUMENT implements Serializable {
                 this.typetraitement = value;
             }
 
+            /**
+             * Obtient la valeur de la propri�t� lieutraitement.
+             *
+             * @return possible object is {@link String }
+             *
+             */
             public String getLIEUTRAITEMENT() {
                 return lieutraitement;
             }
 
+            /**
+             * D�finit la valeur de la propri�t� lieutraitement.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
             public void setLIEUTRAITEMENT(String value) {
                 this.lieutraitement = value;
             }
@@ -11474,7 +15182,7 @@ public class DOCUMENT implements Serializable {
              *   &lt;complexContent>
              *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
              *       &lt;sequence>
-             *         &lt;element name="CODE" minOccurs="0">
+             *         &lt;element name="CODE">
              *           &lt;simpleType>
              *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
              *               &lt;maxLength value="50"/>
@@ -11485,6 +15193,20 @@ public class DOCUMENT implements Serializable {
              *           &lt;simpleType>
              *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
              *               &lt;maxLength value="50"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="ZONE_COMPETENCE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="100"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="TELEPHONE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="20"/>
              *             &lt;/restriction>
              *           &lt;/simpleType>
              *         &lt;/element>
@@ -11499,14 +15221,20 @@ public class DOCUMENT implements Serializable {
             @XmlAccessorType(XmlAccessType.FIELD)
             @XmlType(name = "", propOrder = {
                 "code",
-                "nom"
+                "nom",
+                "zonecompetence",
+                "telephone"
             })
             public static class SOCIETETRAITEMENT {
 
-                @XmlElement(name = "CODE")
+                @XmlElement(name = "CODE", required = true)
                 protected String code;
                 @XmlElement(name = "NOM", required = true)
                 protected String nom;
+                @XmlElement(name = "ZONE_COMPETENCE")
+                protected String zonecompetence;
+                @XmlElement(name = "TELEPHONE")
+                protected String telephone;
 
                 /**
                  * Obtient la valeur de la propri�t� code.
@@ -11548,95 +15276,46 @@ public class DOCUMENT implements Serializable {
                     this.nom = value;
                 }
 
-            }
+                /**
+                 * Obtient la valeur de la propri�t� zonecompetence.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getZONECOMPETENCE() {
+                    return zonecompetence;
+                }
 
-        }
+                /**
+                 * D�finit la valeur de la propri�t� zonecompetence.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setZONECOMPETENCE(String value) {
+                    this.zonecompetence = value;
+                }
 
-        /**
-         * <p>
-         * Classe Java pour anonymous complex type.
-         *
-         * <p>
-         * Le fragment de schéma suivant indique le contenu attendu figurant
-         * dans cette classe.
-         *
-         * <pre>
-         * &lt;complexType>
-         *   &lt;complexContent>
-         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
-         *       &lt;sequence>
-         *         &lt;element name="CODE" minOccurs="0">
-         *           &lt;simpleType>
-         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-         *               &lt;maxLength value="35"/>
-         *             &lt;/restriction>
-         *           &lt;/simpleType>
-         *         &lt;/element>
-         *         &lt;element name="NOM" minOccurs="0">
-         *           &lt;simpleType>
-         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
-         *               &lt;maxLength value="70"/>
-         *             &lt;/restriction>
-         *           &lt;/simpleType>
-         *         &lt;/element>
-         *       &lt;/sequence>
-         *     &lt;/restriction>
-         *   &lt;/complexContent>
-         * &lt;/complexType>
-         * </pre>
-         *
-         *
-         */
-        @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(name = "", propOrder = {
-            "code",
-            "nom"
-        })
-        public static class TYPEPRODUIT {
+                /**
+                 * Obtient la valeur de la propri�t� telephone.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getTELEPHONE() {
+                    return telephone;
+                }
 
-            @XmlElement(name = "CODE")
-            protected String code;
-            @XmlElement(name = "NOM")
-            protected String nom;
+                /**
+                 * D�finit la valeur de la propri�t� telephone.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setTELEPHONE(String value) {
+                    this.telephone = value;
+                }
 
-            /**
-             * Obtient la valeur de la propriété code.
-             *
-             * @return possible object is {@link String }
-             *
-             */
-            public String getCODE() {
-                return code;
-            }
-
-            /**
-             * Définit la valeur de la propriété code.
-             *
-             * @param value allowed object is {@link String }
-             *
-             */
-            public void setCODE(String value) {
-                this.code = value;
-            }
-
-            /**
-             * Obtient la valeur de la propriété nom.
-             *
-             * @return possible object is {@link String }
-             *
-             */
-            public String getNOM() {
-                return nom;
-            }
-
-            /**
-             * Définit la valeur de la propriété nom.
-             *
-             * @param value allowed object is {@link String }
-             *
-             */
-            public void setNOM(String value) {
-                this.nom = value;
             }
 
         }
@@ -12588,6 +16267,95 @@ public class DOCUMENT implements Serializable {
                     this.numero = value;
                 }
 
+            }
+
+        }
+
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de sch�ma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="CODE" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="35"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *         &lt;element name="NOM" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="70"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "code",
+            "nom"
+        })
+        public static class TYPEPRODUIT {
+
+            @XmlElement(name = "CODE")
+            protected String code;
+            @XmlElement(name = "NOM")
+            protected String nom;
+
+            /**
+             * Obtient la valeur de la propri�t� code.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getCODE() {
+                return code;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� code.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setCODE(String value) {
+                this.code = value;
+            }
+
+            /**
+             * Obtient la valeur de la propri�t� nom.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNOM() {
+                return nom;
+            }
+
+            /**
+             * D�finit la valeur de la propri�t� nom.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNOM(String value) {
+                this.nom = value;
             }
 
         }

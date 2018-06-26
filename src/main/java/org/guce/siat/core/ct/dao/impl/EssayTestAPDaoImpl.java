@@ -23,42 +23,42 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class EssayTestAPDaoImpl extends AbstractJpaDaoImpl<EssayTestAP> implements EssayTestAPDao {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(EssayTestAPDaoImpl.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(EssayTestAPDaoImpl.class);
 
-	/**
-	 * Instantiates a new analyse type dao impl.
-	 */
-	public EssayTestAPDaoImpl() {
-		super();
-		setClasse(EssayTestAP.class);
-	}
+    /**
+     * Instantiates a new analyse type dao impl.
+     */
+    public EssayTestAPDaoImpl() {
+        super();
+        setClasse(EssayTestAP.class);
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
-	 * 
+	 *
 	 * @see org.guce.siat.core.ct.dao.EssayTestAPDao#findByItemFlow(org.guce.siat.common.model.ItemFlow)
-	 */
-	@Override
-	public EssayTestAP findByItemFlow(final ItemFlow itemFlow) {
-		try {
-			if (itemFlow != null) {
-				final StringBuilder hqlBuilder = new StringBuilder();
+     */
+    @Override
+    public EssayTestAP findByItemFlow(final ItemFlow itemFlow) {
+        try {
+            if (itemFlow != null) {
+                final StringBuilder hqlBuilder = new StringBuilder();
 
-				hqlBuilder.append("SELECT a FROM EssayTestAP a ");
-				hqlBuilder.append("WHERE a.itemFlow.id= :itemFlowId ");
+                hqlBuilder.append("SELECT a FROM EssayTestAP a ");
+                hqlBuilder.append("WHERE a.itemFlow.id= :itemFlowId ");
 
-				final TypedQuery<EssayTestAP> query = entityManager.createQuery(hqlBuilder.toString(), EssayTestAP.class);
-				query.setParameter("itemFlowId", itemFlow.getId());
-				return query.getSingleResult();
-			}
-		} catch (NoResultException | NonUniqueResultException e) {
-			LOG.error(Objects.toString(e), e);
-		}
+                final TypedQuery<EssayTestAP> query = entityManager.createQuery(hqlBuilder.toString(), EssayTestAP.class);
+                query.setParameter("itemFlowId", itemFlow.getId());
+                return query.getSingleResult();
+            }
+        } catch (NoResultException | NonUniqueResultException e) {
+            LOG.error(Objects.toString(e), e);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
 }

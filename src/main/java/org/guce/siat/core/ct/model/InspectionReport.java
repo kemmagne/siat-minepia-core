@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.guce.siat.core.ct.model;
 
 import java.io.Serializable;
@@ -22,6 +17,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -32,6 +28,13 @@ import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.core.ct.util.annotations.CustomProperty;
+import org.guce.siat.core.ct.util.enums.PVILastTreatmentDateState;
+import org.guce.siat.core.ct.util.enums.PVIProtectionMeasures;
+import org.guce.siat.core.ct.util.enums.PVIStorageEnv;
+import org.guce.siat.core.ct.util.enums.PVITransportEnv;
+import org.guce.siat.core.ct.util.enums.PVITreatmentType;
+import org.guce.siat.core.ct.util.enums.PVIWeatherConditions;
 import org.guce.siat.core.gr.utils.enums.CertficatGoodness;
 
 /**
@@ -341,44 +344,62 @@ public class InspectionReport extends AbstractModel implements Serializable {
     /**
      *
      */
+    @CustomProperty(labelEn = "Treatment Type", labelFr = "Type de traitement",
+            enumClass = PVITreatmentType.class)
     @Column(name = "TYPE_TRAITEMENT")
     private String typeTraitement;
 
+    @CustomProperty(labelEn = "Last Treatment State", labelFr = "Etat dernier traitement",
+            enumClass = PVILastTreatmentDateState.class)
     @Column(name = "ETAT_DATE_DERNIER_TRAITEMENT")
     private String etatDateDernierTraitement;
 
     /**
      * Produit utilisé
      */
+    @CustomProperty(labelEn = "Product Used", labelFr = "Produit Utilisé")
     @Column(name = "PRODUIT_UTILISE")
     private String produitUtilise;
 
     /**
      * Dosage
      */
+    @CustomProperty(labelEn = "Dosage", labelFr = "Dosage")
     @Column(name = "DOSAGE")
     private String dosage;
 
+    @CustomProperty(labelEn = "Storage Environment", labelFr = "Environnement de stockage",
+            enumClass = PVIStorageEnv.class)
     @Column(name = "ENV_STOCKAGE")
     private String environnementStockage;
 
+    @CustomProperty(labelEn = "Transport Environment", labelFr = "Environnement de transport",
+            enumClass = PVITransportEnv.class)
     @Column(name = "ENV_TRANSPORT")
     private String environnementTransport;
 
+    @CustomProperty(labelEn = "Climatic condition", labelFr = "Condition climatique",
+            enumClass = PVIWeatherConditions.class)
     @Column(name = "CONDITION_CLIMATIQUE")
     private String conditionClimatique;
 
+    @CustomProperty(labelEn = "Protection Measure", labelFr = "Mesure de protection",
+            enumClass = PVIProtectionMeasures.class)
     @Column(name = "MESURE_PROTECTION")
     private String mesureProtection;
 
+    @CustomProperty(labelEn = "Observations", labelFr = "Observations")
     @Column(name = "OBSERVATIONS")
     private String observations;
+    @CustomProperty(labelEn = "Regulated Article", labelFr = "Article Règlementé")
     @Column(name = "PVI_ARTICLE_REGLEMENTE")
     private String articleReglemente;
     @Column(name = "PVI_DESTINATION")
     private String pviDestination;
+    @CustomProperty(labelEn = "Article Situation", labelFr = "Situation Article")
     @Column(name = "PVI_SITUATION_ARTICLE")
     private String pviSituationArticle;
+    @CustomProperty(labelEn = "Covered by the documentation", labelFr = "Couvert par la documentation")
     @Column(name = "PVI_COUVERT_DOC")
     private boolean pviCouvertDoc;
     @Column(name = "PVI_REFERENCE")
@@ -387,9 +408,11 @@ public class InspectionReport extends AbstractModel implements Serializable {
     private String pviNatureArticleInspecte;
     @Column(name = "PVI_QUANTITE")
     private String pviQuantite;
+    @CustomProperty(labelEn = "Arrangements made", labelFr = "Dispositions prises")
     @Column(name = "PVI_DISPO_PRISES")
     private String pviDispositionsPrises;
 
+    @CustomProperty(labelEn = "Controller", labelFr = "Contrôleur")
     @Column(name = "PVI_CONTROLLER_NAME")
     private String controllerName;
 
@@ -1253,6 +1276,11 @@ public class InspectionReport extends AbstractModel implements Serializable {
         builder.append(otherSpecialFees);
         builder.append(']');
         return builder.toString();
+    }
+
+    @PrePersist
+    public void prePersist() {
+        reportDate = new Date();
     }
 
 }

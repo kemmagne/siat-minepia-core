@@ -20,6 +20,7 @@ import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.core.ct.util.annotations.CustomProperty;
 
 /**
  *
@@ -56,34 +57,48 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
     @JoinColumn(name = "ITEM_FLOW_ID", referencedColumnName = "id")
     private ItemFlow itemFlow;
 
+    @CustomProperty(labelEn = "Fumigation", labelFr = "Fumigation")
     @Column(name = "FUMIGATION")
     private boolean fumigation;
+    @CustomProperty(labelEn = "Disenfection", labelFr = "Désinfection")
     @Column(name = "DISENFECTION")
     private boolean disinfection;
+    @CustomProperty(labelEn = "Chemical product", labelFr = "Product chimique")
     @Column(name = "CHEMICAL_PRODUCT")
     private String chemicalProduct;
+    @CustomProperty(labelEn = "Duration", labelFr = "Durée")
     @Column(name = "DURATION")
     private String duration;
+    @CustomProperty(labelEn = "Temperature", labelFr = "Température")
     @Column(name = "TEMPERATURE")
     private String temperature;
+    @CustomProperty(labelEn = "Concentration", labelFr = "Concentration")
     @Column(name = "CONCENTRATION")
     private String concentration;
+    @CustomProperty(labelEn = "Addtional informations", labelFr = "Informations additionnelles")
     @Column(name = "ADDITIONAL_INFOS", length = 1000)
     private String additionalInfos;
+    @CustomProperty(labelEn = "Treatments carried out", labelFr = "Traitements effectués")
     @Column(name = "TREATMENTS_CARRIED_OUT")
     private String treatmentsCarriedOut;
+    @CustomProperty(labelEn = "Treatment type", labelFr = "Type de traitement")
     @Column(name = "TYPE_OF_TREATMENT")
     private String typeOfTreatment;
+    @CustomProperty(labelEn = "Additional declaration", labelFr = "Déclaration additionnelle")
     @Column(name = "ADDITIONAL_DECLARATION", length = 1000)
     private String additionnalDeclaration;
     @Column(name = "DELIVRABLE_TYPE", length = 10)
     private String delivrableType;
+    @CustomProperty(labelEn = "Commodity category", labelFr = "Catégorie de la marchandise")
     @Column(name = "COMMODITY_CATEGORY", length = 5)
     private String commodityCaterory;
+    @CustomProperty(labelEn = "Certificate Validity", labelFr = "Validité du certificat")
     @Column(name = "VALIDITY")
     private String validity;
+    @CustomProperty(labelEn = "PAckager on packing", labelFr = "Emballeur sur l'emballage")
     @Column(name = "PACKAGER_ON_PACKAGING", length = 100)
     private String packagerOnPackaging;
+    @CustomProperty(labelEn = "Conservation temperature", labelFr = "Température de conservation")
     @Column(name = "CONSERVATION_TEMPERATURE", length = 10)
     private String conservationTemperature;
 

@@ -44,6 +44,7 @@ import org.guce.siat.common.dao.ServiceDao;
 import org.guce.siat.common.dao.ServicesItemDao;
 import org.guce.siat.common.dao.UserDao;
 import org.guce.siat.common.mail.MailConstants;
+import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.Attachment;
@@ -90,15 +91,21 @@ import org.guce.siat.common.utils.exception.ValidationException;
 import org.guce.siat.common.utils.ged.AlfrescoDirectoriesInitializer;
 import org.guce.siat.core.ct.dao.AnalyseOrderDao;
 import org.guce.siat.core.ct.dao.AnalyseResultApDao;
+import org.guce.siat.core.ct.dao.DecisionHistoryDao;
 import org.guce.siat.core.ct.dao.EssayTestAPDao;
+import org.guce.siat.core.ct.dao.InspectionReportDao;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
+import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
+import org.guce.siat.core.ct.dao.TreatmentResultDao;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalyseResultAp;
+import org.guce.siat.core.ct.model.DecisionHistory;
 import org.guce.siat.core.ct.model.EssayTestAP;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
 import org.guce.siat.core.ct.model.TreatmentOrder;
+import org.guce.siat.core.ct.util.DecisionHistoryUtils;
 import org.guce.siat.core.utils.PaiementGenerator;
 import org.guce.siat.core.utils.ap.file.FileFieldValueAeMINADER;
 import org.guce.siat.core.utils.ap.file.FileFieldValueAeMINMIDT;
@@ -441,6 +448,18 @@ public class XmlConverterServiceImpl implements XmlConverterService {
     @Autowired
     private ItemDao itemDao;
 
+    @Autowired
+    private TreatmentInfosDao treatmentInfosDao;
+
+    @Autowired
+    private TreatmentResultDao treatmentResultDao;
+
+    @Autowired
+    private InspectionReportDao inspectionReportDao;
+
+    @Autowired
+    private DecisionHistoryDao decisionHistoryDao;
+
     /**
      * Inits the.
      */
@@ -645,6 +664,36 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 
             final File addedFile = fileDao.save(fileConverted);
 
+            // save related decision histories
+            if (document instanceof org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) {
+
+                final org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT doc = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) document;
+
+                if (doc.getCONTENT() != null && doc.getCONTENT().getDETAILSDECISIONSSIAT() != null
+                        && CollectionUtils.isNotEmpty(doc.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION())) {
+
+                    final List<org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION> list = doc.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION();
+                    final List<DecisionHistory> decisionHistories = new ArrayList<>(list.size());
+
+                    for (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION detail : list) {
+
+                        final DecisionHistory decisionHistory = new DecisionHistory();
+
+                        decisionHistory.setCode(detail.getCODE());
+                        decisionHistory.setLabelEn(detail.getLABELEN());
+                        decisionHistory.setLabelFr(detail.getLABELFR());
+                        decisionHistory.setValue(detail.getVALEUR());
+                        decisionHistory.setFileType(fileTypeDao.findByCode(FileTypeCode.valueOf(detail.getCODEPROCEDURESIAT())));
+                        decisionHistory.setFile(addedFile);
+
+                        decisionHistories.add(decisionHistory);
+                    }
+
+                    decisionHistoryDao.saveList(decisionHistories);
+                }
+            }
+
+            // save decision histories coming from e-GUCE
             final String formatPrefix = InformationSystemCode.CT.name();
 
             addedFile.setReferenceSiat(new DecimalFormat(formatPrefix + "000000").format(addedFile.getId()));
@@ -2315,6 +2364,24 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
         // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
         if (flowToExecute.getToStep() != null && BooleanUtils.isTrue(flowToExecute.getToStep().getIsFinal())) {
+            //
+            AbstractModel entity = null;
+            switch (file.getFileType().getCode()) {
+                case CCT_CT_E:
+                    entity = treatmentInfosDao.findTreatmentInfosByFileItem(itemFlowList.get(0).getFileItem());
+                    break;
+                case CCT_CT_E_ATP:
+                case CCT_CT_E_FSTP:
+                    entity = treatmentResultDao.findLastTreatmentResultByFileItem(itemFlowList.get(0).getFileItem());
+                    break;
+                case CCT_CT_E_PVI:
+                    entity = inspectionReportDao.findLastInspectionReportsByFileItem(itemFlowList.get(0).getFileItem());
+                    break;
+                case CCT_CT_E_PVE:
+                    break;
+
+            }
+            DecisionHistoryUtils.putDecisionHistories(ciDocument, entity, file.getFileType().getCode().name());
             ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.SIGNATAIRE());
             ciDocument.getCONTENT().getSIGNATAIRE()
                     .setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));

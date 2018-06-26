@@ -7,10 +7,10 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.model.TreatmentInfos;
-import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -56,5 +56,24 @@ public class TreatmentInfosDaoImpl extends AbstractJpaDaoImpl<TreatmentInfos> im
         }
         return null;
     }
-}
 
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.core.ct.dao.TreatmentInfosDao#findTreatmentInfosByFileItem(org.guce.siat.common.model.FileItem)
+     */
+    @Override
+    public TreatmentInfos findTreatmentInfosByFileItem(final FileItem fileItem) {
+        if (fileItem != null) {
+            try {
+                final TypedQuery<TreatmentInfos> query = super.entityManager.createQuery("SELECT ti FROM TreatmentInfos ti WHERE ti.itemFlow.fileItem.id = :fileItemId",
+                        TreatmentInfos.class);
+                query.setParameter("fileItemId", fileItem.getId());
+                return query.getSingleResult();
+            } catch (NoResultException | NonUniqueResultException e) {
+                LOG.error(Objects.toString(e), e);
+            }
+        }
+        return null;
+    }
+}

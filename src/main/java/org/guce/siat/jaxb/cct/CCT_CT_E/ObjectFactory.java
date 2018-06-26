@@ -2,7 +2,7 @@
 // Ce fichier a �t� g�n�r� par l'impl�mentation de r�f�rence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
 // Toute modification apport�e � ce fichier sera perdue lors de la recompilation du sch�ma source.
-// G�n�r� le : 2018.04.04 � 09:32:41 AM WAT
+// G�n�r� le : 2018.06.22 � 03:06:02 PM WAT
 //
 package org.guce.siat.jaxb.cct.CCT_CT_E;
 
@@ -13,7 +13,7 @@ import javax.xml.namespace.QName;
 
 /**
  * This object contains factory methods for each Java content interface and Java
- * element interface generated in the org.guce.siat.jaxb.cct.CCT_CT_E1 package.
+ * element interface generated in the generated package.
  * <p>
  * An ObjectFactory allows you to programatically construct new instances of the
  * Java representation for XML content. The Java representation of XML content
@@ -29,7 +29,7 @@ public class ObjectFactory {
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of
-     * schema derived classes for package: org.guce.siat.jaxb.cct.CCT_CT_E1
+     * schema derived classes for package: generated
      *
      */
     public ObjectFactory() {
@@ -52,9 +52,16 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DOCUMENT.CONTENT.DETAILSDECISIONSSIAT }
+     *
+     */
+    public DOCUMENT.CONTENT.DETAILSDECISIONSSIAT createDOCUMENTCONTENTDETAILSDECISIONSSIAT() {
+        return new DOCUMENT.CONTENT.DETAILSDECISIONSSIAT();
+    }
+
+    /**
      * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES }
      *
-     * @return
      */
     public DOCUMENT.CONTENT.MARCHANDISES createDOCUMENTCONTENTMARCHANDISES() {
         return new DOCUMENT.CONTENT.MARCHANDISES();
@@ -63,10 +70,50 @@ public class ObjectFactory {
     /**
      * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE }
      *
-     * @return
      */
     public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE createDOCUMENTCONTENTMARCHANDISESMARCHANDISE() {
         return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT createDOCUMENTCONTENTPAIEMENT() {
+        return new DOCUMENT.CONTENT.PAIEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR createDOCUMENTCONTENTPAIEMENTCHARGEUR() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE createDOCUMENTCONTENTPAIEMENTCHARGEURADRESSE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FACTURE createDOCUMENTCONTENTPAIEMENTFACTURE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES createDOCUMENTCONTENTPAIEMENTFACTUREDETAILFACTURES() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES();
     }
 
     /**
@@ -99,14 +146,6 @@ public class ObjectFactory {
      */
     public DOCUMENT.CONTENT.CONTENEURS createDOCUMENTCONTENTCONTENEURS() {
         return new DOCUMENT.CONTENT.CONTENEURS();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.CONTENEURS.CONTENEUR }
-     *
-     */
-    public DOCUMENT.CONTENT.CONTENEURS.CONTENEUR createDOCUMENTCONTENTCONTENEURSCONTENEUR() {
-        return new DOCUMENT.CONTENT.CONTENEURS.CONTENEUR();
     }
 
     /**
@@ -175,11 +214,28 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TYPEPRODUIT }
+     *
+     */
+    public DOCUMENT.CONTENT.TYPEPRODUIT createDOCUMENTCONTENTTYPEPRODUIT() {
+        return new DOCUMENT.CONTENT.TYPEPRODUIT();
+    }
+
+    /**
      * Create an instance of {@link DOCUMENT.CONTENT.SIGNATAIRE }
      *
      */
     public DOCUMENT.CONTENT.SIGNATAIRE createDOCUMENTCONTENTSIGNATAIRE() {
         return new DOCUMENT.CONTENT.SIGNATAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION createDOCUMENTCONTENTDETAILSDECISIONSSIATDETAILSDECISION() {
+        return new DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION();
     }
 
     /**
@@ -210,19 +266,95 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE createDOCUMENTCONTENTPAIEMENTSIGNATAIRE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT createDOCUMENTCONTENTPAIEMENTENCAISSEMENT() {
+        return new DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE createDOCUMENTCONTENTPAIEMENTFICHERECETTE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE createDOCUMENTCONTENTPAIEMENTPARTIEVERSANTE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE createDOCUMENTCONTENTPAIEMENTBENEFICIAIRE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE createDOCUMENTCONTENTPAIEMENTCHARGEURTELEPHONEFIXE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE createDOCUMENTCONTENTPAIEMENTCHARGEURTELEPHONEMOBILE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX createDOCUMENTCONTENTPAIEMENTCHARGEURFAX() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTPAIEMENTCHARGEURADRESSEPAYSADRESSE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE createDOCUMENTCONTENTPAIEMENTFACTUREDETAILFACTURESDETAILFACTURE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE();
+    }
+
+    /**
      * Create an instance of {@link DOCUMENT.CONTENT.INSPECTION.LIEUINSPECTION }
      *
      */
     public DOCUMENT.CONTENT.INSPECTION.LIEUINSPECTION createDOCUMENTCONTENTINSPECTIONLIEUINSPECTION() {
         return new DOCUMENT.CONTENT.INSPECTION.LIEUINSPECTION();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.TYPEPRODUIT }
-     *
-     */
-    public DOCUMENT.CONTENT.TYPEPRODUIT createDOCUMENTCONTENTTYPEPRODUIT() {
-        return new DOCUMENT.CONTENT.TYPEPRODUIT();
     }
 
     /**
@@ -240,6 +372,14 @@ public class ObjectFactory {
      */
     public DOCUMENT.CONTENT.LOTS.LOT createDOCUMENTCONTENTLOTSLOT() {
         return new DOCUMENT.CONTENT.LOTS.LOT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CONTENEURS.CONTENEUR }
+     *
+     */
+    public DOCUMENT.CONTENT.CONTENEURS.CONTENEUR createDOCUMENTCONTENTCONTENEURSCONTENEUR() {
+        return new DOCUMENT.CONTENT.CONTENEURS.CONTENEUR();
     }
 
     /**
@@ -426,6 +566,7 @@ public class ObjectFactory {
      * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE
      * }
      *
+     * @return
      */
     public DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTCLIENTADRESSEPAYSADRESSE() {
         return new DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE();

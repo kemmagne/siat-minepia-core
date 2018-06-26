@@ -21,6 +21,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.core.ct.util.annotations.CustomProperty;
+import org.guce.siat.core.ct.util.enums.PVITreatmentType;
+import org.guce.siat.core.ct.util.enums.TRConditioning;
+import org.guce.siat.core.ct.util.enums.TRProductUsed;
+import org.guce.siat.core.ct.util.enums.TRProtectionEquipement;
+import org.guce.siat.core.ct.util.enums.TRStoragePlace;
+import org.guce.siat.core.ct.util.enums.TRTreatmentEnvironment;
+import org.guce.siat.core.ct.util.enums.TRWeatherCondition;
 
 /**
  * The Class TreatmentResult.
@@ -65,12 +73,14 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     /**
      * The dosage.
      */
+    @CustomProperty(labelEn = "Dosage", labelFr = "Dosage")
     @Column(name = "DOSAGE")
     private String dosage;
 
     /**
      * The treatment product name.
      */
+    @CustomProperty(labelEn = "Treatment product commercial name", labelFr = "Nom commercial du produit de traitement")
     @Column(name = "TREATMENT_PRODUCT_NAME")
     private String treatmentProductName;
 
@@ -99,10 +109,13 @@ public class TreatmentResult extends AbstractModel implements Serializable {
      */
     @Column(name = "AT_ATTESTATION_NUMBER")
     private String attestationNumber;
+    @CustomProperty(labelEn = "Treatment type", labelFr = "Type de traitement")
     @Column(name = "AT_TREATMENT_TYPE")
     private String treatmentType;
+    @CustomProperty(labelEn = "Homologation number", labelFr = "Numéro homologation")
     @Column(name = "AT_HOMOLOGATION_NUMBER")
     private String homologationNumber;
+    @CustomProperty(labelEn = "Concenration", labelFr = "Concenration")
     @Column(name = "AT_CONCENTRATION")
     private String atConcentration;
 
@@ -111,57 +124,88 @@ public class TreatmentResult extends AbstractModel implements Serializable {
      */
     @Column(name = "TSS_SHEET_NUMBER")
     private String sheetNumber;
+    @CustomProperty(labelEn = "Treatment Mode", labelFr = "Mode de traitement",
+            enumClass = PVITreatmentType.class)
     @Column(name = "TSS_TREATMENT_MODE")
     private String treatmentMode;
+    @CustomProperty(labelEn = "Treatment Mode", labelFr = "Mode de traitement")
     @Column(name = "TSS_OTHER_TREATMENT_MODE")
     private String otherTreatmentMode;
+    @CustomProperty(labelEn = "Product Used", labelFr = "Produit utilisé",
+            enumClass = TRProductUsed.class)
     @Column(name = "TSS_PRODUCT_USED")
     private String productUsed;
+    @CustomProperty(labelEn = "Product used", labelFr = "Produit utilisé")
     @Column(name = "TSS_OTHER_PRODUCT_USED")
     private String otherProductUsed;
+    @CustomProperty(labelEn = "Active ingredient", labelFr = "Matière active")
     @Column(name = "TSS_ACTIVE_INGREDIENT")
     private String activeIngredient;
+    @CustomProperty(labelEn = "Treatment dose", labelFr = "Dose de traitement")
     @Column(name = "TSS_TREATMENT_DOSE")
     private String treatmentDose;
+    @CustomProperty(labelEn = "Concentration", labelFr = "Concentration")
     @Column(name = "TSS_CONCENTRATION")
     private String tsfConcentration;
+    @CustomProperty(labelEn = "Antidote", labelFr = "Antidote")
     @Column(name = "TSS_ANTIDOTE")
     private String antidote;
+    @CustomProperty(labelEn = "Treatment hour", labelFr = "Heure du traitement")
     @Column(name = "TSS_TREATMENT_TIME")
     @Temporal(TemporalType.TIME)
     private Date treatmentTime;
+    @CustomProperty(labelEn = "Treatment environment", labelFr = "Environnement de traitement",
+            enumClass = TRTreatmentEnvironment.class)
     @Column(name = "TSS_STORAGE_ENV")
     private String treatmentEnvironment;
+    @CustomProperty(labelEn = "Treatment environment", labelFr = "Environnement de traitement")
     @Column(name = "TSS_OTHER_TREAT_ENV")
     private String otherTreatmentEnvironment;
+    @CustomProperty(labelEn = "Optimal temperature", labelFr = "Température Optimale")
     @Column(name = "TSS_OPTIMAL_TEMPERATURE")
     private String optimalTemperature;
+    @CustomProperty(labelEn = "Storage Place", labelFr = "Environnement de traitement",
+            enumClass = TRStoragePlace.class)
     @Column(name = "TSS_STORAGE_PLACE")
     private String storagePlace;
+    @CustomProperty(labelEn = "Storage environment", labelFr = "Environnement de stockage")
     @Column(name = "TSS_OTHER_STORAGE_PLACE")
     private String otherStoragePlace;
+    @CustomProperty(labelEn = "Sanitary storage environment state", labelFr = "Etat sanitaire de l'environnement de stockage")
     @Column(name = "TSS_SANITARY_PLACE")
     private boolean sanitaryState;
+    @CustomProperty(labelEn = "Conditioning", labelFr = "Conditionnement", enumClass = TRConditioning.class)
     @Column(name = "TSS_CONDITIONING")
     private String conditioning;
+    @CustomProperty(labelEn = "Wheather conditions", labelFr = "Conditions climatiques",
+            enumClass = TRWeatherCondition.class)
     @Column(name = "TSS_WEATHER_CONDITION")
     private String weatherCondition;
+    @CustomProperty(labelEn = "Wheather conditions", labelFr = "Conditions climatiques")
     @Column(name = "TSS_OTHER_WEATHER_CONDITION")
     private String otherWeatherCondition;
+    @CustomProperty(labelEn = "Treatment prévention", labelFr = "Prévention de traitement")
     @Column(name = "TSS_TREATMENT_PREVENTION")
     private boolean treatmentPrevention;
+    @CustomProperty(labelEn = "Residing informed", labelFr = "Résidents informés")
     @Column(name = "TSS_RESIDENTS_INFO")
     private boolean residentsInformations;
+    @CustomProperty(labelEn = "Prevention plaques present", labelFr = "Plaques de prévention présentes")
     @Column(name = "TSS_PREV_PLAQUE_PRESENT")
     private boolean preventionPlaquePresent;
+    @CustomProperty(labelEn = "Staff security nature", labelFr = "Nature de la sécurité du personnel")
     @Column(name = "TSS_STAFF_SEC_NATURE")
     private String staffSecurityNature;
+    @CustomProperty(labelEn = "Protection equipements", labelFr = "Equipements de protection",
+            enumClass = TRProtectionEquipement.class)
     @Column(name = "TSS_PROTECTION_EQUIP")
     private String protectionEquipements;
+    @CustomProperty(labelEn = "General observations", labelFr = "Observations générales")
     @Column(name = "TSS_GENERAL_OBS")
     private String generalObservations;
     @Column(name = "TSS_TREATMENT_DURATION")
     private String treatmentDuration;
+    @CustomProperty(labelEn = "Date and hour of uncovering", labelFr = "Date et heure de débâchage")
     @Column(name = "TSS_TREATMENT_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date uncoveringDate;
@@ -180,6 +224,7 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     @ManyToOne
     @JoinColumn(name = "TREATMENT_COMPANY_ID", referencedColumnName = "id")
     private TreatmentCompany treatmentCompany;
+    @CustomProperty(labelEn = "Supervisor", labelFr = "Superviseur")
     @Column(name = "TREATMENT_SUPERVISOR")
     private String supervisor;
 

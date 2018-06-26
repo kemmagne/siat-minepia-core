@@ -1,6 +1,7 @@
 package org.guce.siat.core.ct.service.impl;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.core.ct.dao.TreatmentInfosDao;
@@ -64,5 +65,17 @@ public class TreatmentInfosServiceImpl extends AbstractServiceImpl<TreatmentInfo
 
     }
 
-}
 
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.guce.siat.core.ct.service.TreatmentInfosService#findTreatmentInfosByFileItem(org.guce.siat.common.model.FileItem
+	 * )
+     */
+    @Override
+    public TreatmentInfos findTreatmentInfosByFileItem(final FileItem fileItem) {
+        return treatmentInfosDao.findTreatmentInfosByFileItem(fileItem);
+    }
+
+}

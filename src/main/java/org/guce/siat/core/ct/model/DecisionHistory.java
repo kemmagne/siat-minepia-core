@@ -12,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.guce.siat.common.model.AbstractModel;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileType;
 
 /**
@@ -34,28 +35,45 @@ public class DecisionHistory extends AbstractModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "DECISION_HISTORY_SEQ")
     private Long id;
 
+    /**
+     * the file to which this decision history is related
+     */
+    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private File file;
+
+    /**
+     * the file type for which this decision history has been sent to e-GUCE
+     */
     @JoinColumn(name = "FILE_TYPE_ID", referencedColumnName = "ID")
     @ManyToOne(fetch = FetchType.LAZY)
     private FileType fileType;
 
     @Column(name = "CODE", length = 50)
     private String code;
-
     @Column(name = "LABEL_FR")
     private String labelFr;
-
     @Column(name = "LABEL_EN")
     private String labelEn;
-
     @Column(name = "VALUE")
     private String value;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public File getFile() {
+        return file;
+    }
+
+    public void setFile(File file) {
+        this.file = file;
     }
 
     public FileType getFileType() {
