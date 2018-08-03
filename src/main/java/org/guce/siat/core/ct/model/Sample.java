@@ -6,6 +6,7 @@
 package org.guce.siat.core.ct.model;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -60,6 +61,24 @@ public class Sample extends AbstractModel implements Serializable
 	@OneToOne
 	@JoinColumn(name = "FILE_ITEM_ID")
 	private FileItem fileItem;
+	
+	/**
+	 * The storage place of sample
+	 */
+	@Column(name = "STORAGE_PLACE")
+	private String storagePlace;
+	
+	@Column(name = "RECONDITIONNING_MODE")
+	private String reconditionningMode;
+	
+	@Column(name = "RECONDITIONNIG_UNITY")
+	private String reconditionningUnity;
+	
+	@Column(name = "TRANSPORT_MEANS")
+	private String transportMeans;
+	
+	@Column(name = "SAMPLING_DATE")
+	private Date samplingDate;
 
 	/**
 	 * Instantiates a new sample.
@@ -175,6 +194,47 @@ public class Sample extends AbstractModel implements Serializable
 		this.fileItem = fileItem;
 	}
 
+	public String getStoragePlace() {
+		return storagePlace;
+	}
+
+	public void setStoragePlace(String storagePlace) {
+		this.storagePlace = storagePlace;
+	}
+
+	public String getReconditionningMode() {
+		return reconditionningMode;
+	}
+
+	public void setReconditionningMode(String reconditionningMode) {
+		this.reconditionningMode = reconditionningMode;
+	}
+
+	public String getReconditionningUnity() {
+		return reconditionningUnity;
+	}
+
+	public void setReconditionningUnity(String reconditionningUnity) {
+		this.reconditionningUnity = reconditionningUnity;
+	}
+
+	public String getTransportMeans() {
+		return transportMeans;
+	}
+
+	public void setTransportMeans(String transportMeans) {
+		this.transportMeans = transportMeans;
+	}
+
+	public Date getSamplingDate() {
+		return samplingDate;
+	}
+
+	public void setSamplingDate(Date samplingDate) {
+		this.samplingDate = samplingDate;
+	}
+
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -225,6 +285,16 @@ public class Sample extends AbstractModel implements Serializable
 		builder.append(containerNumber);
 		builder.append(", lotNumber=");
 		builder.append(lotNumber);
+		builder.append(", storagePlace=");
+		builder.append(storagePlace);
+		builder.append(", reconditionningMode=");
+		builder.append(reconditionningMode);
+		builder.append(", reconditionningUnity=");
+		builder.append(reconditionningUnity);
+		builder.append(", transportMeans");
+		builder.append(transportMeans);
+		builder.append(", samplingDate");
+		builder.append(samplingDate);
 		builder.append(']');
 		return builder.toString();
 	}

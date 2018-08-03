@@ -27,77 +27,73 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class InspectionReportDaoImpl extends AbstractJpaDaoImpl<InspectionReport> implements InspectionReportDao {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(InspectionReportDaoImpl.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(InspectionReportDaoImpl.class);
 
-	/**
-	 * Instantiates a new inspection report dao impl.
-	 */
-	public InspectionReportDaoImpl() {
-		super();
-		setClasse(InspectionReport.class);
-	}
+    /**
+     * Instantiates a new inspection report dao impl.
+     */
+    public InspectionReportDaoImpl() {
+        super();
+        setClasse(InspectionReport.class);
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.core.ct.dao.InspectionReportDao#findInspectionReportsByItemFlowList(java.util.List)
-	 */
-	@Override
-	public List<InspectionReport> findInspectionReportsByItemFlowList(final List<ItemFlow> itemFlows) {
-		if (CollectionUtils.isNotEmpty(itemFlows)) {
-			final String hql = "SELECT a FROM InspectionReport a WHERE a.itemFlow IN (:itemFlows)";
+     */
+    @Override
+    public List<InspectionReport> findInspectionReportsByItemFlowList(final List<ItemFlow> itemFlows) {
+        if (CollectionUtils.isNotEmpty(itemFlows)) {
+            final String hql = "SELECT a FROM InspectionReport a WHERE a.itemFlow IN (:itemFlows)";
 
-			final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hql, InspectionReport.class);
-			query.setParameter("itemFlows", itemFlows);
+            final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hql, InspectionReport.class);
+            query.setParameter("itemFlows", itemFlows);
 
-			return query.getResultList();
-		}
-		return Collections.emptyList();
+            return query.getResultList();
+        }
+        return Collections.emptyList();
 
-	}
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.core.ct.dao.InspectionReportDao#findByItemFlow(org.guce.siat.common.model.ItemFlow)
-	 */
-	@Override
-	public InspectionReport findByItemFlow(final ItemFlow itemFlow) {
-		try {
-			if (itemFlow != null) {
-				final String hql = "SELECT a FROM InspectionReport a WHERE a.itemFlow.id = :itemFlowId ";
-				final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hql, InspectionReport.class);
-				query.setParameter("itemFlowId", itemFlow.getId());
-				return query.getSingleResult();
-			}
-		} catch (final NoResultException | NonUniqueResultException e) {
-			LOG.info(Objects.toString(e), e);
-		}
-		return null;
-	}
+     */
+    @Override
+    public InspectionReport findByItemFlow(final ItemFlow itemFlow) {
+        try {
+            if (itemFlow != null) {
+                final String hql = "SELECT a FROM InspectionReport a WHERE a.itemFlow.id = :itemFlowId ";
+                final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hql, InspectionReport.class);
+                query.setParameter("itemFlowId", itemFlow.getId());
+                return query.getSingleResult();
+            }
+        } catch (final NoResultException | NonUniqueResultException e) {
+            LOG.info(Objects.toString(e), e);
+        }
+        return null;
+    }
 
-	@Override
-	public InspectionReport findLastInspectionReportsByFileItem(final FileItem fileItem) {
-		try {
-			if (fileItem != null) {
-				final StringBuilder hqlBuilder = new StringBuilder();
+    @Override
+    public InspectionReport findLastInspectionReportsByFileItem(final FileItem fileItem) {
+        if (fileItem != null) {
+            final StringBuilder hqlBuilder = new StringBuilder();
 
-				hqlBuilder.append("SELECT a FROM InspectionReport a ");
-				hqlBuilder.append("WHERE a.fileItem.id = :fileItemId ");
-				hqlBuilder.append("ORDER BY a.reportDate ASC");
+            hqlBuilder.append("SELECT a FROM InspectionReport a ");
+            hqlBuilder.append("WHERE a.itemFlow.fileItem.id = :fileItemId ");
+            hqlBuilder.append("ORDER BY a.reportDate DESC");
 
-				final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hqlBuilder.toString(),
-						InspectionReport.class);
-				query.setParameter("fileItemId", fileItem.getId());
-				return query.getSingleResult();
-			}
-		} catch (final NoResultException | NonUniqueResultException e) {
-			LOG.info(Objects.toString(e), e);
-		}
-		return null;
-	}
+            final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hqlBuilder.toString(),
+                    InspectionReport.class);
+            query.setParameter("fileItemId", fileItem.getId());
+            return query.getResultList().get(0);
+        }
+        return null;
+    }
 
 }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="file:////DC-GUCE2k8/GUCE_DATA/yenke/Mes%20documents/NetBeansProjects/siat/siat-ct-core/src/main/resources/xsd/CT/MONITORING/IRPM_MINCOMMERCE.xsd" uri="src/main/resources/jaxb/DOCUMENT/IRPM_MINCOMMERCE.xsd"/>
+</catalog>
+
+
+
+
+<h:outputLabel value="#{bundle['NomSocieteTraitement']} *" for="NomSocieteTraitement" />
+<p:inputText value="#{fileItemCctDetailController.treatmentResult.treatmentCompanyName}" id="NomSocieteTraitement" required="true" />
+
+<h:outputLabel value="#{bundle['TelSociteteTraitement']} *" for="TelSociteteTraitement" />
+<p:inputText value="#{fileItemCctDetailController.treatmentResult.treatmentCompanyTel}" id="TelSociteteTraitement" required="true" />
+
+<h:outputLabel value="#{bundle['FaxSociteteTraitement']} *" for="FaxSociteteTraitement" />
+<p:inputText value="#{fileItemCctDetailController.treatmentResult.treatmentCompanyFax}" id="FaxSociteteTraitement" required="true" />
+
+<h:outputLabel value="#{bundle['BpSociteteTraitement']} *" for="BpSociteteTraitement" />
+<p:inputText value="#{fileItemCctDetailController.treatmentResult.treatmentCompanyBp}" id="BpSociteteTraitement" required="true" />
+
+<h:outputLabel value="#{bundle['EmailSociteteTraitement']} *" for="EmailSociteteTraitement" />
+<p:inputText value="#{fileItemCctDetailController.treatmentResult.treatmentCompanyEmail}" id="EmailSociteteTraitement" required="true" />

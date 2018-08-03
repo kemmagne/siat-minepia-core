@@ -445,6 +445,17 @@ public final class SendDocumentUtils
 			documentType = document.getTYPEDOCUMENT();
 			service = document.getREFERENCEDOSSIER().getSERVICE();
 
+		} else if (documentSerializable instanceof org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT){
+			jaxbContext = org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.JAXBContextCreator.getInstance();
+			final org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT document = (org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT) documentSerializable;
+			jaxbMarshallerz = jaxbContext.createMarshaller();
+			
+			final JAXBSource source = new JAXBSource(jaxbContext, document);
+			validateDocument(source, ConstantsXsdPaths.IRPM_MINCOMMERCE_XSD_PATH);
+			xmlFile = new java.io.File(ebxmlFolder + File.separator + document.getMESSAGE().getNUMEROMESSAGE() + ESBConstants.XML_FILE_EXTENSION);
+			jaxbMarshallerz.marshal(document, xmlFile);
+			documentType = document.getTYPEDOCUMENT();
+			service = document.getREFERENCEDOSSIER().getSERVICE();
 		}
 
 		return xmlFile;
