@@ -7479,6 +7479,7 @@ public class DOCUMENT
                 "poids",
                 "volume",
                 "valeurfobdevise",
+                "devise",
                 "paysorigine"
             })
             public static class MARCHANDISE
@@ -7515,6 +7516,8 @@ public class DOCUMENT
                 protected String volume;
                 @XmlElement(name = "VALEUR_FOB_DEVISE")
                 protected String valeurfobdevise;
+                @XmlElement(name = "DEVISE")
+                protected String devise;
                 @XmlElement(name = "PAYS_ORIGINE")
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE paysorigine;
 
@@ -7878,6 +7881,30 @@ public class DOCUMENT
                     this.valeurfobdevise = value;
                 }
 
+                /**
+                 * Obtient la valeur de la propriété devise.
+                 *
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *
+                 */
+                public String getDEVISE() {
+                    return devise;
+                }
+
+                /**
+                 * Définit la valeur de la propriété devise.
+                 *
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *
+                 */
+                public void setDEVISE(final String value) {
+                    this.devise = value;
+                }
+                
                 /**
                  * Obtient la valeur de la propriété paysorigine.
                  *

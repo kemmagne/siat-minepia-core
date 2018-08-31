@@ -325,7 +325,10 @@ INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (30, 5);
 
 -- BSBE_MINFOF
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (31, 4);
-INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (31, 5);
+INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (31, 12);
+INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (31, 18);
+INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (31, 17);
+INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (31, 6);
 
 -- AE_MINADER (Autorisation des essaies (AH)) --> 5 Cotations
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES (32, 4);
@@ -1501,6 +1504,26 @@ INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Vis
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Subscription to EXP/IMP file process after receiving the file answer','Réponse CI d''inscription au fichier des importateurs/exportateurs suite recevabilité','35','169');
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Subscription to EXP/IMP file process after depth study answer','Réponse CI d''inscription au fichier des importateurs/exportateurs suite étude approfondie','35','156');
 COMMIT;
+
+-- BSBE MINFOF
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Woods Specification Bulletin for Export','Bulletin de Spécification des Bois à l''Export','1','100');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Woods Specification Bulletin for Export','Complément d''information de Bulletin de Spécification des Bois à l''Export ','1','101');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection of the Woods Specification Bulletin for Export','Rejet de Bulletin de Spécification des Bois à l''Export ','1','102');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of the Woods Specification Bulletin for Export','Validation de Bulletin de Spécification des Bois à l''Export ','1','103');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection of the Woods Specification Bulletin for Export','Rejet de Bulletin de Spécification des Bois à l''Export','1','110');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Acceptation of the Woods Specification Bulletin for Export','Acceptation de Bulletin de Spécification des Bois à l''Export ','1','121');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Authorization of the Woods Specification Bulletin for Export','Autorisation de Bulletin de Spécification des Bois à l''Export ','1','122');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Woods Specification Bulletin for Export','Complément d''information de Bulletin de Spécification des Bois à l''Export ','1','128');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Decision Refusal - Back to treatment of the Woods Specification Bulletin for Export ','Refus Décision - Retour vers étude de Bulletin de Spécification des Bois à l''Export  ','1','154');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Removing the Woods Specification Bulletin for Export File','Retrait de Bulletin de Spécification des Bois à l''Export','1','155');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Woods Specification Bulletin for Export after depth study answer','Complément d''information de Bulletin de Spécification des Bois à l''Export suite étude approfondie','1','156');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Woods Specification Bulletin for Export after receiving the file answer','Complément d''information de  Bulletin de Spécification des Bois à l''Export suite recevabilité','1','169');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Cancel Request for the Woods Specification Bulletin for Export','Demande d''annulation de Bulletin de Spécification des Bois à l''Export','1','162');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Signing the cancellation of the Woods Specification Bulletin for Export','Signature d''annulation de Bulletin de Spécification des Bois à l''Export','1','165');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection cancellation for the Woods Specification Bulletin for Export','Rejet annulation de Bulletin de Spécification des Bois à l''Export','1','166');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Cancellation confirmation for the Woods Specification Bulletin for Export','Confirmation d''annulation de Bulletin de Spécification des Bois à l''Export','1','167');
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Refusal to sign the Cancellation','Refus de signature de l''Annulation','1','168');
+
 /*==============================================================*/
 /* Table : FILE_TYPE_FLOW_REPORT                                */
 /*==============================================================*/
@@ -1536,6 +1559,7 @@ INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD
 INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID) VALUES (30, 'org.guce.siat.web.reports.exporter.CtCctCpEExporter', 'CT_CCT_CP_E.pdf','NUMERO_CT_CCT_CP_E', 33, 89, 3 );
 -- INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID) VALUES (31, 'org.guce.siat.web.reports.exporter.RcptExporter', 'RCPT.pdf','NUMERO_RCPT', 28, 171, 167 );
 INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID) VALUES (31, 'org.guce.siat.web.reports.exporter.FimexExporter', 'FIMEX.pdf','NUMERO_FIMEX', 35, 122, 222);
+INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID) VALUES (34, 'org.guce.siat.web.reports.exporter.BsbeExporter', 'BSBE.pdf','NUMERO_BSBE', 31, 122, 151);
 -- ajout du file type report pour CQ_CT
 --INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID) VALUES (32, 'org.guce.siat.web.reports.exporter.CtCctCqeExporter', 'CT_CCT_CQ.pdf','NUMERO_CQ_CT', 21, 89, 209);
 -- ajout du file type report pour CCT_CT_E
@@ -2379,7 +2403,18 @@ INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LAB
 INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (30, 104, 0, 'Admissibility of a Car Transportation letter for the Hood ', 'Recevabilité de Lettre de Voiture pour le Transport des Bois');
 --BSBE_MINFOF
 INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 100, 0, 'Folder filing for a Woods Specification Bulletin for Export', 'Dépôt de dossier de Bulletin de Spécification des Bois à l''Export');
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 104, 0, 'Admissibility of a Woods Specification Bulletin for Export', 'Recevabilité de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 101, 0, 'Reject an Woods Specification Bulletin for Export file', 'Rejet de dossier de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 102, 0, 'Validation of the Woods Specification Bulletin for Export', 'Validation de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 103, 0, 'Removing the Woods Specification Bulletin for Export', 'Retrait de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 104, 0, 'Admissibility of an Woods Specification Bulletin for Export', 'Recevabilité de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 105, 0, 'Quotation step', 'Etape de cotation');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 106, 1, 'Depth study of the file step', 'Etape d''étude approfondie du dossier');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 112, 0, 'Signature of the of Woods Specification Bulletin for Export folder', 'Signature du dossier de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 118, 0, 'Annulation request of the Woods Specification Bulletin for Export', 'Demande d''annulation de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 119, 0, 'Annulation request study of the Woods Specification Bulletin for Export', 'Etude de demande d''annulation de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 120, 0, 'End Annulation of the Woods Specification Bulletin for Export', 'Fin annulation de Bulletin de Spécification des Bois à l''Export');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (31, 121, 0, 'Signature of the Woods Specification Bulletin for Export after annulation', 'Signature du Bulletin de Spécification des Bois à l''Export suite annulation');
+
 --DI_MINCOMMERCE
 INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (24, 100, 0, 'Folder filing for a Declarations of Import', 'Dépôt de Déclarations d’Importation');
 INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_AP_DECISION, LABEL_EN, LABEL_FR) VALUES (24, 104, 0, 'Admissibility of a Declarations of Import', 'Recevabilité de Déclarations d’Importation');
@@ -3055,7 +3090,29 @@ INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1249,
 --LVTB_MINFOF
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1250,'LVTB05','FL_AP_85',30);
 --BSBE_MINFOF
-INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1251,'BSB05','FL_AP_85',31);
+--INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1251,'BSB05','FL_AP_85',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1251,'BSB01','FL_AP_85',31);
+UPDATE FLOW_GUCE_SIAT SET FLOW_GUCE = 'BSB01' WHERE ID = '1251';
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1252,'BSB02','FL_AP_86',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1253,'BSB02','FL_AP_113',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1254,'BSB02','FL_AP_114',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1255,'BSB02','FL_AP_115',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1256,'BSB02','FL_AP_116',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1257,'BSB02','FL_AP_117',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1258,'BSB02','FL_AP_118',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1259,'BSB03','FL_AP_87',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1260,'BSB03','FL_AP_95',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1261,'BSB03','FL_AP_96',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1262,'BSB03','FL_AP_97',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1263,'BSB03','FL_AP_98',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1264,'BSB03','FL_AP_99',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1265,'BSB03','FL_AP_100',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1266,'BSB04','FL_AP_107',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1267,'BSB11',NULL,31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1268,'BSBA1','FL_AP_147',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1269,'AP_RETRAIT_100','FL_AP_140',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1270,'BSBA2','FL_AP_152',31);
+INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1271,'BSBA3','FL_CC_151',31);
 
 --AE_MINADER
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (1300,'AME01','FL_AP_85',32);
@@ -3278,6 +3335,8 @@ INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGA
 INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  '/2015/CP/MINEPDED',  19,  66);
 --MINFOF_CITIES
 INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  '/2015/MINFOF/CITIES',  20,  167);
+--BSBE_MINFOF
+INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  'BSBE/', 34, 151);
 
 INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  '/2015/CCT/CPI/MINADER',  24,  3);
 INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  '/2015/CCT/CPE/MINADER',  25,  3);
@@ -3298,19 +3357,3 @@ INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGA
 --INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT,  ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  '/2015/CCT/CQ/MINADER',  32,  209);
 
 COMMIT;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

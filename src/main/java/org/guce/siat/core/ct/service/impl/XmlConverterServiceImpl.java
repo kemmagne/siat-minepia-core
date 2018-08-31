@@ -193,7 +193,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class XmlConverterServiceImpl.
  */
 @Service("xmlConverterService")
-@Transactional(readOnly = true)
+@Transactional(readOnly = false)
 public class XmlConverterServiceImpl implements XmlConverterService {
 
 	/**
@@ -7426,8 +7426,9 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 				&& document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE() != null) {
 			Company client = companyDao.findCompanyByNumContribuable(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
 			if (client != null) {
-
-				file.setClient(client);
+                                client.setProfession(document.getCONTENT().getCLIENT().getPROFESSION());
+                                Company newClient = companyDao.save(client);
+				file.setClient(newClient);
 			} else {
 				client = new Company();
 				if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null) {
@@ -7627,14 +7628,11 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 				file.setCountryOfOrigin(countryOfOrigin);
 			} else {
 				countryOfOrigin = new Country();
-				if (document.getCONTENT() != null && document.getCONTENT().getPROVENANCE() != null
-						&& document.getCONTENT().getPROVENANCE().getPAYSORIGINE() != null) {
-					countryOfOrigin.setCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getCODEPAYS());
-					countryOfOrigin.setCountryName(document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getNOMPAYS());
+                                countryOfOrigin.setCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getCODEPAYS());
+                                countryOfOrigin.setCountryName(document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getNOMPAYS());
 
-					countryDao.save(countryOfOrigin);
-					file.setCountryOfOrigin(countryOfOrigin);
-				}
+                                countryDao.save(countryOfOrigin);
+                                file.setCountryOfOrigin(countryOfOrigin);
 			}
 		}
 
@@ -7647,14 +7645,11 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 				file.setCountryOfProvenance(countryOfProvenance);
 			} else {
 				countryOfProvenance = new Country();
-				if (document.getCONTENT() != null && document.getCONTENT().getPROVENANCE() != null
-						&& document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE() != null) {
-					countryOfProvenance.setCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getCODEPAYS());
-					countryOfProvenance.setCountryName(document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getNOMPAYS());
+                                countryOfProvenance.setCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getCODEPAYS());
+                                countryOfProvenance.setCountryName(document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getNOMPAYS());
 
-					countryDao.save(countryOfProvenance);
-					file.setCountryOfProvenance(countryOfProvenance);
-				}
+                                countryDao.save(countryOfProvenance);
+                                file.setCountryOfProvenance(countryOfProvenance);
 			}
 		}
 		return file;

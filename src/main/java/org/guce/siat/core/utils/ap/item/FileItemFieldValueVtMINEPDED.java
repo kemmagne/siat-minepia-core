@@ -86,6 +86,11 @@ public class FileItemFieldValueVtMINEPDED
 				fileItemFieldValue.setValue(marchandise.getUNITE());
 				break;
 			}
+                        case "DEVISE":
+			{
+                                fileItemFieldValue.setValue(marchandise.getDEVISE());
+				break;
+			}
 			case "PAYS_ORIGINE_CODE":
 			{
 				if (marchandise.getPAYSORIGINE() != null)
