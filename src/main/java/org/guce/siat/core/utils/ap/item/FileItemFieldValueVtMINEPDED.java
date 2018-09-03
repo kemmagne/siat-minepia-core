@@ -86,10 +86,19 @@ public class FileItemFieldValueVtMINEPDED
 				fileItemFieldValue.setValue(marchandise.getUNITE());
 				break;
 			}
-                        case "DEVISE":
+                        case "DEVISE_CODE":
 			{
-                                fileItemFieldValue.setValue(marchandise.getDEVISE());
+                            if (marchandise.getDEVISE() != null) {
+                                fileItemFieldValue.setValue(marchandise.getDEVISE().getCODE());
 				break;
+                            }
+			}
+                        case "DEVISE_LIBELLE":
+			{
+                            if (marchandise.getDEVISE() != null) {
+                                fileItemFieldValue.setValue(marchandise.getDEVISE().getLIBELLE());
+				break;
+                            }
 			}
 			case "PAYS_ORIGINE_CODE":
 			{

@@ -7517,7 +7517,7 @@ public class DOCUMENT
                 @XmlElement(name = "VALEUR_FOB_DEVISE")
                 protected String valeurfobdevise;
                 @XmlElement(name = "DEVISE")
-                protected String devise;
+                protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE devise;
                 @XmlElement(name = "PAYS_ORIGINE")
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE paysorigine;
 
@@ -7886,10 +7886,10 @@ public class DOCUMENT
                  *
                  * @return
                  *     possible object is
-                 *     {@link String }
+                 *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE }
                  *
                  */
-                public String getDEVISE() {
+                public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE getDEVISE() {
                     return devise;
                 }
 
@@ -7898,10 +7898,10 @@ public class DOCUMENT
                  *
                  * @param value
                  *     allowed object is
-                 *     {@link String }
+                 *     {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE }
                  *
                  */
-                public void setDEVISE(final String value) {
+                public void setDEVISE(final DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE value) {
                     this.devise = value;
                 }
                 
@@ -8025,7 +8025,70 @@ public class DOCUMENT
                     }
 
                 }
+                
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "code",
+                    "libelle"
+                })
+                public static class DEVISE
+                    implements Serializable
+                {
 
+                    @XmlElement(name = "CODE")
+                    protected String code;
+                    @XmlElement(name = "LIBELLE")
+                    protected String libelle;
+
+                    /**
+                     * Obtient la valeur de la propriété code.
+                     *
+                     * @return
+                     *     possible object is
+                     *     {@link String }
+                     *
+                     */
+                    public String getCODE() {
+                        return code;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété code.
+                     *
+                     * @param value
+                     *     allowed object is
+                     *     {@link String }
+                     *
+                     */
+                    public void setCODE(final String value) {
+                        this.code = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété libelle.
+                     *
+                     * @return
+                     *     possible object is
+                     *     {@link String }
+                     *
+                     */
+                    public String getLIBELLE() {
+                        return libelle;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété libelle.
+                     *
+                     * @param value
+                     *     allowed object is
+                     *     {@link String }
+                     *
+                     */
+                    public void setLIBELLE(final String value) {
+                        this.libelle = value;
+                    }
+
+                }
 
                 /**
                  * <p>Classe Java pour anonymous complex type.
