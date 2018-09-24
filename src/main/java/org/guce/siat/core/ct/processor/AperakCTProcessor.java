@@ -1,6 +1,7 @@
 package org.guce.siat.core.ct.processor;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.camel.Exchange;
@@ -37,8 +38,8 @@ public class AperakCTProcessor implements Processor {
     public void process(final Exchange exchange) throws Exception {
         final Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
         LOG.error("Send Aperak C due to : " + Objects.toString(cause.getMessage()), cause);
-        final HashMap<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
-        final HashMap<String, Object> result = ctDocumentReciever.generateAperakCFile(ebxmlBytes, cause.getMessage());
+        final Map<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
+        final Map<String, Object> result = ctDocumentReciever.generateAperakCFile(ebxmlBytes, cause.getMessage());
         exchange.getOut().setBody(result);
     }
 

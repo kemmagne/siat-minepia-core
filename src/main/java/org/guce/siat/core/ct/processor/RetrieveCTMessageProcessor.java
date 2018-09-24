@@ -3,6 +3,7 @@ package org.guce.siat.core.ct.processor;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 
 import javax.persistence.PersistenceException;
@@ -51,7 +52,7 @@ public class RetrieveCTMessageProcessor implements Processor {
         final HashMap<String, Object> ebxmlBytes = (HashMap<String, Object>) exchange.getIn().getBody();
         LOG.warn("####start Bean Process result : Done");
         try {
-            final HashMap<String, Object> result = ctDocumentReciever.uploadEbxmlFile(ebxmlBytes);
+            final Map<String, Object> result = ctDocumentReciever.uploadEbxmlFile(ebxmlBytes);
             if (result != null) {
                 exchange.getOut().setBody(result);
             }

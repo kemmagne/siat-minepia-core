@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Level;
 
 import javax.persistence.PersistenceException;
 import javax.xml.XMLConstants;
@@ -48,10 +47,13 @@ import org.guce.siat.common.model.FlowGuceSiat;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.AlfrescoDirectoryCreator;
 import org.guce.siat.common.service.EbxmlPropertiesService;
+import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.service.FlowGuceSiatService;
+import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.MailService;
 import org.guce.siat.common.service.ValidationFlowService;
 import org.guce.siat.common.service.XmlConverterService;
+import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.XmlXPathUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.guce.siat.common.utils.ebms.EbmsUtility;
@@ -144,6 +146,18 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
     private MailService mailService;
 
     /**
+     * the item flow service
+     */
+    @Autowired
+    private ItemFlowService itemFlowService;
+
+    /**
+     * the file producer
+     */
+    @Autowired
+    private FileProducer fileProducer;
+
+    /**
      * The Constant NEGATIVE_APERAK_MAIL.
      */
     private static final String NEGATIVE_APERAK_MAIL = "negatifAperakReceived.vm";
@@ -190,7 +204,7 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
     @SuppressWarnings("unchecked")
     @Override
     @Transactional(readOnly = false)
-    public HashMap<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws ValidationException,
+    public Map<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws ValidationException,
             ParseException, TransformerException, SOAPException, SAXException, ParserConfigurationException, JAXBException,
             XPathExpressionException {
         final HashMap<String, Object> data = new HashMap<>();
@@ -225,7 +239,7 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             validationFlowService.validateFlowFromGuce(rootElement);
             // Injection file in BDD
             final Serializable document = getReceivedDocument(xmlFile, xmlContent, xPath);
-            LOG.info(" getReceivedDocument finished");
+            LOG.info("################### getReceivedDocument finished");
             final org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
             LOG.info(" saveReceivedFileAndExecuteFlow finished");
             // Add PJ to GED
@@ -265,7 +279,7 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             }
             // SIAT reference must be sent in the APERAK_F
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_K.getCode(), null, savedFile);
-            LOG.info(" generateAperakDocument K finished");
+            LOG.info("############## generateAperakDocument K finished");
             // xml file based on aperak document
             final java.io.File aperackDFile = generateXmlAperakFile(aperakDocument);
             LOG.info(" generateXmlAperakFile finished");
@@ -279,58 +293,47 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             data.put(ESBConstants.EBXML_TYPE, ESBConstants.APERAK);
             data.put(ESBConstants.TO_PARTY_ID, propertiesService.getToPartyId());
             data.put(ESBConstants.DEAD, "0");
+            // put elements for backup
+            final List<ItemFlow> itemFlowList = itemFlowService
+                    .findLastItemFlowsByFileItemList(savedFile.getFileItemsList());
+            data.put(ESBConstants.FILE, savedFile);
+            data.put(ESBConstants.CURRENT_FLOW, itemFlowList.get(0).getFlow().getCode());
+            data.put(ESBConstants.ITEM_FLOW_IDS, SiatUtils.getEntitiesIds(itemFlowList));
+            // create backup
+            fileProducer.createAperakBackup(data);
             LOG.info(" generateEbxmlFiles aperak K finished");
         } catch (final IOException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("#####Error to connect to ressource:" + e.getMessage(), e);
             throw new RuntimeException("Technical Exception occured : " + e.getMessage());
-
         } catch (final ValidationException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new ValidationException("Validation Exception : " + e.getMessage());
         } catch (final ParseException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error ParseException: " + e.getMessage(), e);
             throw new ParseException("Parse Exception : " + e.getMessage(), 0);
         } catch (final SAXException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new SAXException("SAX Exception : " + e.getMessage());
         } catch (final ParserConfigurationException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: {}", Objects.toString(e));
             throw new ParserConfigurationException("ParserConfiguration Exception : " + e.getMessage());
         } catch (final JAXBException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new JAXBException("JAXB Exception " + e.getMessage());
         } catch (final XPathExpressionException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new XPathExpressionException("XPathExpression Exception " + e.getMessage());
         } catch (final PersistenceException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new PersistenceException("PersistenceException Exception " + e.getMessage());
         } catch (final IndexOutOfBoundsException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new IndexOutOfBoundsException("IndexOutOfBoundsException Exception " + e.getMessage());
         } catch (final NullPointerException e) {
-            java.util.logging.Logger.getLogger(CtDocumentRecieverImpl.class.getName()).log(Level.SEVERE, null, e);
-
             LOG.error("####Error to parse document: ", e);
             throw new NullPointerException("NullPointerException Exception " + e.getMessage());
+        } catch (Exception e) {
+            LOG.warn("####Cannot create aperak backup: ", e);
         }
         return data;
 
@@ -342,10 +345,10 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
 	 * @see org.guce.siat.core.ct.service.CtDocumentReciever#generateAperakCFile(java.util.HashMap, java.lang.String)
      */
     @Override
-    public HashMap<String, Object> generateAperakCFile(final Map<String, Object> ebxmlBytes, final String errorMessage) throws Exception {
+    public Map<String, Object> generateAperakCFile(final Map<String, Object> ebxmlBytes, final String errorMessage) throws Exception {
 
-        final HashMap<String, Object> data = new HashMap<>();
-        final Map<String, byte[]> attached = null;
+        final Map<String, Object> data = new HashMap<>();
+        final Map<String, byte[]> attached = new HashMap<>();
         File xmlFile;
         byte[] response;
         String xmlContent;
@@ -854,3 +857,4 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
         return false;
     }
 }
+
