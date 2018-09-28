@@ -98,10 +98,15 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	@Override
 	public List<FileItem> findByFilter(final Filter filter, final Administration administration,
 			final List<FileTypeCode> fileTypeCodes) {
+		return this.findByFilter(filter, new ArrayList<Administration>(Collections.singletonList(administration)), fileTypeCodes);
+	}
+
+	@Override
+	public List<FileItem> findByFilter(final Filter filter, final List<Administration> administrations,
+			final List<FileTypeCode> fileTypeCodes) {
 		final Map<String, Object> params = new HashMap<String, Object>();
 		final StringBuilder hqlQuery = new StringBuilder();
-		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<Administration>(
-				Collections.singletonList(administration)));
+		final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(administrations);
 
 		hqlQuery.append("SELECT DISTINCT fi FROM FileItem fi ");
 		hqlQuery.append("LEFT OUTER JOIN fi.fileItemFieldValueList fifv ");
