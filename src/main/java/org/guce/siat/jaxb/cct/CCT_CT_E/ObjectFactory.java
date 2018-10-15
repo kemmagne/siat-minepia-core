@@ -1,8 +1,8 @@
 //
-// Ce fichier a �t� g�n�r� par l'impl�mentation de r�f�rence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
-// Toute modification apport�e � ce fichier sera perdue lors de la recompilation du sch�ma source.
-// G�n�r� le : 2018.06.22 � 03:06:02 PM WAT
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2018.10.10 à 06:16:35 PM WAT
 //
 package org.guce.siat.jaxb.cct.CCT_CT_E;
 
@@ -73,47 +73,6 @@ public class ObjectFactory {
      */
     public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE createDOCUMENTCONTENTMARCHANDISESMARCHANDISE() {
         return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT createDOCUMENTCONTENTPAIEMENT() {
-        return new DOCUMENT.CONTENT.PAIEMENT();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR createDOCUMENTCONTENTPAIEMENTCHARGEUR() {
-        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE createDOCUMENTCONTENTPAIEMENTCHARGEURADRESSE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.FACTURE createDOCUMENTCONTENTPAIEMENTFACTURE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES
-     * }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES createDOCUMENTCONTENTPAIEMENTFACTUREDETAILFACTURES() {
-        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES();
     }
 
     /**
@@ -263,98 +222,6 @@ public class ObjectFactory {
      */
     public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE createDOCUMENTCONTENTMARCHANDISESMARCHANDISEPAYSORIGINE() {
         return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE createDOCUMENTCONTENTPAIEMENTSIGNATAIRE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT createDOCUMENTCONTENTPAIEMENTENCAISSEMENT() {
-        return new DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE createDOCUMENTCONTENTPAIEMENTFICHERECETTE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE createDOCUMENTCONTENTPAIEMENTPARTIEVERSANTE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE createDOCUMENTCONTENTPAIEMENTBENEFICIAIRE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE
-     * }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE createDOCUMENTCONTENTPAIEMENTCHARGEURTELEPHONEFIXE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE
-     * }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE createDOCUMENTCONTENTPAIEMENTCHARGEURTELEPHONEMOBILE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX createDOCUMENTCONTENTPAIEMENTCHARGEURFAX() {
-        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE
-     * }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTPAIEMENTCHARGEURADRESSEPAYSADRESSE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE
-     * }
-     *
-     */
-    public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE createDOCUMENTCONTENTPAIEMENTFACTUREDETAILFACTURESDETAILFACTURE() {
-        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.INSPECTION.LIEUINSPECTION }
-     *
-     */
-    public DOCUMENT.CONTENT.INSPECTION.LIEUINSPECTION createDOCUMENTCONTENTINSPECTIONLIEUINSPECTION() {
-        return new DOCUMENT.CONTENT.INSPECTION.LIEUINSPECTION();
     }
 
     /**
@@ -566,7 +433,6 @@ public class ObjectFactory {
      * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE
      * }
      *
-     * @return
      */
     public DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTCLIENTADRESSEPAYSADRESSE() {
         return new DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE();

@@ -415,6 +415,41 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "TRAITEMENT_SOCIETE_TRAITEMENT_ADRESSE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null
+                        && document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT().getADRESSE());
+                }
+                break;
+            }
+            case "TRAITEMENT_SOCIETE_TRAITEMENT_TELEPHONE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null
+                        && document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT().getTELEPHONE());
+                }
+                break;
+            }
+            case "TRAITEMENT_SOCIETE_TRAITEMENT_FAX": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null
+                        && document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT().getFAX());
+                }
+                break;
+            }
+            case "TRAITEMENT_SOCIETE_TRAITEMENT_EMAIL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null
+                        && document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT().getEMAIL());
+                }
+                break;
+            }
+            case "TRAITEMENT_SOCIETE_TRAITEMENT_BP": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null
+                        && document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getSOCIETETRAITEMENT().getBP());
+                }
+                break;
+            }
             case "TRAITEMENT_TYPE_TRAITEMENT": {
                 if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getTYPETRAITEMENT());
@@ -433,35 +468,16 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
-            case "TRAITEMENT_DATE_TRAITEMENT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getTRAITEMENT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getTRAITEMENT().getDATETRAITEMENT());
-                }
-                break;
-            }
-            case "INSPECTION_LIEU_INSPECTION_CODE": {
+            case "INSPECTION_LIEU_INSPECTION": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
                         && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getCODE());
-                }
-                break;
-            }
-            case "INSPECTION_LIEU_INSPECTION_NOM": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getNOM());
+                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION());
                 }
                 break;
             }
             case "INSPECTION_DATE_INSPECTION_PROPOSEE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getDATEINSPECTIONPROPOSEE());
-                }
-                break;
-            }
-            case "INSPECTION_DATE_INSPECTION": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getDATEINSPECTION());
                 }
                 break;
             }
@@ -532,3 +548,4 @@ public class FileFieldValueCctExp {
     }
 
 }
+

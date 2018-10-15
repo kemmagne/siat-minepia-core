@@ -6,7 +6,6 @@ INSERT INTO STEP (ID, IS_FINAL, LABELEN, LABELFR, CODE) VALUES (126, 0, 'Supervi
 INSERT INTO STEP (ID, IS_FINAL, LABELEN, LABELFR, CODE) VALUES (127, 0, 'Admissibility - Supervision request', 'Recevabilité - Demande de supervision', 'ST_CT_46');
 INSERT INTO STEP (ID, IS_FINAL, LABELEN, LABELFR, CODE) VALUES (128, 0, 'Cotation', 'Cotation', 'ST_CT_47');
 INSERT INTO STEP (ID, IS_FINAL, LABELEN, LABELFR, CODE) VALUES (129, 0, 'Confirmation RDV pour traitement', 'Confirmation RDV pour traitement', 'ST_CT_48');
---INSERT INTO STEP (ID, IS_FINAL, LABELEN, LABELFR, CODE) VALUES (130, 0, 'Signature Confirmation RDV pour traitement', 'Signature Confirmation RDV pour traitement', 'ST_CT_49');
 
 -- flow
 -- first flow
@@ -18,7 +17,6 @@ INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_
 --
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_CT_103', 24, 0, 'Cotation', 'Cotation', 0, 128, 129);
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_CT_104', 24, 0, 'Confirmation RDV pour traitement', 'Confirmation RDV pour traitement', 1, 129, 4);
---INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_CT_105', 24, 0, 'Signature Confirmation RDV pour traitement', 'Signature Confirmation RDV pour traitement', 1, 130, 4);
 
 --
 INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_100'), 'Observation',  0, 'inputTextarea');
@@ -26,7 +24,6 @@ INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(I
 INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_102'), 'Observation',  1, 'inputTextarea');
 INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_103'), 'Observation',  0, 'inputTextarea');
 INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, LABEL_EN, REQUIRED, TYPE, PROPS) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_104'), 'Date de traitement', 'Treatment date',  1, 'calendar', 'pattern=dd/MM/yyyy HH:mm:ss');
---INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_105'), 'Observation',  1, 'inputTextarea');
 -- file_type_flow
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Fiche de supervision pour signature','Fiche de supervision pour signature',39,7);
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Autorisation fiche de supervision','Autorisation fiche de supervision',39,8);
@@ -37,7 +34,6 @@ INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, ST
 INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Admissibility study - Supervision request', 'Etude de Recevabilité - Demande de supervision', 39, 127);
 INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Cotation', 'Cotation', 39, 128);
 INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Confirmation RDV pour traitement', 'Confirmation RDV pour traitement', 39, 129);
---INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Signature Confirmation RDV pour traitement', 'Signature Confirmation RDV pour traitement', 39, 130);
 INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Depth study', 'Etude approfondie', 39, 4);
 INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Signature fiche de supervision', 'Signature fiche de supervision', 39, 31);
 INSERT INTO FILE_TYPE_STEP (IS_AP_DECISION, LABEL_EN, LABEL_FR, FILE_TYPE_ID, STEP_ID) VALUES (0, 'Fin Rejet', 'Fin Rejet', 39, 5);

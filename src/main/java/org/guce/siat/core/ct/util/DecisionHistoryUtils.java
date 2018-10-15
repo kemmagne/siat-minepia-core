@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.Properties;
 import javax.persistence.Column;
 import javax.persistence.Temporal;
+import org.apache.commons.lang.BooleanUtils;
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.core.ct.util.annotations.CustomProperty;
 import org.guce.siat.core.ct.util.enums.DEFAULT;
@@ -27,11 +28,11 @@ public class DecisionHistoryUtils {
      */
     private static final Logger LOG = LoggerFactory.getLogger(DecisionHistoryUtils.class);
 
-    public static <E extends AbstractModel> void putDecisionHistories(org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT document,
+    public static <E extends AbstractModel> org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT putDecisionHistories(org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT document,
             E entity, final String fileTypeCode) {
 
         if (entity == null) {
-            return;
+            return document;
         }
 
         document.getCONTENT().setDETAILSDECISIONSSIAT(new DOCUMENT.CONTENT.DETAILSDECISIONSSIAT());
@@ -42,6 +43,7 @@ public class DecisionHistoryUtils {
             properties.load(new ClassPathResource("org/guce/siat/messages/locale_fr.properties").getInputStream());
         } catch (IOException ex) {
             LOG.error(null, ex);
+            return document;
         }
 
         final Class clazz = entity.getClass();
@@ -59,17 +61,27 @@ public class DecisionHistoryUtils {
 
             final String fieldName = field.getName();
             final Class fieldType = field.getType();
-            final String getter = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            final String getter;
+            if (!boolean.class.equals(fieldType)) {
+                getter = "get" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            } else {
+                getter = "is" + fieldName.substring(0, 1).toUpperCase() + fieldName.substring(1);
+            }
             try {
-                final Method method = clazz.getMethod(getter);
-                final Object value = method.invoke(entity);
-                if (value == null) {
+                Object value;
+                try {
+                    final Method method = clazz.getMethod(getter);
+                    value = method.invoke(entity);
+                    if (value == null) {
+                        continue;
+                    }
+                } catch (NoSuchMethodException ex) {
                     continue;
                 }
 
                 final Class enumClass = property.enumClass();
                 if (boolean.class.equals(value.getClass()) || Boolean.class.equals(value.getClass())) {
-                    detailsdecision.setVALEUR(Boolean.parseBoolean(value.toString()) ? "Oui" : "Non");
+                    detailsdecision.setVALEUR(BooleanUtils.toBoolean(value.toString()) ? "Oui" : "Non");
                 } else if (!DEFAULT.class.equals(property.enumClass())) {
 
                     final Method valueOfMethod = enumClass.getMethod("valueOf", String.class);
@@ -104,6 +116,7 @@ public class DecisionHistoryUtils {
                 }
             } catch (Exception ex) {
                 LOG.error(null, ex);
+                return document;
             }
 
             detailsdecision.setCODE(column.name());
@@ -113,9 +126,12 @@ public class DecisionHistoryUtils {
 
             document.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION().add(detailsdecision);
         }
+
+        return document;
     }
 
     private DecisionHistoryUtils() {
     }
 
 }
+
