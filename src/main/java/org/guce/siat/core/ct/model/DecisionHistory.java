@@ -10,7 +10,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileType;
@@ -21,7 +20,6 @@ import org.guce.siat.common.model.FileType;
  */
 @javax.persistence.Entity
 @Table(name = "DECISION_HISTORY")
-@XmlRootElement
 public class DecisionHistory extends AbstractModel implements Serializable {
 
     private static final long serialVersionUID = -3019184773702263811L;
@@ -38,18 +36,18 @@ public class DecisionHistory extends AbstractModel implements Serializable {
     /**
      * the file to which this decision history is related
      */
-    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private File file;
 
     /**
      * the file type for which this decision history has been sent to e-GUCE
      */
-    @JoinColumn(name = "FILE_TYPE_ID", referencedColumnName = "ID")
+    @JoinColumn(name = "FILE_TYPE_ID", referencedColumnName = "ID", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private FileType fileType;
 
-    @Column(name = "CODE", length = 50)
+    @Column(name = "CODE", length = 50, nullable = false)
     private String code;
     @Column(name = "LABEL_FR")
     private String labelFr;
@@ -142,3 +140,4 @@ public class DecisionHistory extends AbstractModel implements Serializable {
     }
 
 }
+

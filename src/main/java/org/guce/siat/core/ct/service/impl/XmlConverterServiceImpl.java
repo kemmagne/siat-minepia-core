@@ -701,35 +701,36 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             final File addedFile = fileDao.save(fileConverted);
 
             // save related decision histories
-            if (document instanceof org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) {
+            try {
+                if (document instanceof org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) {
 
-                final org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT doc = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) document;
+                    final org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT doc = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) document;
 
-                if (doc.getCONTENT() != null && doc.getCONTENT().getDETAILSDECISIONSSIAT() != null
-                        && CollectionUtils.isNotEmpty(doc.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION())) {
+                    if (doc.getCONTENT() != null && doc.getCONTENT().getDETAILSDECISIONSSIAT() != null
+                            && CollectionUtils.isNotEmpty(doc.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION())) {
 
-                    final List<org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION> list = doc.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION();
-                    final List<DecisionHistory> decisionHistories = new ArrayList<>(list.size());
+                        final List<org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION> list = doc.getCONTENT().getDETAILSDECISIONSSIAT().getDETAILSDECISION();
 
-                    for (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION detail : list) {
+                        for (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.DETAILSDECISIONSSIAT.DETAILSDECISION detail : list) {
 
-                        final DecisionHistory decisionHistory = new DecisionHistory();
+                            final DecisionHistory decisionHistory = new DecisionHistory();
 
-                        decisionHistory.setCode(detail.getCODE());
-                        decisionHistory.setLabelEn(detail.getLABELEN());
-                        decisionHistory.setLabelFr(detail.getLABELFR());
-                        decisionHistory.setValue(detail.getVALEUR());
-                        decisionHistory.setFileType(fileTypeDao.findByCode(FileTypeCode.valueOf(detail.getCODEPROCEDURESIAT())));
-                        decisionHistory.setFile(addedFile);
+                            decisionHistory.setCode(detail.getCODE());
+                            decisionHistory.setLabelEn(detail.getLABELEN());
+                            decisionHistory.setLabelFr(detail.getLABELFR());
+                            decisionHistory.setValue(detail.getVALEUR());
+                            decisionHistory.setFileType(fileTypeDao.findByCode(FileTypeCode.valueOf(detail.getCODEPROCEDURESIAT())));
+                            decisionHistory.setFile(addedFile);
 
-                        decisionHistories.add(decisionHistory);
+                            decisionHistoryDao.save(decisionHistory);
+                        }
+
                     }
-
-                    decisionHistoryDao.saveList(decisionHistories);
                 }
+            } catch (Exception ex) {
+                LOG.error("Problem occured when trying to create decision histories", ex);
             }
 
-            // save decision histories coming from e-GUCE
             final String formatPrefix = InformationSystemCode.CT.name();
 
             addedFile.setReferenceSiat(new DecimalFormat(formatPrefix + "000000").format(addedFile.getId()));
