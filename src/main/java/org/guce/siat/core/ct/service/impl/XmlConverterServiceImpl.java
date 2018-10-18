@@ -558,53 +558,8 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 
             String nsh;
             ServicesItem snsh;
-            // code sous famille saisit ==> le produit doit etre présenté
-            // obligatoirement avec le dossier
-            //			if (CollectionUtils.isNotEmpty(fileConverted.getFileItemsList())
-            //					&& fileConverted.getFileItemsList().get(0).getSubfamily() != null
-            //					&& fileConverted.getFileItemsList().get(0).getSubfamily().getNsh() != null
-            //					&& (ServiceItemType.NATIVE.getCode().equals(
-            //							fileConverted.getFileItemsList().get(0).getSubfamily().getType().toString()) || fileConverted
-            //							.getFileItemsList().get(0).getSubfamily().getCode() != null))
-            //			{
-            //				final String subfamilyCode = fileConverted.getFileItemsList().get(0).getSubfamily().getCode();
-            //
-            //				if (FileTypeCode.IDI.equals(fileConverted.getFileType().getCode())
-            //						|| FileTypeCode.IDE.equals(fileConverted.getFileType().getCode())
-            //						|| FileTypeCode.DE_MINCOMMERCE.equals(fileConverted.getFileType().getCode())
-            //						|| FileTypeCode.DI_MINCOMMERCE.equals(fileConverted.getFileType().getCode()))
-            //				{
-            //					final org.guce.siat.common.model.Service service = serviceDao.findServiceByFileType(fileConverted.getFileType());
-            //					fileConverted.setBureau(service.getCentralBureau());
-            //				}
-            //				else
-            //				{
-            //					nsh = fileConverted.getFileItemsList().get(0).getSubfamily().getNsh().getGoodsItemCode();
-            //
-            //					if (StringUtils.isNotBlank(subfamilyCode))
-            //					{
-            //						snsh = servicesItemDao.findByNshAndCode(nsh, subfamilyCode);
-            //					}
-            //					else
-            //					{
-            //						snsh = servicesItemDao.findNativeServiceItemByNSH(nsh);
-            //					}
-            //
-            //					fileConverted.setBureau(snsh.getService().getCentralBureau());
-            //				}
-            //			}
-            // cas de produit fictif
-            // En cas de FIMEX le bureau est NULL
-            //			else if (!FileTypeCode.FIMEX.equals(fileConverted.getFileType().getCode()))
-            //			{
-            //				final org.guce.siat.common.model.Service serviceFictif = serviceDao
-            //						.findServiceByFileType(fileConverted.getFileType());
-            //				// fileconverted.setService(serviceFictif);
-            //				fileConverted.setBureau(serviceFictif.getCentralBureau());
-            //			}
             final List<org.guce.siat.common.model.Service> serviceList = serviceDao.findServiceByFileType(fileConverted
                     .getFileType());
-            //fileconverted.setService(serviceFictif);
             if (serviceList != null && serviceList.size() == 1) {
                 fileConverted.setBureau(serviceList.get(0).getCentralBureau());
             } else if (serviceList != null && serviceList.size() > 1) {
@@ -671,30 +626,20 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                 final Bureau bureau = bureauDao.findByServiceAndCode(fileConverted.getBureau().getService(),
                         guceSiatBureau.getSiatBureau());
                 fileConverted.setBureau(bureau);
+                // in fine le bureau auquel doit être affecté le dossier est celui auquel il a été
+                // envoyé depus WEBGUCE
+                if (FileTypeCode.CCT_CT_E.equals(fileConverted.getFileType().getCode())
+                        || FileTypeCode.CCT_CT_E_ATP.equals(fileConverted.getFileType().getCode())
+                        || FileTypeCode.CCT_CT_E_PVI.equals(fileConverted.getFileType().getCode())
+                        || FileTypeCode.CCT_CT_E_FSTP.equals(fileConverted.getFileType().getCode())) {
+                    final Bureau bureau1 = bureauDao.findByCode(guceSiatBureau.getSiatBureau());
+                    if (bureau1 != null) {
+                        fileConverted.setBureau(bureau1);
+                    }
+                }
             }
             for (final FileItem fileItem : fileItemList) {
-
-                //				if (fileItem.getSubfamily() != null)
-                //				{
-                //					final String subfamilyCode = fileItem.getSubfamily().getCode();
-                //					nsh = fileItem.getSubfamily().getNsh().getGoodsItemCode();
-                //
-                //					if (StringUtils.isNotBlank(subfamilyCode))
-                //					{
-                //						snsh = servicesItemDao.findByNshAndCode(nsh, subfamilyCode);
-                //					}
-                //					else
-                //					{
-                //						snsh = servicesItemDao.findNativeServiceItemByNSH(nsh);
-                //					}
-                //				}
                 fileItem.setFile(fileConverted);
-
-                //				if (snsh != null)
-                //				{
-                //					fileItem.setSubfamily(snsh);
-                //					fileItem.setNsh(snsh.getNsh());
-                //				}
                 addedFileItemList.add(fileItem);
             }
 
