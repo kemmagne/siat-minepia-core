@@ -1,6 +1,3 @@
-/*
- *
- */
 package org.guce.siat.core.ct.service.impl;
 
 import java.io.File;
@@ -85,7 +82,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class CommonServiceImpl.
  */
 @Service("commonService")
-@Transactional(readOnly = true)
+@Transactional
 @PropertySources(value = @PropertySource("classpath:global-config.properties"))
 public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements CommonService {
 
@@ -283,7 +280,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
+    @Transactional
     public void takeDecisionAndSaveInspectionReports(final List<InspectionReport> reports, final List<ItemFlow> itemFlowsToAdd) {
 
         final List<FileItem> fileItemList = new ArrayList<>();
@@ -311,6 +308,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             }
 
             inspectionReport.setItemFlow(itemFlow);
+            inspectionReport.setFileItem(itemFlow.getFileItem());
             final List<InspectionController> inspectionControllers = inspectionReport.getInspectionControllerList();
             if (inspectionControllers != null) {
                 for (final InspectionController inspectionController : inspectionControllers) {
@@ -404,12 +402,11 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Transactional(readOnly = false)
     public void takeDecisionAndSaveAnalyseRequest(final List<AnalysePart> analysePartsList, final AnalyseOrder analyseOrder,
             final List<ItemFlow> itemFlowsToAdd) {
-        final List<ItemFlow> itemFlows = new ArrayList<>();
 
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
-            itemFlows.add(itemFlowDao.save(itemFlow));
+            itemFlowDao.save(itemFlow);
 
             analyseOrder.setItemFlow(itemFlow);
             analyseOrderDao.save(analyseOrder);
@@ -448,7 +445,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             toDeleted.setDeleted(Boolean.TRUE);
         }
 
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
         for (final ItemFlow itemFlow : itemFlows) {
             final ItemFlow savedItemFlow = itemFlowDao.save(itemFlow);
 
@@ -508,6 +505,27 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         for (final ItemFlow itemFlow : itemFlows) {
             final String flowCode = itemFlow.getFlow().getCode();
 
+            // suppression des décisions relatives au phyto
+            if ("MINADER".equals(itemFlow.getFileItem().getFile().getDestinataire())
+                    && FlowCode.FL_CT_07.name().equals(flowCode)) {
+                switch (itemFlow.getFileItem().getFile().getFileType().getCode()) {
+                    case CCT_CT_E:
+                        final TreatmentInfos ti = treatmentInfosDao.findTreatmentInfosByItemFlow(itemFlow);
+                        treatmentInfosDao.delete(ti);
+                        break;
+                    case CCT_CT_E_FSTP:
+                    case CCT_CT_E_ATP:
+                        final TreatmentResult tr = treatmentResultDao.findTreatmentResultByItemFlow(itemFlow);
+                        treatmentResultDao.delete(tr);
+                        break;
+                    case CCT_CT_E_PVI:
+                        final InspectionReport ir = inspectionReportDao.findByItemFlow(itemFlow);
+                        inspectionControllerDao.deleteList(ir.getInspectionControllerList());
+                        inspectionReportDao.delete(ir);
+                        break;
+                }
+            }
+
             //Proposition RDV Visite à Quai OR Validation RDV chez Déclarant
             if (alreadyDeleted && (FlowCode.FL_CT_26.name().equals(flowCode) || FlowCode.FL_CT_41.name().equals(flowCode))) {
                 final AppointmentItemFlow appointmentItemFlow = appointmentDao.findAppointmentItemFlowByItemFlow(itemFlow);
@@ -546,7 +564,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentOrderDao.delete(draftTreatmentOrder);
             } //Envoie Résultat d Analyse
             else if (FlowCode.FL_CT_31.name().equals(flowCode)) {
-                final List<String> attachments = new ArrayList<String>();
+                final List<String> attachments = new ArrayList<>();
                 final AnalyseResult draftAnalyseResult = analyseResultDao.findAnalyseResultByItemFlow(itemFlow);
                 final AnalyseOrder analyseOrder = draftAnalyseResult.getAnalyseOrder();
                 final List<AnalysePart> analyseParts = analyseOrder.getAnalysePartsList();
@@ -567,7 +585,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 this.deleteAttachedReports(attachments);
             } //			Envoie Résultat e Traitement
             else if (FlowCode.FL_CT_66.name().equals(flowCode)) {
-                final List<String> attachments = new ArrayList<String>();
+                final List<String> attachments = new ArrayList<>();
                 final TreatmentResult draftTreatmentResult = treatmentResultDao.findTreatmentResultByItemFlow(itemFlow);
                 final TreatmentOrder treatmentOrder = draftTreatmentResult.getTreatmentOrder();
                 final List<TreatmentPart> treatmentPartsList = treatmentOrder.getTreatmentPartsList();
@@ -1045,7 +1063,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         itemFlowDao.saveOrUpdateList(itemFlowsToAdd);
 
         // Update fileItems : set draft = true
-        final List<FileItem> fileItemList = new ArrayList<FileItem>();
+        final List<FileItem> fileItemList = new ArrayList<>();
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlow.getFileItem().setDraft(Boolean.TRUE);
             fileItemList.add(itemFlow.getFileItem());
@@ -1097,13 +1115,14 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 if (analyseOrder != null && !((Administration) analyseOrder.getLaboratory()).equals(user.getAdministration())) {
                     return false;
                 }
-            } else if (StepCode.ST_CT_14.equals(item.getStep().getStepCode())) {
-                final TreatmentOrder treatmentOrder = treatmentOrderDao.findTreatmentOrderByItemFlow(itemFlow);
-                if (treatmentOrder != null
-                        && !((Administration) treatmentOrder.getTreatmentCompany()).equals(user.getAdministration())) {
-                    return false;
-                }
             }
+//            else if (StepCode.ST_CT_14.equals(item.getStep().getStepCode())) {
+//                final TreatmentOrder treatmentOrder = treatmentOrderDao.findTreatmentOrderByItemFlow(itemFlow);
+//                if (treatmentOrder != null
+//                        && !((Administration) treatmentOrder.getTreatmentCompany()).equals(user.getAdministration())) {
+//                    return false;
+//                }
+//            }
         }
         return true;
     }
