@@ -284,6 +284,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     public void takeDecisionAndSaveInspectionReports(final List<InspectionReport> reports, final List<ItemFlow> itemFlowsToAdd) {
 
         final List<FileItem> fileItemList = new ArrayList<>();
+        final List<InspectionReport> irsToSave = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlowDao.save(itemFlow);
@@ -309,22 +310,23 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
             inspectionReport.setItemFlow(itemFlow);
             inspectionReport.setFileItem(itemFlow.getFileItem());
-            final List<InspectionController> inspectionControllers = inspectionReport.getInspectionControllerList();
-            if (inspectionControllers != null) {
-                for (final InspectionController inspectionController : inspectionControllers) {
-                    inspectionController.setInspection(null);
-                }
-                inspectionReport.setInspectionControllerList(cloneInspectionControllerList(inspectionReport
-                        .getInspectionControllerList()));
-            }
+//            final List<InspectionController> inspectionControllers = inspectionReport.getInspectionControllerList();
+//            if (inspectionControllers != null) {
+//                for (final InspectionController inspectionController : inspectionControllers) {
+//                    inspectionController.setInspection(null);
+//                }
+//                inspectionReport.setInspectionControllerList(cloneInspectionControllerList(inspectionReport
+//                        .getInspectionControllerList()));
+//            }
 
-            inspectionReportDao.save(inspectionReport);
-            if (inspectionControllers != null) {
-                for (final InspectionController inspectionController : inspectionControllers) {
-                    inspectionController.setInspection(inspectionReport);
-                    inspectionControllerDao.save(inspectionController);
-                }
-            }
+//            inspectionReportDao.save(inspectionReport);
+            irsToSave.add(inspectionReport);
+//            if (inspectionControllers != null) {
+//                for (final InspectionController inspectionController : inspectionControllers) {
+//                    inspectionController.setInspection(inspectionReport);
+//                    inspectionControllerDao.save(inspectionController);
+//                }
+//            }
 
             // Set draft = true to be updated
             final FileItem item = itemFlow.getFileItem();
@@ -332,6 +334,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             fileItemList.add(item);
         }
 
+        inspectionReportDao.saveList(irsToSave);
         // Update fileItems : Set draft = true
         fileItemDao.saveOrUpdateList(fileItemList);
     }
@@ -511,18 +514,25 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 switch (itemFlow.getFileItem().getFile().getFileType().getCode()) {
                     case CCT_CT_E:
                         final TreatmentInfos ti = treatmentInfosDao.findTreatmentInfosByItemFlow(itemFlow);
-                        treatmentInfosDao.delete(ti);
+                        if (ti != null) {
+                            treatmentInfosDao.delete(ti);
+                        }
                         break;
                     case CCT_CT_E_FSTP:
                     case CCT_CT_E_ATP:
                         final TreatmentResult tr = treatmentResultDao.findTreatmentResultByItemFlow(itemFlow);
-                        treatmentResultDao.delete(tr);
+                        if (tr != null) {
+                            treatmentResultDao.delete(tr);
+                        }
                         break;
                     case CCT_CT_E_PVI:
                         final InspectionReport ir = inspectionReportDao.findByItemFlow(itemFlow);
-                        inspectionControllerDao.deleteList(ir.getInspectionControllerList());
-                        inspectionReportDao.delete(ir);
-                        break;
+                        if (ir != null) {
+                            if (CollectionUtils.isNotEmpty(ir.getInspectionControllerList())) {
+                                inspectionControllerDao.deleteList(ir.getInspectionControllerList());
+                            }
+                            inspectionReportDao.delete(ir);
+                        }
                 }
             }
 
