@@ -4498,18 +4498,18 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
         }
 
-        if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode())) {
-            final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VTP_MINESANTE_REPORT_FIELD,
-                    file);
-            if (!Objects.equals(reportNumberFieldValue, null)) {
-                ciDocument.getCONTENT().setNUMEROVTPMINSANTE(reportNumberFieldValue.getValue());
-                ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
-                ciDocument
-                        .getCONTENT()
-                        .getPIECESJOINTES()
-                        .getPIECEJOINTE()
-                        .add(new PIECEJOINTE(file.getFileTypeGuce(), reportNumberFieldValue.getValue()
-                                + ESBConstants.PDF_FILE_EXTENSION));
+		if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_169.name().equalsIgnoreCase(flowToExecute.getCode())) {
+			final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VTP_MINESANTE_REPORT_FIELD,
+					file);
+			if (!Objects.equals(reportNumberFieldValue, null)) {
+				ciDocument.getCONTENT().setNUMEROVTPMINSANTE(reportNumberFieldValue.getValue());
+				ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
+				ciDocument
+						.getCONTENT()
+						.getPIECESJOINTES()
+						.getPIECEJOINTE()
+						.add(new PIECEJOINTE(file.getFileTypeGuce(), reportNumberFieldValue.getValue()
+								+ ESBConstants.PDF_FILE_EXTENSION));
 
             }
 
