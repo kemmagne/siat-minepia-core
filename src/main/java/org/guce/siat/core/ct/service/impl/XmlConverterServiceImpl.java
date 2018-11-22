@@ -4588,7 +4588,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 			ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
 		}
 
-		if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode())) {
+		if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_169.name().equalsIgnoreCase(flowToExecute.getCode())) {
 			final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VTP_MINESANTE_REPORT_FIELD,
 					file);
 			if (!Objects.equals(reportNumberFieldValue, null)) {

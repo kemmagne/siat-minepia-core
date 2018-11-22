@@ -16197,7 +16197,8 @@ public class DOCUMENT
                 "valeurfobdevise",
                 "paysorigine",
                 "quantiteimportee",
-                "modeemballage"
+                "modeemballage",
+				"amm"
             })
             public static class MARCHANDISE
                     implements Serializable {
@@ -16240,6 +16241,8 @@ public class DOCUMENT
                 protected String quantiteimportee;
                 @XmlElement(name = "MODE_EMBALLAGE")
                 protected String modeemballage;
+				@XmlElement(name = "AMM")
+				protected String amm;
 
                 /**
                  * Obtient la valeur de la propriété linenumber.
@@ -16628,6 +16631,15 @@ public class DOCUMENT
                 public void setMODEEMBALLAGE(String value) {
                     this.modeemballage = value;
                 }
+
+				public String getAMM() {
+					return amm;
+				}
+
+				public void setAMM(String amm) {
+					this.amm = amm;
+				}
+				
 
                 /**
                  * <p>

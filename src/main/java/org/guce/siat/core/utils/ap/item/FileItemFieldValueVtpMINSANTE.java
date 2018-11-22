@@ -105,6 +105,9 @@ public class FileItemFieldValueVtpMINSANTE
                                 fileItemFieldValue.setValue(marchandise.getMODEEMBALLAGE());
                                 break;
                         }
+						case "AMM": {
+							fileItemFieldValue.setValue(marchandise.getAMM());
+						}
 			case "FABRICANT_RAISONSOCIALE":
 			{
 				if (marchandise.getFABRICANT() != null)
