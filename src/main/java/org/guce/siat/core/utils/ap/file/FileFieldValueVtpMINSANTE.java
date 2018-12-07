@@ -960,6 +960,48 @@ public class FileFieldValueVtpMINSANTE {
 					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getMONTANTTOTAL());
 				}
 			}
+			case "INFORMATIONS_GENERALES_PAYS_PROVENANCE_CODEPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getCODEPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getCODEPAYS());
+				}
+			}
+			case "INFORMATIONS_GENERALES_PAYS_PROVENANCE_NOMPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getNOMPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getNOMPAYS());
+				}
+			}
+			case "INFORMATIONS_GENERALES_PAYS_ORIGINE_CODEPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
+				}
+			}
+			case "INFORMATIONS_GENERALES_PAYS_ORIGINE_NOMPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
+				}
+			}
+			case "INFORMATIONS_GENERALES_PAYS_DESTINATION_CODEPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
+				}
+			}
+			case "INFORMATIONS_GENERALES_PAYS_DESTINATION_NOMPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS());
+				}
+			}
             default:
                 int fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_STRING;
                 if (fileField.getCode().contains("_DATE") || fileField.getCode().contains("DATE_") || fileField.getCode().equals("DATE")) {
