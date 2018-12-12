@@ -220,8 +220,9 @@ public class XmlConverterServiceImpl implements XmlConverterService {
      * The Constant ACCEPT_AP_FLOW_LIST.
      */
     private static final List<String> ACCEPT_AP_FLOW_LIST = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(),
-            FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name());
-
+            FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name(),
+			FlowCode.FL_AP_169.name(), FlowCode.FL_AP_170.name(),
+			FlowCode.FL_AP_171.name(), FlowCode.FL_AP_172.name(), FlowCode.FL_AP_173.name(), FlowCode.FL_AP_174.name());
     /**
      * The Constant PREFIXE_FACTURE.
      */
@@ -4499,19 +4500,21 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
 
 		if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_169.name().equalsIgnoreCase(flowToExecute.getCode())) {
-			final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VTP_MINESANTE_REPORT_FIELD,
-					file);
-			if (!Objects.equals(reportNumberFieldValue, null)) {
-				ciDocument.getCONTENT().setNUMEROVTPMINSANTE(reportNumberFieldValue.getValue());
+//			final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VTP_MINESANTE_REPORT_FIELD,
+//					file);
+//			if (!Objects.equals(reportNumberFieldValue, null)) {
+//				ciDocument.getCONTENT().setNUMEROVTPMINSANTE(reportNumberFieldValue.getValue());
+			final String fileName = file.getNumeroDemande() + "_" + file.getReferenceSiat();
+				ciDocument.getCONTENT().setNUMEROVTPMINSANTE(fileName);
 				ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
 				ciDocument
 						.getCONTENT()
 						.getPIECESJOINTES()
 						.getPIECEJOINTE()
-						.add(new PIECEJOINTE(file.getFileTypeGuce(), reportNumberFieldValue.getValue()
+						.add(new PIECEJOINTE(file.getFileTypeGuce(), fileName
 								+ ESBConstants.PDF_FILE_EXTENSION));
 
-            }
+//            }
 
         }
 
