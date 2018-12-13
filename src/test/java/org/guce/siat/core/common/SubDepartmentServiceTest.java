@@ -14,6 +14,7 @@ import org.guce.siat.common.service.SubDepartmentService;
 import org.guce.siat.common.service.UserService;
 import org.guce.siat.common.utils.Constants;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -22,74 +23,83 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-
 /**
  * The Class SubDepartmentServiceTest.
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:TestConfig.xml")
-public class SubDepartmentServiceTest
-{
-	/** The Constant LOG. */
-	private static final Logger LOG = LoggerFactory.getLogger(SubDepartmentServiceTest.class);
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration("classpath:TestConfig.xml")
+public class SubDepartmentServiceTest {
 
-	/** The Constant BUREAU_CENTRAl_BY_ORGANISM. */
-	private static final String FIND_BY_ORGANISM = "findSubDepartmentsByOrganism";
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(SubDepartmentServiceTest.class);
 
-	/** The Constant FIND_BY_ORGANISM_WITH_NULL. */
-	private static final String FIND_BY_ORGANISM_WITH_NULL = "findSubDepartmentsByOrganismWithNull";
+    /**
+     * The Constant BUREAU_CENTRAl_BY_ORGANISM.
+     */
+    private static final String FIND_BY_ORGANISM = "findSubDepartmentsByOrganism";
 
-	private static final String FIND_BY_USER = "findSubDepatmentByUser";
+    /**
+     * The Constant FIND_BY_ORGANISM_WITH_NULL.
+     */
+    private static final String FIND_BY_ORGANISM_WITH_NULL = "findSubDepartmentsByOrganismWithNull";
 
-	/** The sub department service. */
-	@Autowired
-	private SubDepartmentService subDepartmentService;
+    private static final String FIND_BY_USER = "findSubDepatmentByUser";
 
-	/** The administration service. */
-	@Autowired
-	private AdministrationService administrationService;
+    /**
+     * The sub department service.
+     */
+    @Autowired
+    private SubDepartmentService subDepartmentService;
 
-	/** The user service. */
-	@Autowired
-	private UserService userService;
+    /**
+     * The administration service.
+     */
+    @Autowired
+    private AdministrationService administrationService;
 
-	/**
-	 * Find sub departments by organism.
-	 */
-	@Test
-	public void findSubDepartmentsByOrganism()
-	{
-		final Administration organism = administrationService.find(Long.valueOf(Constants.TWO));
-		assertTrue(organism instanceof Organism);
-		final List<SubDepartment> subDepartments = subDepartmentService.findSubDepartmentsByOrganism((Organism) organism);
-		Assert.assertTrue(CollectionUtils.isNotEmpty(subDepartments));
-		LOG.info(FIND_BY_ORGANISM);
-	}
+    /**
+     * The user service.
+     */
+    @Autowired
+    private UserService userService;
 
-	/**
-	 * Find sub departments by organism with null.
-	 */
-	@Test
-	public void findSubDepartmentsByOrganismWithNull()
-	{
-		final List<SubDepartment> subDepartments = subDepartmentService.findSubDepartmentsByOrganism(null);
-		Assert.assertTrue(CollectionUtils.isEmpty(subDepartments));
+    /**
+     * Find sub departments by organism.
+     */
+    @Ignore
+    @Test
+    public void findSubDepartmentsByOrganism() {
+        final Administration organism = administrationService.find(Long.valueOf(Constants.TWO));
+        assertTrue(organism instanceof Organism);
+        final List<SubDepartment> subDepartments = subDepartmentService.findSubDepartmentsByOrganism((Organism) organism);
+        Assert.assertTrue(CollectionUtils.isNotEmpty(subDepartments));
+        LOG.info(FIND_BY_ORGANISM);
+    }
 
-		LOG.info(FIND_BY_ORGANISM_WITH_NULL);
-	}
+    /**
+     * Find sub departments by organism with null.
+     */
+    @Ignore
+    @Test
+    public void findSubDepartmentsByOrganismWithNull() {
+        final List<SubDepartment> subDepartments = subDepartmentService.findSubDepartmentsByOrganism(null);
+        Assert.assertTrue(CollectionUtils.isEmpty(subDepartments));
 
+        LOG.info(FIND_BY_ORGANISM_WITH_NULL);
+    }
 
+    /**
+     * Find sub department by user.
+     */
+    @Ignore
+    @Test
+    public void findSubDepartmentByUser() {
+        final User user = userService.find(Long.valueOf(Constants.TWENTYEIGHT));
+        final SubDepartment subDepartment = subDepartmentService.findSubDepartmentByUser(user);
+        Assert.assertNotNull(subDepartment);
 
-	/**
-	 * Find sub department by user.
-	 */
-	@Test
-	public void findSubDepartmentByUser()
-	{
-		final User user = userService.find(Long.valueOf(Constants.TWENTYEIGHT));
-		final SubDepartment subDepartment = subDepartmentService.findSubDepartmentByUser(user);
-		Assert.assertNotNull(subDepartment);
-
-		LOG.info(FIND_BY_USER);
-	}
+        LOG.info(FIND_BY_USER);
+    }
 }

@@ -1,6 +1,7 @@
 package org.guce.siat.core.ct.model;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -347,7 +348,7 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @CustomProperty(labelEn = "Treatment Type", labelFr = "Type de traitement",
             enumClass = PVITreatmentType.class)
     @Column(name = "TYPE_TRAITEMENT")
-    private String typeTraitement;
+    private ArrayList<String> typeTraitement;
 
     @CustomProperty(labelEn = "Last Treatment State", labelFr = "Etat dernier traitement",
             enumClass = PVILastTreatmentDateState.class)
@@ -371,7 +372,7 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @CustomProperty(labelEn = "Storage Environment", labelFr = "Environnement de stockage",
             enumClass = PVIStorageEnv.class)
     @Column(name = "ENV_STOCKAGE")
-    private String environnementStockage;
+    private ArrayList<String> environnementStockage;
 
     @CustomProperty(labelEn = "Transport Environment", labelFr = "Environnement de transport",
             enumClass = PVITransportEnv.class)
@@ -1074,11 +1075,11 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.procedure = procedure;
     }
 
-    public String getTypeTraitement() {
+    public ArrayList<String> getTypeTraitement() {
         return typeTraitement;
     }
 
-    public void setTypeTraitement(String typeTraitement) {
+    public void setTypeTraitement(ArrayList<String> typeTraitement) {
         this.typeTraitement = typeTraitement;
     }
 
@@ -1106,11 +1107,11 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.dosage = dosage;
     }
 
-    public String getEnvironnementStockage() {
+    public ArrayList<String> getEnvironnementStockage() {
         return environnementStockage;
     }
 
-    public void setEnvironnementStockage(String environnementStockage) {
+    public void setEnvironnementStockage(ArrayList<String> environnementStockage) {
         this.environnementStockage = environnementStockage;
     }
 
@@ -1284,3 +1285,4 @@ public class InspectionReport extends AbstractModel implements Serializable {
     }
 
 }
+

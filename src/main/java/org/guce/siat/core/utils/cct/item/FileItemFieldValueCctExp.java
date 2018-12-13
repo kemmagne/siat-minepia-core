@@ -43,6 +43,8 @@ public class FileItemFieldValueCctExp {
             case "POIDS_BRUT": {
                 if (marchandise.getPOIDSBRUT() != null) {
                     fileItemFieldValue.setValue(marchandise.getPOIDSBRUT().toString());
+                } else {
+                    fileItemFieldValue.setValue(marchandise.getPOIDS());
                 }
                 break;
             }
@@ -59,3 +61,4 @@ public class FileItemFieldValueCctExp {
     }
 
 }
+
