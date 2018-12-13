@@ -949,16 +949,67 @@ public class FileFieldValueVtpMINSANTE {
 				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null){
 					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getNUMEROFACTURE());
 				}
+				break;
 			}
 			case "FACTURE__DATE_FACTURE": {
 				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null){
 					fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getFACTURE().getDATEFACTURE()));
 				}
+				break;
 			}
 			case "FACTURE__MONTANT_TOTAL": {
 				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null){
 					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getMONTANTTOTAL());
 				}
+				break;
+			}
+			case "INFORMATIONS_GENERALES_PAYS_PROVENANCE_CODEPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getCODEPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getCODEPAYS());
+				}
+				break;
+			}
+			case "INFORMATIONS_GENERALES_PAYS_PROVENANCE_NOMPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getNOMPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getNOMPAYS());
+				}
+				break;
+			}
+			case "INFORMATIONS_GENERALES_PAYS_ORIGINE_CODEPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
+				}
+				break;
+			}
+			case "INFORMATIONS_GENERALES_PAYS_ORIGINE_NOMPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
+				}
+				break;
+			}
+			case "INFORMATIONS_GENERALES_PAYS_DESTINATION_CODEPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
+				}
+				break;
+			}
+			case "INFORMATIONS_GENERALES_PAYS_DESTINATION_NOMPAYS": {
+				if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+						&& document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS() != null){
+					fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS());
+				}
+				break;
 			}
             default:
                 int fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_STRING;
