@@ -27,6 +27,7 @@ import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
@@ -534,10 +535,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                             inspectionReportDao.delete(ir);
                         }
                 }
-            }
-
-            //Proposition RDV Visite à Quai OR Validation RDV chez Déclarant
-            if (alreadyDeleted && (FlowCode.FL_CT_26.name().equals(flowCode) || FlowCode.FL_CT_41.name().equals(flowCode))) {
+            } //Proposition RDV Visite à Quai OR Validation RDV chez Déclarant
+            else if (alreadyDeleted && (FlowCode.FL_CT_26.name().equals(flowCode) || FlowCode.FL_CT_41.name().equals(flowCode))) {
                 final AppointmentItemFlow appointmentItemFlow = appointmentDao.findAppointmentItemFlowByItemFlow(itemFlow);
                 final Appointment dratftAppointment = appointmentDao.findAppointmentByItemFlow(itemFlow);
                 appointmentDao.delete(appointmentItemFlow);
@@ -625,23 +624,23 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 final EssayTestAP draftEssayTestAP = essayTestAPDao.findByItemFlow(itemFlow);
                 essayTestAPDao.delete(draftEssayTestAP);
                 itemFlowDataDao.deleteList(itemFlowDataDao.findByItemFlows(Collections.singletonList(itemFlow)));
-            } //GENERIC DECISION or AnalyseResultAp or essayTestAp
-            else {
-                itemFlowDataDao.deleteList(itemFlowDataDao.findByItemFlows(Collections.singletonList(itemFlow)));
             }
+
+            final List<ItemFlowData> itemFlowData = itemFlowDataDao
+                    .findByItemFlows(Collections.singletonList(itemFlow));
+            if (CollectionUtils.isNotEmpty(itemFlowData)) {
+                itemFlowDataDao.deleteList(itemFlowData);
+            }
+
+            itemFlowDao.delete(itemFlow);
         }
-
-        itemFlowDao.deleteList(itemFlows);
-
-        final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlows) {
             // Set draft = false to be updated
             itemFlow.getFileItem().setDraft(Boolean.FALSE);
-            fileItemList.add(itemFlow.getFileItem());
+            // Update fileItems : Set draft = false
+            fileItemDao.update(itemFlow.getFileItem());
         }
-        // Update fileItems : Set draft = false
-        fileItemDao.saveOrUpdateList(fileItemList);
     }
 
 
