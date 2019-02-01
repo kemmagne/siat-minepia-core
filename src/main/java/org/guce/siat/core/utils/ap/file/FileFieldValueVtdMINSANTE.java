@@ -1330,6 +1330,18 @@ public class FileFieldValueVtdMINSANTE {
                 }
                 break;
             }
+            case "NUMERO_DI": {
+                if (document.getCONTENT() != null && document.getCONTENT().getNUMERODI() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getNUMERODI());
+                }
+                break;
+            }
+            case "NUMERO_VTP": {
+                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROVTP() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getNUMEROVTP());
+                }
+                break;
+            }
             default:
                 int fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_STRING;
                 if (fileField.getCode().contains("_DATE") || fileField.getCode().contains("DATE_") || fileField.getCode().equals("DATE")) {

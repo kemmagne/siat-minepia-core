@@ -5722,6 +5722,10 @@ public class DOCUMENT
         protected String causes;
         @XmlElement(name = "NUMERO_VTD_MINSANTE")
         protected String numerovtdminsante;
+        @XmlElement(name = "NUMERO_DI")
+        protected String numerodi;
+        @XmlElement(name = "NUMERO_VTP")
+        protected String numerovtp;
         @XmlElement(name = "OBSERVATIONS")
         protected String observations;
         @XmlElement(name = "PIECES_JOINTES")
@@ -6053,6 +6057,22 @@ public class DOCUMENT
         public void setNUMEROVTDMINSANTE(String value) {
             this.numerovtdminsante = value;
         }
+		
+		public void setNUMERODI(String value){
+			this.numerodi = value;
+		}
+		
+		public String getNUMERODI(){
+			return this.numerodi;
+		}
+		
+		public void setNUMEROVTP(String value){
+			this.numerovtp = value;
+		}
+		
+		public String getNUMEROVTP(){
+			return this.numerovtp;
+		}
 
         /**
          * Obtient la valeur de la propriété observations.
@@ -17199,6 +17219,8 @@ public class DOCUMENT
                 protected String quantiteimportee;
                 @XmlElement(name = "MODE_EMBALLAGE")
                 protected String modeemballage;
+				@XmlElement(name = "AMM")
+				protected String amm;
 
                 /**
                  * Obtient la valeur de la propriété linenumber.
@@ -17587,6 +17609,14 @@ public class DOCUMENT
                 public void setMODEEMBALLAGE(String value) {
                     this.modeemballage = value;
                 }
+				
+				public String getAMM() {
+					return amm;
+				}
+
+				public void setAMM(String amm) {
+					this.amm = amm;
+				}
 
                 /**
                  * <p>
