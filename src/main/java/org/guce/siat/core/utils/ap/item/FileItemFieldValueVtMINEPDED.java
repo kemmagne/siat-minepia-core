@@ -86,6 +86,11 @@ public class FileItemFieldValueVtMINEPDED
 				fileItemFieldValue.setValue(marchandise.getUNITE());
 				break;
 			}
+			case "UNITE_LIBELLE":
+			{
+				fileItemFieldValue.setValue(marchandise.getUNITELIBELLE());
+				break;
+			}
                         case "DEVISE_CODE":
 			{
                             if (marchandise.getDEVISE() != null) {

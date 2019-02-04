@@ -7520,6 +7520,8 @@ public class DOCUMENT
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE devise;
                 @XmlElement(name = "PAYS_ORIGINE")
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE paysorigine;
+				@XmlElement(name = "UNITE_LIBELLE")
+                protected String unitelibelle;
 
                 /**
                  * Obtient la valeur de la propriété linenumber.
@@ -7928,6 +7930,14 @@ public class DOCUMENT
                 public void setPAYSORIGINE(final DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE value) {
                     this.paysorigine = value;
                 }
+				
+				public void setUNITELIBELLE(String value){
+					this.unitelibelle = value;
+				}
+				
+				public String getUNITELIBELLE(){
+					return this.unitelibelle;
+				}
 
 
                 /**
