@@ -7476,6 +7476,7 @@ public class DOCUMENT
                 "usage",
                 "modestockage",
                 "unite",
+				"unitelibelle",
                 "poids",
                 "volume",
                 "valeurfobdevise",
@@ -7510,6 +7511,8 @@ public class DOCUMENT
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.MODESTOCKAGE modestockage;
                 @XmlElement(name = "UNITE")
                 protected String unite;
+				@XmlElement(name = "UNITE_LIBELLE")
+                protected String unitelibelle;
                 @XmlElement(name = "POIDS")
                 protected String poids;
                 @XmlElement(name = "VOLUME")
@@ -7520,8 +7523,6 @@ public class DOCUMENT
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DEVISE devise;
                 @XmlElement(name = "PAYS_ORIGINE")
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE paysorigine;
-				@XmlElement(name = "UNITE_LIBELLE")
-                protected String unitelibelle;
 
                 /**
                  * Obtient la valeur de la propriété linenumber.
