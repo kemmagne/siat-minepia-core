@@ -91,7 +91,12 @@ public class InspectionReportDaoImpl extends AbstractJpaDaoImpl<InspectionReport
             final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hqlBuilder.toString(),
                     InspectionReport.class);
             query.setParameter("fileItemId", fileItem.getId());
-            return query.getResultList().get(0);
+            query.setMaxResults(1);
+            try {
+                return query.getSingleResult();
+            } catch (final NoResultException | NonUniqueResultException e) {
+                LOG.info(Objects.toString(e), e);
+            }
         }
         return null;
     }

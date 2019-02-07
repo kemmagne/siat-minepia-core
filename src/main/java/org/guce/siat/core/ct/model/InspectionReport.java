@@ -18,11 +18,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PostLoad;
 import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.guce.siat.common.model.AbstractModel;
@@ -32,11 +35,10 @@ import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.core.ct.util.annotations.CustomProperty;
 import org.guce.siat.core.ct.util.enums.PVILastTreatmentDateState;
 import org.guce.siat.core.ct.util.enums.PVIProtectionMeasures;
-import org.guce.siat.core.ct.util.enums.PVIStorageEnv;
 import org.guce.siat.core.ct.util.enums.PVITransportEnv;
-import org.guce.siat.core.ct.util.enums.PVITreatmentType;
 import org.guce.siat.core.ct.util.enums.PVIWeatherConditions;
 import org.guce.siat.core.gr.utils.enums.CertficatGoodness;
+import org.springframework.util.StringUtils;
 
 /**
  * The Class InspectionReport.
@@ -60,6 +62,24 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INSPECTION_REPORT_SEQ")
     @SequenceGenerator(name = "INSPECTION_REPORT_SEQ", sequenceName = "INSPECTION_REPORT_SEQ", allocationSize = 1)
     private Long id;
+
+    /**
+     * Champs relatifs au procès verbal d'inspection phytosanitaire
+     */
+    /**
+     *
+     */
+    @CustomProperty(labelEn = "Treatment Types", labelFr = "Types de traitement")
+    @Column(name = "TYPE_TRAITEMENT")
+    private String treatmentTypes;
+    @Transient
+    private List<String> treatmentTypesList;
+
+    @CustomProperty(labelEn = "Storage Environments", labelFr = "Environnements de stockage")
+    @Column(name = "ENV_STOCKAGE")
+    private String storageEnvs;
+    @Transient
+    private List<String> storageEnvsList;
 
     /**
      * The place.
@@ -339,17 +359,6 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @Column(name = "PROCEDURE")
     private String procedure;
 
-    /**
-     * Champs relatifs au procès verbal d'inspection phytosanitaire
-     */
-    /**
-     *
-     */
-    @CustomProperty(labelEn = "Treatment Type", labelFr = "Type de traitement",
-            enumClass = PVITreatmentType.class)
-    @Column(name = "TYPE_TRAITEMENT")
-    private ArrayList<String> typeTraitement;
-
     @CustomProperty(labelEn = "Last Treatment State", labelFr = "Etat dernier traitement",
             enumClass = PVILastTreatmentDateState.class)
     @Column(name = "ETAT_DATE_DERNIER_TRAITEMENT")
@@ -368,11 +377,6 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @CustomProperty(labelEn = "Dosage", labelFr = "Dosage")
     @Column(name = "DOSAGE")
     private String dosage;
-
-    @CustomProperty(labelEn = "Storage Environment", labelFr = "Environnement de stockage",
-            enumClass = PVIStorageEnv.class)
-    @Column(name = "ENV_STOCKAGE")
-    private ArrayList<String> environnementStockage;
 
     @CustomProperty(labelEn = "Transport Environment", labelFr = "Environnement de transport",
             enumClass = PVITransportEnv.class)
@@ -1075,12 +1079,12 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.procedure = procedure;
     }
 
-    public ArrayList<String> getTypeTraitement() {
-        return typeTraitement;
+    public List<String> getTreatmentTypesList() {
+        return treatmentTypesList;
     }
 
-    public void setTypeTraitement(ArrayList<String> typeTraitement) {
-        this.typeTraitement = typeTraitement;
+    public void setTreatmentTypesList(List<String> treatmentTypesList) {
+        this.treatmentTypesList = treatmentTypesList;
     }
 
     public String getEtatDateDernierTraitement() {
@@ -1107,12 +1111,12 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.dosage = dosage;
     }
 
-    public ArrayList<String> getEnvironnementStockage() {
-        return environnementStockage;
+    public List<String> getStorageEnvsList() {
+        return storageEnvsList;
     }
 
-    public void setEnvironnementStockage(ArrayList<String> environnementStockage) {
-        this.environnementStockage = environnementStockage;
+    public void setStorageEnvsList(List<String> storageEnvsList) {
+        this.storageEnvsList = storageEnvsList;
     }
 
     public String getEnvironnementTransport() {
@@ -1219,6 +1223,22 @@ public class InspectionReport extends AbstractModel implements Serializable {
         this.controllerName = controllerName;
     }
 
+    public String getTreatmentTypes() {
+        return treatmentTypes;
+    }
+
+    public void setTreatmentTypes(String treatmentTypes) {
+        this.treatmentTypes = treatmentTypes;
+    }
+
+    public String getStorageEnvs() {
+        return storageEnvs;
+    }
+
+    public void setStorageEnvs(String storageEnvs) {
+        this.storageEnvs = storageEnvs;
+    }
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -1279,9 +1299,20 @@ public class InspectionReport extends AbstractModel implements Serializable {
         return builder.toString();
     }
 
+    @PreUpdate
     @PrePersist
     public void prePersist() {
-        reportDate = new Date();
+        if (id == null) {
+            reportDate = new Date();
+        }
+        treatmentTypes = StringUtils.collectionToCommaDelimitedString(treatmentTypesList);
+        storageEnvs = StringUtils.collectionToCommaDelimitedString(storageEnvsList);
+    }
+
+    @PostLoad
+    private void postLoad() {
+        treatmentTypesList = new ArrayList<>(StringUtils.commaDelimitedListToSet(treatmentTypes));
+        storageEnvsList = new ArrayList<>(StringUtils.commaDelimitedListToSet(storageEnvs));
     }
 
 }

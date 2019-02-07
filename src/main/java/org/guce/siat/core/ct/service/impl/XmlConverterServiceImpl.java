@@ -221,8 +221,8 @@ public class XmlConverterServiceImpl implements XmlConverterService {
      */
     private static final List<String> ACCEPT_AP_FLOW_LIST = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(),
             FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name(),
-			FlowCode.FL_AP_169.name(), FlowCode.FL_AP_170.name(),
-			FlowCode.FL_AP_171.name(), FlowCode.FL_AP_172.name(), FlowCode.FL_AP_173.name(), FlowCode.FL_AP_174.name());
+            FlowCode.FL_AP_169.name(), FlowCode.FL_AP_170.name(),
+            FlowCode.FL_AP_171.name(), FlowCode.FL_AP_172.name(), FlowCode.FL_AP_173.name(), FlowCode.FL_AP_174.name());
     /**
      * The Constant PREFIXE_FACTURE.
      */
@@ -644,6 +644,8 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                 addedFileItemList.add(fileItem);
             }
 
+            // set the file last decision date to the current date
+            fileConverted.setLastDecisionDate(Calendar.getInstance().getTime());
             final File addedFile = fileDao.save(fileConverted);
 
             // save related decision histories
@@ -4499,23 +4501,22 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
         }
 
-		if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_169.name().equalsIgnoreCase(flowToExecute.getCode())) {
+        if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_169.name().equalsIgnoreCase(flowToExecute.getCode())) {
 //			final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VTP_MINESANTE_REPORT_FIELD,
 //					file);
 //			if (!Objects.equals(reportNumberFieldValue, null)) {
 //				ciDocument.getCONTENT().setNUMEROVTPMINSANTE(reportNumberFieldValue.getValue());
-			final String fileName = file.getNumeroDemande() + "_" + file.getReferenceSiat();
-				ciDocument.getCONTENT().setNUMEROVTPMINSANTE(fileName);
-				ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
-				ciDocument
-						.getCONTENT()
-						.getPIECESJOINTES()
-						.getPIECEJOINTE()
-						.add(new PIECEJOINTE(file.getFileTypeGuce(), fileName
-								+ ESBConstants.PDF_FILE_EXTENSION));
+            final String fileName = file.getNumeroDemande() + "_" + file.getReferenceSiat();
+            ciDocument.getCONTENT().setNUMEROVTPMINSANTE(fileName);
+            ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
+            ciDocument
+                    .getCONTENT()
+                    .getPIECESJOINTES()
+                    .getPIECEJOINTE()
+                    .add(new PIECEJOINTE(file.getFileTypeGuce(), fileName
+                            + ESBConstants.PDF_FILE_EXTENSION));
 
 //            }
-
         }
 
         /* DETECTER SI DECISION PAR ARTICLE OU PAR DOSSIER */
@@ -16857,4 +16858,3 @@ public class XmlConverterServiceImpl implements XmlConverterService {
     }
 
 }
-

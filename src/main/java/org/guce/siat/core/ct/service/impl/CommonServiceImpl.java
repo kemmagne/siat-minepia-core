@@ -311,23 +311,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
             inspectionReport.setItemFlow(itemFlow);
             inspectionReport.setFileItem(itemFlow.getFileItem());
-//            final List<InspectionController> inspectionControllers = inspectionReport.getInspectionControllerList();
-//            if (inspectionControllers != null) {
-//                for (final InspectionController inspectionController : inspectionControllers) {
-//                    inspectionController.setInspection(null);
-//                }
-//                inspectionReport.setInspectionControllerList(cloneInspectionControllerList(inspectionReport
-//                        .getInspectionControllerList()));
-//            }
 
-//            inspectionReportDao.save(inspectionReport);
-            irsToSave.add(inspectionReport);
-//            if (inspectionControllers != null) {
-//                for (final InspectionController inspectionController : inspectionControllers) {
-//                    inspectionController.setInspection(inspectionReport);
-//                    inspectionControllerDao.save(inspectionController);
-//                }
-//            }
+            inspectionReportDao.save(inspectionReport);
 
             // Set draft = true to be updated
             final FileItem item = itemFlow.getFileItem();
@@ -335,7 +320,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             fileItemList.add(item);
         }
 
-        inspectionReportDao.saveList(irsToSave);
         // Update fileItems : Set draft = true
         fileItemDao.saveOrUpdateList(fileItemList);
     }
@@ -351,16 +335,19 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
      * java.util.List)
      */
     @Override
+    @Transactional
     public void takeDecisionAndSaveInspectionReport(final InspectionReport report, final List<ItemFlow> itemFlowsToAdd) throws Exception {
 
         final List<FileItem> fileItemList = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
+
             itemFlowDao.save(itemFlow);
 
             final InspectionReport ir = CommonUtils.clone(report);
 
             ir.setItemFlow(itemFlow);
+            ir.setFileItem(itemFlow.getFileItem());
             inspectionReportDao.save(ir);
 
             // Set draft = true to be updated
