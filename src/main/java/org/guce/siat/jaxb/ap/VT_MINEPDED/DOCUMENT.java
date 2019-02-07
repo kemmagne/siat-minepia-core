@@ -7476,6 +7476,7 @@ public class DOCUMENT
                 "usage",
                 "modestockage",
                 "unite",
+				"unitelibelle",
                 "poids",
                 "volume",
                 "valeurfobdevise",
@@ -7510,6 +7511,8 @@ public class DOCUMENT
                 protected DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.MODESTOCKAGE modestockage;
                 @XmlElement(name = "UNITE")
                 protected String unite;
+				@XmlElement(name = "UNITE_LIBELLE")
+                protected String unitelibelle;
                 @XmlElement(name = "POIDS")
                 protected String poids;
                 @XmlElement(name = "VOLUME")
@@ -7928,6 +7931,14 @@ public class DOCUMENT
                 public void setPAYSORIGINE(final DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE value) {
                     this.paysorigine = value;
                 }
+				
+				public void setUNITELIBELLE(String value){
+					this.unitelibelle = value;
+				}
+				
+				public String getUNITELIBELLE(){
+					return this.unitelibelle;
+				}
 
 
                 /**
