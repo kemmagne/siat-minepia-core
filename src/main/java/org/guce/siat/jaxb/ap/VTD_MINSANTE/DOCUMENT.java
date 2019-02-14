@@ -5684,6 +5684,8 @@ public class DOCUMENT
         "decision",
         "causes",
         "numerovtdminsante",
+		"numerodi",
+		"numerovtp",
         "observations",
         "piecesjointes"
     })
@@ -17177,7 +17179,8 @@ public class DOCUMENT
                 "valeurfobdevise",
                 "paysorigine",
                 "quantiteimportee",
-                "modeemballage"
+                "modeemballage",
+				"amm"
             })
             public static class MARCHANDISE implements Serializable {
 
