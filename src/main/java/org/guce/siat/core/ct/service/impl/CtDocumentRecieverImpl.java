@@ -293,14 +293,6 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             data.put(ESBConstants.EBXML_TYPE, ESBConstants.APERAK);
             data.put(ESBConstants.TO_PARTY_ID, propertiesService.getToPartyId());
             data.put(ESBConstants.DEAD, "0");
-            // put elements for backup
-            final List<ItemFlow> itemFlowList = itemFlowService
-                    .findLastItemFlowsByFileItemList(savedFile.getFileItemsList());
-            data.put(ESBConstants.FILE, savedFile);
-            data.put(ESBConstants.CURRENT_FLOW, itemFlowList.get(0).getFlow().getCode());
-            data.put(ESBConstants.ITEM_FLOW_IDS, SiatUtils.getEntitiesIds(itemFlowList));
-            // create backup
-            fileProducer.createAperakBackup(data);
             LOG.info(" generateEbxmlFiles aperak K finished");
         } catch (final IOException e) {
             LOG.error("#####Error to connect to ressource:" + e.getMessage(), e);
