@@ -128,6 +128,18 @@ public class TreatmentResult extends AbstractModel implements Serializable {
             enumClass = PVITreatmentType.class)
     @Column(name = "TSS_TREATMENT_MODE")
     private String treatmentMode;
+	@CustomProperty(labelEn = "Treatment Mode Heat", labelFr = "Mode de traitement chaleur")
+	@Column(name = "TSS_TREAT_MODE_HEAT")
+	private boolean treatmentModeHeat;
+	@CustomProperty(labelEn = "Treatment Mode Soaking", labelFr = "Mode de traitement trempage")
+	@Column(name = "TSS_TREAT_MODE_SOAKING")
+	private boolean treatmentModeSoaking;
+	@CustomProperty(labelEn = "Treatment Mode Pulverisation", labelFr = "Mode de traitement pulverisation")
+	@Column(name = "TSS_TREAT_MODE_PULVERISATION")
+	private boolean treatmentModePulverisation;
+	@CustomProperty(labelEn = "Treatment Mode Fumigation", labelFr = "Mode de traitement")
+	@Column(name = "TSS_TREAT_MODE_FUMIGATION")
+	private boolean treatmentModeFumigation;
     @CustomProperty(labelEn = "Treatment Mode", labelFr = "Mode de traitement")
     @Column(name = "TSS_OTHER_TREATMENT_MODE")
     private String otherTreatmentMode;
@@ -135,6 +147,15 @@ public class TreatmentResult extends AbstractModel implements Serializable {
             enumClass = TRProductUsed.class)
     @Column(name = "TSS_PRODUCT_USED")
     private String productUsed;
+	@CustomProperty(labelEn = "Product Used insecticide fungicide", labelFr = "Produit utilisé insecticide fongicide")
+	@Column(name = "TSS_PRODUCT_USED_INSEC_FUNGI")
+	private boolean productUsedInsecticideFungicide;
+	@CustomProperty(labelEn = "Product Used insecticide", labelFr = "Produit utilisé insecticide")
+	@Column(name = "TSS_PRODUCT_USED_INSECTICIDE")
+	private boolean productUsedInsecticide;
+	@CustomProperty(labelEn = "Product Used fungicide", labelFr = "Produit utilisé fongicide")
+	@Column(name = "TSS_PRODUCT_USED_FUNGICIDE")
+	private boolean productUsedFungicide;
     @CustomProperty(labelEn = "Product used", labelFr = "Produit utilisé")
     @Column(name = "TSS_OTHER_PRODUCT_USED")
     private String otherProductUsed;
@@ -694,6 +715,62 @@ public class TreatmentResult extends AbstractModel implements Serializable {
     public void setSavedDate(Date savedDate) {
         this.savedDate = savedDate;
     }
+
+	public boolean isTreatmentModeHeat() {
+		return treatmentModeHeat;
+	}
+
+	public void setTreatmentModeHeat(boolean treatmentModeHeat) {
+		this.treatmentModeHeat = treatmentModeHeat;
+	}
+
+	public boolean isTreatmentModeSoaking() {
+		return treatmentModeSoaking;
+	}
+
+	public void setTreatmentModeSoaking(boolean treatmentModeSoaking) {
+		this.treatmentModeSoaking = treatmentModeSoaking;
+	}
+
+	public boolean isTreatmentModePulverisation() {
+		return treatmentModePulverisation;
+	}
+
+	public void setTreatmentModePulverisation(boolean treatmentModePulverisation) {
+		this.treatmentModePulverisation = treatmentModePulverisation;
+	}
+
+	public boolean isTreatmentModeFumigation() {
+		return treatmentModeFumigation;
+	}
+
+	public void setTreatmentModeFumigation(boolean treatmentModeFumigation) {
+		this.treatmentModeFumigation = treatmentModeFumigation;
+	}
+
+	public boolean isProductUsedInsecticideFungicide() {
+		return productUsedInsecticideFungicide;
+	}
+
+	public void setProductUsedInsecticideFungicide(boolean productUsedInsecticideFungicide) {
+		this.productUsedInsecticideFungicide = productUsedInsecticideFungicide;
+	}
+
+	public boolean isProductUsedInsecticide() {
+		return productUsedInsecticide;
+	}
+
+	public void setProductUsedInsecticide(boolean productUsedInsecticide) {
+		this.productUsedInsecticide = productUsedInsecticide;
+	}
+
+	public boolean isProductUsedFungicide() {
+		return productUsedFungicide;
+	}
+
+	public void setProductUsedFungicide(boolean productUsedFungicide) {
+		this.productUsedFungicide = productUsedFungicide;
+	}
 
     @PrePersist
     private void prePersist() {
