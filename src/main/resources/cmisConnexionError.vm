@@ -6,11 +6,11 @@
 <body>
 Bonjour,
 <br><br>
-La tentative de connexion au gestionnaire de document deployé sous l'adresse :<b>${gedUrl}</b> est échoué.<br>
+La tentative de connexion au gestionnaire de document deployé à l'adresse :<b>${gedUrl}</b> a échoué.<br>
 Merci de verifier la disponibilité de ce composant.<br/>
 
 <br>
-Cordialement,<br> 
+Cordialement,<br>
 Equipe SIAT <br>
 </body>
 </html>
