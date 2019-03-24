@@ -230,7 +230,7 @@ public class DOCUMENT
         @XmlElement(name = "MARCHANDISES")
         protected DOCUMENT.CONTENT.MARCHANDISES marchandises;
         @XmlElement(name = "LISTE_DES_SPECIFICATIONS")
-		protected DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS listedesspecifications;
+        protected DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS listedesspecifications;
         @XmlElement(name = "NUMERO_BSBE_MINFOF")
         protected String numerobsbeminfof;
         @XmlElement(name = "OBSERVATIONS")
@@ -394,7 +394,7 @@ public class DOCUMENT
             return this.listedesspecifications;
         }
 
-        public void setLISTEDESSPECIFICATIONS(DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS value) {
+        public void setLISTEDESSPECIFICATIONS(final DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS value) {
             this.listedesspecifications = value;
         }
 
@@ -1715,23 +1715,22 @@ public class DOCUMENT
 
         
         @XmlAccessorType(XmlAccessType.FIELD)
-        @XmlType(
-           name = "",
-           propOrder = {"specification"}
-        )
+        @XmlType(name = "", propOrder = {
+            "specification"
+        })
         public static class LISTEDESSPECIFICATIONS implements Serializable {
 
             @XmlElement(name = "SPECIFICATION")
-            protected List specification;
+            protected List<DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS.SPECIFICATION> specification;
 
-            public List<SPECIFICATION> getSPECIFICATION() {
+            public List<DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS.SPECIFICATION> getSPECIFICATION() {
                 if(specification == null) {
-                    specification = new ArrayList();
+                    this.specification = new ArrayList<DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS.SPECIFICATION>();
                 }
                 return specification;
             }
 
-            public void setSPECIFICATION(List specification) {
+            public void setSPECIFICATION(List<DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS.SPECIFICATION> specification) {
                 this.specification = specification;
             }
 
