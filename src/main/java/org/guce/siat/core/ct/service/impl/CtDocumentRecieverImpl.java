@@ -1,12 +1,12 @@
 package org.guce.siat.core.ct.service.impl;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,8 +22,6 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.util.JAXBSource;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.soap.SOAPException;
-import javax.xml.transform.TransformerException;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
@@ -36,24 +34,14 @@ import org.apache.chemistry.opencmis.client.api.Folder;
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.commons.collections.MapUtils;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
-import org.guce.siat.common.dao.FileDao;
-import org.guce.siat.common.dao.FileItemDao;
-import org.guce.siat.common.dao.ItemFlowDao;
-import org.guce.siat.common.mail.MailConstants;
-import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FlowGuceSiat;
-import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.service.AbstractDocumentReciever;
 import org.guce.siat.common.service.AlfrescoDirectoryCreator;
 import org.guce.siat.common.service.EbxmlPropertiesService;
-import org.guce.siat.common.service.FileProducer;
 import org.guce.siat.common.service.FlowGuceSiatService;
-import org.guce.siat.common.service.ItemFlowService;
-import org.guce.siat.common.service.MailService;
 import org.guce.siat.common.service.ValidationFlowService;
 import org.guce.siat.common.service.XmlConverterService;
-import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.XmlXPathUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.guce.siat.common.utils.ebms.EbmsUtility;
@@ -75,9 +63,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.context.annotation.PropertySources;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,10 +73,9 @@ import org.xml.sax.SAXException;
 /**
  * The Class DocumentRecieverWSImpl.
  */
-@PropertySources(value = @PropertySource("classpath:global-config.properties"))
 @Service("ctDocumentReciever")
-@Transactional(readOnly = true)
-public class CtDocumentRecieverImpl implements CtDocumentReciever {
+@Transactional
+public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements CtDocumentReciever {
 
     /**
      * The Constant LOG.
@@ -107,12 +91,6 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
      * The Constant REFERENCE_GUCE_EXPRESSION.
      */
     private static final String REFERENCE_GUCE_EXPRESSION = "/DOCUMENT/TYPE_DOCUMENT";
-
-    /**
-     * The xml folder.
-     */
-    @Value("${xml.folder}")
-    private String xmlFolder;
 
     /**
      * The xml converter service.
@@ -140,29 +118,6 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
     private EbxmlPropertiesService propertiesService;
 
     /**
-     * The mail service.
-     */
-    @Autowired
-    private MailService mailService;
-
-    /**
-     * the item flow service
-     */
-    @Autowired
-    private ItemFlowService itemFlowService;
-
-    /**
-     * the file producer
-     */
-    @Autowired
-    private FileProducer fileProducer;
-
-    /**
-     * The Constant NEGATIVE_APERAK_MAIL.
-     */
-    private static final String NEGATIVE_APERAK_MAIL = "negatifAperakReceived.vm";
-
-    /**
      * The aperak document.
      */
     private org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDocument = new org.guce.siat.utility.jaxb.aperak.DOCUMENT();
@@ -171,24 +126,6 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
      * The x path.
      */
     final XPath xPath = XPathFactory.newInstance().newXPath();
-
-    /**
-     * The file dao.
-     */
-    @Autowired
-    private FileDao fileDao;
-
-    /**
-     * The item flow dao.
-     */
-    @Autowired
-    private ItemFlowDao itemFlowDao;
-
-    /**
-     * The file item.
-     */
-    @Autowired
-    private FileItemDao fileItemDao;
 
     /**
      * The alfresco directory creator.
@@ -203,13 +140,10 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
      */
     @SuppressWarnings("unchecked")
     @Override
-    @Transactional(readOnly = false)
-    public Map<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws ValidationException,
-            ParseException, TransformerException, SOAPException, SAXException, ParserConfigurationException, JAXBException,
-            XPathExpressionException {
-        final HashMap<String, Object> data = new HashMap<>();
+    public Map<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws Exception {
+
+        final Map<String, Object> data = new HashMap<>();
         Map<String, byte[]> attached;
-        File xmlFile;
         byte[] response;
         String xmlContent;
 
@@ -217,16 +151,11 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
 
             attached = (ebxmlBytes.get(ESBConstants.ATTACHMENT) != null ? (HashMap<String, byte[]>) ebxmlBytes
                     .get(ESBConstants.ATTACHMENT) : null);
-            final String id = (String) ebxmlBytes.get(ESBConstants.ID);
 
             final byte[] xmlBytes = (byte[]) ebxmlBytes.get(ESBConstants.FLOW);
             final byte[] message = (byte[]) ebxmlBytes.get(ESBConstants.MESSAGE);
-            final StringBuilder fileName = new StringBuilder(xmlFolder).append('/').append(id);
-            xmlFile = new File(fileName.toString());
-            FileUtils.writeByteArrayToFile(xmlFile, xmlBytes);
 
-            // ebxmlMessage = EbxmlUtils.getEbxmlMessageFromBytes(ebxmlBytes);
-            xmlContent = FileUtils.readFileToString(xmlFile, ESBConstants.CHARACTER_ENCODING);
+            xmlContent = new String(xmlBytes);
             LOG.info(" check if the received message is an APERAK");
             final Element rootElement = XmlXPathUtils.stringToXMLDOM(xmlContent).getDocumentElement();
 
@@ -238,13 +167,13 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             // Validation metier
             validationFlowService.validateFlowFromGuce(rootElement);
             // Injection file in BDD
-            final Serializable document = getReceivedDocument(xmlFile, xmlContent, xPath);
+            final Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath);
             LOG.info("################### getReceivedDocument finished");
             final org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
             LOG.info(" saveReceivedFileAndExecuteFlow finished");
-            // Add PJ to GED
-            LOG.info("Liste des fichiers attachés : {}", attached.size());
             if (MapUtils.isNotEmpty(attached)) {
+                // Add PJ to GED
+                LOG.info("Liste des fichiers attachés : {}", attached.size());
                 alfrescoDirectoryCreator.createDirectory(savedFile);
                 final String attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(savedFile);
 
@@ -280,11 +209,7 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             // SIAT reference must be sent in the APERAK_F
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_K.getCode(), null, savedFile);
             LOG.info("############## generateAperakDocument K finished");
-            // xml file based on aperak document
-            final java.io.File aperackDFile = generateXmlAperakFile(aperakDocument);
-            LOG.info(" generateXmlAperakFile finished");
-            final Path path = Paths.get(aperackDFile.getAbsolutePath());
-            response = Files.readAllBytes(path);
+            response = generateAperakData(aperakDocument);
             data.put(ESBConstants.FLOW, response);
             data.put(ESBConstants.ATTACHMENT, null);
             data.put(ESBConstants.TYPE_DOCUMENT, aperakDocument.getTYPEDOCUMENT());
@@ -325,7 +250,8 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
             LOG.error("####Error to parse document: ", e);
             throw new NullPointerException("NullPointerException Exception " + e.getMessage());
         } catch (Exception e) {
-            LOG.warn("####Cannot create aperak backup: ", e);
+            LOG.error("####UNKNOWN EXCEPTION TYPE: ", e);
+            throw new Exception("Exception " + e.getMessage());
         }
         return data;
 
@@ -341,7 +267,6 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
 
         final Map<String, Object> data = new HashMap<>();
         final Map<String, byte[]> attached = new HashMap<>();
-        File xmlFile;
         byte[] response;
         String xmlContent;
 
@@ -349,16 +274,10 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
 
             final byte[] xmlBytes = (byte[]) ebxmlBytes.get(ESBConstants.FLOW);
             final byte[] message = (byte[]) ebxmlBytes.get(ESBConstants.MESSAGE);
-            final StringBuilder fileName = new StringBuilder(xmlFolder).append('/').append(ESBConstants.ID);
-            xmlFile = new File(fileName.toString());
-            FileUtils.writeByteArrayToFile(xmlFile, xmlBytes);
-            xmlContent = FileUtils.readFileToString(xmlFile);
+            xmlContent = new String(xmlBytes);
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_C.getCode(), errorMessage, null);
-            // xml file based on aperak document
-            final java.io.File aperakCFile = generateXmlAperakFile(aperakDocument);
 
-            final Path path = Paths.get(aperakCFile.getAbsolutePath());
-            response = Files.readAllBytes(path);
+            response = generateAperakData(aperakDocument);
             data.put(ESBConstants.FLOW, response);
             data.put(ESBConstants.ATTACHMENT, attached);
             data.put(ESBConstants.TYPE_DOCUMENT, aperakDocument.getTYPEDOCUMENT());
@@ -379,32 +298,28 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
     /**
      * Save received document.
      *
-     * @param xmlFile the xml file
+     * @param xmlBytes
      * @param xmlContent the xml content
      * @param xPath the x path
      * @return Document
      * @throws XPathExpressionException the x path expression exception
      * @throws JAXBException the JAXB exception
      */
-    public Serializable getReceivedDocument(final File xmlFile, final String xmlContent, final XPath xPath)
+    private Serializable getReceivedDocument(final byte[] xmlBytes, final String xmlContent, final XPath xPath)
             throws XPathExpressionException, JAXBException {
         final InputSource source = new InputSource(new StringReader(xmlContent));
         final String flowSource = xPath.evaluate(REFERENCE_GUCE_EXPRESSION, source);
-        System.out.println("org.guce.siat.core.ct.service.impl.CtDocumentRecieverImpl.getReceivedDocument()");
-        System.out.println("flow comming from webguce : " + flowSource);
 
         final FlowGuceSiat flowGuceSiat = flowGuceSiatService.findFlowGuceSiatByFlowGuce(flowSource);
-        System.out.println("flow guce siat : ");
-        System.out.println(flowGuceSiat);
-        System.out.println("file type : " + flowGuceSiat.getFileType().getCode());
 
         Serializable document = null;
+        InputStream xmlInputStream = new ByteArrayInputStream(xmlBytes);
 
         if (FileTypeCode.AIE_MINADER.equals(flowGuceSiat.getFileType().getCode())) {
             final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AIE_MINADER.JAXBContextCreator.getInstance();
             // Unmarshalling the document
             final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-            document = (org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+            document = (org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
         }
         if (null != flowGuceSiat.getFileType().getCode()) {
             switch (flowGuceSiat.getFileType().getCode()) {
@@ -412,133 +327,133 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AE_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AE_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AE_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case EH_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.EH_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AS_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AS_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AS_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AS_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CAT_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.CAT_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.CAT_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.CAT_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case PIVPSRP_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.PIVPSRP_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.PIVPSRP_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.PIVPSRP_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case DI_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.DI_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.DI_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.DI_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AT_MINSANTE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AT_MINSANTE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AT_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AT_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case VTP_MINSANTE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.VTP_MINSANTE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.VTP_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.VTP_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case VTD_MINSANTE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.VTD_MINSANTE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.VTD_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.VTD_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AI_MINSANTE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AI_MINSANTE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AI_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AI_MINSANTE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AI_MINMIDT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AI_MINMIDT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AI_MINMIDT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AI_MINMIDT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AE_MINMIDT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AE_MINMIDT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AE_MINMIDT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AE_MINMIDT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CEA_MINMIDT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.CEA_MINMIDT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.CEA_MINMIDT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.CEA_MINMIDT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AT_MINEPIA: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AT_MINEPIA.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AT_MINEPIA.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AT_MINEPIA.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case VT_MINEPIA: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.VT_MINEPIA.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case VT_MINEPDED: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.VT_MINEPDED.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CP_MINEPDED: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.CP_MINEPDED.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.CP_MINEPDED.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.CP_MINEPDED.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AS_MINFOF: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AS_MINFOF.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.AS_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.AS_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CCT_CT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CCT_CT_E:
@@ -549,14 +464,14 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CT_E.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CC_CT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CC_CT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.cct.CC_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.cct.CC_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CQ_CT: {
@@ -564,94 +479,92 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
                     // Unmarshalling the document
                     System.out.println("jaxbContext null pour CQ_CT ? " + (jaxbContext == null));
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case DI_MINCOMMERCE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.DI_MINCOMMERCE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.DI_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.DI_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case DE_MINCOMMERCE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.DE_MINCOMMERCE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.DE_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.DE_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case IDI: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.IDI.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.IDI.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.IDI.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case IDE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.IDE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.IDE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.IDE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case FIMEX: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.FIMEX.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.FIMEX.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.FIMEX.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case FIMEX_WF: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.FIMEX_WF.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.FIMEX_WF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.FIMEX_WF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CO_MINFOF_FORET: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.CO_MINFOF_FORET.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.CO_MINFOF_FORET.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.CO_MINFOF_FORET.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case CO_MINFOF_FAUNE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.CO_MINFOF_FAUNE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.CO_MINFOF_FAUNE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.CO_MINFOF_FAUNE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case AS_MINCOMMERCE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.AS_MINCOMMERCE.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.AS_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.AS_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case LVTB_MINFOF: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.LVTB_MINFOF.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.LVTB_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.LVTB_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case BSBE_MINFOF: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.BSBE_MINFOF.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
                 case IRMP_MINCOMMERCE: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.JAXBContextCreator.getInstance();
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlFile);
+                    document = (org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
-                default:
-                    break;
             }
         }
         return document;
@@ -771,11 +684,8 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
      * @throws SAXException the SAX exception
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    public java.io.File generateXmlAperakFile(final org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDocument)
+    private byte[] generateAperakData(final org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDocument)
             throws JAXBException, SAXException, IOException {
-        final StringBuilder xmlFileNamebuilder = new StringBuilder(propertiesService.getXmlFolder()).append(File.separator)
-                .append(Generator.generateMessageID()).append(ESBConstants.XML_FILE_EXTENSION);
-        final java.io.File xmlFile = new java.io.File(xmlFileNamebuilder.toString());
 
         // JAXB instance of DOCUMENT
         final JAXBContext jaxbContext = org.guce.siat.utility.jaxb.aperak.JAXBContextCreator.getInstance();
@@ -790,63 +700,14 @@ public class CtDocumentRecieverImpl implements CtDocumentReciever {
 
         // Marshalling the document
         final Marshaller jaxbMarshallerz = jaxbContext.createMarshaller();
-        jaxbMarshallerz.marshal(aperakDocument, xmlFile);
-
-        return xmlFile;
-    }
-
-    /**
-     * Process received aperak.
-     *
-     * @param rootElement the root element
-     * @return true, if successful
-     */
-    private boolean processReceivedAperak(final Element rootElement) {
-
-        final String referenceSiatExpression = "/DOCUMENT/REFERENCE_DOSSIER/REFERENCE_SIAT";
-
-        final String documentType = XmlXPathUtils.findSingleValue(REFERENCE_GUCE_EXPRESSION, rootElement);
-        final String referenceSiat = XmlXPathUtils.findSingleValue(referenceSiatExpression, rootElement);
-        if (StringUtils.isNotBlank(documentType) && StringUtils.isNotBlank(referenceSiat)) {
-            final org.guce.siat.common.model.File siatFile = fileDao.findByRefSiat(referenceSiat);
-            final List<FileItem> fileItems = siatFile.getFileItemsList();
-
-            if (AperakType.APERAK_C.name().equals(documentType) || AperakType.APERAK_J.name().equals(documentType)) {
-                LOG.debug("#################  {} Received ", documentType);
-                // rollback the last decision
-                String senderMail = null;
-                for (final FileItem fileItem : fileItems) {
-                    final ItemFlow itemflow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
-                    senderMail = itemflow.getSender().getEmail();
-                    itemflow.setReceived(AperakType.APERAK_C.getCharCode());
-                    itemflow.setSent(Boolean.FALSE);
-                    itemFlowDao.update(itemflow);
-                    fileItem.setDraft(Boolean.TRUE);
-                    fileItem.setStep(itemflow.getFlow().getFromStep());
-                    fileItemDao.update(fileItem);
-                }
-                final String templateFileName = NEGATIVE_APERAK_MAIL;
-                final Map<String, String> map = new HashMap<String, String>();
-                map.put(MailConstants.SUBJECT, "SIAT : Dossier non envoyé");
-                map.put(MailConstants.FROM, mailService.getFromValue());
-                map.put(MailConstants.EMAIL, senderMail);
-                map.put("refSiat", siatFile.getReferenceSiat());
-                map.put(MailConstants.VMF, templateFileName);
-                mailService.sendMail(map);
-                return true;
-            } else if (AperakType.APERAK_D.name().equals(documentType) || AperakType.APERAK_F.name().equals(documentType)) {
-                LOG.debug("#################  {} Received ", documentType);
-                for (final FileItem fileItem : fileItems) {
-                    final ItemFlow itemFlow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItem);
-                    if (itemFlow != null) {
-                        itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
-                        itemFlowDao.update(itemFlow);
-                    }
-                }
-                return true;
-            }
+        byte[] aperakData;
+        try (final ByteArrayOutputStream output = new ByteArrayOutputStream()) {
+            jaxbMarshallerz.marshal(aperakDocument, output);
+            aperakData = output.toByteArray();
         }
-        return false;
+
+        return aperakData;
     }
+
 }
 
