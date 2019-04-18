@@ -71,11 +71,11 @@ import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.ServicesItem;
 import org.guce.siat.common.model.User;
+import org.guce.siat.common.service.AbstractXmlConverterService;
 import org.guce.siat.common.service.AlfrescoDirectoryCreator;
 import org.guce.siat.common.service.ApplicationPropretiesService;
 import org.guce.siat.common.service.AppointmentService;
 import org.guce.siat.common.service.MailService;
-import org.guce.siat.common.service.XmlConverterService;
 import org.guce.siat.common.utils.ConverterGuceSiatUtils;
 import org.guce.siat.common.utils.DateUtils;
 import org.guce.siat.common.utils.DecisionOrganism;
@@ -200,7 +200,7 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @Service("xmlConverterService")
 @Transactional(readOnly = false)
-public class XmlConverterServiceImpl implements XmlConverterService {
+public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     /**
      * The Constant LOG.
@@ -383,13 +383,13 @@ public class XmlConverterServiceImpl implements XmlConverterService {
      */
     @Autowired
     private TreatmentOrderDao treatmentOrderDao;
-    
+
     @Autowired
     private WoodSpecificationDao woodSpecificationDao;
-    
+
     @Autowired
     private FileMarshallDao fileMarshallDao;
-    
+
     private FlowGuceSiat flowGuceSiat;
 
     /**
@@ -471,7 +471,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 
     @Autowired
     private DecisionHistoryDao decisionHistoryDao;
-    
+
     List<WoodSpecification> woodSpecifications;
 
     /**
@@ -507,7 +507,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         return FlowCode.FL_AP_166.name().equals(flowGuceSiat.getFlowSiat())
                 || FlowCode.FL_CT_93.name().equals(flowGuceSiat.getFlowSiat());
     }
-    
+
     private boolean isAmendment(FlowGuceSiat flowGuceSiat) {
         return AMENDMENT_AP_FLOW_LIST.contains(flowGuceSiat.getFlowSiat());
     }
@@ -660,10 +660,10 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             // set the file last decision date to the current date
             fileConverted.setLastDecisionDate(Calendar.getInstance().getTime());
             final File addedFile = fileDao.save(fileConverted);
-            
-            if(addedFile != null && addedFile.getFileType() != null) {
+
+            if (addedFile != null && addedFile.getFileType() != null) {
                 FileTypeCode fileCode = addedFile.getFileType().getCode();
-                if(FileTypeCode.BSBE_MINFOF.equals(fileCode) && CollectionUtils.isNotEmpty(woodSpecifications)) {
+                if (FileTypeCode.BSBE_MINFOF.equals(fileCode) && CollectionUtils.isNotEmpty(woodSpecifications)) {
                     for (WoodSpecification spec : woodSpecifications) {
                         spec.setFile(addedFile);
                         woodSpecificationDao.save(spec);
@@ -749,7 +749,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 
             for (final FileItem fileItem : fileFromSiat.getFileItemsList()) {
                 final ItemFlow itemFlow = new ItemFlow();
-                
+
                 itemFlow.setFileItem(fileItem);
                 itemFlow.setFlow(flowToExecute);
                 itemFlow.setSender(declarant);
@@ -921,26 +921,26 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             fileFromSiat.setFileTypeGucePaiement(fileConverted.getFileTypeGucePaiement());
             fileFromSiat.setNumeroDemandePaiement(fileConverted.getNumeroDemandePaiement());
         }
-        if(isAmendment(flowGuceSiat)) {
+        if (isAmendment(flowGuceSiat)) {
             try {
                 Serializable object;
-                switch(fileFromSiat.getFileType().getCode()) {
+                switch (fileFromSiat.getFileType().getCode()) {
                     case BSBE_MINFOF:
                         object = convertFileToDocumentBsbeMINFOF(fileFromSiat, fileFromSiat.getFileItemsList(), null, new Flow("FL_AP_107"), flowGuceSiat);
                         break;
                     default:
-                       object = null;
+                        object = null;
                 }
-                if(object != null) {
+                if (object != null) {
                     FileMarshall fileTypeCode = fileMarshallDao.findByFile(fileFromSiat);
                     boolean fileItem = true;
-                    if(fileTypeCode == null) {
+                    if (fileTypeCode == null) {
                         fileTypeCode = new FileMarshall(fileFromSiat);
                         fileItem = false;
                     }
 
                     fileTypeCode.setMarshall(SerializationUtils.serialize(object));
-                    if(fileItem) {
+                    if (fileItem) {
                         fileMarshallDao.update(fileTypeCode);
                     } else {
                         fileMarshallDao.save(fileTypeCode);
@@ -1033,12 +1033,12 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             }
         }
         FileTypeCode fileTypeCode = fileFromSiat.getFileType().getCode();
-        if (FileTypeCode.BSBE_MINFOF.equals((Object)fileTypeCode)) {
+        if (FileTypeCode.BSBE_MINFOF.equals((Object) fileTypeCode)) {
             woodSpecificationDao.removeByFile(fileFromSiat);
             if (CollectionUtils.isNotEmpty(woodSpecifications)) {
                 for (WoodSpecification spec : woodSpecifications) {
                     spec.setFile(fileFromSiat);
-                    woodSpecificationDao.save((Serializable)spec);
+                    woodSpecificationDao.save((Serializable) spec);
                 }
             }
         }
@@ -1049,16 +1049,16 @@ public class XmlConverterServiceImpl implements XmlConverterService {
 
         return fileFromSiat;
     }
-    
-    @Transactional(readOnly=false)
+
+    @Transactional(readOnly = false)
     public void rollbackFile(File currentFile, File nextFile) {
         List<FileFieldValue> newFileFieldValueList = null;
         for (FileFieldValue fileFieldValue : currentFile.getFileFieldValueList()) {
             newFileFieldValueList = nextFile.getFileFieldValueList();
             Iterator iterator = newFileFieldValueList.iterator();
             while (iterator.hasNext()) {
-                FileFieldValue newFileFieldValue = (FileFieldValue)iterator.next();
-                if (fileFieldValue.getFileField().equals(newFileFieldValue.getFileField())){
+                FileFieldValue newFileFieldValue = (FileFieldValue) iterator.next();
+                if (fileFieldValue.getFileField().equals(newFileFieldValue.getFileField())) {
                     if (fileFieldValue.getFileField().getUpdatable().booleanValue()) {
                         fileFieldValue.setValue(newFileFieldValue.getValue());
                     }
@@ -1085,7 +1085,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             }
             if (CollectionUtils.isNotEmpty(nextFile.getFileItemsList())) {
                 newFileItem = FileItemUtils.findFileItemByLineNumber(fileItem.getLineNumber(), nextFile.getFileItemsList());
-                if(!Objects.equals(newFileItem, null)) {
+                if (!Objects.equals(newFileItem, null)) {
                     fileItem.setFobValue(newFileItem.getFobValue());
                     fileItem.setQuantity(newFileItem.getQuantity());
                     List fileItemFieldValueList = null;
@@ -1097,8 +1097,8 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                             FileItemFieldValue fileItemFieldValue = null;
                             Boolean exist = false;
                             while (fifvToAdd.hasNext() && !exist) {
-                                fileItemFieldValue = (FileItemFieldValue)fifvToAdd.next();
-                                if(fileItemFieldValue.getFileItemField().getCode().equals(newFileItemFieldValue.getFileItemField().getCode())) {
+                                fileItemFieldValue = (FileItemFieldValue) fifvToAdd.next();
+                                if (fileItemFieldValue.getFileItemField().getCode().equals(newFileItemFieldValue.getFileItemField().getCode())) {
                                     if (fileItemFieldValue.getFileItemField().getUpdatable()) {
                                         fileItemFieldValue.setValue(newFileItemFieldValue.getValue());
                                     }
@@ -1113,7 +1113,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
                     if (CollectionUtils.isNotEmpty(fileItemFieldValueToAdd)) {
                         for (FileItemFieldValue fifv : fileItemFieldValueToAdd) {
                             FileItemFieldValue fifvToAdd = new FileItemFieldValue();
-                            fifvToAdd.setFileItem((FileItem)fileItem);
+                            fifvToAdd.setFileItem((FileItem) fileItem);
                             fifvToAdd.setFileItemField(fifv.getFileItemField());
                             fifvToAdd.setValue(fifv.getValue());
                             fileItemFieldValueDao.save(fifvToAdd);
@@ -1123,7 +1123,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
             }
         }
         FileTypeCode fileTypeCode = currentFile.getFileType().getCode();
-        if (FileTypeCode.BSBE_MINFOF.equals((Object)fileTypeCode)) {
+        if (FileTypeCode.BSBE_MINFOF.equals((Object) fileTypeCode)) {
             woodSpecificationDao.removeByFile(currentFile);
             if (CollectionUtils.isNotEmpty(woodSpecifications)) {
                 for (WoodSpecification spec : woodSpecifications) {
@@ -1343,7 +1343,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
     private List<ItemFlowData> retrieveItemFlowDatas(final Serializable document, final Flow flowToExecute) {
         String observation = null;
         final List<ItemFlowData> itemFlowDatas = new ArrayList<ItemFlowData>();
-        
+
         if (document instanceof org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT) {
             final org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT retrievedocument = (org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT) document;
             if (retrievedocument.getCONTENT() != null) {
@@ -5368,7 +5368,7 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         // ****************************************************************//
         return ciDocument;
     }
-    
+
     /**
      * Convert file to document_bsbe_minfof.
      *
@@ -5387,25 +5387,25 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT ciDocument = new org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT();
         ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT.CONTENT());
         ciDocument.setTYPEDOCUMENT(flowGuceSiat.getFlowGuce());
-        ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce((File)file));
+        ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce((File) file));
         if (FlowCode.FL_AP_152.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_151.name().equals(flowToExecute.getCode())) {
-            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier((File)file, (Boolean)true));
-            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage((String)((FileItem)file.getFileItemsList().get(0)).getNumEbmsMessageAnnulation()));
+            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier((File) file, (Boolean) true));
+            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage((String) ((FileItem) file.getFileItemsList().get(0)).getNumEbmsMessageAnnulation()));
         } else {
-            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier((File)file, (Boolean)false));
-            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage((String)((FileItem)file.getFileItemsList().get(0)).getNumEbmsMessage()));
+            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier((File) file, (Boolean) false));
+            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage((String) ((FileItem) file.getFileItemsList().get(0)).getNumEbmsMessage()));
         }
         if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode())) {
             FileFieldValue reportNumberFieldValue = this.fileFieldValueDao.findValueByFileFieldAndFile(BSBE_MINFOF_REPORT_FIELD, file);
             FileFieldValue registrationNumberFieldValue = this.fileFieldValueDao.findValueByFileFieldAndFile(BSBE_MINFOF_REGISTRATION_NUMBER_FIELD, file);
             FileFieldValue registrationDateFieldValue = this.fileFieldValueDao.findValueByFileFieldAndFile(BSB_MINFOF_REPORT_DATE_FIELD, file);
-            if (!Objects.equals((Object)reportNumberFieldValue, null) || !Objects.equals((Object)registrationNumberFieldValue, null)) {
+            if (!Objects.equals((Object) reportNumberFieldValue, null) || !Objects.equals((Object) registrationNumberFieldValue, null)) {
                 ciDocument.getCONTENT().setBULLETINSPECIFICATION(new org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT.CONTENT.BULLETINSPECIFICATION());
-                ciDocument.getCONTENT().getBULLETINSPECIFICATION().setNUMEROBULLETIN(Objects.equals((Object)reportNumberFieldValue, null) ? "" : reportNumberFieldValue.getValue());
-                ciDocument.getCONTENT().getBULLETINSPECIFICATION().setNUMEROENREGISTREMENT(Objects.equals((Object)registrationNumberFieldValue, null) ? "" : registrationNumberFieldValue.getValue());
-                ciDocument.getCONTENT().getBULLETINSPECIFICATION().setDATE(Objects.equals((Object)registrationDateFieldValue, null) ? SIMPLE_DATE_FORMAT.format(Calendar.getInstance().getTime()) : registrationDateFieldValue.getValue());
+                ciDocument.getCONTENT().getBULLETINSPECIFICATION().setNUMEROBULLETIN(Objects.equals((Object) reportNumberFieldValue, null) ? "" : reportNumberFieldValue.getValue());
+                ciDocument.getCONTENT().getBULLETINSPECIFICATION().setNUMEROENREGISTREMENT(Objects.equals((Object) registrationNumberFieldValue, null) ? "" : registrationNumberFieldValue.getValue());
+                ciDocument.getCONTENT().getBULLETINSPECIFICATION().setDATE(Objects.equals((Object) registrationDateFieldValue, null) ? SIMPLE_DATE_FORMAT.format(Calendar.getInstance().getTime()) : registrationDateFieldValue.getValue());
             }
-            if (!Objects.equals((Object)reportNumberFieldValue, null)) {
+            if (!Objects.equals((Object) reportNumberFieldValue, null)) {
                 ciDocument.getCONTENT().setNUMEROBSBEMINFOF(reportNumberFieldValue.getValue());
                 ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
                 ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECESJOINTES.PIECEJOINTE(file.getFileTypeGuce(), reportNumberFieldValue.getValue() + ESBConstants.PDF_FILE_EXTENSION));
@@ -5413,9 +5413,9 @@ public class XmlConverterServiceImpl implements XmlConverterService {
         }
         ItemFlowData itemFlowDataToInsert = null;
         if (CollectionUtils.isNotEmpty(itemFlowList) && CollectionUtils.isNotEmpty(itemFlowList.get(0).getItemFlowsDataList())) {
-            itemFlowDataToInsert = (ItemFlowData)itemFlowList.get(0).getItemFlowsDataList().get(0);
+            itemFlowDataToInsert = (ItemFlowData) itemFlowList.get(0).getItemFlowsDataList().get(0);
         }
-        ciDocument.getCONTENT().setDECISIONORGANISME(ConverterGuceSiatUtils.generateDecisionOrganisme((Flow)flowToExecute, itemFlowDataToInsert));
+        ciDocument.getCONTENT().setDECISIONORGANISME(ConverterGuceSiatUtils.generateDecisionOrganisme((Flow) flowToExecute, itemFlowDataToInsert));
         if (flowToExecute.getToStep() != null && BooleanUtils.isTrue(flowToExecute.getToStep().getIsFinal())) {
             ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT.CONTENT.SIGNATAIRE());
             ciDocument.getCONTENT().getSIGNATAIRE().setDATE(new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S", Locale.ENGLISH).format(Calendar.getInstance().getTime()));
