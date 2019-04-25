@@ -16339,11 +16339,15 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 newSpec.setDiamGrosBout(Integer.parseInt(specification.getDIAMETREGROSBOUT()));
                 newSpec.setDiamMoyen(Integer.parseInt(specification.getDIAMETREMOYENGENERAL()));
                 newSpec.setDiamPetitBout(Integer.parseInt(specification.getDIAMETREPETITBOUT()));
+                newSpec.setEpaisseur(Integer.parseInt(specification.getEPAISSEUR()));
                 newSpec.setLongueurGrume(new BigDecimal(specification.getLONGUEURGRUME()));
+                newSpec.setLargeur(new BigDecimal(specification.getLARGEUR()));
                 newSpec.setLineNumber(specification.getLINENUMBER());
                 newSpec.setFournisseur(specification.getFOURNISSEUR());
                 newSpec.setWoodSpecies(specification.getESSENCE());
                 newSpec.setNumMarqueGrume(specification.getNUMEROMARQUEGRUME());
+                newSpec.setNumColis(specification.getNUMEROCOLIS());
+                newSpec.setNbrePieces(Integer.parseInt(specification.getNOMBREPIECES()));
                 newSpec.setObservations(specification.getOBSERVATIONS());
                 if (specification.getVOLUME() != null) {
                     newSpec.setVolume(new BigDecimal(specification.getVOLUME()));

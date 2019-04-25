@@ -53,12 +53,23 @@ public class WoodSpecification extends AbstractModel implements Serializable {
       length = 50
    )
    private String numMarqueGrume;
+    @Column(name = "NUM_COLIS", length = 17)
+    private String numColis;
+    @Column(name = "NBRE_PIECES", precision = 10)
+    private Integer nbrePieces;
    @Column(
       name = "LONGUEUR_GRUME",
       precision = 5,
       scale = 3
    )
    private BigDecimal longueurGrume;
+   
+    @Column(name = "LARGEUR", precision = 10)
+    private BigDecimal largeur;
+    
+    @Column(name = "EPAISSEUR", precision = 10)
+    private Integer epaisseur;
+    
    @Column(
       name = "DIAM_GROS_BOUT",
       precision = 5
@@ -130,6 +141,22 @@ public class WoodSpecification extends AbstractModel implements Serializable {
       this.numMarqueGrume = numMarqueGrume;
    }
 
+    public String getNumColis() {
+        return numColis;
+    }
+
+    public void setNumColis(String numColis) {
+        this.numColis = numColis;
+    }
+
+    public Integer getNbrePieces() {
+        return nbrePieces;
+    }
+
+    public void setNbrePieces(Integer nbrePieces) {
+        this.nbrePieces = nbrePieces;
+    }
+
    public BigDecimal getLongueurGrume() {
       return this.longueurGrume;
    }
@@ -137,6 +164,22 @@ public class WoodSpecification extends AbstractModel implements Serializable {
    public void setLongueurGrume(BigDecimal longueurGrume) {
       this.longueurGrume = longueurGrume;
    }
+
+    public BigDecimal getLargeur() {
+        return largeur;
+    }
+
+    public void setLargeur(BigDecimal largeur) {
+        this.largeur = largeur;
+    }
+
+    public Integer getEpaisseur() {
+        return epaisseur;
+    }
+
+    public void setEpaisseur(Integer epaisseur) {
+        this.epaisseur = epaisseur;
+    }
 
    public Integer getDiamGrosBout() {
       return this.diamGrosBout;
