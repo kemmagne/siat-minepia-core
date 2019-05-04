@@ -253,13 +253,13 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "DESTINATAIRE_TELEPHONE_FIXE_NUMERO": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE().getNUMERO());
-                }
-                break;
-            }
+//            case "DESTINATAIRE_TELEPHONE_FIXE_NUMERO": {
+//                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+//                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE() != null) {
+//                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE().getNUMERO());
+//                }
+//                break;
+//            }
             case "DESTINATAIRE_TELEPHONE_MOBILE_INDICATIFPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
                         && document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
@@ -267,13 +267,13 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "DESTINATAIRE_TELEPHONE_MOBILE_NUMERO": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE().getNUMERO());
-                }
-                break;
-            }
+//            case "DESTINATAIRE_TELEPHONE_MOBILE_NUMERO": {
+//                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+//                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
+//                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE().getNUMERO());
+//                }
+//                break;
+//            }
             case "DESTINATAIRE_FAX_INDICATIFPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
                         && document.getCONTENT().getDESTINATAIRE().getFAX() != null) {
@@ -1196,7 +1196,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "MARCHANDISE_NB_APPROVES": {
+            case "MARCHANDISE_NB_APPROUVES": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
                         && document.getCONTENT().getCvs().getMarchandiseNbApprouves() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandiseNbApprouves());
@@ -1207,6 +1207,303 @@ public class FileFieldValueCct {
                 if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
                         && document.getCONTENT().getCvs().getMarchandisePoidsNet() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandisePoidsNet());
+                }
+                break;
+            }
+            case "NO_PERMIS_CITES": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
+                        && document.getCONTENT().getCvs().getPermitCITESNumber() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCvs().getPermitCITESNumber());
+                }
+                break;
+            }
+            case "ID_CONTENEURS_SCELLES": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
+                        && document.getCONTENT().getCvs().getIdContainersSeals() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCvs().getIdContainersSeals());
+                }
+                break;
+            }
+            case "EXPEDITEUR_RAISON_SOCIAL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getRAISONSOCIALE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getRAISONSOCIALE());
+                }
+                break;
+            }
+            case "EXPEDITEUR_ADRESSE1": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE1() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE1());
+                }
+                break;
+            }
+            case "EXPEDITEUR_ADRESSE2": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE2() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE2());
+                }
+                break;
+            }
+            case "EXPEDITEUR_BP": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getBP() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getBP());
+                }
+                break;
+            }
+            case "EXPEDITEUR_PAYS_CODE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getCODEPAYS());
+                }
+                break;
+            }
+            case "EXPEDITEUR_PAYS_NOM": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getNOMPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getNOMPAYS());
+                }
+                break;
+            }
+            case "EXPEDITEUR_VILLE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getVILLE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getVILLE());
+                }
+                break;
+            }
+            case "EXPEDITEUR_EMAIL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getEMAIL() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getEMAIL());
+                }
+                break;
+            }
+            case "EXPEDITEUR_SITE_WEB": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getSITEWEB() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getSITEWEB());
+                }
+                break;
+            }
+            case "NUMERO_DEMANDE": {
+                if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODEMANDE() != null) {
+                    fileFieldValue.setValue(document.getREFERENCEDOSSIER().getNUMERODEMANDE());
+                }
+                break;
+            }
+            case "DESTINATAIRE_RAISON_SOCIAL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getRAISONSOCIALE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getRAISONSOCIALE());
+                }
+                break;
+            }
+            case "DESTINATAIRE_NUMERO_CONTRIBUABLE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
+                }
+                break;
+            }
+            case "DESTINATAIRE_ADRESSE1": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1());
+                }
+                break;
+            }
+            case "DESTINATAIRE_ADRESSE2": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2());
+                }
+                break;
+            }
+            case "DESTINATAIRE_BP": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getBP() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getBP());
+                }
+                break;
+            }
+            case "DESTINATAIRE_PAYS_CODE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS());
+                }
+                break;
+            }
+            case "DESTINATAIRE_PAYS_NOM": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS());
+                }
+                break;
+            }
+            case "DESTINATAIRE_VILLE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getVILLE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getVILLE());
+                }
+                break;
+            }
+            case "DESTINATAIRE_EMAIL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getEMAIL() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getEMAIL());
+                }
+                break;
+            }
+            case "DESTINATAIRE_SITE_WEB": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE() != null
+                        && document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB());
+                }
+                break;
+            }
+            case "DESTINATAIRE_TELEPHONE_MOBILE_INDICATIF": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS());
+                }
+                break;
+            }
+            case "DESTINATAIRE_TELEPHONE_MOBILE_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO());
+                }
+                break;
+            }
+            case "DESTINATAIRE_TELEPHONE_FIXE_INDICATIF": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS());
+                }
+                break;
+            }
+            case "DESTINATAIRE_TELEPHONE_FIXE_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null
+                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO());
+                }
+                break;
+            }
+            case "DESTINATAIRE_TELEPHONE_FAX_INDICATIF": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getFAX() != null
+                        && document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS());
+                }
+                break;
+            }
+            case "DESTINATAIRE_TELEPHONE_FAX_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getFAX() != null
+                        && document.getCONTENT().getCLIENT().getFAX().getNUMERO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getFAX().getNUMERO());
+                }
+                break;
+            }
+            case "NUMERO_CCT_CT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
+                }
+                break;
+            }
+            case "PAYS_ORIGINE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
+                }
+                break;
+            }
+            case "ZONE_ORIGINE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
+//                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
+                }
+                break;
+            }
+            case "PAYS_DESTINATION": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
+                }
+                break;
+            }
+            case "VILLE_DESTINATION": {
+                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
+                }
+                break;
+            }
+            case "NUMERO_LTA_CONNAISSEMENT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getNUMCONNAISSEMENTLTA() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getNUMCONNAISSEMENTLTA());
+                }
+                break;
+            }
+            case "MODE_TRANSPORT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMODETRANSPORT() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMODETRANSPORT().getCODE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMODETRANSPORT().getCODE());
+                }
+                break;
+            }
+            case "MOYEN_TRANSPORT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMOYENTRANSPORT() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMOYENTRANSPORT().getCODE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMOYENTRANSPORT().getCODE());
+                }
+                break;
+            }
+            case "LIEU_ORIGINE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
+//                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
+                }
+                break;
+            }
+            case "LIEU_CHARGEMENT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getLIBELLE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getLIBELLE());
                 }
                 break;
             }

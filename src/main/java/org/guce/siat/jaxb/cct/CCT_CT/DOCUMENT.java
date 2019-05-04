@@ -21015,24 +21015,31 @@ public class DOCUMENT implements Serializable {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder
                 = {"dateDepart",
+                    "permitCITESNumber",
                     "temperatureProduit",
                     "nbUniteEmballe",
                     "natureEmballage",
+                    "idContainersSeals",
                     "marchandisePour",
                     "marchandiseEspece",
                     "marchandiseNature",
                     "marchandiseTraitement",
                     "marchandiseNbColis",
                     "marchandiseNbApprouves",
-                    "marchandisePoidsNet"})
+                    "marchandisePoidsNet",
+                })
         public static class CVS {
 
             @XmlElement(name = "DATE_DEPART")
             protected String dateDepart;
+            @XmlElement(name = "NO_PERMIS_CITES")
+            protected String permitCITESNumber;
             @XmlElement(name = "TEMPERATURE_PRODUIT")
             protected String temperatureProduit;
             @XmlElement(name = "NOMBRE_UNITES_EMBALLES")
             protected String nbUniteEmballe;
+            @XmlElement(name = "ID_CONTENEURS_SCELLES")
+            protected String idContainersSeals;
             @XmlElement(name = "NATURE_EMBALLAGE")
             protected String natureEmballage;
             @XmlElement(name = "MARCHANDISE_POUR")
@@ -21045,7 +21052,7 @@ public class DOCUMENT implements Serializable {
             protected String marchandiseTraitement;
             @XmlElement(name = "MARCHANDISE_NB_COLIS")
             protected String marchandiseNbColis;
-            @XmlElement(name = "MARCHANDISE_NB_APPROVES")
+            @XmlElement(name = "MARCHANDISE_NB_APPROUVES")
             protected String marchandiseNbApprouves;
             @XmlElement(name = "MARCHANDISE_POIDS_NET")
             protected String marchandisePoidsNet;
@@ -21137,6 +21144,24 @@ public class DOCUMENT implements Serializable {
             public void setMarchandisePoidsNet(String marchandisePoidsNet) {
                 this.marchandisePoidsNet = marchandisePoidsNet;
             }
+
+            public String getPermitCITESNumber() {
+                return permitCITESNumber;
+            }
+
+            public void setPermitCITESNumber(String permitCITESNumber) {
+                this.permitCITESNumber = permitCITESNumber;
+            }
+
+            public String getIdContainersSeals() {
+                return idContainersSeals;
+            }
+
+            public void setIdContainersSeals(String idContainersSeals) {
+                this.idContainersSeals = idContainersSeals;
+            }
+            
+            
 
         }
 

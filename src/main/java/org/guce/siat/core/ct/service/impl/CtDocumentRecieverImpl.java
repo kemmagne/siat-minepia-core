@@ -300,7 +300,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
      *
      * @param xmlBytes
      * @param xmlContent the xml content
-     * @param xPath the x path
+     * @param xPath the x path 
      * @return Document
      * @throws XPathExpressionException the x path expression exception
      * @throws JAXBException the JAXB exception
@@ -710,4 +710,3 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
     }
 
 }
-

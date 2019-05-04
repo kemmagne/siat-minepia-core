@@ -2914,7 +2914,7 @@
                                     <xs:sequence>
                                         <xs:element name="DATE_DEPART" type="xs:string"/>
                                         <xs:element name="NO_PERMIS_CITES" type="xs:string"/>
-                                        <xs:element name="TEMPERATURE_PRODUIT" type="xs:double"/>
+                                        <xs:element name="TEMPERATURE_PRODUIT" type="xs:string"/>
                                         <xs:element name="NOMBRE_UNITES_EMBALLES" type="xs:string"/>
                                         <xs:element name="NATURE_EMBALLAGE" type="xs:string"/>
                                         <xs:element name="ID_CONTENEURS_SCELLES" type="xs:string"/>
@@ -2923,7 +2923,7 @@
                                         <xs:element name="MARCHANDISE_NATURE" type="xs:string"/>
                                         <xs:element name="MARCHANDISE_TRAITEMENT" type="xs:string"/>
                                         <xs:element name="MARCHANDISE_NB_COLIS" type="xs:integer"/>
-                                        <xs:element name="MARCHANDISE_NB_APPROVES" type="xs:integer"/>
+                                        <xs:element name="MARCHANDISE_NB_APPROUVES" type="xs:integer"/>
                                         <xs:element name="MARCHANDISE_POIDS_NET" type="xs:double"/>
                                     </xs:sequence>
                                 </xs:complexType>

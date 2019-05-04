@@ -874,8 +874,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
                     break;
                 case CCT_CT_E_PVI:
-                case CCT_CT_E_FSTP:
+                case CCT_CT_E_FSTP: {
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
+                    break;
+                }
             }
         }
 
