@@ -1739,10 +1739,14 @@ public class DOCUMENT
                 "linenumber",
                 "essence",
                 "numeromarquegrume",
+                "numerocolis",
+                "nombrepieces",
                 "longueurgrume",
+                "largeur",
                 "diametregrosbout",
                 "diametrepetitbout",
                 "diametremoyengeneral",
+                "epaisseur",
                 "volume",
                 "fournisseur",
                 "observations"
@@ -1755,14 +1759,22 @@ public class DOCUMENT
                 protected String essence;
                 @XmlElement(name = "NUMERO_MARQUE_GRUME")
                 protected String numeromarquegrume;
+                @XmlElement(name = "NUMERO_COLIS")
+                protected String numerocolis;
+                @XmlElement(name = "NOMBRE_PIECES")
+                protected String nombrepieces;
                 @XmlElement(name = "LONGUEUR_GRUME")
                 protected String longueurgrume;
+                @XmlElement(name = "LARGEUR")
+                protected String largeur;
                 @XmlElement(name = "DIAMETRE_GROS_BOUT")
                 protected String diametregrosbout;
                 @XmlElement(name = "DIAMETRE_PETIT_BOUT")
                 protected String diametrepetitbout;
                 @XmlElement(name = "DIAMETRE_MOYEN_GENERAL")
                 protected String diametremoyengeneral;
+                @XmlElement(name = "EPAISSEUR")
+                protected String epaisseur;
                 @XmlElement(name = "VOLUME")
                 protected String volume;
                 @XmlElement(name = "FOURNISSEUR")
@@ -1795,12 +1807,36 @@ public class DOCUMENT
                    this.numeromarquegrume = value;
                 }
 
+                public String getNUMEROCOLIS() {
+                    return this.numerocolis;
+                }
+
+                public void setNUMEROCOLIS(String value) {
+                    this.numerocolis = value;
+                }
+
+                public String getNOMBREPIECES() {
+                    return this.nombrepieces;
+                }
+
+                public void setNOMBREPIECES(String value) {
+                    this.nombrepieces = value;
+                }
+
                 public String getLONGUEURGRUME() {
                    return this.longueurgrume;
                 }
 
                 public void setLONGUEURGRUME(String value) {
                    this.longueurgrume = value;
+                }
+
+                public String getLARGEUR() {
+                    return this.largeur;
+                }
+
+                public void setLARGEUR(String value) {
+                    this.largeur = value;
                 }
 
                 public String getDIAMETREGROSBOUT() {
@@ -1825,6 +1861,14 @@ public class DOCUMENT
 
                 public void setDIAMETREMOYENGENERAL(String value) {
                    this.diametremoyengeneral = value;
+                }
+
+                public String getEPAISSEUR() {
+                    return this.epaisseur;
+                }
+
+                public void setEPAISSEUR(String valeur) {
+                    this.epaisseur = valeur;
                 }
 
                 public String getVOLUME() {
