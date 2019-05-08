@@ -1379,21 +1379,21 @@
                                                     <xs:element name="MONTANT" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="35"/>
+                                                                <xs:maxLength value="10"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
                                                     <xs:element name="MONTANT_TOTAL_DEVISE" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="35"/>
+                                                                <xs:maxLength value="10"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
                                                     <xs:element name="MONTANT_TOTAL_FCFA" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="35"/>
+                                                                <xs:maxLength value="10"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
@@ -2217,6 +2217,13 @@
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
+                                                    <xs:element name="TYPE_FACTURE" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>
@@ -2281,7 +2288,7 @@
                                                     <xs:element name="DATE_ENCAISSEMENT" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="50"/>
+                                                                <xs:length value="50"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
@@ -2876,6 +2883,89 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
+                            <xs:element name="CONTENEURS" minOccurs="0">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="CONTENEUR" minOccurs="0" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:sequence>
+                                                    <xs:element name="NUMERO_CONTENEUR" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="SELLE_1" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="SELLE_2" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="SELLE_3" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="POIDS" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="REFRIGERE" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="INDICATEUR_DANGER" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="TYPE" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="PLEIN" type="xs:string" minOccurs="0"/>
+                                                    <xs:element name="MARQUE" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                    <xs:element name="VOLUME" minOccurs="0">
+                                                        <xs:simpleType>
+                                                            <xs:restriction base="xs:string">
+                                                                <xs:maxLength value="35"/>
+                                                            </xs:restriction>
+                                                        </xs:simpleType>
+                                                    </xs:element>
+                                                </xs:sequence>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
                             <xs:element name="OBSERVATIONS" minOccurs="0">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
@@ -2912,19 +3002,19 @@
                             <xs:element name="CVS" minOccurs="0">
                                 <xs:complexType>
                                     <xs:sequence>
-                                        <xs:element name="DATE_DEPART" type="xs:string"/>
-                                        <xs:element name="NO_PERMIS_CITES" type="xs:string"/>
-                                        <xs:element name="TEMPERATURE_PRODUIT" type="xs:string"/>
-                                        <xs:element name="NOMBRE_UNITES_EMBALLES" type="xs:string"/>
-                                        <xs:element name="NATURE_EMBALLAGE" type="xs:string"/>
-                                        <xs:element name="ID_CONTENEURS_SCELLES" type="xs:string"/>
-                                        <xs:element name="MARCHANDISE_POUR" type="xs:string"/>
-                                        <xs:element name="MARCHANDISE_ESPECE" type="xs:string"/>
-                                        <xs:element name="MARCHANDISE_NATURE" type="xs:string"/>
-                                        <xs:element name="MARCHANDISE_TRAITEMENT" type="xs:string"/>
-                                        <xs:element name="MARCHANDISE_NB_COLIS" type="xs:integer"/>
-                                        <xs:element name="MARCHANDISE_NB_APPROUVES" type="xs:integer"/>
-                                        <xs:element name="MARCHANDISE_POIDS_NET" type="xs:double"/>
+                                        <xs:element name="DATE_DEPART" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="NO_PERMIS_CITES" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="TEMPERATURE_PRODUIT" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="NOMBRE_UNITES_EMBALLES" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="NATURE_EMBALLAGE" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="ID_CONTENEURS_SCELLES" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_POUR" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_ESPECE" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_NATURE" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_TRAITEMENT" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_NB_COLIS" type="xs:integer" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_NB_APPROUVES" type="xs:string" minOccurs="0"/>
+                                        <xs:element name="MARCHANDISE_POIDS_NET" type="xs:double" minOccurs="0"/>
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>

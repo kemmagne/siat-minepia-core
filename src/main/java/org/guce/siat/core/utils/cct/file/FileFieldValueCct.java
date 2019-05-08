@@ -1297,7 +1297,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "NUMERO_DEMANDE": {
+            case "CERTIFICATE_NUMBER": {
                 if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODEMANDE() != null) {
                     fileFieldValue.setValue(document.getREFERENCEDOSSIER().getNUMERODEMANDE());
                 }
@@ -1463,7 +1463,7 @@ public class FileFieldValueCct {
             }
             case "VILLE_DESTINATION": {
                 if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
+//                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
                 }
                 break;
             }
@@ -1494,9 +1494,11 @@ public class FileFieldValueCct {
                 break;
             }
             case "LIEU_ORIGINE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
-//                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
-                }
+//                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+//                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT() != null
+//                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getUNLOCODE() != null) {
+//                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getUNLOCODE());
+//                }
                 break;
             }
             case "LIEU_CHARGEMENT": {
@@ -1504,6 +1506,41 @@ public class FileFieldValueCct {
                         && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getLIBELLE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getLIBELLE());
+                }
+                break;
+            }
+            case "CCT_CONTENEURS_CONTENEUR": {
+                if (document.getCONTENT() != null
+                        && document.getCONTENT().getCONTENEURS() != null
+                        && CollectionUtils.isNotEmpty(document.getCONTENT().getCONTENEURS().getCONTENEUR())) {
+                    final List<String> columns = new ArrayList<>();
+                    columns.add("Identification");
+                    columns.add("Type");
+                    columns.add("Poids");
+                    columns.add("Volume");
+                    columns.add("Scelles");
+                    final List<String> filedsValuesList = new ArrayList<String>();
+
+                    final int elementSize = document.getCONTENT().getCONTENEURS().getCONTENEUR().size();
+                    for (int i = 0; i < elementSize; i++) {
+                        if (document.getCONTENT().getCONTENEURS().getCONTENEUR().get(i) != null) {
+                            final DOCUMENT.CONTENT.CONTENEURS.CONTENEUR currentEssai = document.getCONTENT().getCONTENEURS().getCONTENEUR().get(i);
+                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getNUMEROCONTENEUR()) ? currentEssai
+                                    .getNUMEROCONTENEUR() : "/");
+                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getTYPE()) ? currentEssai
+                                    .getTYPE() : "-");
+                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getPOIDS()) ? currentEssai
+                                    .getPOIDS() : "-");
+                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getVOLUME()) ? currentEssai
+                                    .getVOLUME() : "-");
+                            String scelles = "";
+                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE1()) ? currentEssai.getSELLE1() : "-";
+                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE2()) ? "," + currentEssai.getSELLE2() : ",-";
+                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE3()) ? "," + currentEssai.getSELLE3() : ",-";
+                            filedsValuesList.add(scelles);
+                        }
+                    }
+                    fileFieldValue.setValue(FileFieldValueUtils.addValueRepetable(filedsValuesList, columns, null));
                 }
                 break;
             }

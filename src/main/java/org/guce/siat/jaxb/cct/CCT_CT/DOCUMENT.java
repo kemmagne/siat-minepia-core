@@ -5754,7 +5754,7 @@ public class DOCUMENT implements Serializable {
     @XmlType(name = "", propOrder
             = {"decisionorganisme", "codebureau", "typedemande", "client", "transitaire", "signataire", "destinataire",
                 "informationsgenerales", "inspection", "expedition", "analyse", "traitement", "causes", "instruction",
-                "emplacementdouane", "numerocctct", "paiement", "marchandises", "observations", "cvs", "piecesjointes"})
+                "emplacementdouane", "numerocctct", "paiement", "marchandises","conteneurs", "observations", "cvs", "piecesjointes"})
     public static class CONTENT implements Serializable {
 
         @XmlElement(name = "DECISION_ORGANISME")
@@ -5799,6 +5799,8 @@ public class DOCUMENT implements Serializable {
         protected DOCUMENT.CONTENT.CVS cvs;
         @XmlElement(name = "PIECES_JOINTES")
         protected PIECESJOINTES piecesjointes;
+        @XmlElement(name = "CONTENEURS")
+        protected DOCUMENT.CONTENT.CONTENEURS conteneurs;
 
         public CVS getCvs() {
             return cvs;
@@ -6188,6 +6190,26 @@ public class DOCUMENT implements Serializable {
          */
         public void setOBSERVATIONS(final String value) {
             this.observations = value;
+        }
+        
+        /**
+         * Obtient la valeur de la propriété conteneurs.
+         *
+         * @return possible object is {@link DOCUMENT.CONTENT.CONTENEURS }
+         *
+         */
+        public DOCUMENT.CONTENT.CONTENEURS getCONTENEURS() {
+            return conteneurs;
+        }
+
+        /**
+         * Définit la valeur de la propriété conteneurs.
+         *
+         * @param value allowed object is {@link DOCUMENT.CONTENT.CONTENEURS }
+         *
+         */
+        public void setCONTENEURS(DOCUMENT.CONTENT.CONTENEURS value) {
+            this.conteneurs = value;
         }
 
         /**
@@ -21164,6 +21186,400 @@ public class DOCUMENT implements Serializable {
             
 
         }
+        
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "conteneur"
+        })
+        public static class CONTENEURS {
+
+            @XmlElement(name = "CONTENEUR")
+            protected List<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR> conteneur;
+
+            /**
+             * Gets the value of the conteneur property.
+             *
+             * <p>
+             * This accessor method returns a reference to the live list, not a
+             * snapshot. Therefore any modification you make to the returned
+             * list will be present inside the JAXB object. This is why there is
+             * not a <CODE>set</CODE> method for the conteneur property.
+             *
+             * <p>
+             * For example, to add a new item, do as follows:
+             * <pre>
+             *    getCONTENEUR().add(newItem);
+             * </pre>
+             *
+             *
+             * <p>
+             * Objects of the following type(s) are allowed in the list
+             * {@link DOCUMENT.CONTENT.CONTENEURS.CONTENEUR }
+             *
+             *
+             */
+            public List<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR> getCONTENEUR() {
+                if (conteneur == null) {
+                    conteneur = new ArrayList<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR>();
+                }
+                return this.conteneur;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NUMERO_CONTENEUR" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="SELLE_1" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="SELLE_2" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="SELLE_3" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="POIDS" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="REFRIGERE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="INDICATEUR_DANGER" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="TYPE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="PLEIN" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+             *         &lt;element name="MARQUE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="VOLUME" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="35"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "numeroconteneur",
+                "selle1",
+                "selle2",
+                "selle3",
+                "poids",
+                "refrigere",
+                "indicateurdanger",
+                "type",
+                "plein",
+                "marque",
+                "volume"
+            })
+            public static class CONTENEUR {
+
+                @XmlElement(name = "NUMERO_CONTENEUR")
+                protected String numeroconteneur;
+                @XmlElement(name = "SELLE_1")
+                protected String selle1;
+                @XmlElement(name = "SELLE_2")
+                protected String selle2;
+                @XmlElement(name = "SELLE_3")
+                protected String selle3;
+                @XmlElement(name = "POIDS")
+                protected String poids;
+                @XmlElement(name = "REFRIGERE")
+                protected String refrigere;
+                @XmlElement(name = "INDICATEUR_DANGER")
+                protected String indicateurdanger;
+                @XmlElement(name = "TYPE")
+                protected String type;
+                @XmlElement(name = "PLEIN")
+                protected String plein;
+                @XmlElement(name = "MARQUE")
+                protected String marque;
+                @XmlElement(name = "VOLUME")
+                protected String volume;
+
+                /**
+                 * Obtient la valeur de la propriété numeroconteneur.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNUMEROCONTENEUR() {
+                    return numeroconteneur;
+                }
+
+                /**
+                 * Définit la valeur de la propriété numeroconteneur.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNUMEROCONTENEUR(String value) {
+                    this.numeroconteneur = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété selle1.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getSELLE1() {
+                    return selle1;
+                }
+
+                /**
+                 * Définit la valeur de la propriété selle1.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setSELLE1(String value) {
+                    this.selle1 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété selle2.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getSELLE2() {
+                    return selle2;
+                }
+
+                /**
+                 * Définit la valeur de la propriété selle2.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setSELLE2(String value) {
+                    this.selle2 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété selle3.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getSELLE3() {
+                    return selle3;
+                }
+
+                /**
+                 * Définit la valeur de la propriété selle3.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setSELLE3(String value) {
+                    this.selle3 = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété poids.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getPOIDS() {
+                    return poids;
+                }
+
+                /**
+                 * Définit la valeur de la propriété poids.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setPOIDS(String value) {
+                    this.poids = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété refrigere.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getREFRIGERE() {
+                    return refrigere;
+                }
+
+                /**
+                 * Définit la valeur de la propriété refrigere.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setREFRIGERE(String value) {
+                    this.refrigere = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété indicateurdanger.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getINDICATEURDANGER() {
+                    return indicateurdanger;
+                }
+
+                /**
+                 * Définit la valeur de la propriété indicateurdanger.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setINDICATEURDANGER(String value) {
+                    this.indicateurdanger = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété type.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getTYPE() {
+                    return type;
+                }
+
+                /**
+                 * Définit la valeur de la propriété type.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setTYPE(String value) {
+                    this.type = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété plein.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getPLEIN() {
+                    return plein;
+                }
+
+                /**
+                 * Définit la valeur de la propriété plein.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setPLEIN(String value) {
+                    this.plein = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété marque.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getMARQUE() {
+                    return marque;
+                }
+
+                /**
+                 * Définit la valeur de la propriété marque.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setMARQUE(String value) {
+                    this.marque = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété volume.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getVOLUME() {
+                    return volume;
+                }
+
+                /**
+                 * Définit la valeur de la propriété volume.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setVOLUME(String value) {
+                    this.volume = value;
+                }
+
+            }
+
+        }
+
 
     }
 
