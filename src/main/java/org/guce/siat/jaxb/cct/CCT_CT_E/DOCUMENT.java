@@ -9919,7 +9919,8 @@ public class DOCUMENT implements Serializable {
                 "nombreconteneursnomventiles",
                 "poidsdeclaretotalbrut",
                 "poidstotalnet",
-                "marque"
+                "marque",
+				"nombotanique"
             })
             public static class MARCHANDISE {
 
@@ -9979,6 +9980,8 @@ public class DOCUMENT implements Serializable {
                 protected String poidstotalnet;
                 @XmlElement(name = "MARQUE")
                 protected String marque;
+				@XmlElement(name = "NOM_BOTANIQUE")
+				protected String nombotanique;
 
                 /**
                  * Obtient la valeur de la propriété linenumber.
@@ -10547,6 +10550,15 @@ public class DOCUMENT implements Serializable {
                 public void setMARQUE(String value) {
                     this.marque = value;
                 }
+
+				public String getNOMBOTANIQUE() {
+					return nombotanique;
+				}
+
+				public void setNOMBOTANIQUE(String nombotanique) {
+					this.nombotanique = nombotanique;
+				}
+								
 
                 /**
                  * <p>
