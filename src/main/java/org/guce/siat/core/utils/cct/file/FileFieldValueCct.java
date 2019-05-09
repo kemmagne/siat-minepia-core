@@ -1441,6 +1441,15 @@ public class FileFieldValueCct {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS()!= null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
+                }
+                break;
+            }
+            case "PAYS_ORIGINE_CODE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
                 }
@@ -1453,6 +1462,15 @@ public class FileFieldValueCct {
                 break;
             }
             case "PAYS_DESTINATION": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS());
+                }
+                break;
+            }
+            case "PAYS_DESTINATION_CODE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
@@ -1535,8 +1553,8 @@ public class FileFieldValueCct {
                                     .getVOLUME() : "-");
                             String scelles = "";
                             scelles += StringUtils.isNotBlank(currentEssai.getSELLE1()) ? currentEssai.getSELLE1() : "-";
-                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE2()) ? "," + currentEssai.getSELLE2() : ",-";
-                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE3()) ? "," + currentEssai.getSELLE3() : ",-";
+                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE2()) ? "*" + currentEssai.getSELLE2() : "*-";
+                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE3()) ? "*" + currentEssai.getSELLE3() : "*-";
                             filedsValuesList.add(scelles);
                         }
                     }
