@@ -4,30 +4,30 @@ import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
-import org.guce.siat.core.ct.dao.TreatmentInfosDao;
-import org.guce.siat.core.ct.model.TreatmentInfos;
-import org.guce.siat.core.ct.service.TreatmentInfosService;
+import org.guce.siat.core.ct.dao.ApprovedDecisionDao;
+import org.guce.siat.core.ct.model.ApprovedDecision;
+import org.guce.siat.core.ct.service.ApprovedDecisionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * The Class TreatmentOrderServiceImpl.
+ * The Class ApprovedDecisionServiceImpl.
  */
-@Service("treatmentInfosService")
+@Service("approvedDecisionService")
 @Transactional(readOnly = true)
-public class TreatmentInfosServiceImpl extends AbstractServiceImpl<TreatmentInfos> implements TreatmentInfosService {
+public class ApprovedDecisionServiceImpl extends AbstractServiceImpl<ApprovedDecision> implements ApprovedDecisionService {
 
     /**
-     * The treatment order dao.
+     * The Approved Decision dao.
      */
     @Autowired
-    private TreatmentInfosDao treatmentInfosDao;
+    private ApprovedDecisionDao approvedDecisionDao;
 
     /**
-     * Instantiates a new treatment order service impl.
+     * Instantiates a new ApprovedDecision service impl.
      */
-    public TreatmentInfosServiceImpl() {
+    public ApprovedDecisionServiceImpl() {
         super();
     }
 
@@ -37,8 +37,8 @@ public class TreatmentInfosServiceImpl extends AbstractServiceImpl<TreatmentInfo
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#getJpaDao()
      */
     @Override
-    public AbstractJpaDao<TreatmentInfos> getJpaDao() {
-        return treatmentInfosDao;
+    public AbstractJpaDao<ApprovedDecision> getJpaDao() {
+        return approvedDecisionDao;
     }
 
     /*
@@ -47,8 +47,8 @@ public class TreatmentInfosServiceImpl extends AbstractServiceImpl<TreatmentInfo
 	 * @see org.guce.siat.common.service.impl.AbstractServiceImpl#setJpaDao(org.guce.siat.common.dao.AbstractJpaDao)
      */
     @Override
-    public void setJpaDao(final AbstractJpaDao<TreatmentInfos> jpaDao) {
-        this.treatmentInfosDao = (TreatmentInfosDao) jpaDao;
+    public void setJpaDao(final AbstractJpaDao<ApprovedDecision> jpaDao) {
+        this.approvedDecisionDao = (ApprovedDecisionDao) jpaDao;
 
     }
 
@@ -56,12 +56,12 @@ public class TreatmentInfosServiceImpl extends AbstractServiceImpl<TreatmentInfo
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.guce.siat.core.ct.service.TreatmentInfosService#findTreatmentInfosByItemFlow(org.guce.siat.common.model.ItemFlow
+	 * org.guce.siat.core.ct.service.ApprovedDecisionService#findApprovedDecisionByItemFlow(org.guce.siat.common.model.ItemFlow
 	 * )
      */
     @Override
-    public TreatmentInfos findTreatmentInfosByItemFlow(final ItemFlow itemFlow) {
-        return treatmentInfosDao.findTreatmentInfosByItemFlow(itemFlow);
+    public ApprovedDecision findApprovedDecisionByItemFlow(final ItemFlow itemFlow) {
+        return approvedDecisionDao.findApprovedDecisionByItemFlow(itemFlow);
 
     }
 
@@ -70,12 +70,12 @@ public class TreatmentInfosServiceImpl extends AbstractServiceImpl<TreatmentInfo
 	 * (non-Javadoc)
 	 *
 	 * @see
-	 * org.guce.siat.core.ct.service.TreatmentInfosService#findTreatmentInfosByFileItem(org.guce.siat.common.model.FileItem
+	 * org.guce.siat.core.ct.service.ApprovedDecisionService#findApprovedDecisionByFileItem(org.guce.siat.common.model.FileItem
 	 * )
      */
     @Override
-    public TreatmentInfos findTreatmentInfosByFileItem(final FileItem fileItem) {
-        return treatmentInfosDao.findTreatmentInfosByFileItem(fileItem);
+    public ApprovedDecision findApprovedDecisionByFileItem(final FileItem fileItem) {
+        return approvedDecisionDao.findApprovedDecisionByFileItem(fileItem);
     }
 
 }

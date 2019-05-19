@@ -12,26 +12,23 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.bind.annotation.XmlRootElement;
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.core.ct.util.annotations.CustomProperty;
 
 /**
  *
- * @author tadzotsa
+ * @author dzotang
  */
 @Entity
-@Table(name = "TREATMENT_INFOS")
-@XmlRootElement
-public class TreatmentInfos extends AbstractModel implements Serializable {
+@Table(name = "APPROVED_DECISION")
+public class ApprovedDecision extends AbstractModel implements Serializable {
 
-    private static final long serialVersionUID = -2909713764041243938L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * The id.
@@ -39,16 +36,9 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
     @Id
     @Basic(optional = false)
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TREATMENT_INFOS_SEQ")
-    @SequenceGenerator(name = "TREATMENT_INFOS_SEQ", sequenceName = "TREATMENT_INFOS_SEQ", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "APPROVED_DECISION_SEQ")
+    @SequenceGenerator(name = "APPROVED_DECISION_SEQ", sequenceName = "APPROVED_DECISION_SEQ", allocationSize = 1)
     private Long id;
-
-    /**
-     * The date.
-     */
-    @Column(name = "REGISTRATION_DATE")
-    @Temporal(value = TemporalType.TIMESTAMP)
-    private Date date;
 
     /**
      * The item flow.
@@ -57,50 +47,57 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
     @JoinColumn(name = "ITEM_FLOW_ID", referencedColumnName = "id")
     private ItemFlow itemFlow;
 
-    @CustomProperty(labelEn = "Fumigation", labelFr = "Fumigation")
-    @Column(name = "FUMIGATION")
-    private boolean fumigation;
-    @CustomProperty(labelEn = "Disenfection", labelFr = "Désinfection")
-    @Column(name = "DISENFECTION")
-    private boolean disinfection;
-    @CustomProperty(labelEn = "Chemical product", labelFr = "Product chimique")
-    @Column(name = "CHEMICAL_PRODUCT")
-    private String chemicalProduct;
-    @CustomProperty(labelEn = "Duration", labelFr = "Durée")
-    @Column(name = "DURATION")
-    private String duration;
-    @CustomProperty(labelEn = "Temperature", labelFr = "Température")
-    @Column(name = "TEMPERATURE")
-    private String temperature;
-    @CustomProperty(labelEn = "Concentration", labelFr = "Concentration")
-    @Column(name = "CONCENTRATION")
-    private String concentration;
-    @CustomProperty(labelEn = "Addtional informations", labelFr = "Informations additionnelles")
-    @Column(name = "ADDITIONAL_INFOS", length = 1000)
-    private String additionalInfos;
-    @CustomProperty(labelEn = "Treatments carried out", labelFr = "Traitements effectués")
-    @Column(name = "TREATMENTS_CARRIED_OUT")
-    private String treatmentsCarriedOut;
+    /**
+     * The date.
+     */
+    @Column(name = "DEPARTURE_DATE")
+    @CustomProperty(labelEn = "Departure Date", labelFr = "Date de départ")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date departureDate;
+
+    @CustomProperty(labelEn = "Temperature of product", labelFr = "Température du produit")
+    @Column(name = "PRODUCT_TEMPERATURE", length = 100)
+    private String productTemperature;
+
+    @CustomProperty(labelEn = "Total number of packages", labelFr = "Nombre d’unités emballées")
+    @Column(name = "NB_UNITS_PACKAGED", length = 100)
+    private String numberOfUnitPackaged;
+
+    @CustomProperty(labelEn = " Identification of container/seal number", labelFr = "Identification des conteneurs/ No des scellés")
+    @Column(name = "CONTAINERS_SEALS", length = 1000)
+    private String containerSeals;
+
+    @CustomProperty(labelEn = "Type of packaging", labelFr = "Nature de l'emballage")
+    @Column(name = "PACKAGING_TYPE", length = 100)
+    private String typeOfPagkaging;
+
+    @CustomProperty(labelEn = "Commodities intended for use as", labelFr = "Marchandises certifiées à des fins de")
+    @Column(name = "GOODS_CERTIFIED_FOR", length = 100)
+    private String goodsCertifiedFor;
+
+    @CustomProperty(labelEn = "Species (Scientific name)", labelFr = "Espèces (Nom scientifique)")
+    @Column(name = "GOODS_SPECIES", length = 100)
+    private String goodsSpecies;
+
+    @CustomProperty(labelEn = "Nature of commodity", labelFr = "Nature de la marchandise")
+    @Column(name = "GOODS_NATURE", length = 100)
+    private String goodsNature;
+
     @CustomProperty(labelEn = "Treatment type", labelFr = "Type de traitement")
-    @Column(name = "TYPE_OF_TREATMENT")
-    private String typeOfTreatment;
-    @CustomProperty(labelEn = "Additional declaration", labelFr = "Déclaration additionnelle")
-    @Column(name = "ADDITIONAL_DECLARATION", length = 1000)
-    private String additionnalDeclaration;
-    @Column(name = "DELIVRABLE_TYPE", length = 10)
-    private String delivrableType;
-    @CustomProperty(labelEn = "Commodity category", labelFr = "Catégorie de la marchandise")
-    @Column(name = "COMMODITY_CATEGORY", length = 5)
-    private String commodityCaterory;
-    @CustomProperty(labelEn = "Certificate Validity", labelFr = "Validité du certificat")
-    @Column(name = "VALIDITY")
-    private String validity;
-    @CustomProperty(labelEn = "PAckager on packing", labelFr = "Emballeur sur l'emballage")
-    @Column(name = "PACKAGER_ON_PACKAGING", length = 100)
-    private String packagerOnPackaging;
-    @CustomProperty(labelEn = "Conservation temperature", labelFr = "Température de conservation")
-    @Column(name = "CONSERVATION_TEMPERATURE", length = 10)
-    private String conservationTemperature;
+    @Column(name = "GOODS_TREATMENT", length = 100)
+    private String goodsTreatment;
+
+    @CustomProperty(labelEn = "Number of packages", labelFr = "Nombre de colis")
+    @Column(name = "GOODS_NB_PACKAGES", length = 100)
+    private String goodsPackageNumber;
+
+    @CustomProperty(labelEn = "Approved number of Establishments", labelFr = "No d’agrément des établissements")
+    @Column(name = "GOODS_AGREEMENT_REFERENCE", length = 100)
+    private String goodsAgreementReference;
+
+    @CustomProperty(labelEn = "Net weight", labelFr = "Poids net")
+    @Column(name = "GOODS_NET_WEIGHT", length = 100)
+    private String goodsNetWeight;
 
     @Override
     public Long getId() {
@@ -112,14 +109,6 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
         this.id = id;
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
     public ItemFlow getItemFlow() {
         return itemFlow;
     }
@@ -128,76 +117,100 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
         this.itemFlow = itemFlow;
     }
 
-    public boolean isFumigation() {
-        return fumigation;
+    public Date getDepartureDate() {
+        return departureDate;
     }
 
-    public void setFumigation(boolean fumigation) {
-        this.fumigation = fumigation;
+    public void setDepartureDate(Date departureDate) {
+        this.departureDate = departureDate;
     }
 
-    public boolean isDisinfection() {
-        return disinfection;
+    public String getProductTemperature() {
+        return productTemperature;
     }
 
-    public void setDisinfection(boolean disinfection) {
-        this.disinfection = disinfection;
+    public void setProductTemperature(String productTemperature) {
+        this.productTemperature = productTemperature;
     }
 
-    public String getChemicalProduct() {
-        return chemicalProduct;
+    public String getNumberOfUnitPackaged() {
+        return numberOfUnitPackaged;
     }
 
-    public void setChemicalProduct(String chemicalProduct) {
-        this.chemicalProduct = chemicalProduct;
+    public void setNumberOfUnitPackaged(String numberOfUnitPackaged) {
+        this.numberOfUnitPackaged = numberOfUnitPackaged;
     }
 
-    public String getDuration() {
-        return duration;
+    public String getContainerSeals() {
+        return containerSeals;
     }
 
-    public void setDuration(String duration) {
-        this.duration = duration;
+    public void setContainerSeals(String containerSeals) {
+        this.containerSeals = containerSeals;
     }
 
-    public String getTemperature() {
-        return temperature;
+    public String getTypeOfPagkaging() {
+        return typeOfPagkaging;
     }
 
-    public void setTemperature(String temperature) {
-        this.temperature = temperature;
+    public void setTypeOfPagkaging(String typeOfPagkaging) {
+        this.typeOfPagkaging = typeOfPagkaging;
     }
 
-    public String getConcentration() {
-        return concentration;
+    public String getGoodsCertifiedFor() {
+        return goodsCertifiedFor;
     }
 
-    public void setConcentration(String concentration) {
-        this.concentration = concentration;
+    public void setGoodsCertifiedFor(String goodsCertifiedFor) {
+        this.goodsCertifiedFor = goodsCertifiedFor;
     }
 
-    public String getAdditionalInfos() {
-        return additionalInfos;
+    public String getGoodsSpecies() {
+        return goodsSpecies;
     }
 
-    public void setAdditionalInfos(String additionalInfos) {
-        this.additionalInfos = additionalInfos;
+    public void setGoodsSpecies(String goodsSpecies) {
+        this.goodsSpecies = goodsSpecies;
     }
 
-    public String getTreatmentsCarriedOut() {
-        return treatmentsCarriedOut;
+    public String getGoodsNature() {
+        return goodsNature;
     }
 
-    public void setTreatmentsCarriedOut(String treatmentsCarriedOut) {
-        this.treatmentsCarriedOut = treatmentsCarriedOut;
+    public void setGoodsNature(String goodsNature) {
+        this.goodsNature = goodsNature;
     }
 
-    public String getTypeOfTreatment() {
-        return typeOfTreatment;
+    public String getGoodsTreatment() {
+        return goodsTreatment;
     }
 
-    public void setTypeOfTreatment(String typeOfTreatment) {
-        this.typeOfTreatment = typeOfTreatment;
+    public void setGoodsTreatment(String goodsTreatment) {
+        this.goodsTreatment = goodsTreatment;
+    }
+
+    public String getGoodsPackageNumber() {
+        return goodsPackageNumber;
+    }
+
+    public void setGoodsPackageNumber(String goodsPackageNumber) {
+        this.goodsPackageNumber = goodsPackageNumber;
+    }
+
+    public String getGoodsAgreementReference() {
+        return goodsAgreementReference;
+    }
+
+    public void setGoodsAgreementReference(String goodsAgreementReference) {
+        this.goodsAgreementReference = goodsAgreementReference;
+    }
+
+    public String getGoodsNetWeight() {
+        return goodsNetWeight;
+    }
+
+    public void setGoodsNetWeight(String goodsNetWeight) {
+        this.goodsNetWeight = goodsNetWeight;
     }
 
     @Override
@@ -218,66 +231,26 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final TreatmentInfos other = (TreatmentInfos) obj;
+        final ApprovedDecision other = (ApprovedDecision) obj;
         return Objects.equals(this.id, other.id);
-    }
-
-    public String getAdditionnalDeclaration() {
-        return additionnalDeclaration;
-    }
-
-    public void setAdditionnalDeclaration(String additionnalDeclaration) {
-        this.additionnalDeclaration = additionnalDeclaration;
-    }
-
-    public String getDelivrableType() {
-        return delivrableType;
-    }
-
-    public void setDelivrableType(String delivrableType) {
-        this.delivrableType = delivrableType;
-    }
-
-    public String getCommodityCaterory() {
-        return commodityCaterory;
-    }
-
-    public void setCommodityCaterory(String commodityCaterory) {
-        this.commodityCaterory = commodityCaterory;
-    }
-
-    public String getValidity() {
-        return validity;
-    }
-
-    public void setValidity(String validity) {
-        this.validity = validity;
-    }
-
-    public String getPackagerOnPackaging() {
-        return packagerOnPackaging;
-    }
-
-    public void setPackagerOnPackaging(String packagerOnPackaging) {
-        this.packagerOnPackaging = packagerOnPackaging;
-    }
-
-    public String getConservationTemperature() {
-        return conservationTemperature;
-    }
-
-    public void setConservationTemperature(String conservationTemperature) {
-        this.conservationTemperature = conservationTemperature;
     }
 
     @Override
     public String toString() {
-        return "TreatmentInfos{" + "id=" + id + ", date=" + date + ", itemFlow=" + itemFlow + ", fumigation=" + fumigation + ", disinfection=" + disinfection + ", chemicalProduct=" + chemicalProduct + ", duration=" + duration + ", temperature=" + temperature + ", concentration=" + concentration + ", additionalInfos=" + additionalInfos + ", treatmentsCarriedOut=" + treatmentsCarriedOut + ", typeOfTreatment=" + typeOfTreatment + '}';
-    }
-
-    @PrePersist
-    private void prePersist() {
-        date = new Date();
+        return "ApprovedDecision{" + "id=" + id
+                + ", departureDate=" + departureDate
+                + ", itemFlow=" + itemFlow
+                + ", productTemperature=" + productTemperature
+                + ", numberOfUnitPackaged=" + numberOfUnitPackaged
+                + ", containerSeals=" + containerSeals
+                + ", typeOfPagkaging=" + typeOfPagkaging
+                + ", goodsCertifiedFor=" + goodsCertifiedFor
+                + ", goodsSpecies=" + goodsSpecies
+                + ", goodsNature=" + goodsNature
+                + ", goodsTreatment=" + goodsTreatment
+                + ", goodsPackageNumber=" + goodsPackageNumber
+                + ", goodsAgreementReference=" + goodsAgreementReference
+                + ", goodsNetWeight=" + goodsNetWeight + '}';
     }
 
 }

@@ -3,27 +3,27 @@ package org.guce.siat.core.ct.service;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.AbstractService;
-import org.guce.siat.core.ct.model.TreatmentInfos;
+import org.guce.siat.core.ct.model.ApprovedDecision;
 
 /**
- * The Interface TreatmentOrderService.
+ * The Interface ApprovedDecisionService.
  */
-public interface TreatmentInfosService extends AbstractService<TreatmentInfos> {
+public interface ApprovedDecisionService extends AbstractService<ApprovedDecision> {
 
     /**
-     * Find treatment infos by item flow.
+     * Find ApprovedDecision by item flow.
      *
      * @param itemFlow the item flow
-     * @return the treatment infos
+     * @return the Approved Decisions
      */
-    TreatmentInfos findTreatmentInfosByItemFlow(ItemFlow itemFlow);
+    ApprovedDecision findApprovedDecisionByItemFlow(ItemFlow itemFlow);
 
     /**
-     * Find treatment infos by file item.
+     * Find ApprovedDecision by file item.
      *
      * @param fileItem
-     * @return the treatment infos
+     * @return the Approved Decisions
      */
-    TreatmentInfos findTreatmentInfosByFileItem(FileItem fileItem);
+    ApprovedDecision findApprovedDecisionByFileItem(FileItem fileItem);
 
 }

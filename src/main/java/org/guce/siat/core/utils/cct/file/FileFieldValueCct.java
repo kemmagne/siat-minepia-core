@@ -1441,7 +1441,7 @@ public class FileFieldValueCct {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS()!= null) {
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
                 }
                 break;
@@ -1534,9 +1534,9 @@ public class FileFieldValueCct {
                     final List<String> columns = new ArrayList<>();
                     columns.add("Identification");
                     columns.add("Type");
+                    columns.add("Scelles");
                     columns.add("Poids");
                     columns.add("Volume");
-                    columns.add("Scelles");
                     final List<String> filedsValuesList = new ArrayList<String>();
 
                     final int elementSize = document.getCONTENT().getCONTENEURS().getCONTENEUR().size();
@@ -1547,15 +1547,12 @@ public class FileFieldValueCct {
                                     .getNUMEROCONTENEUR() : "/");
                             filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getTYPE()) ? currentEssai
                                     .getTYPE() : "-");
+                            String scelles = StringUtils.isNotBlank(currentEssai.getSELLE1()) ? currentEssai.getSELLE1() : "-";
+                            filedsValuesList.add(scelles);
                             filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getPOIDS()) ? currentEssai
                                     .getPOIDS() : "-");
                             filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getVOLUME()) ? currentEssai
                                     .getVOLUME() : "-");
-                            String scelles = "";
-                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE1()) ? currentEssai.getSELLE1() : "-";
-                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE2()) ? "*" + currentEssai.getSELLE2() : "*-";
-                            scelles += StringUtils.isNotBlank(currentEssai.getSELLE3()) ? "*" + currentEssai.getSELLE3() : "*-";
-                            filedsValuesList.add(scelles);
                         }
                     }
                     fileFieldValue.setValue(FileFieldValueUtils.addValueRepetable(filedsValuesList, columns, null));
