@@ -857,6 +857,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             final ApprovedDecision ad = CommonUtils.clone(approvedDecision);
 
             ad.setItemFlow(itemFlow);
+            ad.setId(null);
             approvedDecisionDao.save(ad);
 
             // Set draft = true to be updated

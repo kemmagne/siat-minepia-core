@@ -55,6 +55,10 @@ public class ApprovedDecision extends AbstractModel implements Serializable {
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date departureDate;
 
+    @Column(name = "OFFICIAL_POSITION")
+    @CustomProperty(labelEn = "Official Position", labelFr = "Titre et Qualité")
+    private String officialPosition;
+
     @CustomProperty(labelEn = "Temperature of product", labelFr = "Température du produit")
     @Column(name = "PRODUCT_TEMPERATURE", length = 100)
     private String productTemperature;
@@ -125,6 +129,15 @@ public class ApprovedDecision extends AbstractModel implements Serializable {
         this.departureDate = departureDate;
     }
 
+    public String getOfficialPosition() {
+        return officialPosition;
+    }
+
+    public void setOfficialPosition(String officialPosition) {
+        this.officialPosition = officialPosition;
+    }
+
+    
     public String getProductTemperature() {
         return productTemperature;
     }
