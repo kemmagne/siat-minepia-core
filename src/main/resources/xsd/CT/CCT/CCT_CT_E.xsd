@@ -1505,6 +1505,13 @@
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
+													<xs:element name="NOM_BOTANIQUE" minOccurs="0">
+														<xs:simpleType>
+															<xs:restriction base="xs:string">
+																<xs:maxLength value="500" />
+															</xs:restriction>
+														</xs:simpleType>
+													</xs:element>
                                                 </xs:sequence>
                                             </xs:complexType>
                                         </xs:element>

@@ -54,6 +54,12 @@ public class FileItemFieldValueCctExp {
                 }
                 break;
             }
+			case "NOM_BOTANIQUE": {
+				if (marchandise.getNOMBOTANIQUE() != null){
+					fileItemFieldValue.setValue(marchandise.getNOMBOTANIQUE());
+				}
+				break;
+			}
             default:
                 break;
         }
