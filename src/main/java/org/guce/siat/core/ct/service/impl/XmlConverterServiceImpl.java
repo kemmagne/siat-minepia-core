@@ -16336,22 +16336,20 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS.SPECIFICATION specification : document.getCONTENT().getLISTEDESSPECIFICATIONS().getSPECIFICATION()) {
                 WoodSpecification newSpec = new WoodSpecification();
                 newSpec.setFile(file);
-                newSpec.setDiamGrosBout(Integer.parseInt(specification.getDIAMETREGROSBOUT()));
-                newSpec.setDiamMoyen(Integer.parseInt(specification.getDIAMETREMOYENGENERAL()));
-                newSpec.setDiamPetitBout(Integer.parseInt(specification.getDIAMETREPETITBOUT()));
-                newSpec.setEpaisseur(Integer.parseInt(specification.getEPAISSEUR()));
-                newSpec.setLongueurGrume(new BigDecimal(specification.getLONGUEURGRUME()));
-                newSpec.setLargeur(new BigDecimal(specification.getLARGEUR()));
+                newSpec.setDiamGrosBout(specification.getDIAMETREGROSBOUT() == null ? null : Integer.parseInt(specification.getDIAMETREGROSBOUT()));
+                newSpec.setDiamMoyen(specification.getDIAMETREMOYENGENERAL() == null ? null : Integer.parseInt(specification.getDIAMETREMOYENGENERAL()));
+                newSpec.setDiamPetitBout(specification.getDIAMETREPETITBOUT() == null ? null : Integer.parseInt(specification.getDIAMETREPETITBOUT()));
+                newSpec.setEpaisseur(specification.getEPAISSEUR() == null ? null : Integer.parseInt(specification.getEPAISSEUR()));
+                newSpec.setLongueurGrume(specification.getLONGUEURGRUME() == null ? null : new BigDecimal(specification.getLONGUEURGRUME()));
+                newSpec.setLargeur(specification.getLARGEUR() == null ? null : new BigDecimal(specification.getLARGEUR()));
                 newSpec.setLineNumber(specification.getLINENUMBER());
                 newSpec.setFournisseur(specification.getFOURNISSEUR());
                 newSpec.setWoodSpecies(specification.getESSENCE());
                 newSpec.setNumMarqueGrume(specification.getNUMEROMARQUEGRUME());
                 newSpec.setNumColis(specification.getNUMEROCOLIS());
-                newSpec.setNbrePieces(Integer.parseInt(specification.getNOMBREPIECES()));
+                newSpec.setNbrePieces(specification.getNOMBREPIECES() == null ? null : Integer.parseInt(specification.getNOMBREPIECES()));
                 newSpec.setObservations(specification.getOBSERVATIONS());
-                if (specification.getVOLUME() != null) {
-                    newSpec.setVolume(new BigDecimal(specification.getVOLUME()));
-                }
+                newSpec.setVolume(specification.getVOLUME() == null ? null : new BigDecimal(specification.getVOLUME()));
                 this.woodSpecifications.add(newSpec);
             }
         }
