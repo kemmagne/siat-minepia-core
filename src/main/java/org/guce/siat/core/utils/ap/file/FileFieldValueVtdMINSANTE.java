@@ -1342,6 +1342,24 @@ public class FileFieldValueVtdMINSANTE {
                 }
                 break;
             }
+			case "FACTURE__NUMERO_FACTURE": {
+				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null){
+					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getNUMEROFACTURE());
+				}
+				break;
+			}
+			case "FACTURE__DATE_FACTURE": {
+				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null){
+					fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getFACTURE().getDATEFACTURE()));
+				}
+				break;
+			}
+			case "FACTURE__MONTANT_TOTAL": {
+				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null){
+					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getMONTANTTOTAL());
+				}
+				break;
+			}
             default:
                 int fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_STRING;
                 if (fileField.getCode().contains("_DATE") || fileField.getCode().contains("DATE_") || fileField.getCode().equals("DATE")) {
