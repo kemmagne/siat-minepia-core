@@ -18,7 +18,7 @@ INSERT INTO STEP_AUTHORITY (STEP_ID, AUTHORITY_ID) VALUES (112, 11);
 COMMIT;
 
 -- Décision Autorisation AP Suite Etude Recevabilité Agent Cotation 1
-INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_169', 24, 0, 'Autorisation AP Suite Etude Recevabilite', 'Autorisation AP Suite Etude Recevabilite', 0, 105, 102 );
+INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_169', 24, 0, 'Autorisation AP Suite Etude Recevabilite', 'Autorisation AP Suite Etude Recevabilite', 1, 105, 102 );
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_175', 24, 0, 'Rejet Suite Etude AP', 'Rejet Suite Recevabilité', 1, 105, 101 );
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_176', 24, 0, 'Complément d''information Suite Etude Recevabilité', 'Complément d''information Suite Etude Recevabilité', 1, 105, 100 );
 
@@ -44,7 +44,7 @@ INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_
 
 
 -- Décision Autorisation AP Suite Etude Recevabilité Agent Cotation 4
-INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_172', 24, 0, 'Autorisation AP Suite Cotation 3', 'Autorisation AP Suite Cotation 3', 1, 108, 114 );
+INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_172', 24, 0, 'Autorisation AP Suite Cotation 3', 'Autorisation AP Suite Cotation 3', 0, 108, 114 );
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_181', 24, 0, 'Rejet Suite Etude AP', 'Rejet Suite Recevabilité', 1, 108, 101 );
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_AP_182', 24, 0, 'Complément d''information Suite Etude Recevabilité', 'Complément d''information Suite Etude Recevabilité', 1, 108, 100 );
 
