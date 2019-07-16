@@ -1,4 +1,4 @@
--- file_type
+    -- file_type
 INSERT INTO FILE_TYPE (ID, CODE, LABEL_EN, LABEL_FR) VALUES (39, 'CCT_CT_E_FSTP', 'Supervision file of pytosanitary treatment', 'Fiche de supervision de traitement phytosanitaire');
 
 -- step

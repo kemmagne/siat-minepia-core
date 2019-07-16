@@ -29,5 +29,26 @@ INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_
 
 COMMIT;
 
+-- 09/07/2019
+-- yenke
+-- Modification du libelle du file_item_field NOMBRE_GRUMES pour la procédure CTE
+UPDATE FILE_ITEM_FIELD SET LABEL_FR = 'Nombre de grume/colis/balle', LABEL_EN = 'Number of logs/package/ball' WHERE CODE='NOMBRE_GRUMES' AND FILE_TYPE_ID=39;
+COMMIT;
 
 
+INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_CT_106', 24, 0, 'Retourner le dossier pour réorientation', 'Retourner le dossier pour réorientation', 0, 4, 3);
+INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES ((SELECT MAX(ID) + 1 FROM FLOW), 'FL_CT_107', 24, 0, 'Retourner le dossier pour réorientation', 'Retourner le dossier pour réorientation', 0, 129, 128);
+
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Retourner le dossier pour réorientation','Retourner le dossier pour réorientation',33,(SELECT ID FROM FLOW WHERE CODE ='FL_CT_106'));
+
+INSERT INTO STEP (ID,CODE,LABELFR,LABELEN,IS_FINAL) VALUES ((SELECT MAX(ID) + 1 FROM STEP), 'ST_CT_50', 'Retourner le dossier pour réorientation', 'Retourner le dossier pour réorientation',0);
+
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Retourner le dossier pour réorientation', 'Retourner le dossier pour réorientation', 33, (SELECT ID FROM STEP WHERE CODE ='ST_CT_50'));
+
+
+INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_106'), 'Observation',  1, 'inputTextarea');
+
+
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Retourner le dossier pour réorientation','Retourner le dossier pour réorientation',36,(SELECT ID FROM FLOW WHERE CODE ='FL_CT_107'));
+
+INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES ((SELECT MAX(ID) + 1 FROM DATA_TYPE), (SELECT ID FROM FLOW WHERE CODE = 'FL_CT_107'), 'Observation',  1, 'inputTextarea');

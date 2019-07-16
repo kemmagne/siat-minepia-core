@@ -101,6 +101,10 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
     @CustomProperty(labelEn = "Conservation temperature", labelFr = "Température de conservation")
     @Column(name = "CONSERVATION_TEMPERATURE", length = 10)
     private String conservationTemperature;
+    
+    @Column(name = "TREATMENT_DATE")
+    @Temporal(value = TemporalType.TIMESTAMP)
+    private Date treatmentDate;
 
     @Override
     public Long getId() {
@@ -198,6 +202,14 @@ public class TreatmentInfos extends AbstractModel implements Serializable {
 
     public void setTypeOfTreatment(String typeOfTreatment) {
         this.typeOfTreatment = typeOfTreatment;
+    }
+
+    public Date getTreatmentDate() {
+        return treatmentDate;
+    }
+
+    public void setTreatmentDate(Date treatmentDate) {
+        this.treatmentDate = treatmentDate;
     }
 
     @Override
