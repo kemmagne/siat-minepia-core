@@ -41,6 +41,7 @@ import org.guce.siat.core.ct.dao.AnalyseOrderDao;
 import org.guce.siat.core.ct.dao.AnalysePartDao;
 import org.guce.siat.core.ct.dao.AnalyseResultApDao;
 import org.guce.siat.core.ct.dao.AnalyseResultDao;
+import org.guce.siat.core.ct.dao.ApprovedDecisionDao;
 import org.guce.siat.core.ct.dao.CommonDao;
 import org.guce.siat.core.ct.dao.EssayTestAPDao;
 import org.guce.siat.core.ct.dao.InspectionControllerDao;
@@ -57,6 +58,7 @@ import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
 import org.guce.siat.core.ct.model.AnalyseResult;
 import org.guce.siat.core.ct.model.AnalyseResultAp;
+import org.guce.siat.core.ct.model.ApprovedDecision;
 import org.guce.siat.core.ct.model.EssayTestAP;
 import org.guce.siat.core.ct.model.InspectionController;
 import org.guce.siat.core.ct.model.InspectionReport;
@@ -204,6 +206,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     @Autowired
     private TreatmentInfosDao treatmentInfosDao;
+
+    @Autowired
+    private ApprovedDecisionDao approvedDecisionDao;
 
     @Autowired
     private InterceptionNotificationDao interceptionNotificationDao;
@@ -492,6 +497,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         final List<ItemFlow> itemFlows = itemFlowDao.findItemFlowsByFileItemList(fileItems);
         final List<String> acceptationFlows = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(),
                 FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name());
+        final List<String> DCC_FLOW_CODES = Arrays.asList(FlowCode.FL_CT_CVS_03.name(), FlowCode.FL_CT_CVS_07.name());
+
         boolean alreadyDeleted = true;
         for (final ItemFlow itemFlow : itemFlows) {
             final String flowCode = itemFlow.getFlow().getCode();
@@ -611,6 +618,11 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 final EssayTestAP draftEssayTestAP = essayTestAPDao.findByItemFlow(itemFlow);
                 essayTestAPDao.delete(draftEssayTestAP);
                 itemFlowDataDao.deleteList(itemFlowDataDao.findByItemFlows(Collections.singletonList(itemFlow)));
+            } else if (DCC_FLOW_CODES.contains(flowCode)) {
+                ApprovedDecision ad = approvedDecisionDao.findApprovedDecisionByItemFlow(itemFlow);
+                if (ad != null) {
+                    approvedDecisionDao.delete(ad);
+                }
             }
 
             final List<ItemFlowData> itemFlowData = itemFlowDataDao
@@ -680,6 +692,18 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         treatmentInfos.setItemFlow(itemFlow);
         treatmentInfosDao.save(treatmentInfos);
+
+        itemFlow.getFileItem().setDraft(Boolean.TRUE);
+        fileItemDao.saveOrUpdateList(Arrays.asList(itemFlow.getFileItem()));
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void saveApprovedDecision(final ApprovedDecision approvedDecision, final ItemFlow itemFlow) {
+        itemFlowDao.save(itemFlow);
+
+        approvedDecision.setItemFlow(itemFlow);
+        approvedDecisionDao.save(approvedDecision);
 
         itemFlow.getFileItem().setDraft(Boolean.TRUE);
         fileItemDao.saveOrUpdateList(Arrays.asList(itemFlow.getFileItem()));
@@ -811,6 +835,30 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
             ti.setItemFlow(itemFlow);
             treatmentInfosDao.save(ti);
+
+            // Set draft = true to be updated
+            final FileItem item = itemFlow.getFileItem();
+            item.setDraft(Boolean.TRUE);
+            fileItemList.add(item);
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void takeDecisionAndSaveApprovedDecision(final ApprovedDecision approvedDecision, final List<ItemFlow> itemFlowsToAdd) throws Exception {
+
+        final List<FileItem> fileItemList = new ArrayList<>();
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            final ApprovedDecision ad = CommonUtils.clone(approvedDecision);
+
+            ad.setItemFlow(itemFlow);
+            ad.setId(null);
+            approvedDecisionDao.save(ad);
 
             // Set draft = true to be updated
             final FileItem item = itemFlow.getFileItem();
