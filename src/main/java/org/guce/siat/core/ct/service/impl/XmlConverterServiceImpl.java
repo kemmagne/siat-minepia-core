@@ -16411,7 +16411,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             file.setAttachmentsList(attachmentList);
         }
 
-        /* ADD DECISION ORGANISM POUR DOSSIER */
         if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null) {
             Country countryOfDestination = this.countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
             if (countryOfDestination != null) {
@@ -16425,6 +16424,15 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     file.setCountryOfDestination(countryOfDestination);
                 }
             }
+        }
+        
+        if (document.getCONTENT() != null && document.getCONTENT().getDECISIONORGANISME() != null) {
+            final DecisionOrganism decisionOrganism = new DecisionOrganism();
+            decisionOrganism.setCode(document.getCONTENT().getDECISIONORGANISME().getCODE());
+            decisionOrganism.setLibelle(document.getCONTENT().getDECISIONORGANISME().getLIBELLE());
+            decisionOrganism.setObservation(document.getCONTENT().getDECISIONORGANISME().getOBSERVATION());
+
+            decisionDossier.put(file, decisionOrganism);
         }
 
         return file;
