@@ -32,6 +32,7 @@ import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.StepCode;
 import org.guce.siat.core.ct.dao.CommonDao;
 import org.guce.siat.core.ct.filter.AnalyseFilter;
+import org.guce.siat.core.ct.filter.AssignedFileItemFilter;
 import org.guce.siat.core.ct.filter.FileItemFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.filter.HistoricClientFilter;
@@ -137,7 +138,19 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 			params.put("fromDate", filter.getFromDate());
 			params.put("toDate", DateUtils.addDays(filter.getToDate(), 1));
 		}
-		if (filter instanceof FileItemFilter) {
+                if (filter instanceof AssignedFileItemFilter){
+                    final List<StepCode> stepCodes = new ArrayList<StepCode>();
+                    final AssignedFileItemFilter assignedFileItemFilter = (AssignedFileItemFilter) filter;
+                    // afficher uniquement les dossiers en attente de traitement
+                    stepCodes.add(StepCode.ST_CT_48);
+                    stepCodes.add(StepCode.ST_CT_04);
+                    params.put("stepCodes", stepCodes);
+                    hqlQuery.append(" AND  fi.step.stepCode IN (:stepCodes)");
+                    if (assignedFileItemFilter.getFileType() != null) {
+                                hqlQuery.append(" AND  fi.file.fileType.id = :fileTypeId");
+                                params.put("fileTypeId", assignedFileItemFilter.getFileType().getId());
+                        }
+                } else if (filter instanceof FileItemFilter) {
 			final FileItemFilter fileItemFilter = (FileItemFilter) filter;
 
 			if (fileItemFilter.getStep() != null) {
@@ -167,7 +180,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 				params.put("numContribuable", paymentFilter.getOperator().getNumContribuable());
 			}
 
-		}
+		} 
 		final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
 		for (final Entry<String, Object> entry : params.entrySet()) {
