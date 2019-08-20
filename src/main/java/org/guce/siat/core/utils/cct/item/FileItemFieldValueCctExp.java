@@ -48,6 +48,12 @@ public class FileItemFieldValueCctExp {
                 }
                 break;
             }
+            case "POIDS": {
+                if (marchandise.getPOIDS() != null) {
+                    fileItemFieldValue.setValue(marchandise.getPOIDS());
+                } 
+                break;
+            }
             case "NOMBRE_GRUMES": {
                 if (marchandise.getNOMBREGRUMES() != null) {
                     fileItemFieldValue.setValue(marchandise.getNOMBREGRUMES().toString());
