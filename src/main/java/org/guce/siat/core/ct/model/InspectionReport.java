@@ -93,6 +93,14 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @Column(name = "REPORT_DATE")
     @Temporal(TemporalType.DATE)
     private Date reportDate;
+    
+    @Column(name = "INSPECTION_START_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inspectionStartDate;
+    
+    @Column(name = "INSPECTION_END_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date inspectionEndDate;
 
     /**
      * The report time.
@@ -464,6 +472,23 @@ public class InspectionReport extends AbstractModel implements Serializable {
     public void setPlace(final String place) {
         this.place = place;
     }
+
+    public Date getInspectionStartDate() {
+        return inspectionStartDate;
+    }
+
+    public void setInspectionStartDate(Date inspectionStatDate) {
+        this.inspectionStartDate = inspectionStatDate;
+    }
+
+    public Date getInspectionEndDate() {
+        return inspectionEndDate;
+    }
+
+    public void setInspectionEndDate(Date inspectionEndDate) {
+        this.inspectionEndDate = inspectionEndDate;
+    }
+    
 
     /**
      * Gets the report date.
