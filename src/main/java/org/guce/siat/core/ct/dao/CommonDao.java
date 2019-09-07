@@ -8,6 +8,7 @@ import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.FileTypeCode;
+import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.Sample;
@@ -158,4 +159,17 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
 	 * @return the list
 	 */
 	List<FileItem> findPindingFileItem(Filter filter, User user);
+        
+        
+        List<Object[]> getExportNshDestination(CteFilter filter, List<Long> fileTypeIdList);
+        
+        List<Object[]> getExportNshDestinationSender(CteFilter filter, List<Long> fileTypeIdList);
+        
+        List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList);
+        
+        List<Object[]> getGlobalDelayListing(CteFilter filter, List<Long> fileTypeIdList);
+        List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList);
+        
+        
+        
 }

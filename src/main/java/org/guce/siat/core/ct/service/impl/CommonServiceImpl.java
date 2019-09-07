@@ -23,6 +23,7 @@ import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
 import org.guce.siat.common.model.AppointmentItemFlowId;
+import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -32,6 +33,7 @@ import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.utils.Constants;
+import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
@@ -53,6 +55,7 @@ import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
 import org.guce.siat.core.ct.dao.TreatmentPartDao;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
+import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
@@ -1029,6 +1032,82 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         });
         return commonDao.serviceItemProductsQuantitiesByFilter(filter, fileTypeIdList, administration);
     }
+    
+    public void setDefaultOffice(final CteFilter filter, final User loggedUser){
+        if (filter.getOfficeCodeList() == null || filter.getOfficeCodeList().length <= 0){
+            filter.setOfficeCodeList(new String[]{String.valueOf(loggedUser.getAdministration().getId())});
+        }
+    }
+
+    @Override
+    public List<Object[]> getActivitiesReport(final CteFilter filter, final User loggedUser) {
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+        
+        setDefaultOffice(filter, loggedUser);
+        return commonDao.getActivitiesReport(filter, fileTypeIdList);
+    }
+
+    @Override
+    public List<Object[]> getDelayListingStakeholder(CteFilter filter, User loggedUser) {
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+        setDefaultOffice(filter, loggedUser);
+        return commonDao.getDelayListingStakeholder(filter, fileTypeIdList);
+    }
+    @Override
+    public List<Object[]> getGlobalDelayListing(CteFilter filter, User loggedUser) {
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+        setDefaultOffice(filter, loggedUser);
+        return commonDao.getGlobalDelayListing(filter, fileTypeIdList);
+    }
+    @Override
+    public List<Object[]> getExportNshDestination(CteFilter filter, User loggedUser) {
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+        setDefaultOffice(filter, loggedUser);
+        return commonDao.getExportNshDestination(filter, fileTypeIdList);
+    }
+    @Override
+    public List<Object[]> getExportNshDestinationSender(CteFilter filter, User loggedUser) {
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+        setDefaultOffice(filter, loggedUser);
+        return commonDao.getExportNshDestinationSender(filter, fileTypeIdList);
+    }
+    
+    
 
 
     /*

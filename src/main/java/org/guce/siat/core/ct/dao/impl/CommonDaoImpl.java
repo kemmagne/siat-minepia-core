@@ -29,10 +29,12 @@ import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.DateUtils;
 import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.enums.FileTypeCode;
+import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
 import org.guce.siat.core.ct.dao.CommonDao;
 import org.guce.siat.core.ct.filter.AnalyseFilter;
 import org.guce.siat.core.ct.filter.AssignedFileItemFilter;
+import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.FileItemFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.filter.HistoricClientFilter;
@@ -60,7 +62,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * The Constant LOG.
 	 */
 	private static final Logger LOG = LoggerFactory.getLogger(CommonDaoImpl.class);
-
+        
+        private List<String> CTE_ADMISIBILITY_FLOW = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name());
+        private List<String> CTE_COTATION_FLOW = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name());
+        private List<String> CTE_APPOINTMENT_FLOW = Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_105.name());
+        private List<String> CTE_TREATMENT_FLOW = Arrays.asList(FlowCode.FL_CT_07.name());
+        private List<String> CTE_SIGNATURE_FLOW = Arrays.asList(FlowCode.FL_CT_08.name());
+        private List<String> CTE_CI_FLOW = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name());
 	/**
 	 * Instantiates a new common dao impl.
 	 */
@@ -931,4 +939,304 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 		return query.getResultList();
 
 	}
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Object[]> getExportNshDestination(CteFilter filter, List<Long> fileTypeIdList) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        final StringBuilder hqlQuery = new StringBuilder();
+        
+        hqlQuery
+            .append("SELECT fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, SUM(fi.NOMBRE_GRUMES) NOMBRE_GRUMES, SUM(fi.NOMBRE_SACS) NOMBRE_SACS, SUM(fi.VOLUME) VOLUME, SUM(fi.POIDS_BRUT) POIDS_BRUT, SUM(fi.POIDS_NET) POIDS_NET, c.COUNTRY_NAME_FR LIBELLE_PAYS_DESTINATION, f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR LIBELLE_PAYS_ORIGIN, f.CODE_BUREAU, f.NOM_BUREAU ");
+            hqlQuery.append("FROM MINADER_FILE_ITEM fi JOIN MINADER_FILES f ON fi.FILE_ID = f.ID JOIN REP_COUNTRY c ON f.COUNTRY_OF_DESTINATION = c.COUNTRY_ID_ALPHA2");
+            hqlQuery.append(" JOIN REP_COUNTRY c1 ON f.COUNTRY_OF_ORIGIN = c1.COUNTRY_ID_ALPHA2 ");
+            hqlQuery.append(" WHERE f.FILE_TYPE_ID = 33 AND f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+		
+        if (filter.getOperationType() != null && filter.getOperationType().length > 0){
+            hqlQuery.append(" AND f.TYPE_OPERATION IN (:operationType)");
+            params.put("operationType", Arrays.asList(filter.getOperationType()));
+        }
+        if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0){
+            hqlQuery.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
+            params.put("productType", Arrays.asList(filter.getProductNatureList()));
+        }
+                
+        if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0){
+            hqlQuery.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
+        }        
+                
+                hqlQuery.append(" GROUP BY fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, c.COUNTRY_NAME_FR,f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR, f.CODE_BUREAU, f.NOM_BUREAU ");
+//		params.put("fileTypeIdList", fileTypeIdList);
+        params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
+	params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
+        
+        
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
+        }
+        
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Object[]> getExportNshDestinationSender(CteFilter filter, List<Long> fileTypeIdList) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        final StringBuilder hqlQuery = new StringBuilder();
+        
+        hqlQuery
+            .append("SELECT fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, SUM(fi.NOMBRE_GRUMES) NOMBRE_GRUMES, SUM(fi.NOMBRE_SACS) NOMBRE_SACS, SUM(fi.VOLUME) VOLUME, SUM(fi.POIDS_BRUT) POIDS_BRUT, SUM(fi.POIDS_NET) POIDS_NET, c.COUNTRY_NAME_FR LIBELLE_PAYS_DESTINATION, f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR LIBELLE_PAYS_ORIGIN, f.CODE_BUREAU, f.NOM_BUREAU ");
+            hqlQuery.append(", co.NUM_CONTRIBUABLE,co.COMPANY_NAME FROM MINADER_FILE_ITEM fi JOIN MINADER_FILES f ON fi.FILE_ID = f.ID JOIN COMPANY co ON f.CLIENT_ID = co.ID JOIN REP_COUNTRY c ON f.COUNTRY_OF_DESTINATION = c.COUNTRY_ID_ALPHA2");
+            hqlQuery.append(" JOIN REP_COUNTRY c1 ON f.COUNTRY_OF_ORIGIN = c1.COUNTRY_ID_ALPHA2 ");
+            hqlQuery.append(" WHERE f.FILE_TYPE_ID = 33 AND f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+		
+        if (filter.getOperationType() != null && filter.getOperationType().length > 0){
+            hqlQuery.append(" AND f.TYPE_OPERATION IN (:operationType)");
+            params.put("operationType", Arrays.asList(filter.getOperationType()));
+        }
+        if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0){
+            hqlQuery.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
+            params.put("productType", Arrays.asList(filter.getProductNatureList()));
+        }
+        
+        if (filter.getClientNiu() != null && !filter.getClientNiu().isEmpty()){
+            hqlQuery.append(" AND co.NUM_CONTRIBUABLE =:numContribuable ");
+            params.put("numContribuable", filter.getClientNiu());
+        }
+                
+        if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0){
+            hqlQuery.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
+        }        
+                
+                hqlQuery.append(" GROUP BY fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, c.COUNTRY_NAME_FR,f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR, f.CODE_BUREAU, f.NOM_BUREAU, co.NUM_CONTRIBUABLE,co.COMPANY_NAME");
+        params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
+	params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
+        
+        
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
+        }
+        
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+    
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        StringBuilder hqlQuery = new StringBuilder();
+               
+        StringBuilder commomFrom = new StringBuilder(" FROM MINADER_FILES f JOIN COMPANY c ON c.ID = f.CLIENT_ID JOIN FILE_ITEM fi ON fi.FILE_ID = (SELECT MAX(FILE_ID) FROM FILE_ITEM WHERE FILE_ID = f.ID) LEFT JOIN REP_COUNTRY ctr ON ctr.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION JOIN FILES_PROCESSING proc ON (proc.FILE_ITEM_ID = fi.ID AND proc.FLOW_CODE IN (:%s)) JOIN USERS agent ON agent.ID = proc.SENDER_ID WHERE f.CREATED_DATE BETWEEN TO_DATE(:dateCreationDebut,'yyyy-MM-dd') AND TO_DATE(:dateCreationFin,'yyyy-MM-dd') ");
+        String groupByCountCi= " GROUP BY NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME, f.TYPE_PRODUIT_NOM,ctr.COUNTRY_NAME,f.COUNTRY_OF_DESTINATION";
+        
+        if (filter.getOperationType() != null && filter.getOperationType().length > 0){
+            commomFrom.append(" AND f.TYPE_OPERATION IN (:operationType)");
+            params.put("operationType", Arrays.asList(filter.getOperationType()));
+        }
+        if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0){
+            commomFrom.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
+            params.put("productType", Arrays.asList(filter.getProductNatureList()));
+        }
+        if (filter.getClientNiu() != null && !filter.getClientNiu().isEmpty()){
+            commomFrom.append(" AND c.NUM_CONTRIBUABLE =:numContribuable ");
+            params.put("numContribuable", filter.getClientNiu());
+        }
+                
+        if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0){
+            commomFrom.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
+        }
+        commomFrom.append(" AND f.FILE_TYPE_ID  IN (:fileTypeIdList)");
+        if (filter.getProcessCodeList() != null && filter.getProcessCodeList().length > 0){
+            params.put("fileTypeIdList", Arrays.asList(filter.getProcessCodeList()));
+        } else {
+            params.put("fileTypeIdList", fileTypeIdList);
+        }
+        if (filter.getValidationFromDate() != null && filter.getValidationToDate() != null){
+            commomFrom.append("AND (f.SIGNATURE_DATE BETWEEN TO_DATE(:dateFinDebut,'yyyy-MM-dd') AND TO_DATE(:dateFinFin,'yyyy-MM-dd') OR f.DATE_REJET BETWEEN TO_DATE(:dateFinDebut,'yyyy-MM-dd') AND TO_DATE(:dateFinFin,'yyyy-MM-dd'))");
+            params.put("dateFinDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
+            params.put("dateFinFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
+        }
+        
+        params.put("dateCreationDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationFromDate()));
+	params.put("dateCreationFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationToDate()));
+        
+        StringBuilder selectAdmisibility = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM, CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION, FIRST_VALUE(agent.FIRST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) || ' ' || FIRST_VALUE(agent.LAST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) AGENT_RECEVABILITE, INTERVAL_DAY_TO_SEC(proc.DATE_FIN - proc.DATE_DEBUT) DELAI_RECEVABILITE, '' AGENT_COTATION, 0 DELAI_COTATION, '' AGENT_TRAITEMENT, 0 DELAI_CONFIRMATION_RDV, 0 DELAI_TRAITEMENT, '' SIGNATAIRE, 0 DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, 0 NOMBRE_CI ");
+        StringBuilder selectcotation = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM,CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION,'' AGENT_RECEVABILITE, 0 DELAI_RECEVABILITE,FIRST_VALUE(agent.FIRST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) || ' ' || FIRST_VALUE(agent.LAST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) AGENT_COTATION, INTERVAL_DAY_TO_SEC(proc.DATE_FIN - proc.DATE_DEBUT) DELAI_COTATION,'' AGENT_TRAITEMENT, 0 DELAI_CONFIRMATION_RDV, 0 DELAI_TRAITEMENT, '' SIGNATAIRE, 0 DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, 0 NOMBRE_CI ");
+        StringBuilder selectApointment = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM,CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION,'' AGENT_RECEVABILITE, 0 DELAI_RECEVABILITE,'' AGENT_COTATION, 0 DELAI_COTATION,FIRST_VALUE(agent.FIRST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) || ' ' || FIRST_VALUE(agent.LAST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) AGENT_TRAITEMENT, INTERVAL_DAY_TO_SEC(proc.DATE_FIN - proc.DATE_DEBUT) DELAI_CONFIRMATION_RDV, 0 DELAI_TRAITEMENT, '' IGNATAIRE, 0 DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, 0 NOMBRE_CI");
+        StringBuilder selectTreatment = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM,CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION,'' AGENT_RECEVABILITE, 0 DELAI_RECEVABILITE,'' AGENT_COTATION, 0 DELAI_COTATION, FIRST_VALUE(agent.FIRST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) || ' ' || FIRST_VALUE(agent.LAST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) AGENT_TRAITEMENT,0 DELAI_CONFIRMATION_RDV,INTERVAL_DAY_TO_SEC(proc.DATE_FIN - proc.DATE_DEBUT) DELAI_TRAITEMENT,'' SIGNATAIRE, 0 DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, 0 NOMBRE_CI");
+        StringBuilder selectSignature = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM, CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION, '' AGENT_RECEVABILITE, 0 DELAI_RECEVABILITE,'' AGENT_COTATION, 0 DELAI_COTATION,'' AGENT_TRAITEMENT, 0 DELAI_CONFIRMATION_RDV, 0 DELAI_TRAITEMENT,FIRST_VALUE(agent.FIRST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) || ' ' ||FIRST_VALUE(agent.LAST_NAME) IGNORE NULLS OVER (PARTITION BY proc.FILE_ITEM_ID ORDER BY proc.CREATED DESC) SIGNATAIRE, INTERVAL_DAY_TO_SEC(proc.DATE_FIN - proc.DATE_DEBUT) DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, 0 NOMBRE_CI");
+        StringBuilder selectCountCi = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM,CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION,'' AGENT_RECEVABILITE, 0 DELAI_RECEVABILITE,'' AGENT_COTATION, 0 DELAI_COTATION,'' AGENT_TRAITEMENT, 0 DELAI_CONFIRMATION_RDV, 0 DELAI_TRAITEMENT, '' SIGNATAIRE, 0 DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, COUNT(NUMERO_DOSSIER) NOMBRE_CI");
+        
+        selectAdmisibility.append(String.format(commomFrom.toString(), "admisibilityFlow"));
+        params.put("admisibilityFlow", CTE_ADMISIBILITY_FLOW);
+        selectcotation.append(String.format(commomFrom.toString(), "cotationFlow"));
+        params.put("cotationFlow", CTE_COTATION_FLOW);
+        selectApointment.append(String.format(commomFrom.toString(), "apointmentFlow"));
+        params.put("apointmentFlow", CTE_APPOINTMENT_FLOW);
+        selectTreatment.append(String.format(commomFrom.toString(), "treatmentFlow"));
+        params.put("treatmentFlow", CTE_TREATMENT_FLOW);
+        selectSignature.append(String.format(commomFrom.toString(), "signatureFlow"));
+        params.put("signatureFlow", CTE_SIGNATURE_FLOW);
+        selectCountCi.append(String.format(commomFrom.toString(), "ciFlow")).append(groupByCountCi);
+        params.put("ciFlow", CTE_CI_FLOW);
+        hqlQuery.append("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, NUM_CONTRIBUABLE, RAISON_SOCIALE, TYPE_PRODUIT_NOM, PAYS_DESTINATION,MAX(AGENT_RECEVABILITE) AGENT_RECEVABILITE, SUM(DELAI_RECEVABILITE) DELAI_RECEVABILITE, MAX(AGENT_COTATION) AGENT_COTATION, SUM(DELAI_COTATION)  DELAI_COTATION,MAX(AGENT_TRAITEMENT) AGENT_TRAITEMENT, SUM(DELAI_CONFIRMATION_RDV)  DELAI_CONFIRMATION_RDV, SUM(DELAI_TRAITEMENT)  DELAI_TRAITEMENT, MAX(SIGNATAIRE) SIGNATAIRE, SUM(DELAI_SIGNATURE)  DELAI_SIGNATURE, SUM(DELAI_REPONSE_CI)  DELAI_REPONSE_CI, SUM(NOMBRE_CI) NOMBRE_CI FROM (")
+//                .append(" FROM (")
+                .append(selectAdmisibility)
+                .append(" UNION ")
+                .append(selectcotation)
+                .append(" UNION ")
+                .append(selectApointment)
+                .append(" UNION ")
+                .append(selectTreatment)
+                .append(" UNION ")
+                .append(selectSignature)
+                .append(" UNION ")
+                .append(selectCountCi)
+                .append(" ) GROUP BY NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, NUM_CONTRIBUABLE, TYPE_PRODUIT_NOM, RAISON_SOCIALE, PAYS_DESTINATION");
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
+        }
+        
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Object[]> getGlobalDelayListing(CteFilter filter, List<Long> fileTypeIdList) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        StringBuilder hqlQuery = new StringBuilder();
+        hqlQuery.append("SELECT DISTINCT f.NUMERO_DOSSIER, f.FILE_TYPE_NAME,f.NUMERO_DEMANDE,C.NUM_CONTRIBUABLE,C.COMPANY_NAME");
+        hqlQuery.append(",f.TYPE_PRODUIT_NOM,p.COUNTRY_NAME_FR PAYS_DESTINATION,f.CREATED_DATE,COALESCE(f.SIGNATURE_DATE,f.DATE_REJET) DATE_SORTIE");
+        hqlQuery.append(",s.LABELFR ETAPE,f.CODE_BUREAU, f.NOM_BUREAU FROM MINADER_FILES f ");
+        hqlQuery.append(" JOIN COMPANY C ON f.CLIENT_ID = C.ID JOIN REP_COUNTRY p ON f.COUNTRY_OF_DESTINATION = p.COUNTRY_ID_ALPHA2 ");
+        hqlQuery.append(" JOIN FILE_ITEM fi ON f.ID = fi.FILE_ID JOIN STEP s ON fi.STEP_ID = s.ID ");
+        hqlQuery.append("WHERE f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+        
+        if (filter.getOperationType() != null && filter.getOperationType().length > 0){
+            hqlQuery.append(" AND f.TYPE_OPERATION IN (:operationType)");
+            params.put("operationType", Arrays.asList(filter.getOperationType()));
+        }
+        if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0){
+            hqlQuery.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
+            params.put("productType", Arrays.asList(filter.getProductNatureList()));
+        }
+                
+        if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0){
+            hqlQuery.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
+        }
+        if (filter.getClientNiu() != null && !filter.getClientNiu().isEmpty()){
+            hqlQuery.append(" AND C.NUM_CONTRIBUABLE =:numContribuable ");
+            params.put("numContribuable", filter.getClientNiu());
+        }
+        hqlQuery.append(" AND f.FILE_TYPE_ID  IN (:fileTypeIdList)");
+        if (filter.getProcessCodeList() != null && filter.getProcessCodeList().length > 0){
+            params.put("fileTypeIdList", Arrays.asList(filter.getProcessCodeList()));
+        } else {
+            params.put("fileTypeIdList", fileTypeIdList);
+        }
+        if (filter.getValidationFromDate() != null && filter.getValidationToDate() != null){
+            hqlQuery.append("AND ((f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')) OR (f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')))");
+            params.put("dateSignatureDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
+            params.put("dateSignatureFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
+        }
+        
+        params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationFromDate()));
+	params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationToDate()));
+        
+        
+        
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
+        }
+        
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList) {
+        final Map<String, Object> params = new HashMap<String, Object>();
+        final StringBuilder hqlQuery = new StringBuilder();
+        final String where1 = " f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        final String where2 = " f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        final String where3 = " f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        final String groupBy = " GROUP BY FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU ";
+        final StringBuilder where4 = new StringBuilder();
+        
+        
+        if (filter.getOperationType() != null && filter.getOperationType().length > 0){
+            where4.append(" AND f.TYPE_OPERATION IN (:operationType)");
+            params.put("operationType", Arrays.asList(filter.getOperationType()));
+        }
+        if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0){
+            where4.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
+            params.put("productType", Arrays.asList(filter.getProductNatureList()));
+        }
+        
+        
+        if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0){
+            where4.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
+        }
+        where4.append(" AND f.FILE_TYPE_ID  IN (:fileTypeIdList)");
+        if (filter.getProcessCodeList() != null && filter.getProcessCodeList().length > 0){
+            params.put("fileTypeIdList", Arrays.asList(filter.getProcessCodeList()));
+        } else {
+            params.put("fileTypeIdList", fileTypeIdList);
+        }
+        
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, SUM(NB_RECU) NB_RECU, SUM(NB_SIGNE) NB_SIGNE,SUM(NB_RECU_SIGNE) NB_RECU_SIGNE, SUM(NB_REJETE) NB_REJETE, SUM(NB_RECU_REJETE) NB_RECU_REJETE, SUM(NB_COURS) NB_COURS ");
+        hqlQuery.append("FROM ( ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, COUNT(*) NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS ");
+        hqlQuery.append("FROM MINADER_FILES f WHERE ");
+        hqlQuery.append(where1).append(where4).append(groupBy);
+        hqlQuery.append(" UNION ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, COUNT(*) NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append(where2).append(where4).append(groupBy);
+        hqlQuery.append(" UNION ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,COUNT(*) NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append(where1).append(" AND f.SIGNATURE_DATE IS NOT NULL ").append(where4).append(groupBy);
+//        hqlQuery.append(where1).append(" AND ").append(where2).append(where4).append(groupBy);
+        hqlQuery.append(" UNION ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, COUNT(*) NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append(where3).append(where4).append(groupBy);
+        hqlQuery.append(" UNION ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, COUNT(*) NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append(where1).append(" AND f.DATE_REJET IS NOT NULL ").append(where4).append(groupBy);
+//        hqlQuery.append(where1).append(" AND ").append(where3).append(where4).append(groupBy);
+        hqlQuery.append(" UNION ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, COUNT(*) NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append(where1).append(" AND f.DATE_REJET IS NULL AND f.SIGNATURE_DATE IS NULL ").append(where4).append(groupBy);
+        hqlQuery.append(" ) ");
+        hqlQuery.append(groupBy);
+        
+	params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationFromDate()));
+	params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationToDate()));
+        
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
+        }
+        
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+        
+        
 }

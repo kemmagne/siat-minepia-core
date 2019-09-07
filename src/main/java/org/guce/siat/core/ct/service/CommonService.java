@@ -9,6 +9,7 @@ import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.AbstractService;
+import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
@@ -196,7 +197,16 @@ public interface CommonService extends AbstractService<ItemFlow> {
      * @return the list
      */
     List<Object[]> serviceItemProductsQuantitiesByFilter(Filter filter, User loggedUser, Administration currentAdministration);
-
+    
+    List<Object[]> getActivitiesReport(CteFilter filter, User loggedUser);
+    
+    List<Object[]> getGlobalDelayListing(CteFilter filter, User loggedUser);
+    
+    List<Object[]> getDelayListingStakeholder(CteFilter filter, User loggedUser);
+    
+    List<Object[]> getExportNshDestination(CteFilter filter, User loggedUser);
+    
+    List<Object[]> getExportNshDestinationSender(CteFilter filter, User loggedUser);
     /**
      * Service item products quantities by drd by filter.
      *
