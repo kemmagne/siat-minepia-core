@@ -541,6 +541,19 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "INFORMATIONS_GENERALES_OBSERVATIONS" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getOBSERVATIONS() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getOBSERVATIONS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_REFERENCE_BASE" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getBASEREFERENCE() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getBASEREFERENCE());
+                    file.setNumeroDossierBase(document.getCONTENT().getBASEREFERENCE());
+                }
+                break;
+            }
             default:
                 break;
         }

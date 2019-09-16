@@ -1525,6 +1525,13 @@
 									</xs:restriction>
 								</xs:simpleType>
 							</xs:element>
+							<xs:element name="REFERENCE_BASE" minOccurs="0" maxOccurs="1">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:maxLength value="255"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
 							<xs:element name="DETAILS_DECISIONS_SIAT" minOccurs="0" maxOccurs="1">
 								<xs:complexType>
 									<xs:sequence minOccurs="0">

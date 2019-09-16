@@ -3718,6 +3718,7 @@ public class DOCUMENT implements Serializable {
         "numerocctct",
         "marchandises",
         "observations",
+        "basereference",
         "detailsdecisionssiat",
         "piecesjointes"
     })
@@ -3761,6 +3762,8 @@ public class DOCUMENT implements Serializable {
         protected DOCUMENT.CONTENT.MARCHANDISES marchandises;
         @XmlElement(name = "OBSERVATIONS")
         protected String observations;
+        @XmlElement(name = "REFERENCE_BASE")
+        protected String basereference;
         @XmlElement(name = "DETAILS_DECISIONS_SIAT")
         protected DOCUMENT.CONTENT.DETAILSDECISIONSSIAT detailsdecisionssiat;
         @XmlElement(name = "PIECES_JOINTES")
@@ -4149,6 +4152,16 @@ public class DOCUMENT implements Serializable {
         public void setOBSERVATIONS(String value) {
             this.observations = value;
         }
+
+        public String getBASEREFERENCE() {
+            return basereference;
+        }
+
+        public void setBASEREFERENCE(String baseReference) {
+            this.basereference = baseReference;
+        }
+        
+        
 
         /**
          * Obtient la valeur de la propriété detailsdecisionssiat.
