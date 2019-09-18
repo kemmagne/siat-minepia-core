@@ -23,6 +23,7 @@ import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
 import org.guce.siat.common.model.AppointmentItemFlowId;
+import org.guce.siat.common.model.DataType;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -30,6 +31,7 @@ import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FlowService;
+import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.FileTypeCode;
@@ -218,6 +220,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     @Autowired
     private InterceptionNotificationDao interceptionNotificationDao;
+
+    @Autowired
+    private ItemFlowService itemFlowService;
 
     /**
      * The directory.
@@ -535,6 +540,15 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                             inspectionReportDao.delete(ir);
                         }
                 }
+            } else if ("MINADER".equals(itemFlow.getFileItem().getFile().getDestinataire())
+                    && FlowCode.FL_CT_08.name().equals(flowCode)) {
+                final CCTCPParamValue paramValue = cCTCPParamValueDao.findCCTCPParamValueByItemFlow(itemFlow);
+                if (paramValue != null) {
+                    cCTCPParamValueDao.delete(paramValue);
+                }
+                List<Long> filesItemFlowId = new ArrayList<>();
+                filesItemFlowId.add(itemFlow.getFileItem().getId());
+                itemFlowService.rollBackDecisionForDispatchFile(filesItemFlowId);
             } //Proposition RDV Visite à Quai OR Validation RDV chez Déclarant
             else if (alreadyDeleted && (FlowCode.FL_CT_26.name().equals(flowCode) || FlowCode.FL_CT_41.name().equals(flowCode))) {
                 final AppointmentItemFlow appointmentItemFlow = appointmentDao.findAppointmentItemFlowByItemFlow(itemFlow);
@@ -893,6 +907,38 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             final FileItem item = itemFlow.getFileItem();
             item.setDraft(Boolean.TRUE);
             fileItemList.add(item);
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
+    @Override
+    public void takeDecisionAndSaveCCTCPParamValueAndDataType(CCTCPParamValue cCTCPParamValue, List<ItemFlowData> flowDatas, List<ItemFlow> itemFlows) throws Exception {
+        final List<FileItem> fileItemList = new ArrayList<>();
+
+        for (final ItemFlow itemFlow : itemFlows) {
+            final ItemFlow item = itemFlowDao.save(itemFlow);
+            final CCTCPParamValue value = CommonUtils.clone(cCTCPParamValue);
+
+            value.setItemFlow(item);
+            value.setId(null);
+            cCTCPParamValueDao.save(value);
+
+            final List<ItemFlowData> itemFlowDatas = new ArrayList<>();
+            for (final ItemFlowData flowData : flowDatas) {
+                final ItemFlowData itemFlowData = new ItemFlowData();
+                itemFlowData.setDataType(flowData.getDataType());
+                itemFlowData.setValue(flowData.getValue());
+                itemFlowData.setItemFlow(item);
+                itemFlowDatas.add(itemFlowData);
+            }
+            itemFlowDataDao.saveOrUpdateList(itemFlowDatas);
+
+            // Set draft = true to be updated
+            final FileItem fitem = itemFlow.getFileItem();
+            fitem.setDraft(Boolean.TRUE);
+            fileItemList.add(fitem);
         }
 
         // Update fileItems : Set draft = true

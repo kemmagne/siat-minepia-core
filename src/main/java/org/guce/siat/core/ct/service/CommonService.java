@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
+import org.guce.siat.common.model.DataType;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.AbstractService;
 import org.guce.siat.core.ct.filter.CteFilter;
@@ -106,6 +108,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void takeDecisionAndSaveApprovedDecision(ApprovedDecision approvedDecision, List<ItemFlow> itemFlows) throws Exception;
 
     void takeDecisionAndSaveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, List<ItemFlow> itemFlows) throws Exception;
+
+    void takeDecisionAndSaveCCTCPParamValueAndDataType(CCTCPParamValue cCTCPParamValue, List<ItemFlowData> flowDatas, List<ItemFlow> itemFlows) throws Exception;
 
     /**
      * Take decision and appointment.

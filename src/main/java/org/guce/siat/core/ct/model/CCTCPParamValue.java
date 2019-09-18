@@ -60,8 +60,8 @@ public class CCTCPParamValue extends AbstractModel implements Serializable {
     @Column(name = "LABEL_MORE")
     private String labelMore;
 
-    @Column(name = "OBSERVATIONS")
-    private String observations;
+//    @Column(name = "OBSERVATIONS")
+//    private String observations;
 
     @Transient
     private int fileContainerCountValue;
@@ -142,13 +142,13 @@ public class CCTCPParamValue extends AbstractModel implements Serializable {
         this.labelMore = labelMore;
     }
 
-    public String getObservations() {
-        return observations;
-    }
-
-    public void setObservations(String observations) {
-        this.observations = observations;
-    }
+//    public String getObservations() {
+//        return observations;
+//    }
+//
+//    public void setObservations(String observations) {
+//        this.observations = observations;
+//    }
 
     @Override
     public int hashCode() {
