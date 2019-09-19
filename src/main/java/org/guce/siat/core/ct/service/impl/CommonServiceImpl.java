@@ -516,7 +516,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
             // suppression des décisions relatives au phyto
             if ("MINADER".equals(itemFlow.getFileItem().getFile().getDestinataire())
-                    && FlowCode.FL_CT_07.name().equals(flowCode)) {
+                    && (FlowCode.FL_CT_07.name().equals(flowCode) || FlowCode.FL_CT_117.name().equals(flowCode) || FlowCode.FL_CT_112.name().equals(flowCode))) {
                 switch (itemFlow.getFileItem().getFile().getFileType().getCode()) {
                     case CCT_CT_E:
                         final TreatmentInfos ti = treatmentInfosDao.findTreatmentInfosByItemFlow(itemFlow);

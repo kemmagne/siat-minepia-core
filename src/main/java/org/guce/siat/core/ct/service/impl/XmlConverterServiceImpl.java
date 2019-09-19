@@ -230,6 +230,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             FlowCode.FL_AP_169.name(), FlowCode.FL_AP_170.name(),
             FlowCode.FL_AP_171.name(), FlowCode.FL_AP_172.name(), FlowCode.FL_AP_173.name(), FlowCode.FL_AP_174.name());
     private static final List AMENDMENT_AP_FLOW_LIST = Arrays.asList(new String[]{FlowCode.FL_AP_200.name()});
+    
+    
+    private static final List<String> AMENDEMENT_CTE_FLOW_LIST = Arrays.asList(FlowCode.FL_CT_110.name());
     /**
      * The Constant PREFIXE_FACTURE.
      */
@@ -870,9 +873,16 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case CCT_CT_E:
                 case CC_CT:
                 case CQ_CT:
-                case CCT_CT_E_ATP:
-                    firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
+                case CCT_CT_E_ATP:{
+                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())){
+                        firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
+                    } else {
+                        firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
+                    }
+                    
                     break;
+                }
+                    
                 case CCT_CT_E_PVI:
                 case CCT_CT_E_FSTP:
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
@@ -6180,6 +6190,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         file.setFileFieldValueList(fileFieldValues);
         file.setFileType(fileType);
+        
+        // Set Parent File
+        if (file.getNumeroDossierBase() != null){
+           final File parent = fileDao.findByNumDossierGuce(file.getNumeroDossierBase());
+           file.setParent(parent);
+        }
 
         if (FlowCode.FL_CT_61.name().equals(flowGuceSiat.getFlowSiat())) {
 
