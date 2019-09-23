@@ -304,6 +304,20 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "DESTINATAIRE_AUTRE_CONTACT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
+                        && document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT()!= null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT());
+                }
+                break;
+            }
+            case "CLIENT_AUTRE_CONTACT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT()!= null
+                        && document.getCONTENT().getCLIENT().getAUTRECONTACT()!= null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getAUTRECONTACT());
+                }
+                break;
+            }
             case "INFORMATIONS_GENERALES_TRANSPORT_MOYEN_TRANSPORT_CODE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null

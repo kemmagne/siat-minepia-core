@@ -4543,7 +4543,8 @@ public class DOCUMENT implements Serializable {
             "adresse",
             "telephonefixe",
             "telephonemobile",
-            "fax"
+            "fax",
+            "autrecontact"
         })
         public static class CLIENT {
 
@@ -4571,6 +4572,8 @@ public class DOCUMENT implements Serializable {
             protected DOCUMENT.CONTENT.CLIENT.TELEPHONEMOBILE telephonemobile;
             @XmlElement(name = "FAX")
             protected DOCUMENT.CONTENT.CLIENT.FAX fax;
+            @XmlElement(name = "AUTRE_CONTACT")
+            protected String autrecontact;
 
             /**
              * Obtient la valeur de la propriété numerocontribuable.
@@ -4825,6 +4828,15 @@ public class DOCUMENT implements Serializable {
                 this.fax = value;
             }
 
+            public String getAUTRECONTACT() {
+                return autrecontact;
+            }
+
+            public void setAUTRECONTACT(String autrecontact) {
+                this.autrecontact = autrecontact;
+            }
+            
+            
             /**
              * <p>
              * Classe Java pour anonymous complex type.
@@ -6585,7 +6597,8 @@ public class DOCUMENT implements Serializable {
             "adresse",
             "telephonefixe",
             "telephonemobile",
-            "fax"
+            "fax",
+            "autrecontact"
         })
         public static class DESTINATAIRE {
 
@@ -6599,6 +6612,8 @@ public class DOCUMENT implements Serializable {
             protected DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEMOBILE telephonemobile;
             @XmlElement(name = "FAX")
             protected DOCUMENT.CONTENT.DESTINATAIRE.FAX fax;
+            @XmlElement(name = "AUTRE_CONTACT")
+            protected String autrecontact;
 
             /**
              * Obtient la valeur de la propriété raisonsociale.
@@ -6619,6 +6634,16 @@ public class DOCUMENT implements Serializable {
             public void setRAISONSOCIALE(String value) {
                 this.raisonsociale = value;
             }
+
+            public String getAUTRECONTACT() {
+                return autrecontact;
+            }
+
+            public void setAUTRECONTACT(String autrecontact) {
+                this.autrecontact = autrecontact;
+            }
+            
+            
 
             /**
              * Obtient la valeur de la propriété adresse.
