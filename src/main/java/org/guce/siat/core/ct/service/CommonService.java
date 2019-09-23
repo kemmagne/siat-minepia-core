@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
+import org.guce.siat.common.model.DataType;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.AbstractService;
 import org.guce.siat.core.ct.filter.CteFilter;
@@ -15,6 +17,7 @@ import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
 import org.guce.siat.core.ct.model.AnalyseResult;
 import org.guce.siat.core.ct.model.ApprovedDecision;
+import org.guce.siat.core.ct.model.CCTCPParamValue;
 import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.PaymentData;
@@ -103,6 +106,10 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void takeDecisionAndSaveTreatmentInfos(TreatmentInfos treatmentInfos, List<ItemFlow> itemFlows) throws Exception;
 
     void takeDecisionAndSaveApprovedDecision(ApprovedDecision approvedDecision, List<ItemFlow> itemFlows) throws Exception;
+
+    void takeDecisionAndSaveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, List<ItemFlow> itemFlows) throws Exception;
+
+    void takeDecisionAndSaveCCTCPParamValueAndDataType(CCTCPParamValue cCTCPParamValue, List<ItemFlowData> flowDatas, List<ItemFlow> itemFlows) throws Exception;
 
     /**
      * Take decision and appointment.
@@ -197,16 +204,17 @@ public interface CommonService extends AbstractService<ItemFlow> {
      * @return the list
      */
     List<Object[]> serviceItemProductsQuantitiesByFilter(Filter filter, User loggedUser, Administration currentAdministration);
-    
+
     List<Object[]> getActivitiesReport(CteFilter filter, User loggedUser);
-    
+
     List<Object[]> getGlobalDelayListing(CteFilter filter, User loggedUser);
-    
+
     List<Object[]> getDelayListingStakeholder(CteFilter filter, User loggedUser);
-    
+
     List<Object[]> getExportNshDestination(CteFilter filter, User loggedUser);
-    
+
     List<Object[]> getExportNshDestinationSender(CteFilter filter, User loggedUser);
+
     /**
      * Service item products quantities by drd by filter.
      *
@@ -272,4 +280,6 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void saveTreatmentInfos(TreatmentInfos treatmentInfos, ItemFlow itemFlow);
 
     void saveApprovedDecision(ApprovedDecision approvedDecision, ItemFlow itemFlow);
+
+    void saveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, ItemFlow itemFlow);
 }

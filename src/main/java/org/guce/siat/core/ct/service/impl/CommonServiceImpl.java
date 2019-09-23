@@ -23,7 +23,7 @@ import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
 import org.guce.siat.common.model.AppointmentItemFlowId;
-import org.guce.siat.common.model.Bureau;
+import org.guce.siat.common.model.DataType;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -31,9 +31,9 @@ import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FlowService;
+import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.utils.Constants;
-import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
@@ -44,6 +44,7 @@ import org.guce.siat.core.ct.dao.AnalysePartDao;
 import org.guce.siat.core.ct.dao.AnalyseResultApDao;
 import org.guce.siat.core.ct.dao.AnalyseResultDao;
 import org.guce.siat.core.ct.dao.ApprovedDecisionDao;
+import org.guce.siat.core.ct.dao.CCTCPParamValueDao;
 import org.guce.siat.core.ct.dao.CommonDao;
 import org.guce.siat.core.ct.dao.EssayTestAPDao;
 import org.guce.siat.core.ct.dao.InspectionControllerDao;
@@ -62,6 +63,7 @@ import org.guce.siat.core.ct.model.AnalysePart;
 import org.guce.siat.core.ct.model.AnalyseResult;
 import org.guce.siat.core.ct.model.AnalyseResultAp;
 import org.guce.siat.core.ct.model.ApprovedDecision;
+import org.guce.siat.core.ct.model.CCTCPParamValue;
 import org.guce.siat.core.ct.model.EssayTestAP;
 import org.guce.siat.core.ct.model.InspectionController;
 import org.guce.siat.core.ct.model.InspectionReport;
@@ -214,7 +216,13 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     private ApprovedDecisionDao approvedDecisionDao;
 
     @Autowired
+    private CCTCPParamValueDao cCTCPParamValueDao;
+
+    @Autowired
     private InterceptionNotificationDao interceptionNotificationDao;
+
+    @Autowired
+    private ItemFlowService itemFlowService;
 
     /**
      * The directory.
@@ -532,6 +540,15 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                             inspectionReportDao.delete(ir);
                         }
                 }
+            } else if ("MINADER".equals(itemFlow.getFileItem().getFile().getDestinataire())
+                    && FlowCode.FL_CT_08.name().equals(flowCode)) {
+                final CCTCPParamValue paramValue = cCTCPParamValueDao.findCCTCPParamValueByItemFlow(itemFlow);
+                if (paramValue != null) {
+                    cCTCPParamValueDao.delete(paramValue);
+                }
+                List<Long> filesItemFlowId = new ArrayList<>();
+                filesItemFlowId.add(itemFlow.getFileItem().getId());
+                itemFlowService.rollBackDecisionForDispatchFile(filesItemFlowId);
             } //Proposition RDV Visite à Quai OR Validation RDV chez Déclarant
             else if (alreadyDeleted && (FlowCode.FL_CT_26.name().equals(flowCode) || FlowCode.FL_CT_41.name().equals(flowCode))) {
                 final AppointmentItemFlow appointmentItemFlow = appointmentDao.findAppointmentItemFlowByItemFlow(itemFlow);
@@ -873,6 +890,72 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         fileItemDao.saveOrUpdateList(fileItemList);
     }
 
+    @Override
+    @Transactional(readOnly = false)
+    public void takeDecisionAndSaveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, List<ItemFlow> itemFlowsToAdd) throws Exception {
+        final List<FileItem> fileItemList = new ArrayList<>();
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            final CCTCPParamValue value = CommonUtils.clone(cCTCPParamValue);
+
+            value.setItemFlow(itemFlow);
+            value.setId(null);
+            cCTCPParamValueDao.save(value);
+
+            // Set draft = true to be updated
+            final FileItem item = itemFlow.getFileItem();
+            item.setDraft(Boolean.TRUE);
+            fileItemList.add(item);
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
+    @Override
+    public void takeDecisionAndSaveCCTCPParamValueAndDataType(CCTCPParamValue cCTCPParamValue, List<ItemFlowData> flowDatas, List<ItemFlow> itemFlows) throws Exception {
+        final List<FileItem> fileItemList = new ArrayList<>();
+
+        for (final ItemFlow itemFlow : itemFlows) {
+            final ItemFlow item = itemFlowDao.save(itemFlow);
+            final CCTCPParamValue value = CommonUtils.clone(cCTCPParamValue);
+
+            value.setItemFlow(item);
+            value.setId(null);
+            cCTCPParamValueDao.save(value);
+
+            final List<ItemFlowData> itemFlowDatas = new ArrayList<>();
+            for (final ItemFlowData flowData : flowDatas) {
+                final ItemFlowData itemFlowData = new ItemFlowData();
+                itemFlowData.setDataType(flowData.getDataType());
+                itemFlowData.setValue(flowData.getValue());
+                itemFlowData.setItemFlow(item);
+                itemFlowDatas.add(itemFlowData);
+            }
+            itemFlowDataDao.saveOrUpdateList(itemFlowDatas);
+
+            // Set draft = true to be updated
+            final FileItem fitem = itemFlow.getFileItem();
+            fitem.setDraft(Boolean.TRUE);
+            fileItemList.add(fitem);
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void saveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, ItemFlow itemFlow) {
+        itemFlowDao.save(itemFlow);
+
+        cCTCPParamValue.setItemFlow(itemFlow);
+        cCTCPParamValueDao.save(cCTCPParamValue);
+
+        itemFlow.getFileItem().setDraft(Boolean.TRUE);
+        fileItemDao.saveOrUpdateList(Arrays.asList(itemFlow.getFileItem()));
+    }
 
     /*
 	 * (non-Javadoc)
@@ -1032,9 +1115,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         });
         return commonDao.serviceItemProductsQuantitiesByFilter(filter, fileTypeIdList, administration);
     }
-    
-    public void setDefaultOffice(final CteFilter filter, final User loggedUser){
-        if (filter.getOfficeCodeList() == null || filter.getOfficeCodeList().length <= 0){
+
+    public void setDefaultOffice(final CteFilter filter, final User loggedUser) {
+        if (filter.getOfficeCodeList() == null || filter.getOfficeCodeList().length <= 0) {
             filter.setOfficeCodeList(new String[]{String.valueOf(loggedUser.getAdministration().getId())});
         }
     }
@@ -1049,7 +1132,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 return ((FileType) fileType).getId();
             }
         });
-        
+
         setDefaultOffice(filter, loggedUser);
         return commonDao.getActivitiesReport(filter, fileTypeIdList);
     }
@@ -1067,6 +1150,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         setDefaultOffice(filter, loggedUser);
         return commonDao.getDelayListingStakeholder(filter, fileTypeIdList);
     }
+
     @Override
     public List<Object[]> getGlobalDelayListing(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1080,6 +1164,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         setDefaultOffice(filter, loggedUser);
         return commonDao.getGlobalDelayListing(filter, fileTypeIdList);
     }
+
     @Override
     public List<Object[]> getExportNshDestination(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1093,6 +1178,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         setDefaultOffice(filter, loggedUser);
         return commonDao.getExportNshDestination(filter, fileTypeIdList);
     }
+
     @Override
     public List<Object[]> getExportNshDestinationSender(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1106,9 +1192,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         setDefaultOffice(filter, loggedUser);
         return commonDao.getExportNshDestinationSender(filter, fileTypeIdList);
     }
-    
-    
-
 
     /*
 	 * (non-Javadoc)
