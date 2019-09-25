@@ -568,6 +568,83 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "AUTRE_INFORMATION_DECLARATION_ADDITIONNELLE" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDECLARATIONADDITIONNELLE() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDECLARATIONADDITIONNELLE());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_DATE_TRAITEMENT" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDATETRAITEMENT() != null){
+                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDATETRAITEMENT()));
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_TYPE_TRAITEMENT" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTYPETRAITEMENT() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTYPETRAITEMENT());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_DUREE_TRAITEMENT" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDUREETRAITEMENT() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDUREETRAITEMENT());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_TEMPERATURE" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTEMPERATURE() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTEMPERATURE());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_TRAITEMENT_EFFECTUE" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTRAITEMENTEFFECTUE() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTRAITEMENTEFFECTUE());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_PRODUIT_CHIMIQUE" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getPRODUITCHIMIQUE() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getPRODUITCHIMIQUE());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_CONCENTRATION" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getCONCENTRATION() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getCONCENTRATION());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_RENSEIGNEMENT_COMPLEMENTAIRE" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getRENSEIGNEMENTCOMPLEMENTAIRE() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getRENSEIGNEMENTCOMPLEMENTAIRE());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_FUMIGATION" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getFUMIGATION() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getFUMIGATION());
+                }
+                break;
+            }
+            case "AUTRE_INFORMATION_DESINFECTION" : {
+                if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDESINFECTION() != null){
+                    fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDESINFECTION());
+                }
+                break;
+            }
             default:
                 break;
         }
