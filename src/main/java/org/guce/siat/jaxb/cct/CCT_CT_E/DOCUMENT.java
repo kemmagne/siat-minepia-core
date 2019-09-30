@@ -3720,6 +3720,7 @@ public class DOCUMENT implements Serializable {
         "observations",
         "basereference",
         "detailsdecisionssiat",
+        "certificatphytosanitaire",
         "piecesjointes"
     })
     public static class CONTENT {
@@ -3768,6 +3769,8 @@ public class DOCUMENT implements Serializable {
         protected DOCUMENT.CONTENT.DETAILSDECISIONSSIAT detailsdecisionssiat;
         @XmlElement(name = "PIECES_JOINTES")
         protected PIECESJOINTES piecesjointes;
+        @XmlElement(name = "CERTIFICAT_PHYTOSANITAIRE")
+        protected CERTIFICATPHYTOSANITAIRE certificatphytosanitaire;
 
         /**
          * Obtient la valeur de la propriété decisionorganisme.
@@ -4160,6 +4163,15 @@ public class DOCUMENT implements Serializable {
         public void setBASEREFERENCE(String baseReference) {
             this.basereference = baseReference;
         }
+
+        public CERTIFICATPHYTOSANITAIRE getCERTIFICATPHYTOSANITAIRE() {
+            return certificatphytosanitaire;
+        }
+
+        public void setCERTIFICATPHYTOSANITAIRE(CERTIFICATPHYTOSANITAIRE certificatphytosanitaire) {
+            this.certificatphytosanitaire = certificatphytosanitaire;
+        }
+        
         
         
 
@@ -12529,6 +12541,137 @@ public class DOCUMENT implements Serializable {
             }
 
         }
+        
+        
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "declarationadditionnnelle",
+            "datetraitement",
+            "typetraitement",
+            "dureetraitement",
+            "temperature",
+            "traitementeffectue",
+            "produitchimique",
+            "concentration",
+            "renseignementcomplementaire",
+            "fumigation",
+            "desinfection"
+        })
+        public static class CERTIFICATPHYTOSANITAIRE {
+            @XmlElement(name = "DECLARATION_ADDITIONNELLE")
+            protected String declarationadditionnnelle;
+            @XmlElement(name = "DATE_TRAITEMENT")
+            protected String datetraitement;
+            @XmlElement(name = "TYPE_TRAITEMENT")
+            protected String typetraitement;
+            @XmlElement(name = "DUREE_TRAITEMENT")
+            protected String dureetraitement;
+            @XmlElement(name = "TEMPERATURE")
+            protected String temperature;
+            @XmlElement(name = "TRAITEMENT_EFFECTUE")
+            protected String traitementeffectue;
+            @XmlElement(name = "PRODUIT_CHIMIQUE")
+            protected String produitchimique;
+            @XmlElement(name = "CONCENTRATION")
+            protected String concentration;
+            @XmlElement(name = "RENSEIGNEMENT_COMPLEMENTAIRE")
+            protected String renseignementcomplementaire;
+            @XmlElement(name = "FUMIGATION")
+            protected String fumigation;
+            @XmlElement(name = "DESINFECTION")
+            protected String desinfection;
+
+            public String getDECLARATIONADDITIONNELLE() {
+                return declarationadditionnnelle;
+            }
+
+            public void setDECLARATIONADDITIONNELLE(String declarationadditionnnelle) {
+                this.declarationadditionnnelle = declarationadditionnnelle;
+            }
+
+            public String getDATETRAITEMENT() {
+                return datetraitement;
+            }
+
+            public void setDATETRAITEMENT(String datetraitement) {
+                this.datetraitement = datetraitement;
+            }
+
+            public String getTYPETRAITEMENT() {
+                return typetraitement;
+            }
+
+            public void setTYPETRAITEMENT(String typetraitement) {
+                this.typetraitement = typetraitement;
+            }
+
+            public String getDUREETRAITEMENT() {
+                return dureetraitement;
+            }
+
+            public void setDUREETRAITEMENT(String dureetraitement) {
+                this.dureetraitement = dureetraitement;
+            }
+
+            public String getTEMPERATURE() {
+                return temperature;
+            }
+
+            public void setTEMPERATURE(String temperature) {
+                this.temperature = temperature;
+            }
+
+            public String getTRAITEMENTEFFECTUE() {
+                return traitementeffectue;
+            }
+
+            public void setTRAITEMENTEFFECTUE(String traitementeffectue) {
+                this.traitementeffectue = traitementeffectue;
+            }
+
+            public String getPRODUITCHIMIQUE() {
+                return produitchimique;
+            }
+
+            public void setPRODUITCHIMIQUE(String produitchimique) {
+                this.produitchimique = produitchimique;
+            }
+
+            public String getCONCENTRATION() {
+                return concentration;
+            }
+
+            public void setCONCENTRATION(String concentration) {
+                this.concentration = concentration;
+            }
+
+            public String getRENSEIGNEMENTCOMPLEMENTAIRE() {
+                return renseignementcomplementaire;
+            }
+
+            public void setRENSEIGNEMENTCOMPLEMENTAIRE(String renseignementcomplementaire) {
+                this.renseignementcomplementaire = renseignementcomplementaire;
+            }
+
+            public String getFUMIGATION() {
+                return fumigation;
+            }
+
+            public void setFUMIGATION(String fumigation) {
+                this.fumigation = fumigation;
+            }
+
+            public String getDESINFECTION() {
+                return desinfection;
+            }
+
+            public void setDESINFECTION(String desinfection) {
+                this.desinfection = desinfection;
+            }
+            
+            
+        
+    }
 
     }
 
