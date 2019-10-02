@@ -2286,7 +2286,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (flowGuceSiat != null) {
             ciDocument.setTYPEDOCUMENT(flowGuceSiat.getFlowGuce());
         }
-        if (FlowCode.FL_CT_89.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_08.name().equals(flowToExecute.getCode())) {
+        if (FlowCode.FL_CT_89.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_08.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_114.name().equals(flowToExecute.getCode())) {
             String pjType = "";
             if (null != file.getFileType().getCode()) {
                 switch (file.getFileType().getCode()) {
@@ -2326,12 +2326,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 ciDocument.getCONTENT().getMARCHANDISES().getMARCHANDISE().add(marchandise);
 
             }
-        } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode())) {
+        } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_119.name().equals(flowToExecute.getCode())) {
             final String dateRDV = itemFlowList.get(0).getItemFlowsDataList().get(0).getValue();
             if (file.getFileType().getCode().equals(FileTypeCode.CCT_CT_E_FSTP)) {
                 ciDocument.getCONTENT().setTRAITEMENT(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.TRAITEMENT());
                 ciDocument.getCONTENT().getTRAITEMENT().setDATETRAITEMENT(dateRDV);
-            } else if (file.getFileType().getCode().equals(FileTypeCode.CCT_CT_E_PVI)) {
+            } else if (file.getFileType().getCode().equals(FileTypeCode.CCT_CT_E_PVI) || file.getFileType().getCode().equals(FileTypeCode.CCT_CT_E)) {
                 ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.INSPECTION());
                 ciDocument.getCONTENT().getINSPECTION().setDATEINSPECTION(dateRDV);
             }
@@ -2427,24 +2427,24 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     entity = inspectionReportDao.findLastInspectionReportsByFileItem(itemFlowList.get(0).getFileItem());
             }
             ciDocument = DecisionHistoryUtils.putDecisionHistories(ciDocument, entity, file.getFileType().getCode().name());
-            ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.SIGNATAIRE());
-            ciDocument.getCONTENT().getSIGNATAIRE()
-                    .setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
-            ciDocument
-                    .getCONTENT()
-                    .getSIGNATAIRE()
-                    .setLIEU(
-                            itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
-                            .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
-            ciDocument
-                    .getCONTENT()
-                    .getSIGNATAIRE()
-                    .setNOM(
-                            String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender()
-                                    .getLastName()));
-            ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
         }
+        ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.SIGNATAIRE());
+        ciDocument.getCONTENT().getSIGNATAIRE()
+                .setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
+        ciDocument
+                .getCONTENT()
+                .getSIGNATAIRE()
+                .setLIEU(
+                        itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
+                        .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
+                                .getLabelFr().subSequence(0, 34).toString());
+        ciDocument
+                .getCONTENT()
+                .getSIGNATAIRE()
+                .setNOM(
+                        String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender()
+                                .getLastName()));
+        ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
         return ciDocument;
     }
 
