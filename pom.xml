@@ -106,7 +106,7 @@
         <dependency>
             <groupId>org.guce.siat.common</groupId>
             <artifactId>siat-common</artifactId>
-            <version>2.0.9</version>
+            <version>2.0.10</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
@@ -185,52 +185,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <!--            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>1.6</version>
-                <executions>
-                    <execution>
-                        <id>xjc-cte</id>
-                        <goals>
-                            <goal>xjc</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <target>2.1</target>
-                    <schemaDirectory>${basedir}/src/main/resources/xsd/CT/CCT</schemaDirectory>
-                    <packageName>org.guce.siat.cte.binding</packageName>
-                    <outputDirectory>${build.directory}/generated-sources/jaxb</outputDirectory>
-                    <verbose>false</verbose>
-                    <enableIntrospection>true</enableIntrospection>
-                </configuration>
-            </plugin>-->
-            <!--            <plugin>
-                <groupId>org.jvnet.jaxb2.maven2</groupId>
-                <artifactId>maven-jaxb2-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
-                        <configuration>
-                            <schemaIncludes>
-                                <include>jaxb/DOCUMENT/*.xsd</include>
-                            </schemaIncludes>
-                            <episodeFile>${project.build.directory}/generated-sources/xjc/META-INF/jaxb-DOCUMENT.episode</episodeFile>
-                        </configuration>
-                        <id>jaxb-generate-DOCUMENT</id>
-                    </execution>
-                </executions>
-                <configuration>
-                    <catalog>src/main/resources/jaxb/catalog.xml</catalog>
-                    <catalogResolver>org.jvnet.jaxb2.maven2.resolver.tools.ClasspathCatalogResolver</catalogResolver>
-                    <forceRegenerate>true</forceRegenerate>
-                    <generateDirectory>${project.build.directory}/generated-sources/xjc</generateDirectory>
-                    <verbose>true</verbose>
-                </configuration>
-            </plugin>-->
         </plugins>
     </build>
 </project>
