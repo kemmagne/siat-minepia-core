@@ -642,7 +642,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             if (guceSiatBureau != null) {
                 final Bureau bureau = bureauDao.findByServiceAndCode(fileConverted.getBureau().getService(),
                         guceSiatBureau.getSiatBureau());
-                fileConverted.setBureau(bureau);
+                if (bureau != null){
+                    fileConverted.setBureau(bureau);
+                }
                 // in fine le bureau auquel doit être affecté le dossier est celui auquel il a été
                 // envoyé depus WEBGUCE
                 if (FileTypeCode.CCT_CT_E.equals(fileConverted.getFileType().getCode())
