@@ -1061,7 +1061,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             params.put("fileTypeIdList", fileTypeIdList);
         }
         if (filter.getValidationFromDate() != null && filter.getValidationToDate() != null){
-            commomFrom.append("AND (f.SIGNATURE_DATE BETWEEN TO_DATE(:dateFinDebut,'yyyy-MM-dd') AND TO_DATE(:dateFinFin,'yyyy-MM-dd') OR f.DATE_REJET BETWEEN TO_DATE(:dateFinDebut,'yyyy-MM-dd') AND TO_DATE(:dateFinFin,'yyyy-MM-dd'))");
+            commomFrom.append(" AND (f.SIGNATURE_DATE BETWEEN TO_DATE(:dateFinDebut,'yyyy-MM-dd') AND TO_DATE(:dateFinFin,'yyyy-MM-dd') OR f.DATE_REJET BETWEEN TO_DATE(:dateFinDebut,'yyyy-MM-dd') AND TO_DATE(:dateFinFin,'yyyy-MM-dd'))");
             params.put("dateFinDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
             params.put("dateFinFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
         }
@@ -1147,7 +1147,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             params.put("fileTypeIdList", fileTypeIdList);
         }
         if (filter.getValidationFromDate() != null && filter.getValidationToDate() != null){
-            hqlQuery.append("AND ((f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')) OR (f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')))");
+            hqlQuery.append(" AND ((f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')) OR (f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')))");
             params.put("dateSignatureDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
             params.put("dateSignatureFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
         }
