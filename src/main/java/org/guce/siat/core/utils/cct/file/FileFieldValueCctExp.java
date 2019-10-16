@@ -5,11 +5,13 @@ import java.util.List;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
+import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.service.ApplicationPropretiesService;
 import org.guce.siat.common.utils.FileFieldValueUtils;
+import org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT;
 
 /**
  * The Class FileFieldValueCct.
@@ -306,14 +308,14 @@ public class FileFieldValueCctExp {
             }
             case "DESTINATAIRE_AUTRE_CONTACT": {
                 if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT()!= null) {
+                        && document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT());
                 }
                 break;
             }
             case "CLIENT_AUTRE_CONTACT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT()!= null
-                        && document.getCONTENT().getCLIENT().getAUTRECONTACT()!= null) {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getAUTRECONTACT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCLIENT().getAUTRECONTACT());
                 }
                 break;
@@ -499,32 +501,24 @@ public class FileFieldValueCctExp {
                 if (document.getCONTENT() != null
                         && document.getCONTENT().getCONTENEURS() != null
                         && CollectionUtils.isNotEmpty(document.getCONTENT().getCONTENEURS().getCONTENEUR())) {
-                    final List<String> columns = new ArrayList<>();
-                    columns.add("Numéro");
-                    columns.add("Scellés");
-                    columns.add("Type");
-                    columns.add("Volume");
-                    columns.add("Tonnage");
-                    columns.add("Marque");
-                    columns.add("Quantité colis");
-                    columns.add("Essence");
-                    final List<String> filedsValuesList = new ArrayList<>();
+                    List<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR> conteneurs = document.getCONTENT().getCONTENEURS().getCONTENEUR();
+                    List<Container> containers = new ArrayList<>();
+                    for (DOCUMENT.CONTENT.CONTENEURS.CONTENEUR currentEssai : conteneurs) {
 
-                    final int elementSize = document.getCONTENT().getCONTENEURS().getCONTENEUR().size();
-                    for (int i = 0; i < elementSize; i++) {
-                        if (document.getCONTENT().getCONTENEURS().getCONTENEUR().get(i) != null) {
-                            final org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR currentEssai = document.getCONTENT().getCONTENEURS().getCONTENEUR().get(i);
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getNUMERO()) ? currentEssai.getNUMERO() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getSCELLE1()) ? currentEssai.getSCELLE1() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getTYPE()) ? currentEssai.getTYPE() : "-");
-                            filedsValuesList.add(currentEssai.getVOLUME() != null ? currentEssai.getVOLUME().toString() : "-");
-                            filedsValuesList.add(currentEssai.getTONNAGE() != null ? currentEssai.getTONNAGE().toString() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getMARQUE()) ? currentEssai.getMARQUE() : "-");
-                            filedsValuesList.add(currentEssai.getQUANTITECOLIS() != null ? currentEssai.getQUANTITECOLIS().toString() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getESSENCE()) ? currentEssai.getESSENCE() : "-");
-                        }
+                        final Container container = new Container();
+
+                        container.setContNumber(currentEssai.getNUMERO());
+                        container.setContSeal1(StringUtils.isNotBlank(currentEssai.getSCELLE1()) ? currentEssai.getSCELLE1() : "-");
+                        container.setContType(StringUtils.isNotBlank(currentEssai.getTYPE()) ? currentEssai.getTYPE() : "-");
+                        container.setContVolume(currentEssai.getVOLUME());
+                        container.setContGrossMass(currentEssai.getTONNAGE());
+                        container.setContMark(StringUtils.isNotBlank(currentEssai.getMARQUE()) ? currentEssai.getMARQUE() : "-");
+                        container.setContNumberOfPackages(currentEssai.getQUANTITECOLIS() != null ? currentEssai.getQUANTITECOLIS().intValue() : null);
+                        container.setContDenomination(StringUtils.isNotBlank(currentEssai.getESSENCE()) ? currentEssai.getESSENCE() : "-");
+
+                        containers.add(container);
                     }
-                    fileFieldValue.setValue(FileFieldValueUtils.addValueRepetable(filedsValuesList, columns, null));
+                    file.setContainers(containers);
                 }
                 break;
             }
@@ -555,92 +549,92 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_OBSERVATIONS" : {
-                if (document.getCONTENT() != null && document.getCONTENT().getOBSERVATIONS() != null){
+            case "INFORMATIONS_GENERALES_OBSERVATIONS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getOBSERVATIONS() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getOBSERVATIONS());
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_REFERENCE_BASE" : {
-                if (document.getCONTENT() != null && document.getCONTENT().getBASEREFERENCE() != null){
+            case "INFORMATIONS_GENERALES_REFERENCE_BASE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getBASEREFERENCE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getBASEREFERENCE());
                     file.setNumeroDossierBase(document.getCONTENT().getBASEREFERENCE());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_DECLARATION_ADDITIONNELLE" : {
+            case "AUTRE_INFORMATION_DECLARATION_ADDITIONNELLE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDECLARATIONADDITIONNELLE() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDECLARATIONADDITIONNELLE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDECLARATIONADDITIONNELLE());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_DATE_TRAITEMENT" : {
+            case "AUTRE_INFORMATION_DATE_TRAITEMENT": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDATETRAITEMENT() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDATETRAITEMENT() != null) {
                     fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDATETRAITEMENT()));
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_TYPE_TRAITEMENT" : {
+            case "AUTRE_INFORMATION_TYPE_TRAITEMENT": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTYPETRAITEMENT() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTYPETRAITEMENT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTYPETRAITEMENT());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_DUREE_TRAITEMENT" : {
+            case "AUTRE_INFORMATION_DUREE_TRAITEMENT": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDUREETRAITEMENT() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDUREETRAITEMENT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDUREETRAITEMENT());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_TEMPERATURE" : {
+            case "AUTRE_INFORMATION_TEMPERATURE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTEMPERATURE() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTEMPERATURE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTEMPERATURE());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_TRAITEMENT_EFFECTUE" : {
+            case "AUTRE_INFORMATION_TRAITEMENT_EFFECTUE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTRAITEMENTEFFECTUE() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTRAITEMENTEFFECTUE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getTRAITEMENTEFFECTUE());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_PRODUIT_CHIMIQUE" : {
+            case "AUTRE_INFORMATION_PRODUIT_CHIMIQUE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getPRODUITCHIMIQUE() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getPRODUITCHIMIQUE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getPRODUITCHIMIQUE());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_CONCENTRATION" : {
+            case "AUTRE_INFORMATION_CONCENTRATION": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getCONCENTRATION() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getCONCENTRATION() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getCONCENTRATION());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_RENSEIGNEMENT_COMPLEMENTAIRE" : {
+            case "AUTRE_INFORMATION_RENSEIGNEMENT_COMPLEMENTAIRE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getRENSEIGNEMENTCOMPLEMENTAIRE() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getRENSEIGNEMENTCOMPLEMENTAIRE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getRENSEIGNEMENTCOMPLEMENTAIRE());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_FUMIGATION" : {
+            case "AUTRE_INFORMATION_FUMIGATION": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getFUMIGATION() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getFUMIGATION() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getFUMIGATION());
                 }
                 break;
             }
-            case "AUTRE_INFORMATION_DESINFECTION" : {
+            case "AUTRE_INFORMATION_DESINFECTION": {
                 if (document.getCONTENT() != null && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE() != null
-                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDESINFECTION() != null){
+                        && document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDESINFECTION() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCERTIFICATPHYTOSANITAIRE().getDESINFECTION());
                 }
                 break;
@@ -652,4 +646,3 @@ public class FileFieldValueCctExp {
     }
 
 }
-
