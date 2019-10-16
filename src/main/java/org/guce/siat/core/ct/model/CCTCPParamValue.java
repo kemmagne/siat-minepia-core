@@ -62,7 +62,6 @@ public class CCTCPParamValue extends AbstractModel implements Serializable {
 
 //    @Column(name = "OBSERVATIONS")
 //    private String observations;
-
     @Transient
     private int fileContainerCountValue;
     @Transient
@@ -70,10 +69,12 @@ public class CCTCPParamValue extends AbstractModel implements Serializable {
     @Transient
     private int filePackageCountValue;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -149,7 +150,6 @@ public class CCTCPParamValue extends AbstractModel implements Serializable {
 //    public void setObservations(String observations) {
 //        this.observations = observations;
 //    }
-
     @Override
     public int hashCode() {
         int hash = 3;
