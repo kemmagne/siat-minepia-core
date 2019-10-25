@@ -230,8 +230,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             FlowCode.FL_AP_169.name(), FlowCode.FL_AP_170.name(),
             FlowCode.FL_AP_171.name(), FlowCode.FL_AP_172.name(), FlowCode.FL_AP_173.name(), FlowCode.FL_AP_174.name());
     private static final List AMENDMENT_AP_FLOW_LIST = Arrays.asList(new String[]{FlowCode.FL_AP_200.name()});
-    
-    
+
     private static final List<String> AMENDEMENT_CTE_FLOW_LIST = Arrays.asList(FlowCode.FL_CT_110.name());
     /**
      * The Constant PREFIXE_FACTURE.
@@ -642,7 +641,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             if (guceSiatBureau != null) {
                 final Bureau bureau = bureauDao.findByServiceAndCode(fileConverted.getBureau().getService(),
                         guceSiatBureau.getSiatBureau());
-                if (bureau != null){
+                if (bureau != null) {
                     fileConverted.setBureau(bureau);
                 }
                 // in fine le bureau auquel doit être affecté le dossier est celui auquel il a été
@@ -875,16 +874,16 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case CCT_CT_E:
                 case CC_CT:
                 case CQ_CT:
-                case CCT_CT_E_ATP:{
-                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())){
+                case CCT_CT_E_ATP: {
+                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())) {
                         firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
                     } else {
                         firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
                     }
-                    
+
                     break;
                 }
-                    
+
                 case CCT_CT_E_PVI:
                 case CCT_CT_E_FSTP:
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
@@ -1063,6 +1062,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
     }
 
     @Transactional(readOnly = false)
+    @Override
     public void rollbackFile(File currentFile, File nextFile) {
         List<FileFieldValue> newFileFieldValueList = null;
         for (FileFieldValue fileFieldValue : currentFile.getFileFieldValueList()) {
@@ -1071,7 +1071,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             while (iterator.hasNext()) {
                 FileFieldValue newFileFieldValue = (FileFieldValue) iterator.next();
                 if (fileFieldValue.getFileField().equals(newFileFieldValue.getFileField())) {
-                    if (fileFieldValue.getFileField().getUpdatable().booleanValue()) {
+                    if (BooleanUtils.toBoolean(fileFieldValue.getFileField().getUpdatable())) {
                         fileFieldValue.setValue(newFileFieldValue.getValue());
                     }
                 }
@@ -1204,7 +1204,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @param document the document
      */
     private void proceedWorkflowForPaiementRequest(final File fileFromSiat, final Serializable document) {
-        Flow flowToExecute = null;
+        Flow flowToExecute;
         if (Arrays.asList(FileTypeCode.CCT_CT, FileTypeCode.CCT_CT_E, FileTypeCode.CC_CT, FileTypeCode.CQ_CT).contains(
                 fileFromSiat.getFileType().getCode())) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_93.name());
@@ -1213,7 +1213,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         } else {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_168.name());
         }
-        final List<PaymentItemFlow> paymentItemFlowList = new ArrayList<PaymentItemFlow>();
+        final List<PaymentItemFlow> paymentItemFlowList = new ArrayList<>();
 
         final PaymentData paymentDataNew = new PaymentData();
         final Flow paymentFlow = itemFlowDao.findLastSentItemFlowByFileItem(fileFromSiat.getFileItemsList().get(0)).getFlow();
@@ -1354,7 +1354,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      */
     private List<ItemFlowData> retrieveItemFlowDatas(final Serializable document, final Flow flowToExecute) {
         String observation = null;
-        final List<ItemFlowData> itemFlowDatas = new ArrayList<ItemFlowData>();
+        final List<ItemFlowData> itemFlowDatas = new ArrayList<>();
 
         if (document instanceof org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT) {
             final org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT retrievedocument = (org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT) document;
@@ -2212,7 +2212,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         } else if (CollectionUtils.isEmpty(flowToExecute.getCopyRecipientsList())) {
             /* DECISION PAR ARTICLE */
-            final List<MARCHANDISE> marchandiseList = new ArrayList<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE>();
+            final List<MARCHANDISE> marchandiseList = new ArrayList<>();
             for (final FileItem fileItem : fileItemList) {
                 ItemFlowData itemFlowDataToInsert = null;
                 for (final ItemFlow itemFlow : itemFlowList) {
@@ -2522,7 +2522,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         } else if (CollectionUtils.isEmpty(flowToExecute.getCopyRecipientsList())) {
             /* DECISION PAR ARTICLE */
-            final List<org.guce.siat.jaxb.cct.CC_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> marchandiseList = new ArrayList<org.guce.siat.jaxb.cct.CC_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE>();
+            final List<org.guce.siat.jaxb.cct.CC_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> marchandiseList = new ArrayList<>();
             for (final FileItem fileItem : fileItemList) {
                 ItemFlowData itemFlowDataToInsert = null;
                 for (final ItemFlow itemFlow : itemFlowList) {
@@ -2652,7 +2652,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         } else if (CollectionUtils.isEmpty(flowToExecute.getCopyRecipientsList())) {
             /* DECISION PAR ARTICLE */
-            final List<org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> marchandiseList = new ArrayList<org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE>();
+            final List<org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> marchandiseList = new ArrayList<>();
             for (final FileItem fileItem : fileItemList) {
                 ItemFlowData itemFlowDataToInsert = null;
                 for (final ItemFlow itemFlow : itemFlowList) {
@@ -6192,11 +6192,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         file.setFileFieldValueList(fileFieldValues);
         file.setFileType(fileType);
-        
+
         // Set Parent File
-        if (file.getNumeroDossierBase() != null){
-           final File parent = fileDao.findByNumDossierGuce(file.getNumeroDossierBase());
-           file.setParent(parent);
+        if (file.getNumeroDossierBase() != null) {
+            final File parent = fileDao.findByNumDossierGuce(file.getNumeroDossierBase());
+            file.setParent(parent);
         }
 
         if (FlowCode.FL_CT_61.name().equals(flowGuceSiat.getFlowSiat())) {
@@ -6538,7 +6538,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         // Set file type
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CC_CT);
 
@@ -6701,13 +6701,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.cct.CC_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document.getCONTENT()
                     .getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCc.generateFileItemFieldValueCcCT(fileItem,
@@ -6783,7 +6783,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -6828,7 +6828,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         // Set file type
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CQ_CT);
 
@@ -6991,13 +6991,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document.getCONTENT()
                     .getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCq.generateFileItemFieldValueCqCT(fileItem,
@@ -7073,7 +7073,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -7118,7 +7118,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
         final File file = new File();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.VT_MINEPIA);
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         // Set file type
         for (final FileField fileField : fileType.getFileFieldList()) {
             final FileFieldValue fileFieldValue = FileFieldValueVtMINEPIA.generateFileFieldValueVtMINEPIA(file, fileField, document,
@@ -7279,14 +7279,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueVtMINEPIA.generateFileItemFieldValueVtMINEPIA(
                             fileItem, fileItemField, marchandise);
@@ -7339,7 +7339,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -7425,7 +7425,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.VT_MINEPDED);
         file.setFileType(fileType);
 
@@ -7588,14 +7588,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueVtMINEPDED.generateFileItemFieldValueVtMINEPDED(
                             fileItem, fileItemField, marchandise);
@@ -7662,7 +7662,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -7742,7 +7742,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AT_MINEPIA);
         file.setFileType(fileType);
 
@@ -7894,14 +7894,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AT_MINEPIA.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAtMINEPIA.generateFileItemFieldValueAtMINEPIA(
                             fileItem, fileItemField, marchandise);
@@ -7966,7 +7966,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -8051,7 +8051,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AIE_MINADER);
         file.setFileType(fileType);
 
@@ -8214,14 +8214,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAieMINADER.generateFileItemFieldValueAieMINADER(
@@ -8296,7 +8296,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -8406,7 +8406,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AE_MINADER);
         file.setFileType(fileType);
 
@@ -8569,14 +8569,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AE_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAeMINADER.generateFileItemFieldValueAeMINADER(
@@ -8650,7 +8650,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -8761,7 +8761,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.EH_MINADER);
         file.setFileType(fileType);
 
@@ -8923,14 +8923,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueEhMINADER.generateFileItemFieldValueEhMINADER(
@@ -8997,7 +8997,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -9108,7 +9108,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CAT_MINADER);
         file.setFileType(fileType);
 
@@ -9269,14 +9269,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.CAT_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCatMINADER.generateFileItemFieldValueCatMINADER(
@@ -9345,7 +9345,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -9392,7 +9392,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.PIVPSRP_MINADER);
         file.setFileType(fileType);
 
@@ -9543,14 +9543,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.PIVPSRP_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValuePivpsvpMINADER
@@ -9617,7 +9617,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -9728,7 +9728,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.DI_MINADER);
         file.setFileType(fileType);
 
@@ -9879,14 +9879,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.DI_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueDiMINADER.generateFileItemFieldValueDiMINADER(
@@ -9954,7 +9954,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -10065,7 +10065,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AT_MINSANTE);
         file.setFileType(fileType);
 
@@ -10216,14 +10216,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AT_MINSANTE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAtMINSANTE.generateFileItemFieldValueAtMINSANTE(
@@ -10289,7 +10289,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -10375,7 +10375,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CEA_MINMIDT);
         file.setFileType(fileType);
 
@@ -10526,14 +10526,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.CEA_MINMIDT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCeaMINMIDT.generateFileItemFieldValueCeaMINMIDT(
                             fileItem, fileItemField, marchandise);
@@ -10598,7 +10598,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -10708,7 +10708,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AI_MINSANTE);
         file.setFileType(fileType);
 
@@ -10860,14 +10860,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AI_MINSANTE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAiMINSANTE.generateFileItemFieldValueAiMINSANTE(
@@ -10934,7 +10934,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -10980,7 +10980,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AS_MINADER);
         file.setFileType(fileType);
 
@@ -11132,14 +11132,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AS_MINADER.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAsMINADER.generateFileItemFieldValueAsMINADER(
@@ -11205,7 +11205,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -11315,7 +11315,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.VTP_MINSANTE);
         file.setFileType(fileType);
 
@@ -11468,14 +11468,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.VTP_MINSANTE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueVtpMINSANTE.generateFileItemFieldValueVtpMINSANTE(
@@ -11541,7 +11541,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -11650,7 +11650,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.VTD_MINSANTE);
         file.setFileType(fileType);
 
@@ -11802,14 +11802,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.VTD_MINSANTE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueVtdMINSANTE.generateFileItemFieldValueVtdMINSANTE(
@@ -11875,7 +11875,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -11984,7 +11984,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AI_MINMIDT);
         file.setFileType(fileType);
 
@@ -12136,14 +12136,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AI_MINMIDT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAiMINMIDT.generateFileItemFieldValueAiMINMIDT(
@@ -12209,7 +12209,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -12254,7 +12254,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AE_MINMIDT);
         file.setFileType(fileType);
 
@@ -12470,14 +12470,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
         }
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AE_MINMIDT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAeMINMIDT.generateFileItemFieldValueAeMINMIDT(
@@ -12543,7 +12543,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -12589,7 +12589,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CP_MINEPDED);
         file.setFileType(fileType);
 
@@ -12741,14 +12741,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.CP_MINEPDED.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCpMINEPDED.generateFileItemFieldValueCpMINEPDED(
@@ -12814,7 +12814,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -12924,7 +12924,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AS_MINFOF);
         file.setFileType(fileType);
 
@@ -13076,14 +13076,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.AS_MINFOF.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document.getCONTENT()
                     .getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAsMINFOF.generateFileItemFieldValueAsMINFOF(
@@ -13149,7 +13149,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -13259,7 +13259,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
         final File file = new File();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.AS_MINCOMMERCE);
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
 
         for (final FileField fileField : fileType.getFileFieldList()) {
             final FileFieldValue fileFieldValue = FileFieldValueAsMINCOMMERCE.generateFileFieldValueAsMINCOMMERCE(file, fileField,
@@ -13409,14 +13409,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.monitoring.AS_MINCOMMERCE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
 
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueAsMINCOMMERCE
@@ -13478,7 +13478,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -13523,7 +13523,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.FIMEX);
         file.setFileType(fileType);
 
@@ -13661,7 +13661,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -13692,7 +13692,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         // ajouter fileItem fictif pour que le workflow puisse marcher
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         final FileItem fileItem = new FileItem();
 
         if (document.getMESSAGE() != null && document.getMESSAGE().getNUMEROMESSAGE() != null) {
@@ -13720,7 +13720,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.FIMEX_WF);
         file.setFileType(fileType);
 
@@ -13868,7 +13868,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -13911,13 +13911,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
          */
 
  /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.monitoring.FIMEX_WF.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueFimexWF.generateFileItemFieldValueFimexWF(
@@ -13965,7 +13965,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.IDI);
         file.setFileType(fileType);
 
@@ -14104,13 +14104,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.monitoring.IDI.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueIDI.generateFileItemFieldValueIdi(fileItem,
@@ -14175,7 +14175,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -14285,7 +14285,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.IDE);
         file.setFileType(fileType);
 
@@ -14423,13 +14423,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.monitoring.IDE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueIDE.generateFileItemFieldValueIde(fileItem,
@@ -14492,7 +14492,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -14603,7 +14603,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.DI_MINCOMMERCE);
         file.setFileType(fileType);
 
@@ -14819,14 +14819,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.monitoring.DI_MINCOMMERCE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueDiMINCOMMERCE
                             .generateFileItemFieldValueDiMINCOMMERCE(fileItem, fileItemField, marchandise);
@@ -14887,7 +14887,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -14934,7 +14934,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.DE_MINCOMMERCE);
         file.setFileType(fileType);
 
@@ -15150,13 +15150,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.monitoring.DE_MINCOMMERCE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueDeMINCOMMERCE
                             .generateFileItemFieldValueDeMINCOMMERCE(fileItem, fileItemField, marchandise);
@@ -15214,7 +15214,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -15259,7 +15259,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CO_MINFOF_FORET);
         file.setFileType(fileType);
 
@@ -15411,14 +15411,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.CO_MINFOF_FORET.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCoForetMINFOF
@@ -15485,7 +15485,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -15595,7 +15595,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
 
         final File file = new File();
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CO_MINFOF_FAUNE);
         file.setFileType(fileType);
 
@@ -15757,14 +15757,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.ap.CO_MINFOF_FAUNE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
 
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCoFauneMINFOF
@@ -15830,7 +15830,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -15941,7 +15941,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.LVTB_MINFOF);
         file.setFileType(fileType);
 
@@ -16091,13 +16091,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
         }
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.ap.LVTB_MINFOF.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueLvtbMINFOF.generateFileItemFieldValueLvtbMINFOF(
                             fileItem, fileItemField, marchandise);
@@ -16155,7 +16155,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -16201,7 +16201,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final File file = new File();
 
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.BSBE_MINFOF);
         file.setFileType(fileType);
 
@@ -16350,7 +16350,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
         if (document.getCONTENT() != null && document.getCONTENT().getLISTEDESSPECIFICATIONS() != null && document.getCONTENT().getLISTEDESSPECIFICATIONS().getSPECIFICATION() != null) {
             woodSpecificationDao.removeByFile(file);
-            woodSpecifications = new ArrayList<WoodSpecification>();
+            woodSpecifications = new ArrayList<>();
             for (org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT.CONTENT.LISTEDESSPECIFICATIONS.SPECIFICATION specification : document.getCONTENT().getLISTEDESSPECIFICATIONS().getSPECIFICATION()) {
                 WoodSpecification newSpec = new WoodSpecification();
                 newSpec.setFile(file);
@@ -16372,13 +16372,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
         }
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
             for (final org.guce.siat.jaxb.ap.BSBE_MINFOF.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueBsbeMINFOF.generateFileItemFieldValueBsbeMINFOF(
                             fileItem, fileItemField, marchandise);
@@ -16410,7 +16410,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
@@ -16443,7 +16443,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 }
             }
         }
-        
+
         if (document.getCONTENT() != null && document.getCONTENT().getDECISIONORGANISME() != null) {
             final DecisionOrganism decisionOrganism = new DecisionOrganism();
             decisionOrganism.setCode(document.getCONTENT().getDECISIONORGANISME().getCODE());
@@ -16542,7 +16542,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      */
     public void notificationEmail(final File file, final Flow firstFlow) {
 
-        final Map<String, String> map = new HashMap<String, String>();
+        final Map<String, String> map = new HashMap<>();
 
         if (file.getAssignedUser() != null) {
             final User usr = file.getAssignedUser();
@@ -16565,7 +16565,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         } else if (file.getBureau() != null) {
 
             final Administration administration = administrationDao.find(file.getBureau().getId());
-            final List<Administration> adminList = new ArrayList<Administration>();
+            final List<Administration> adminList = new ArrayList<>();
             adminList.add(administration);
 
             // get the bureaus for the administration of the logged user and
@@ -16798,7 +16798,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             throws ParseException, ValidationException {
         final File file = new File();
         final FileType fileType = fileTypeDao.findByCode(FileTypeCode.IRMP_MINCOMMERCE);
-        final List<FileFieldValue> fileFieldValues = new ArrayList<FileFieldValue>();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
 
         for (final FileField fileField : fileType.getFileFieldList()) {
             final FileFieldValue fileFieldValue = FileFieldValueIrmpMINCOMMERCE.generateFileFieldValueIrmpMINCOMMERCE(file, fileField, document, applicationPropretiesService);
@@ -16947,14 +16947,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* MARCHANDISES */
-        final List<FileItem> fileItems = new ArrayList<FileItem>();
+        final List<FileItem> fileItems = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
                 && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
 
             for (final org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document
                     .getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
                 final FileItem fileItem = new FileItem();
-                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<FileItemFieldValue>();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
 
                 for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
                     final FileItemFieldValue fileItemFieldValue = FileItemFieldValueIrmpMINCOMMERCE.generateFileItemFieldValueIrmpMINCOMMERCE(fileItem, fileItemField, marchandise);
@@ -16992,7 +16992,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         /* PIECES JOINTES */
-        final List<Attachment> attachmentList = new ArrayList<Attachment>();
+        final List<Attachment> attachmentList = new ArrayList<>();
         if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
                 && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {

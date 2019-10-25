@@ -1,7 +1,9 @@
 package org.guce.siat.core.utils.cct.file;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
@@ -502,7 +504,7 @@ public class FileFieldValueCctExp {
                         && document.getCONTENT().getCONTENEURS() != null
                         && CollectionUtils.isNotEmpty(document.getCONTENT().getCONTENEURS().getCONTENEUR())) {
                     List<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR> conteneurs = document.getCONTENT().getCONTENEURS().getCONTENEUR();
-                    List<Container> containers = new ArrayList<>();
+                    Set<Container> containers = new HashSet<>();
                     for (DOCUMENT.CONTENT.CONTENEURS.CONTENEUR currentEssai : conteneurs) {
 
                         final Container container = new Container();
@@ -518,7 +520,7 @@ public class FileFieldValueCctExp {
 
                         containers.add(container);
                     }
-                    file.setContainers(containers);
+                    file.setContainers(new ArrayList<>(containers));
                 }
                 break;
             }
