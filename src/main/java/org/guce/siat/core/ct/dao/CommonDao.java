@@ -159,17 +159,15 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
 	 * @return the list
 	 */
 	List<FileItem> findPindingFileItem(Filter filter, User user);
-        
-        
-        List<Object[]> getExportNshDestination(CteFilter filter, List<Long> fileTypeIdList);
-        
-        List<Object[]> getExportNshDestinationSender(CteFilter filter, List<Long> fileTypeIdList);
-        
-        List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList);
-        
-        List<Object[]> getGlobalDelayListing(CteFilter filter, List<Long> fileTypeIdList);
-        List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList);
-        
-        
-        
+
+	List<Object[]> getExportNshDestination(CteFilter filter, List<Long> fileTypeIdList);
+
+	List<Object[]> getExportNshDestinationSender(CteFilter filter, List<Long> fileTypeIdList);
+
+	List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList);
+
+	List<Object[]> getGlobalDelayListing(CteFilter filter, List<Long> fileTypeIdList);
+
+	List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList);
+
 }
