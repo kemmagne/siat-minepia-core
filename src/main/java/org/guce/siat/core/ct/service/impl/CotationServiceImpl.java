@@ -8,15 +8,17 @@ import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
-import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.Step;
+import org.guce.siat.common.model.Transfer;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FileFieldValueService;
 import org.guce.siat.common.service.FileService;
 import org.guce.siat.common.service.FlowService;
 import org.guce.siat.common.service.ItemFlowService;
+import org.guce.siat.common.service.TransferService;
+import org.guce.siat.common.service.UserService;
 import org.guce.siat.common.utils.enums.AperakType;
 import org.guce.siat.core.ct.dao.CotationDao;
 import org.slf4j.Logger;
@@ -38,21 +40,25 @@ public class CotationServiceImpl implements CotationService {
     private static final Logger LOG = LoggerFactory.getLogger(CotationServiceImpl.class);
 
     @Autowired
-    private FileService fileService;
+    private UserService userService;
     @Autowired
-    private ItemFlowService itemFlowService;
+    private FileService fileService;
     @Autowired
     private FlowService flowService;
     @Autowired
     private FileFieldValueService fileFieldValueService;
+    @Autowired
+    private ItemFlowService itemFlowService;
+    @Autowired
+    private TransferService transferService;
 
     @Autowired
     private CotationDao cotationDao;
 
     @Override
     public void dispatch(File currentFile, User loggedUser, Flow currentFlow) {
-        Step fileItemStep = currentFlow.getToStep();
-        List<Flow> flowList = flowService.findFlowsByFromStepAndFileType2(fileItemStep, currentFile.getFileType());
+        Step cotationStep = currentFlow.getToStep();
+        List<Flow> flowList = flowService.findFlowsByFromStepAndFileType2(cotationStep, currentFile.getFileType());
         Flow cotationFlow = null;
         for (Flow flow : flowList) {
             if (BooleanUtils.toBoolean(flow.getIsCota())) {
@@ -62,17 +68,25 @@ public class CotationServiceImpl implements CotationService {
         }
 
         if (cotationFlow == null) {
-            LOG.error("Cannot not determine the cotation flow : {} - {}", currentFile, fileItemStep);
+            LOG.error("Cannot not determine the cotation flow : {} - {}", currentFile, cotationStep);
             return;
         }
 
-        User sender = loggedUser; // demander Stève ??? ...
-        User assignedUserForCotation = null;
+        Step treatmentStep = cotationFlow.getToStep();
+        User sender = userService.findByLogin("ROOT");
+        User assignedUser = null;
 
-        List<File> files = fileService.findByNumeroDemandeAndBureau(currentFile, fileItemStep);
-        if (!files.isEmpty()) {
-            assignedUserForCotation = files.get(0).getAssignedUser();
-        } else {
+        Transfer existingTransfer = transferService.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
+        if (existingTransfer != null) {
+            assignedUser = existingTransfer.getAssignedUser();
+        }
+
+        if (assignedUser == null) {
+            List<File> files = fileService.findByNumeroDemandeAndBureau(currentFile, treatmentStep);
+            assignedUser = !files.isEmpty() ? files.get(0).getAssignedUser() : null;
+        }
+
+        if (assignedUser == null) {
             FileFieldValue ffv = fileFieldValueService.findValueByFileFieldAndFile(CctExportProductType.getFileFieldCode(), currentFile);
             CctExportProductType productType;
             try {
@@ -81,16 +95,25 @@ public class CotationServiceImpl implements CotationService {
                 LOG.error("Cannot map the product type to the {} enum : {} - {}", CctExportProductType.class, currentFile, ffv.getValue());
                 return;
             }
-            FileType fileType = currentFile.getFileType();
             Bureau bureau = currentFile.getBureau();
+            assignedUser = cotationDao.findUserForCotation(productType, bureau);
         }
 
-        if (assignedUserForCotation == null) {
-            LOG.error("Cannot not determine the cotation user : {} - {}", currentFile, fileItemStep);
+        if (assignedUser == null) {
+            LOG.error("Cannot not determine the user to assign the file : {} - {}", currentFile, cotationStep);
             return;
         }
 
-        takeDecision(currentFile, sender, assignedUserForCotation, cotationFlow);
+        takeDecision(currentFile, sender, assignedUser, cotationFlow);
+
+        Transfer transfer = new Transfer();
+
+        transfer.setAssignedUser(assignedUser);
+        transfer.setFile(currentFile);
+        transfer.setNumeroDemande(currentFile.getNumeroDemande());
+        transfer.setUser(sender);
+
+        transferService.save(transfer);
     }
 
     private void takeDecision(File currentFile, User sender, User assignedUserForCotation, Flow cotationFlow) {
