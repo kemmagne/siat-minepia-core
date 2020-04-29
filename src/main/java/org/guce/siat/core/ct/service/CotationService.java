@@ -11,7 +11,7 @@ import org.guce.siat.common.model.User;
  */
 public interface CotationService {
 
-    void dispatch(File currentFile, User loggedUser, Flow currentFlow);
+    void dispatch(File currentFile, Flow currentFlow);
 
     List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile);
 

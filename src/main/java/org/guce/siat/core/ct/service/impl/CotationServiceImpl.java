@@ -56,7 +56,7 @@ public class CotationServiceImpl implements CotationService {
     private CotationDao cotationDao;
 
     @Override
-    public void dispatch(File currentFile, User loggedUser, Flow currentFlow) {
+    public void dispatch(File currentFile, Flow currentFlow) {
         Step cotationStep = currentFlow.getToStep();
         List<Flow> flowList = flowService.findFlowsByFromStepAndFileType2(cotationStep, currentFile.getFileType());
         Flow cotationFlow = null;
@@ -73,7 +73,7 @@ public class CotationServiceImpl implements CotationService {
         }
 
         Step treatmentStep = cotationFlow.getToStep();
-        User sender = userService.findByLogin("ROOT");
+        User sender = userService.findByLogin("SYSTEM");
         User assignedUser = null;
 
         Transfer existingTransfer = transferService.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
