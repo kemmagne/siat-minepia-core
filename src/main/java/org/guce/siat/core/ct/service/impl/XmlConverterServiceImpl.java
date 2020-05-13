@@ -1382,12 +1382,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         paymentDataDao.save(paymentDataNew);
         paymentDataDao.update(paymentData);
 
-        if (isPhyto(fileFromSiat) && flowDao.findBeforeCotationStepFlows(fileFromSiat).contains(flowToExecute)) {
+        if (isPhyto(fileFromSiat)) {
             cotationService.dispatch(fileFromSiat, flowToExecute);
         }
     }
 
-    public boolean isPhyto(File fileFromSiat) {
+    private boolean isPhyto(File fileFromSiat) {
         boolean checkMinaderMinistry = fileFromSiat.getDestinataire().equalsIgnoreCase(MINADER_MINISTRY);
         return checkMinaderMinistry && Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCT_CT_E_PVI).contains(fileFromSiat.getFileType().getCode());
     }

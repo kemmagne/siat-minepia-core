@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.dao.FileItemDao;
+import org.guce.siat.common.dao.FlowDao;
+import org.guce.siat.common.dao.TransferDao;
+import org.guce.siat.common.dao.UserDao;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
@@ -16,10 +19,7 @@ import org.guce.siat.common.model.Transfer;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FileFieldValueService;
 import org.guce.siat.common.service.FileService;
-import org.guce.siat.common.service.FlowService;
 import org.guce.siat.common.service.ItemFlowService;
-import org.guce.siat.common.service.TransferService;
-import org.guce.siat.common.service.UserService;
 import org.guce.siat.common.utils.enums.AperakType;
 import org.guce.siat.core.ct.dao.CotationDao;
 import org.slf4j.Logger;
@@ -41,17 +41,17 @@ public class CotationServiceImpl implements CotationService {
     private static final Logger LOG = LoggerFactory.getLogger(CotationServiceImpl.class);
 
     @Autowired
-    private UserService userService;
+    private UserDao userDao;
     @Autowired
     private FileService fileService;
     @Autowired
-    private FlowService flowService;
+    private FlowDao flowDao;
     @Autowired
     private FileFieldValueService fileFieldValueService;
     @Autowired
     private ItemFlowService itemFlowService;
     @Autowired
-    private TransferService transferService;
+    private TransferDao transferDao;
 
     /**
      * The file item dao.
@@ -63,8 +63,13 @@ public class CotationServiceImpl implements CotationService {
 
     @Override
     public void dispatch(File currentFile, Flow currentFlow) {
+
+        if (!flowDao.findBeforeCotationStepFlows(currentFile).contains(currentFlow)) {
+            return;
+        }
+
         Step cotationStep = currentFlow.getToStep();
-        List<Flow> flowList = flowService.findFlowsByFromStepAndFileType2(cotationStep, currentFile.getFileType());
+        List<Flow> flowList = flowDao.findFlowsByFromStepAndFileType2(cotationStep, currentFile.getFileType());
         Flow cotationFlow = null;
         for (Flow flow : flowList) {
             if (BooleanUtils.toBoolean(flow.getIsCota())) {
@@ -79,10 +84,10 @@ public class CotationServiceImpl implements CotationService {
         }
 
         Step treatmentStep = cotationFlow.getToStep();
-        User sender = userService.findByLogin("SYSTEM");
+        User sender = userDao.getUserByLogin("SYSTEM");
         User assignedUser = null;
 
-        Transfer existingTransfer = transferService.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
+        Transfer existingTransfer = transferDao.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
         if (existingTransfer != null) {
             assignedUser = existingTransfer.getAssignedUser();
         }
@@ -119,7 +124,7 @@ public class CotationServiceImpl implements CotationService {
         transfer.setNumeroDemande(currentFile.getNumeroDemande());
         transfer.setUser(sender);
 
-        transferService.save(transfer);
+        transferDao.save(transfer);
     }
 
     private void takeDecision(File currentFile, User sender, User assignedUser, Flow cotationFlow) {
