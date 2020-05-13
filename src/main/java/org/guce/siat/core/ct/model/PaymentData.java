@@ -183,6 +183,9 @@ public class PaymentData extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "primaryKey.paymentData", cascade = CascadeType.PERSIST)
     private List<PaymentItemFlow> paymentItemFlowList;
 
+    @OneToMany(mappedBy = "paymentData", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    private List<InvoiceLine> invoiceLines;
+
     /**
      * Gets the id.
      *
@@ -581,6 +584,14 @@ public class PaymentData extends AbstractModel implements Serializable {
         this.paymentItemFlowList = paymentItemFlowList;
     }
 
+    public List<InvoiceLine> getInvoiceLines() {
+        return invoiceLines;
+    }
+
+    public void setInvoiceLines(List<InvoiceLine> invoiceLines) {
+        this.invoiceLines = invoiceLines;
+    }
+
     /**
      * Gets the deleted.
      *
@@ -641,10 +652,7 @@ public class PaymentData extends AbstractModel implements Serializable {
             return false;
         }
         final PaymentData other = (PaymentData) object;
-        if ((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId()))) {
-            return false;
-        }
-        return true;
+        return !((this.getId() == null && other.getId() != null) || (this.getId() != null && !this.getId().equals(other.getId())));
     }
 
     /*

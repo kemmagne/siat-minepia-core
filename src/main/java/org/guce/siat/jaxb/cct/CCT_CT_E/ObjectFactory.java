@@ -1,8 +1,8 @@
 //
-// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b130911.1802
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.7
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
 // Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
-// Généré le : 2018.10.10 à 06:16:35 PM WAT
+// Généré le : 2020.05.05 à 02:34:33 PM WAT
 //
 package org.guce.siat.jaxb.cct.CCT_CT_E;
 
@@ -13,7 +13,8 @@ import javax.xml.namespace.QName;
 
 /**
  * This object contains factory methods for each Java content interface and Java
- * element interface generated in the generated package.
+ * element interface generated in the org.guce.orchestra.process.cte.binding
+ * package.
  * <p>
  * An ObjectFactory allows you to programatically construct new instances of the
  * Java representation for XML content. The Java representation of XML content
@@ -29,7 +30,8 @@ public class ObjectFactory {
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of
-     * schema derived classes for package: generated
+     * schema derived classes for package:
+     * org.guce.orchestra.process.cte.binding
      *
      */
     public ObjectFactory() {
@@ -73,14 +75,6 @@ public class ObjectFactory {
      */
     public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE createDOCUMENTCONTENTMARCHANDISESMARCHANDISE() {
         return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE();
-    }
-
-    /**
-     * Create an instance of {@link DOCUMENT.CONTENT.INSPECTION }
-     *
-     */
-    public DOCUMENT.CONTENT.INSPECTION createDOCUMENTCONTENTINSPECTION() {
-        return new DOCUMENT.CONTENT.INSPECTION();
     }
 
     /**
@@ -186,6 +180,22 @@ public class ObjectFactory {
      */
     public DOCUMENT.CONTENT.SIGNATAIRE createDOCUMENTCONTENTSIGNATAIRE() {
         return new DOCUMENT.CONTENT.SIGNATAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INSPECTION }
+     *
+     */
+    public DOCUMENT.CONTENT.INSPECTION createDOCUMENTCONTENTINSPECTION() {
+        return new DOCUMENT.CONTENT.INSPECTION();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CERTIFICATPHYTOSANITAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.CERTIFICATPHYTOSANITAIRE createDOCUMENTCONTENTCERTIFICATPHYTOSANITAIRE() {
+        return new DOCUMENT.CONTENT.CERTIFICATPHYTOSANITAIRE();
     }
 
     /**
@@ -445,7 +455,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "", name = "POIDS", scope = DOCUMENT.CONTENT.LOTS.LOT.class)
     public JAXBElement<String> createDOCUMENTCONTENTLOTSLOTPOIDS(String value) {
-        return new JAXBElement<String>(_DOCUMENTCONTENTLOTSLOTPOIDS_QNAME, String.class, DOCUMENT.CONTENT.LOTS.LOT.class, value);
+        return new JAXBElement<>(_DOCUMENTCONTENTLOTSLOTPOIDS_QNAME, String.class, DOCUMENT.CONTENT.LOTS.LOT.class, value);
     }
 
 }

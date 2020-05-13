@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,6 +49,7 @@ import org.guce.siat.common.utils.ebms.EbmsUtility;
 import org.guce.siat.common.utils.ebms.Generator;
 import org.guce.siat.common.utils.enums.AperakType;
 import org.guce.siat.common.utils.enums.FileTypeCode;
+import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.exception.ValidationException;
 import org.guce.siat.common.utils.ged.AlfrescoDirectoriesInitializer;
 import org.guce.siat.common.utils.ged.CmisSession;
@@ -57,6 +59,8 @@ import org.guce.siat.core.ct.service.CtDocumentReciever;
 import org.guce.siat.utility.jaxb.common.ERREURS;
 import org.guce.siat.utility.jaxb.common.ERREURS.ERREUR;
 import org.guce.siat.utility.jaxb.common.MESSAGE;
+import org.guce.siat.utility.jaxb.common.PaymentDocument;
+import org.guce.siat.utility.jaxb.common.PayDocJAXBContextCreator;
 import org.guce.siat.utility.jaxb.common.REFERENCEDOSSIER;
 import org.guce.siat.utility.jaxb.common.ROUTAGE;
 import org.slf4j.Logger;
@@ -300,13 +304,12 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
      *
      * @param xmlBytes
      * @param xmlContent the xml content
-     * @param xPath the x path 
+     * @param xPath the x path
      * @return Document
      * @throws XPathExpressionException the x path expression exception
      * @throws JAXBException the JAXB exception
      */
-    private Serializable getReceivedDocument(final byte[] xmlBytes, final String xmlContent, final XPath xPath)
-            throws XPathExpressionException, JAXBException {
+    private Serializable getReceivedDocument(final byte[] xmlBytes, final String xmlContent, final XPath xPath) throws XPathExpressionException, JAXBException {
         final InputSource source = new InputSource(new StringReader(xmlContent));
         final String flowSource = xPath.evaluate(REFERENCE_GUCE_EXPRESSION, source);
 
@@ -315,13 +318,13 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
         Serializable document = null;
         InputStream xmlInputStream = new ByteArrayInputStream(xmlBytes);
 
-        if (FileTypeCode.AIE_MINADER.equals(flowGuceSiat.getFileType().getCode())) {
+        if (flowGuceSiat != null && FileTypeCode.AIE_MINADER.equals(flowGuceSiat.getFileType().getCode())) {
             final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AIE_MINADER.JAXBContextCreator.getInstance();
             // Unmarshalling the document
             final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
             document = (org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
         }
-        if (null != flowGuceSiat.getFileType().getCode()) {
+        if (flowGuceSiat != null && flowGuceSiat.getFileType().getCode() != null) {
             switch (flowGuceSiat.getFileType().getCode()) {
                 case AE_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AE_MINADER.JAXBContextCreator.getInstance();
@@ -461,10 +464,16 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                 case CCT_CT_E_ATP:
                 case CCT_CT_E_FSTP:
                 case CCT_CT_E_PVE: {
-                    final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CT_E.JAXBContextCreator.getInstance();
-                    // Unmarshalling the document
-                    final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                    document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    if (!FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat()) && !FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat())) {
+                        final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CT_E.JAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    } else {
+                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    }
                     break;
                 }
                 case CC_CT: {
@@ -565,6 +574,12 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                     document = (org.guce.siat.jaxb.monitoring.IRPM_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
+                case PAYMENT: {
+                    final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                    final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                    document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    break;
+                }
             }
         }
         return document;
@@ -639,7 +654,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
         message.setETAT(StringUtils.EMPTY);
 
         // REFERENCE DOSSIER
-        final REFERENCEDOSSIER referencedossier = new REFERENCEDOSSIER();
+        REFERENCEDOSSIER referencedossier = new REFERENCEDOSSIER();
 
         referencedossier.setDATECREATION(dateCreation);
         referencedossier.setNUMERODEMANDE(numDemande);
@@ -648,31 +663,32 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
         referencedossier.setREFERENCESIAT(refSiat);
         referencedossier.setSERVICE(service);
         referencedossier.setSI(siSiat);
+
         if (AperakType.APERAK_K.name().equals(aperakType)) {
             referencedossier.setREFERENCESIAT(savedFile.getReferenceSiat());
         }
-        // ROUTAGE
 
-        final ROUTAGE routage = new ROUTAGE();
+        // ROUTAGE
+        ROUTAGE routage = new ROUTAGE();
 
         routage.setEMETTEUR(destinataire);
         routage.setDESTINATAIRE(emetteur);
-        final org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDocument = new org.guce.siat.utility.jaxb.aperak.DOCUMENT();
-        aperakDocument.setTYPEDOCUMENT(aperakType);
-        aperakDocument.setMESSAGE(message);
-        aperakDocument.setREFERENCEDOSSIER(referencedossier);
-        aperakDocument.setROUTAGE(routage);
+        org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDoc = new org.guce.siat.utility.jaxb.aperak.DOCUMENT();
+        aperakDoc.setTYPEDOCUMENT(aperakType);
+        aperakDoc.setMESSAGE(message);
+        aperakDoc.setREFERENCEDOSSIER(referencedossier);
+        aperakDoc.setROUTAGE(routage);
 
         // APERAK CONTENT
         if (AperakType.APERAK_C.name().equals(aperakType)) {
-            final ERREURS error = new ERREURS();
+            ERREURS error = new ERREURS();
             error.setERREUR(new ERREUR());
             error.getERREUR().setCODEERREUR(StringUtils.EMPTY);
             error.getERREUR().setLIBELLEERREUR(errorMessage);
             error.getERREUR().setREFERENCEDONNEE(null);
-            aperakDocument.setERREURS(error);
+            aperakDoc.setERREURS(error);
         }
-        return aperakDocument;
+        return aperakDoc;
     }
 
     /**

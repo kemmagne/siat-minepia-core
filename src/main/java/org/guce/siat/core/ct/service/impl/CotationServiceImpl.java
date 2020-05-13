@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
+import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
@@ -52,6 +53,11 @@ public class CotationServiceImpl implements CotationService {
     @Autowired
     private TransferService transferService;
 
+    /**
+     * The file item dao.
+     */
+    @Autowired
+    private FileItemDao fileItemDao;
     @Autowired
     private CotationDao cotationDao;
 
@@ -116,11 +122,14 @@ public class CotationServiceImpl implements CotationService {
         transferService.save(transfer);
     }
 
-    private void takeDecision(File currentFile, User sender, User assignedUserForCotation, Flow cotationFlow) {
+    private void takeDecision(File currentFile, User sender, User assignedUser, Flow cotationFlow) {
 
         List<ItemFlow> itemFlowsToAdd = new ArrayList<>();
 
         List<FileItem> fileItems = currentFile.getFileItemsList();
+        if (fileItems == null) {
+            fileItems = fileItemDao.findFileItemsByFile(currentFile);
+        }
         for (FileItem fileItem : fileItems) {
 
             final ItemFlow itemFlow = new ItemFlow();
@@ -132,14 +141,14 @@ public class CotationServiceImpl implements CotationService {
             itemFlow.setSent(Boolean.FALSE);
             itemFlow.setUnread(Boolean.TRUE);
             itemFlow.setReceived(AperakType.APERAK_D.getCharCode());
-            itemFlow.setAssignedUser(assignedUserForCotation);
+            itemFlow.setAssignedUser(assignedUser);
 
             itemFlowsToAdd.add(itemFlow);
         }
 
         itemFlowService.takeDecision(itemFlowsToAdd, null);
 
-        currentFile.setAssignedUser(assignedUserForCotation);
+        currentFile.setAssignedUser(assignedUser);
         fileService.update(currentFile);
 
         itemFlowService.sendDecisionsToDispatchCctFile(currentFile, fileItems);

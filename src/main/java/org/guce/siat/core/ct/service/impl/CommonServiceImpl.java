@@ -2,6 +2,7 @@ package org.guce.siat.core.ct.service.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -69,6 +70,7 @@ import org.guce.siat.core.ct.model.EssayTestAP;
 import org.guce.siat.core.ct.model.InspectionController;
 import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.InterceptionNotification;
+import org.guce.siat.core.ct.model.InvoiceLine;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
 import org.guce.siat.core.ct.model.Sample;
@@ -506,13 +508,13 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * @see org.guce.siat.core.ct.service.CommonService#rollbackDecision(java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void rollbackDecision(final List<Long> fileItems) {
         final List<ItemFlow> itemFlows = itemFlowDao.findItemFlowsByFileItemList(fileItems);
         final List<String> acceptationFlows = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(),
                 FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name());
         final List<String> DCC_FLOW_CODES = Arrays.asList(FlowCode.FL_CT_CVS_03.name(), FlowCode.FL_CT_CVS_07.name());
 
+        PaymentData paymentData = null;
         boolean alreadyDeleted = true;
         for (final ItemFlow itemFlow : itemFlows) {
             final String flowCode = itemFlow.getFlow().getCode();
@@ -629,6 +631,13 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentResultDao.update(draftTreatmentResult);
                 treatmentResultDao.delete(draftTreatmentResult);
                 this.deleteAttachedReports(attachments);
+            } //  Facture
+            else if (FlowCode.FL_CT_120.name().equals(flowCode) || FlowCode.FL_CT_124.name().equals(flowCode)) {
+                PaymentItemFlow paymentItemFlow = paymentDataDao.findPaymentItemFlowByItemFlow(itemFlow);
+                if (paymentItemFlow != null) {
+                    paymentData = paymentItemFlow.getPaymentData();
+                    paymentDataDao.delete(paymentItemFlow);
+                }
             } //ANALYSE Result AP
             else if (acceptationFlows.contains(flowCode)
                     && FileTypeCode.EH_MINADER.equals(fileItemDao.find(fileItems.get(0)).getFile().getFileType().getCode())) {
@@ -648,13 +657,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 }
             }
 
-            final List<ItemFlowData> itemFlowData = itemFlowDataDao
-                    .findByItemFlows(Collections.singletonList(itemFlow));
+            final List<ItemFlowData> itemFlowData = itemFlowDataDao.findByItemFlows(Collections.singletonList(itemFlow));
             if (CollectionUtils.isNotEmpty(itemFlowData)) {
                 itemFlowDataDao.deleteList(itemFlowData);
             }
 
             itemFlowDao.delete(itemFlow);
+        }
+
+        if (paymentData != null) {
+            paymentDataDao.delete(paymentData);
         }
 
         for (final ItemFlow itemFlow : itemFlows) {
@@ -1291,10 +1303,35 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 }
             }
         }
-        //	paymentData.setPaymentItemFlowList(paymentItemFlowList);
+
+        if (CollectionUtils.isEmpty(paymentData.getPaymentItemFlowList())) {
+            paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
+            for (ItemFlow iflow : itemFlowsToAdd) {
+
+                PaymentItemFlow paymentItemFlow = new PaymentItemFlow();
+
+                paymentItemFlow.setFileItemId(iflow.getFileItem().getId());
+                paymentItemFlow.setItemFlow(iflow);
+                paymentItemFlow.setMontantHt(paymentData.getMontantHt());
+                paymentItemFlow.setNatureFrais(paymentData.getNatureFrais());
+                paymentItemFlow.setPaymentData(paymentData);
+
+                paymentData.getPaymentItemFlowList().add(paymentItemFlow);
+            }
+        }
+
+        if (CollectionUtils.isNotEmpty(paymentData.getInvoiceLines())) {
+            for (InvoiceLine invoiceLine : paymentData.getInvoiceLines()) {
+                invoiceLine.setId(null);
+                invoiceLine.setMontantTtc(invoiceLine.getMontantHt() + invoiceLine.getMontantTva());
+                invoiceLine.setPaymentData(paymentData);
+            }
+        }
 
         paymentDataDao.save(paymentData);
 
+        paymentData.setRefFacture(new DecimalFormat("FAC-SIAT-000000").format(paymentData.getId()));
+        paymentDataDao.update(paymentData);
     }
 
 

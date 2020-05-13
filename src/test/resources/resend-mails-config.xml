@@ -1,0 +1,40 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context" xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-4.0.xsd">
+
+    <task:scheduled-tasks scheduler="ctResendMessagesScheduler">
+        <task:scheduled ref="taskMessageResender" method="resendMessage" fixed-delay="1800000" initial-delay="3000" />
+    </task:scheduled-tasks>
+
+    <task:scheduler id="ctResendMessagesScheduler" pool-size="10" />
+
+    <!-- Quartz scheduler related configuration -->
+    <bean name="emailSenderJob" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="jobClass" value="org.guce.siat.common.job.EmailSenderJob"/>
+        <property name="jobDataAsMap">
+            <map>
+                <entry key="emailSenderService" value-ref="emailSenderService"></entry>
+                <entry key="mailsFolder" value="${mails.folder}"></entry>
+            </map>
+        </property>
+    </bean>
+
+    <bean id="ctEmailSenderCronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="jobDetail" ref="emailSenderJob"/>
+        <!-- every minute, at the first second -->
+        <property name="cronExpression" value="0 * * ? * *"/>
+    </bean>
+    <bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <property name="triggers">
+            <list>
+                <ref bean="ctEmailSenderCronTrigger"/>
+            </list>
+        </property>
+    </bean>
+</beans>

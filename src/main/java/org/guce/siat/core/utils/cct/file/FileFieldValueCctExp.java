@@ -99,6 +99,13 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "TRANSITAIRE_ADRESSE_EMAIL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTRANSITAIRE() != null
+                        && document.getCONTENT().getTRANSITAIRE().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTRANSITAIRE().getADRESSE().getEMAIL());
+                }
+                break;
+            }
             case "TRANSITAIRE_ADRESSE_PAYSADDRESS_CODEPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getTRANSITAIRE() != null
                         && document.getCONTENT().getTRANSITAIRE().getADRESSE() != null
@@ -312,6 +319,13 @@ public class FileFieldValueCctExp {
                 if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
                         && document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getAUTRECONTACT());
+                }
+                break;
+            }
+            case "CLIENT_PERSONNE_A_CONTACTER": {
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                        && document.getCONTENT().getCLIENT().getPERSONNEACONTACTER() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getPERSONNEACONTACTER());
                 }
                 break;
             }
@@ -558,9 +572,9 @@ public class FileFieldValueCctExp {
                 break;
             }
             case "INFORMATIONS_GENERALES_REFERENCE_BASE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getBASEREFERENCE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getBASEREFERENCE());
-                    file.setNumeroDossierBase(document.getCONTENT().getBASEREFERENCE());
+                if (document.getCONTENT() != null && document.getCONTENT().getREFERENCEBASE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getREFERENCEBASE());
+                    file.setNumeroDossierBase(document.getCONTENT().getREFERENCEBASE());
                 }
                 break;
             }

@@ -50,4 +50,16 @@ public enum CctExportProductType {
         return "TYPE_PRODUIT_CODE";
     }
 
+    public static boolean isCC(CctExportProductType productType) {
+        return Arrays.asList(CctExportProductType.CC, CctExportProductType.CF).contains(productType);
+    }
+
+    public static boolean isOther(CctExportProductType productType) {
+        return Arrays.asList(CctExportProductType.AUTRES, CctExportProductType.COTON).contains(productType);
+    }
+
+    public static boolean isWood(CctExportProductType productType) {
+        return Arrays.asList(CctExportProductType.GR, CctExportProductType.BT, CctExportProductType.OA, CctExportProductType.PS).contains(productType);
+    }
+
 }

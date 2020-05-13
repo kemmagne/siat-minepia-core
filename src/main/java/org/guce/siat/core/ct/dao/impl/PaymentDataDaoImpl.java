@@ -1,5 +1,10 @@
 package org.guce.siat.core.ct.dao.impl;
 
+import java.math.BigDecimal;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.NoResultException;
@@ -25,100 +30,105 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(propagation = Propagation.REQUIRED)
 public class PaymentDataDaoImpl extends AbstractJpaDaoImpl<PaymentData> implements PaymentDataDao {
 
-	/**
-	 * The Constant LOG.
-	 */
-	private static final Logger LOG = LoggerFactory.getLogger(PaymentDataDaoImpl.class);
+    /**
+     * The Constant LOG.
+     */
+    private static final Logger LOG = LoggerFactory.getLogger(PaymentDataDaoImpl.class);
 
-	/**
-	 * Instantiates a new payment data dao impl.
-	 */
-	public PaymentDataDaoImpl() {
-		super();
-		setClasse(PaymentData.class);
-	}
+    /**
+     * Instantiates a new payment data dao impl.
+     */
+    public PaymentDataDaoImpl() {
+        super();
+        setClasse(PaymentData.class);
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.core.co.dao.PaymentDataDao#findPaymentDataByItemFlow(org.guce.siat.common.model.ItemFlow)
-	 */
-	@Override
-	public PaymentData findPaymentDataByItemFlow(final ItemFlow itemFlow) {
+     */
+    @Override
+    public PaymentData findPaymentDataByItemFlow(final ItemFlow itemFlow) {
 
-		if (!Objects.equals(itemFlow, null)) {
-			try {
-				final String hqlString = "SELECT p.primaryKey.paymentData FROM PaymentItemFlow p "
-						+ "WHERE p.deleted=false AND p.primaryKey.itemFlow.id = :itemFlowId";
-				final TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlString, PaymentData.class);
-				query.setParameter("itemFlowId", itemFlow.getId());
+        if (!Objects.equals(itemFlow, null)) {
+            try {
+                final String hqlString = "SELECT p.primaryKey.paymentData FROM PaymentItemFlow p "
+                        + "WHERE p.deleted=false AND p.primaryKey.itemFlow.id = :itemFlowId";
+                final TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlString, PaymentData.class);
+                query.setParameter("itemFlowId", itemFlow.getId());
 
-				return query.getSingleResult();
+                return query.getSingleResult();
 
-			} catch (NoResultException | NonUniqueResultException e) {
-				LOG.error(Objects.toString(e), e);
-			}
+            } catch (NoResultException | NonUniqueResultException e) {
+                LOG.error(Objects.toString(e), e);
+            }
 
-		}
-		return null;
+        }
+        return null;
 
-	}
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.core.co.dao.PaymentDataDao#findPaymentItemFlowByItemFlow(org.guce.siat.common.model.ItemFlow)
-	 */
-	@Override
-	public PaymentItemFlow findPaymentItemFlowByItemFlow(final ItemFlow itemFlow) {
-		if (!Objects.equals(itemFlow, null)) {
-			final StringBuilder hqlBuilder = new StringBuilder();
-			hqlBuilder.append("SELECT p FROM PaymentItemFlow p ");
-			hqlBuilder.append("WHERE p.deleted=false AND p.primaryKey.itemFlow.id  ");
-			hqlBuilder.append("=:itemFlowId AND p.primaryKey.paymentData.deleted=false");
+     */
+    @Override
+    public PaymentItemFlow findPaymentItemFlowByItemFlow(final ItemFlow itemFlow) {
+        if (!Objects.equals(itemFlow, null)) {
+            final StringBuilder hqlBuilder = new StringBuilder();
+            hqlBuilder.append("SELECT p FROM PaymentItemFlow p ");
+            hqlBuilder.append("WHERE p.deleted=false AND p.primaryKey.itemFlow.id  ");
+            hqlBuilder.append("=:itemFlowId AND p.primaryKey.paymentData.deleted=false");
 
-			final TypedQuery<PaymentItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), PaymentItemFlow.class);
-			query.setParameter("itemFlowId", itemFlow.getId());
-			try {
-				return query.getSingleResult();
-			} catch (NoResultException | NonUniqueResultException e) {
-				LOG.error(Objects.toString(e), e);
-			}
+            final TypedQuery<PaymentItemFlow> query = super.entityManager.createQuery(hqlBuilder.toString(), PaymentItemFlow.class);
+            query.setParameter("itemFlowId", itemFlow.getId());
+            try {
+                return query.getSingleResult();
+            } catch (NoResultException | NonUniqueResultException e) {
+                LOG.error(Objects.toString(e), e);
+            }
 
-		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	/*
+    /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.core.co.dao.PaymentDataDao#delete(org.guce.siat.core.co.model.PaymentItemFlow)
-	 */
-	@Override
-	public void delete(final PaymentItemFlow paymentItemFlow) {
-		entityManager.remove(paymentItemFlow);
+     */
+    @Override
+    public void delete(final PaymentItemFlow paymentItemFlow) {
+        entityManager.remove(paymentItemFlow);
 
-	}
+    }
 
-	@Override
-	public PaymentData findPaymentDataByFileItem(final FileItem fileItem) {
+    @Override
+    public PaymentData findPaymentDataByFileItem(final FileItem fileItem) {
 
-		if (!Objects.equals(fileItem, null)) {
-			try {
-				final String hqlString = "SELECT DISTINCT p.primaryKey.paymentData FROM PaymentItemFlow p "
-						+ "WHERE p.deleted=false AND p.primaryKey.itemFlow.fileItem.id = :fileItemId";
-				final TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlString, PaymentData.class);
-				query.setParameter("fileItemId", fileItem.getId());
+        try {
 
-				return query.getSingleResult();
+            TypedQuery<PaymentData> query = super.entityManager.createQuery("SELECT DISTINCT p.primaryKey.paymentData FROM PaymentItemFlow p WHERE p.deleted=false AND p.primaryKey.itemFlow.fileItem.id = :fileItemId", PaymentData.class);
 
-			} catch (NoResultException | NonUniqueResultException e) {
-				LOG.error(Objects.toString(e), e);
-			}
+            query.setParameter("fileItemId", fileItem.getId());
 
-		}
-		return null;
+            List<PaymentData> list = query.getResultList();
 
-	}
+            Collections.sort(list, new Comparator<PaymentData>() {
+                @Override
+                public int compare(PaymentData pd1, PaymentData pd2) {
+                    return new BigDecimal(pd2.getId()).compareTo(new BigDecimal(pd1.getId()));
+                }
+            });
+
+            return list.get(0);
+        } catch (NoResultException | NonUniqueResultException e) {
+            LOG.error(Objects.toString(e), e);
+        }
+
+        return null;
+    }
 
 }
