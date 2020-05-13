@@ -2505,7 +2505,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ItemFlow itemFlow = itemFlowList.get(0);
 
             facture.setREFERENCEFACTURE(paymentData.getRefFacture());
-            facture.setTYPEFACTURE(file.getFileType().getCode().name());
+            facture.setTYPEFACTURE(file.getFileType().getPaymentFileType());
             facture.setMONTANTHT(paymentData.getMontantHt().toString());
             facture.setMONTANTTVA(paymentData.getMontantTva().toString());
             facture.setMONTANTTTC(Long.toString(paymentData.getMontantHt() + paymentData.getMontantTva()));
@@ -2520,8 +2520,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             paiement.setCHARGEUR(chargeur);
 
             PAIEMENT.BENEFICIAIRE beneficiaire = new PAIEMENT.BENEFICIAIRE();
-            beneficiaire.setCODE(file.getDestinataire());
-            beneficiaire.setLIBELLE(file.getDestinataire());
+            beneficiaire.setCODE(file.getBureau().getCode());
+            beneficiaire.setLIBELLE(file.getBureau().getLabelFr());
             paiement.setBENEFICIAIRE(beneficiaire);
 
             if (ciDocument.getCONTENT() == null) {
