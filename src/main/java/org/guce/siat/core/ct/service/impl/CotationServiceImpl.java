@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.dao.FileItemDao;
+import org.guce.siat.common.dao.FileTypeDao;
 import org.guce.siat.common.dao.FlowDao;
 import org.guce.siat.common.dao.TransferDao;
 import org.guce.siat.common.dao.UserDao;
@@ -14,6 +15,7 @@ import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.MinistryFileType;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.Transfer;
 import org.guce.siat.common.model.User;
@@ -41,17 +43,20 @@ public class CotationServiceImpl implements CotationService {
     private static final Logger LOG = LoggerFactory.getLogger(CotationServiceImpl.class);
 
     @Autowired
-    private UserDao userDao;
-    @Autowired
     private FileService fileService;
-    @Autowired
-    private FlowDao flowDao;
     @Autowired
     private FileFieldValueService fileFieldValueService;
     @Autowired
     private ItemFlowService itemFlowService;
+
+    @Autowired
+    private UserDao userDao;
+    @Autowired
+    private FlowDao flowDao;
     @Autowired
     private TransferDao transferDao;
+    @Autowired
+    private FileTypeDao fileTypeDao;
 
     /**
      * The file item dao.
@@ -63,6 +68,20 @@ public class CotationServiceImpl implements CotationService {
 
     @Override
     public void dispatch(File currentFile, Flow currentFlow) {
+
+        MinistryFileType ministryFileType = fileTypeDao.findMinistryFileType(currentFile.getFileType().getCode(), currentFile.getDestinataire());
+        if (!BooleanUtils.toBoolean(ministryFileType.getAutomaticCotationAllowed())) {
+            return;
+        }
+
+        List<FileItem> fileItems = currentFile.getFileItemsList();
+        if (fileItems == null) {
+            fileItems = fileItemDao.findFileItemsByFile(currentFile);
+        }
+
+        if (currentFlow == null) {
+            currentFlow = itemFlowService.findLastItemFlowByFileItem(fileItems.get(0)).getFlow();
+        }
 
         if (!flowDao.findBeforeCotationStepFlows(currentFile).contains(currentFlow)) {
             return;
@@ -115,7 +134,7 @@ public class CotationServiceImpl implements CotationService {
             return;
         }
 
-        takeDecision(currentFile, sender, assignedUser, cotationFlow);
+        takeDecision(currentFile, fileItems, sender, assignedUser, cotationFlow);
 
         Transfer transfer = new Transfer();
 
@@ -127,14 +146,10 @@ public class CotationServiceImpl implements CotationService {
         transferDao.save(transfer);
     }
 
-    private void takeDecision(File currentFile, User sender, User assignedUser, Flow cotationFlow) {
+    private void takeDecision(File currentFile, List<FileItem> fileItems, User sender, User assignedUser, Flow cotationFlow) {
 
         List<ItemFlow> itemFlowsToAdd = new ArrayList<>();
 
-        List<FileItem> fileItems = currentFile.getFileItemsList();
-        if (fileItems == null) {
-            fileItems = fileItemDao.findFileItemsByFile(currentFile);
-        }
         for (FileItem fileItem : fileItems) {
 
             final ItemFlow itemFlow = new ItemFlow();

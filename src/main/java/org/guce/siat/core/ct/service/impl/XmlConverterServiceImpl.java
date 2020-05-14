@@ -1382,9 +1382,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         paymentDataDao.save(paymentDataNew);
         paymentDataDao.update(paymentData);
 
-        if (isPhyto(fileFromSiat)) {
-            cotationService.dispatch(fileFromSiat, flowToExecute);
-        }
+        cotationService.dispatch(fileFromSiat, flowToExecute);
     }
 
     private boolean isPhyto(File fileFromSiat) {
