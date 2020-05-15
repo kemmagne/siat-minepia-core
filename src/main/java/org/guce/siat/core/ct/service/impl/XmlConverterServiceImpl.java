@@ -891,13 +891,15 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     } else {
                         firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
                     }
-
                     break;
                 }
-
                 case CCT_CT_E_PVI:
                 case CCT_CT_E_FSTP:
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
+                    break;
+                default:
+                    firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
+                    break;
             }
         }
 
@@ -1383,11 +1385,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         paymentDataDao.update(paymentData);
 
         cotationService.dispatch(fileFromSiat, flowToExecute);
-    }
-
-    private boolean isPhyto(File fileFromSiat) {
-        boolean checkMinaderMinistry = fileFromSiat.getDestinataire().equalsIgnoreCase(MINADER_MINISTRY);
-        return checkMinaderMinistry && Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCT_CT_E_PVI).contains(fileFromSiat.getFileType().getCode());
     }
 
     /**
