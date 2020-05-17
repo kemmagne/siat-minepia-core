@@ -9,12 +9,10 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import javax.persistence.PersistenceException;
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
@@ -30,7 +28,6 @@ import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
-
 import org.apache.chemistry.opencmis.client.api.Folder;
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
@@ -59,8 +56,8 @@ import org.guce.siat.core.ct.service.CtDocumentReciever;
 import org.guce.siat.utility.jaxb.common.ERREURS;
 import org.guce.siat.utility.jaxb.common.ERREURS.ERREUR;
 import org.guce.siat.utility.jaxb.common.MESSAGE;
-import org.guce.siat.utility.jaxb.common.PaymentDocument;
 import org.guce.siat.utility.jaxb.common.PayDocJAXBContextCreator;
+import org.guce.siat.utility.jaxb.common.PaymentDocument;
 import org.guce.siat.utility.jaxb.common.REFERENCEDOSSIER;
 import org.guce.siat.utility.jaxb.common.ROUTAGE;
 import org.slf4j.Logger;
@@ -153,8 +150,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
 
         try {
 
-            attached = (ebxmlBytes.get(ESBConstants.ATTACHMENT) != null ? (HashMap<String, byte[]>) ebxmlBytes
-                    .get(ESBConstants.ATTACHMENT) : null);
+            attached = (ebxmlBytes.get(ESBConstants.ATTACHMENT) != null ? (HashMap<String, byte[]>) ebxmlBytes.get(ESBConstants.ATTACHMENT) : null);
 
             final byte[] xmlBytes = (byte[]) ebxmlBytes.get(ESBConstants.FLOW);
             final byte[] message = (byte[]) ebxmlBytes.get(ESBConstants.MESSAGE);
@@ -462,13 +458,25 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                 case CCT_CT_E:
                 case CCT_CT_E_PVI:
                 case CCT_CT_E_ATP:
-                case CCT_CT_E_FSTP:
-                case CCT_CT_E_PVE: {
+                case CCT_CT_E_FSTP: {
                     if (!FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat()) && !FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat())) {
                         final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CT_E.JAXBContextCreator.getInstance();
                         // Unmarshalling the document
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
                         document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    } else {
+                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    }
+                    break;
+                }
+                case CCT_CT_E_PVE: {
+                    if (!FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat())) {
+                        final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.PVE.JAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (org.guce.siat.jaxb.cct.PVE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     } else {
                         final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();

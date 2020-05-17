@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-
 import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
@@ -73,6 +72,7 @@ import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.InvoiceLine;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
+import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
 import org.guce.siat.core.ct.model.TreatmentOrder;
@@ -1420,6 +1420,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         }
 
         return map;
+    }
+
+    @Override
+    public PottingPresent savePottingPresent(PottingPresent pottingPresent) {
+        return commonDao.savePottingPresent(pottingPresent);
+    }
+
+    @Override
+    public void updatePottingPresent(PottingPresent pottingPresent) {
+        commonDao.updatePottingPresent(pottingPresent);
     }
 
 }

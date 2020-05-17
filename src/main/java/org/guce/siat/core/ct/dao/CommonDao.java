@@ -1,7 +1,6 @@
 package org.guce.siat.core.ct.dao;
 
 import java.util.List;
-
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.FileItem;
@@ -11,6 +10,7 @@ import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
+import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
@@ -175,5 +175,9 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
     List<CctExportProductType> findProductTypesByUser(User user);
 
     List<UserCctExportProductType> findUsersAndProductTypes();
+
+    PottingPresent savePottingPresent(PottingPresent pottingPresent);
+
+    void updatePottingPresent(PottingPresent pottingPresent);
 
 }

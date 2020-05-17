@@ -14,13 +14,11 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.JoinColumn;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.Table;
 import javax.persistence.TypedQuery;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.lang.StringUtils;
@@ -48,6 +46,7 @@ import org.guce.siat.core.ct.filter.PaymentFilter;
 import org.guce.siat.core.ct.filter.SampleFilter;
 import org.guce.siat.core.ct.filter.StatisticBusinessFilter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
+import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
@@ -1371,6 +1370,20 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         TypedQuery<UserCctExportProductType> query = super.entityManager.createQuery("SELECT upt FROM UserCctExportProductType upt", UserCctExportProductType.class);
 
         return query.getResultList();
+    }
+
+    @Override
+    public PottingPresent savePottingPresent(PottingPresent pottingPresent) {
+
+        super.entityManager.persist(pottingPresent);
+        super.entityManager.flush();
+
+        return pottingPresent;
+    }
+
+    @Override
+    public void updatePottingPresent(PottingPresent pottingPresent) {
+        this.entityManager.merge(pottingPresent);
     }
 
 }

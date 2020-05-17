@@ -3,7 +3,6 @@ package org.guce.siat.core.ct.service;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
-
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.FileItem;
@@ -21,6 +20,7 @@ import org.guce.siat.core.ct.model.CCTCPParamValue;
 import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.PaymentData;
+import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
 import org.guce.siat.core.ct.model.TreatmentOrder;
@@ -285,5 +285,9 @@ public interface CommonService extends AbstractService<ItemFlow> {
     List<CctExportProductType> findProductTypesByUser(User user);
 
     Map<User, List<CctExportProductType>> findUsersAndProductTypes();
+
+    PottingPresent savePottingPresent(PottingPresent pottingPresent);
+
+    void updatePottingPresent(PottingPresent pottingPresent);
 
 }
