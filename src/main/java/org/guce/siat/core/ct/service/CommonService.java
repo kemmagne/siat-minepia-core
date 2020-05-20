@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
+import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
@@ -103,6 +104,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void takeDecisionAndSaveInterceptionNotification(InterceptionNotification interceptionNotif, List<ItemFlow> itemFlows);
 
     void takeDecisionAndSaveTreatmentInfos(TreatmentInfos treatmentInfos, List<ItemFlow> itemFlows) throws Exception;
+
+    void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers);
 
     void takeDecisionAndSaveApprovedDecision(ApprovedDecision approvedDecision, List<ItemFlow> itemFlows) throws Exception;
 
@@ -289,5 +292,7 @@ public interface CommonService extends AbstractService<ItemFlow> {
     PottingPresent savePottingPresent(PottingPresent pottingPresent);
 
     void updatePottingPresent(PottingPresent pottingPresent);
+
+    List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file);
 
 }

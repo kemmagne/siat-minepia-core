@@ -17,6 +17,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.Transformer;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
+import org.guce.siat.common.dao.CoreDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.dao.ItemFlowDataDao;
@@ -25,6 +26,7 @@ import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
 import org.guce.siat.common.model.AppointmentItemFlowId;
+import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -229,18 +231,13 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Autowired
     private ItemFlowService itemFlowService;
 
+    @Autowired
+    private CoreDao dao;
+
     /**
      * The directory.
      */
     private static final String GED_DIRECTORY = "/siat";
-
-    /**
-     * Instantiates a new common service impl.
-     */
-    public CommonServiceImpl() {
-        super();
-    }
-
 
     /*
 	 * (non-Javadoc)
@@ -516,11 +513,14 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         PaymentData paymentData = null;
         boolean alreadyDeleted = true;
+        org.guce.siat.common.model.File file = null;
+        if (CollectionUtils.isNotEmpty(itemFlows)) {
+            file = itemFlows.get(0).getFileItem().getFile();
+        }
         for (final ItemFlow itemFlow : itemFlows) {
             final String flowCode = itemFlow.getFlow().getCode();
-
             // suppression des décisions relatives au phyto
-            if ("MINADER".equals(itemFlow.getFileItem().getFile().getDestinataire())
+            if (Constants.MINADER_MINISTRY.equals(itemFlow.getFileItem().getFile().getDestinataire())
                     && (FlowCode.FL_CT_07.name().equals(flowCode) || FlowCode.FL_CT_117.name().equals(flowCode) || FlowCode.FL_CT_112.name().equals(flowCode))) {
                 switch (itemFlow.getFileItem().getFile().getFileType().getCode()) {
                     case CCT_CT_E:
@@ -544,8 +544,19 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                             }
                             inspectionReportDao.delete(ir);
                         }
+                        break;
+                    case CCT_CT_E_PVE:
+                        if (file != null) {
+                            for (Container container : file.getContainers()) {
+                                container.setContSeal1(null);
+                            }
+                            dao.update(file.getContainers());
+                            List<PottingPresent> pottingPresents = commonDao.findPottingPresentsByFile(file);
+                            dao.delete(pottingPresents);
+                        }
+                        break;
                 }
-            } else if ("MINADER".equals(itemFlow.getFileItem().getFile().getDestinataire())
+            } else if (Constants.MINADER_MINISTRY.equals(itemFlow.getFileItem().getFile().getDestinataire())
                     && FlowCode.FL_CT_08.name().equals(flowCode)) {
                 final CCTCPParamValue paramValue = cCTCPParamValueDao.findCCTCPParamValueByItemFlow(itemFlow);
                 if (paramValue != null) {
@@ -879,6 +890,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         // Update fileItems : Set draft = true
         fileItemDao.saveOrUpdateList(fileItemList);
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers) {
+        for (PottingPresent pottingPresent : pottingPresents) {
+            pottingPresent.setId(null);
+            dao.save(pottingPresent);
+        }
+        dao.update(containers);
     }
 
     @Override
@@ -1430,6 +1451,11 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Override
     public void updatePottingPresent(PottingPresent pottingPresent) {
         commonDao.updatePottingPresent(pottingPresent);
+    }
+
+    @Override
+    public List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file) {
+        return commonDao.findPottingPresentsByFile(file);
     }
 
 }

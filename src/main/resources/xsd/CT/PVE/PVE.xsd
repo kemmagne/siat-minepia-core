@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿The BEST (ure-corp) -->
+<!-- edited with XMLSpy v2013 sp1 (http://www.altova.com) by ﻿HT (HT) -->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified">
     <xs:element name="DOCUMENT">
         <xs:annotation>
@@ -271,6 +271,14 @@
                                             <xs:simpleType>
                                                 <xs:restriction base="xs:string">
                                                     <xs:maxLength value="35"/>
+                                                </xs:restriction>
+                                            </xs:simpleType>
+                                        </xs:element>
+                                        <xs:element name="DATE_AT" minOccurs="0">
+                                            <xs:simpleType>
+                                                <xs:restriction base="xs:string">
+                                                    <xs:length value="8"/>
+                                                    <xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
                                                 </xs:restriction>
                                             </xs:simpleType>
                                         </xs:element>
@@ -941,24 +949,24 @@
                             <xs:element name="DATE_RDV_FINALE" minOccurs="0">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
-                                        <xs:length value="8"/>
-                                        <xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
+                                        <xs:maxLength value="20"/>
+                                        <!--<xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>-->
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
                             <xs:element name="DATE_RDV_PROPOSEE" minOccurs="0">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
-                                        <xs:length value="8"/>
-                                        <xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
+                                        <xs:maxLength value="20"/>
+                                        <!--<xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>-->
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
                             <xs:element name="DATE_EMPOTAGE_EFFECTIF" minOccurs="0">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
-                                        <xs:length value="8"/>
-                                        <xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
+                                        <xs:maxLength value="20"/>
+                                        <!--<xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>-->
                                     </xs:restriction>
                                 </xs:simpleType>
                             </xs:element>
@@ -1187,7 +1195,7 @@
                             <xs:element name="DATE_AUTORISATION" minOccurs="0">
                                 <xs:simpleType>
                                     <xs:restriction base="xs:string">
-                                        <xs:length value="8"/>
+                                        <xs:maxLength value="20"/>
                                         <xs:pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
                                     </xs:restriction>
                                 </xs:simpleType>
@@ -1355,32 +1363,32 @@
                                     </xs:sequence>
                                 </xs:complexType>
                             </xs:element>
-                            <xs:element maxOccurs="unbounded" minOccurs="0" name="FACTURE">
+                            <xs:element name="FACTURE" minOccurs="0" maxOccurs="unbounded">
                                 <xs:complexType>
                                     <xs:sequence>
                                         <xs:sequence>
-                                            <xs:element minOccurs="0" name="NUMERO_FACTURE" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="DATE_FACTURE" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="TYPE_FACTURE" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="EMETTEUR" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="TITULAIRE" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="MONTANT_HT" type="xs:float"/>
-                                            <xs:element minOccurs="0" name="AUTRE_MONTANT" type="xs:float"/>
-                                            <xs:element minOccurs="0" name="OBJET" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="ETAT_TAXE" type="xs:boolean"/>
-                                            <xs:element minOccurs="0" name="TVA" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="MONTANT_TOTAL" type="xs:float"/>
-                                            <xs:element minOccurs="0" name="SIGNATAIRE" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="OBSERVATION_FACTURE" type="xs:string"/>
-                                            <xs:element minOccurs="0" name="PAIEMENTS">
+                                            <xs:element name="NUMERO_FACTURE" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="DATE_FACTURE" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="TYPE_FACTURE" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="EMETTEUR" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="TITULAIRE" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="MONTANT_HT" type="xs:float" minOccurs="0"/>
+                                            <xs:element name="AUTRE_MONTANT" type="xs:float" minOccurs="0"/>
+                                            <xs:element name="OBJET" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="ETAT_TAXE" type="xs:boolean" minOccurs="0"/>
+                                            <xs:element name="TVA" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="MONTANT_TOTAL" type="xs:float" minOccurs="0"/>
+                                            <xs:element name="SIGNATAIRE" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="OBSERVATION_FACTURE" type="xs:string" minOccurs="0"/>
+                                            <xs:element name="PAIEMENTS" minOccurs="0">
                                                 <xs:complexType>
                                                     <xs:sequence>
-                                                        <xs:element maxOccurs="unbounded" minOccurs="0" name="PAIEMENT">
+                                                        <xs:element name="PAIEMENT" minOccurs="0" maxOccurs="unbounded">
                                                             <xs:complexType>
                                                                 <xs:sequence>
-                                                                    <xs:element minOccurs="0" name="MONTANT_PAIEMENT" type="xs:decimal"/>
-                                                                    <xs:element minOccurs="0" name="DATE_PAIEMENT" type="xs:dateTime"/>
-                                                                    <xs:element minOccurs="0" name="MODE_PAIEMENT">
+                                                                    <xs:element name="MONTANT_PAIEMENT" type="xs:decimal" minOccurs="0"/>
+                                                                    <xs:element name="DATE_PAIEMENT" type="xs:dateTime" minOccurs="0"/>
+                                                                    <xs:element name="MODE_PAIEMENT" minOccurs="0">
                                                                         <xs:complexType>
                                                                             <xs:sequence>
                                                                                 <xs:element name="CODE" type="xs:string"/>
@@ -1388,80 +1396,80 @@
                                                                             </xs:sequence>
                                                                         </xs:complexType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="OBJET_PAIEMENT" type="xs:string"/>
-                                                                    <xs:element minOccurs="0" name="OBSERVATION_PAIEMENT" type="xs:string"/>
-                                                                    <xs:element minOccurs="0" name="SIGNATAIRE" type="xs:string"/>
-                                                                    <xs:element minOccurs="0" name="ETAT_PAIEMENT" type="xs:string"/>
-                                                                    <xs:element minOccurs="0" name="NUMERO_RECU" type="xs:string"/>
+                                                                    <xs:element name="OBJET_PAIEMENT" type="xs:string" minOccurs="0"/>
+                                                                    <xs:element name="OBSERVATION_PAIEMENT" type="xs:string" minOccurs="0"/>
+                                                                    <xs:element name="SIGNATAIRE" type="xs:string" minOccurs="0"/>
+                                                                    <xs:element name="ETAT_PAIEMENT" type="xs:string" minOccurs="0"/>
+                                                                    <xs:element name="NUMERO_RECU" type="xs:string" minOccurs="0"/>
                                                                 </xs:sequence>
                                                             </xs:complexType>
                                                         </xs:element>
                                                     </xs:sequence>
                                                 </xs:complexType>
                                             </xs:element>
-                                            <xs:element minOccurs="0" name="LIGNES_FACTURE">
+                                            <xs:element name="LIGNES_FACTURE" minOccurs="0">
                                                 <xs:complexType>
                                                     <xs:sequence>
-                                                        <xs:element maxOccurs="unbounded" minOccurs="0" name="LIGNE_FACTURE">
+                                                        <xs:element name="LIGNE_FACTURE" minOccurs="0" maxOccurs="unbounded">
                                                             <xs:complexType>
                                                                 <xs:sequence>
-                                                                    <xs:element minOccurs="0" name="NUMERO_LIGNE">
+                                                                    <xs:element name="NUMERO_LIGNE" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="NOM">
+                                                                    <xs:element name="NOM" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="DESCRIPTION">
+                                                                    <xs:element name="DESCRIPTION" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="255"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="QUANTITE">
+                                                                    <xs:element name="QUANTITE" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="UNITE">
+                                                                    <xs:element name="UNITE" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="PRIX_UNITAIRE">
+                                                                    <xs:element name="PRIX_UNITAIRE" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="MONTANT_HT">
+                                                                    <xs:element name="MONTANT_HT" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="MONTANT_TVA">
+                                                                    <xs:element name="MONTANT_TVA" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>
                                                                             </xs:restriction>
                                                                         </xs:simpleType>
                                                                     </xs:element>
-                                                                    <xs:element minOccurs="0" name="MONTANT_TTC">
+                                                                    <xs:element name="MONTANT_TTC" minOccurs="0">
                                                                         <xs:simpleType>
                                                                             <xs:restriction base="xs:string">
                                                                                 <xs:maxLength value="35"/>

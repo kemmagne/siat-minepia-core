@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.guce.siat.common.model.File;
 
@@ -22,7 +23,8 @@ public class PottingPresent implements Serializable {
     private static final long serialVersionUID = 7623714594362495763L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "POTTING_PRESENT_SEQ")
+    @SequenceGenerator(name = "POTTING_PRESENT_SEQ", sequenceName = "POTTING_PRESENT_SEQ", allocationSize = 1)
     @Column(name = "ID")
     private Long id;
     @Column(name = "NAME", length = 100)
@@ -76,14 +78,16 @@ public class PottingPresent implements Serializable {
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
-        hash = 17 * hash + (this.name != null ? this.name.hashCode() : 0);
+        int hash = 3;
+        hash = 37 * hash + Objects.hashCode(this.id);
         return hash;
     }
 
     @Override
     public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
         if (obj == null) {
             return false;
         }
@@ -91,10 +95,7 @@ public class PottingPresent implements Serializable {
             return false;
         }
         final PottingPresent other = (PottingPresent) obj;
-        if (!Objects.equals(this.id, other.id) && (this.id == null || !this.id.equals(other.id))) {
-            return false;
-        }
-        return !((this.name == null) ? (other.name != null) : !this.name.equals(other.name));
+        return Objects.equals(this.id, other.id);
     }
 
 }

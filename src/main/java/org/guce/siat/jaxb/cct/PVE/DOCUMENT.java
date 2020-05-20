@@ -6277,10 +6277,11 @@ public class DOCUMENT implements Serializable {
              * {@link DOCUMENT.CONTENT.CONTENEURS.CONTENEUR }
              *
              *
+             * @return
              */
             public List<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR> getCONTENEUR() {
                 if (conteneur == null) {
-                    conteneur = new ArrayList<DOCUMENT.CONTENT.CONTENEURS.CONTENEUR>();
+                    conteneur = new ArrayList<>();
                 }
                 return this.conteneur;
             }
@@ -9716,10 +9717,11 @@ public class DOCUMENT implements Serializable {
                  * {@link DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE }
                  *
                  *
+                 * @return
                  */
                 public List<DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE> getLIGNEFACTURE() {
                     if (lignefacture == null) {
-                        lignefacture = new ArrayList<DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE>();
+                        lignefacture = new ArrayList<>();
                     }
                     return this.lignefacture;
                 }
@@ -10106,10 +10108,11 @@ public class DOCUMENT implements Serializable {
                  * {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT }
                  *
                  *
+                 * @return
                  */
                 public List<DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT> getPAIEMENT() {
                     if (paiement == null) {
-                        paiement = new ArrayList<DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT>();
+                        paiement = new ArrayList<>();
                     }
                     return this.paiement;
                 }
@@ -10848,10 +10851,11 @@ public class DOCUMENT implements Serializable {
              * {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE }
              *
              *
+             * @return
              */
             public List<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> getMARCHANDISE() {
                 if (marchandise == null) {
-                    marchandise = new ArrayList<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE>();
+                    marchandise = new ArrayList<>();
                 }
                 return this.marchandise;
             }
@@ -11866,10 +11870,11 @@ public class DOCUMENT implements Serializable {
              * {@link DOCUMENT.CONTENT.PRESENTS.PRESENT }
              *
              *
+             * @return
              */
             public List<DOCUMENT.CONTENT.PRESENTS.PRESENT> getPRESENT() {
                 if (present == null) {
-                    present = new ArrayList<DOCUMENT.CONTENT.PRESENTS.PRESENT>();
+                    present = new ArrayList<>();
                 }
                 return this.present;
             }
@@ -12037,6 +12042,14 @@ public class DOCUMENT implements Serializable {
          *             &lt;/restriction>
          *           &lt;/simpleType>
          *         &lt;/element>
+         *         &lt;element name="DATE_AT" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;length value="8"/>
+         *               &lt;pattern value="((20|19)[0-9][0-9])(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
          *       &lt;/sequence>
          *     &lt;/restriction>
          *   &lt;/complexContent>
@@ -12050,7 +12063,8 @@ public class DOCUMENT implements Serializable {
             "numeropv",
             "signataire",
             "datepv",
-            "numeroat"
+            "numeroat",
+            "dateat"
         })
         public static class PVEMPOTAGE {
 
@@ -12062,6 +12076,8 @@ public class DOCUMENT implements Serializable {
             protected String datepv;
             @XmlElement(name = "NUMERO_AT")
             protected String numeroat;
+            @XmlElement(name = "DATE_AT")
+            protected String dateat;
 
             /**
              * Obtient la valeur de la propriété numeropv.
@@ -12141,6 +12157,26 @@ public class DOCUMENT implements Serializable {
              */
             public void setNUMEROAT(String value) {
                 this.numeroat = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété dateat.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getDATEAT() {
+                return dateat;
+            }
+
+            /**
+             * Définit la valeur de la propriété dateat.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setDATEAT(String value) {
+                this.dateat = value;
             }
 
         }

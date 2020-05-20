@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
 import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Bureau;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
@@ -1384,6 +1385,16 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     @Override
     public void updatePottingPresent(PottingPresent pottingPresent) {
         this.entityManager.merge(pottingPresent);
+    }
+
+    @Override
+    public List<PottingPresent> findPottingPresentsByFile(File file) {
+
+        TypedQuery<PottingPresent> query = super.entityManager.createQuery("SELECT pp FROM PottingPresent pp WHERE pp.file.id = :fileId", PottingPresent.class);
+
+        query.setParameter("fileId", file.getId());
+
+        return query.getResultList();
     }
 
 }

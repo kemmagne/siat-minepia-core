@@ -3,6 +3,7 @@ package org.guce.siat.core.ct.dao;
 import java.util.List;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.model.Administration;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.User;
@@ -179,5 +180,7 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
     PottingPresent savePottingPresent(PottingPresent pottingPresent);
 
     void updatePottingPresent(PottingPresent pottingPresent);
+
+    List<PottingPresent> findPottingPresentsByFile(File file);
 
 }
