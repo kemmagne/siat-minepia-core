@@ -42,7 +42,7 @@ public class CotationDaoImpl implements CotationDao {
     @Override
     public List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile) {
 
-        TypedQuery<User> query = entityManager.createQuery("SELECT DISTINCT upt.user FROM UserCctExportProductType upt JOIN upt.user.userAuthorityList aut WHERE upt.user.deleted = false AND upt.user.administration.id = :bureauId AND aut.authorityGranted.role IN (:authoritiesList) AND upt.user.deleted = false AND upt.productType = :productType", User.class);
+        TypedQuery<User> query = entityManager.createQuery("SELECT DISTINCT upt.user FROM UserCctExportProductType upt JOIN upt.user.userAuthorityList aut, UserAuthorityFileType auft WHERE upt.user.deleted = false AND upt.user.administration.id = :bureauId AND aut.authorityGranted.role IN (:authoritiesList) AND aut.id = auft.primaryKey.userAuthority.id AND auft.primaryKey.fileType.id = :fileTypeId AND upt.user.deleted = false AND upt.productType = :productType", User.class);
 
         FileFieldValue ffv = fileFieldValueDao.findValueByFileFieldAndFile(CctExportProductType.getFileFieldCode(), currentFile);
         CctExportProductType productType = CctExportProductType.valueOf(ffv.getValue());
@@ -50,6 +50,7 @@ public class CotationDaoImpl implements CotationDao {
         query.setParameter("bureauId", currentFile.getBureau().getId());
         query.setParameter("authoritiesList", Arrays.asList(AuthorityConstants.INSPECTEUR.getCode()));
         query.setParameter("productType", productType);
+        query.setParameter("fileTypeId", currentFile.getFileType().getId());
 
         return query.getResultList();
     }

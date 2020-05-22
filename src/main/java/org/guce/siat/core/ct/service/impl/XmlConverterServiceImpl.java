@@ -1242,7 +1242,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         FileTypeCode fileTypeCode = fileFromSiat.getFileType().getCode();
         if (Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_123.name());
-        } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
+        } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
         } else if (Arrays.asList(FileTypeCode.CCT_CT, FileTypeCode.CC_CT, FileTypeCode.CQ_CT).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_93.name());
@@ -2659,6 +2659,61 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             String pjType = PottingReportConstants.PVE_ATTACHMENT_TYPE;
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECEJOINTE(pjType, file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
+
+            ciDocument.getCONTENT().setPVEMPOTAGE(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PVEMPOTAGE());
+
+            FileFieldValue ffv;
+
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_NUMBER_FILE_FIELD, file);
+            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROPV(ffv.getValue());
+
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_TA_NUMBER_FILE_FIELD, file);
+            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROAT(ffv.getValue());
+
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_TA_DATE_FILE_FIELD, file);
+            ciDocument.getCONTENT().getPVEMPOTAGE().setDATEAT(ffv.getValue());
+
+            ciDocument.getCONTENT().getPVEMPOTAGE().setDATEPV(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, Calendar.getInstance().getTime()));
+
+            ciDocument.getCONTENT().getPVEMPOTAGE().setSIGNATAIRE(String.format("%s %s", file.getSignatory().getLastName(), file.getSignatory().getFirstName()));
+
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_NUMBER_FILE_FIELD, file);
+            ciDocument.getCONTENT().setNUMEROAUTORISATION(ffv.getValue());
+
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_DATE_FILE_FIELD, file);
+            ciDocument.getCONTENT().setDATEAUTORISATION(ffv.getValue());
+
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_SUPERVISOR_FILE_FIELD, file);
+            ciDocument.getCONTENT().setSUPERVISEUROPERATION(ffv.getValue());
+
+            List<PottingPresent> pottingPresents = commonDao.findPottingPresentsByFile(file);
+            ciDocument.getCONTENT().setPRESENTS(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS());
+            for (PottingPresent pp : pottingPresents) {
+
+                org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS.PRESENT pr = new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS.PRESENT();
+
+                pr.setNOM(pp.getName());
+                pr.setQUALITE(pp.getQuality());
+                pr.setORGANISME(pp.getOrganism());
+
+                ciDocument.getCONTENT().getPRESENTS().getPRESENT().add(pr);
+            }
+
+            ciDocument.getCONTENT().setCONTENEURS(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS());
+            for (Container container : file.getContainers()) {
+
+                org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR cont = new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR();
+
+                cont.setESSENCE(container.getContDenomination());
+                cont.setMARQUE(container.getContMark());
+                cont.setNUMERO(container.getContNumber());
+                cont.setSCELLE1(container.getContSeal1());
+                cont.setTONNAGE(container.getContGrossMass());
+                cont.setTYPE(container.getContType());
+                cont.setVOLUME(container.getContVolume());
+
+                ciDocument.getCONTENT().getCONTENEURS().getCONTENEUR().add(cont);
+            }
         } else if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode())) {
             String pjType = "INVOICE";
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
@@ -2787,61 +2842,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().getSIGNATAIRE().setLIEU(itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0).getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration().getLabelFr().subSequence(0, 34).toString());
             ciDocument.getCONTENT().getSIGNATAIRE().setNOM(String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender().getLastName()));
             ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
-
-            ciDocument.getCONTENT().setPVEMPOTAGE(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PVEMPOTAGE());
-
-            FileFieldValue ffv;
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_NUMBER_FILE_FIELD, file);
-            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROPV(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_TA_NUMBER_FILE_FIELD, file);
-            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROAT(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_TA_DATE_FILE_FIELD, file);
-            ciDocument.getCONTENT().getPVEMPOTAGE().setDATEAT(ffv.getValue());
-
-            ciDocument.getCONTENT().getPVEMPOTAGE().setDATEPV(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, Calendar.getInstance().getTime()));
-
-            ciDocument.getCONTENT().getPVEMPOTAGE().setSIGNATAIRE(String.format("%s %s", file.getSignatory().getLastName(), file.getSignatory().getFirstName()));
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_NUMBER_FILE_FIELD, file);
-            ciDocument.getCONTENT().setNUMEROAUTORISATION(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_DATE_FILE_FIELD, file);
-            ciDocument.getCONTENT().setDATEAUTORISATION(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_SUPERVISOR_FILE_FIELD, file);
-            ciDocument.getCONTENT().setSUPERVISEUROPERATION(ffv.getValue());
-
-            List<PottingPresent> pottingPresents = commonDao.findPottingPresentsByFile(file);
-            ciDocument.getCONTENT().setPRESENTS(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS());
-            for (PottingPresent pp : pottingPresents) {
-
-                org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS.PRESENT pr = new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS.PRESENT();
-
-                pr.setNOM(pp.getName());
-                pr.setQUALITE(pp.getQuality());
-                pr.setORGANISME(pp.getOrganism());
-
-                ciDocument.getCONTENT().getPRESENTS().getPRESENT().add(pr);
-            }
-
-            ciDocument.getCONTENT().setCONTENEURS(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS());
-            for (Container container : file.getContainers()) {
-
-                org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR cont = new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR();
-
-                cont.setESSENCE(container.getContDenomination());
-                cont.setMARQUE(container.getContMark());
-                cont.setNUMERO(container.getContNumber());
-                cont.setSCELLE1(container.getContSeal1());
-                cont.setTONNAGE(container.getContGrossMass());
-                cont.setTYPE(container.getContType());
-                cont.setVOLUME(container.getContVolume());
-
-                ciDocument.getCONTENT().getCONTENEURS().getCONTENEUR().add(cont);
-            }
         }
 
         return ciDocument;
