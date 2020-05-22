@@ -2663,7 +2663,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             String pjType = "INVOICE";
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECEJOINTE(pjType, "INV-" + file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
-        } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode())) {
+        } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode())) {
 
             FileFieldValue ffv;
 
@@ -2734,7 +2734,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             ItemFlowData itemFlowDataToInsert = null;
 
-            if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode())) {
+            if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode())) {
                 for (ItemFlowData itemFlowData : itemFlowList.get(0).getItemFlowsDataList()) {
                     if (itemFlowData.getDataType().getCode() == null) {
                         itemFlowDataToInsert = itemFlowData;
@@ -2802,6 +2802,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().getPVEMPOTAGE().setDATEAT(ffv.getValue());
 
             ciDocument.getCONTENT().getPVEMPOTAGE().setDATEPV(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, Calendar.getInstance().getTime()));
+
+            ciDocument.getCONTENT().getPVEMPOTAGE().setSIGNATAIRE(String.format("%s %s", file.getSignatory().getLastName(), file.getSignatory().getFirstName()));
 
             ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_NUMBER_FILE_FIELD, file);
             ciDocument.getCONTENT().setNUMEROAUTORISATION(ffv.getValue());
@@ -3220,17 +3222,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -3360,17 +3362,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -3489,17 +3491,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -3619,17 +3621,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -3788,17 +3790,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -3918,17 +3920,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4048,17 +4050,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4184,17 +4186,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4348,17 +4350,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4528,17 +4530,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4668,17 +4670,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4806,17 +4808,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -4935,17 +4937,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5065,17 +5067,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5193,17 +5195,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5387,17 +5389,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5516,16 +5518,16 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5644,17 +5646,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5753,17 +5755,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }
@@ -5984,17 +5986,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                ciDocument
+                                        .getCONTENT()
+                                        .getDECISION()
+                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                             }
-                            break;
+                        } catch (final ParseException e) {
+                            LOG.info(Objects.toString(e), e);
+                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
+                        }
+                        break;
                         default:
                             break;
                     }

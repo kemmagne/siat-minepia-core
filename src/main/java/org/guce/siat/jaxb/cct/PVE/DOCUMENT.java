@@ -13574,7 +13574,8 @@ public class DOCUMENT implements Serializable {
         @XmlAccessorType(XmlAccessType.FIELD)
         @XmlType(name = "", propOrder = {
             "code",
-            "nom"
+            "nom",
+            "detail"
         })
         public static class TYPEPRODUIT {
 
@@ -13582,6 +13583,8 @@ public class DOCUMENT implements Serializable {
             protected String code;
             @XmlElement(name = "NOM")
             protected String nom;
+            @XmlElement(name = "DETAIL")
+            protected Boolean detail;
 
             /**
              * Obtient la valeur de la propriété code.
@@ -13621,6 +13624,26 @@ public class DOCUMENT implements Serializable {
              */
             public void setNOM(String value) {
                 this.nom = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété detail.
+             *
+             * @return possible object is {@link Boolean }
+             *
+             */
+            public Boolean isDETAIL() {
+                return detail;
+            }
+
+            /**
+             * Définit la valeur de la propriété detail.
+             *
+             * @param value allowed object is {@link Boolean }
+             *
+             */
+            public void setDETAIL(Boolean value) {
+                this.detail = value;
             }
 
         }

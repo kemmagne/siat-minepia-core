@@ -3,7 +3,6 @@ package org.guce.siat.core.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
-
 import javax.xml.XMLConstants;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -13,7 +12,6 @@ import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-
 import org.guce.siat.common.utils.ConstantsXsdPaths;
 import org.guce.siat.utility.jaxb.common.PaymentDocument;
 import org.springframework.core.io.ClassPathResource;
@@ -403,6 +401,17 @@ public final class SendDocumentUtils {
 
             final JAXBSource source = new JAXBSource(jaxbContext, document);
             validateDocument(source, ConstantsXsdPaths.CCT_CT_E_XSD_PATH);
+
+            jaxbMarshallerz.marshal(document, output);
+            documentType = document.getTYPEDOCUMENT();
+            service = document.getREFERENCEDOSSIER().getSERVICE();
+        } else if (documentSerializable instanceof org.guce.siat.jaxb.cct.PVE.DOCUMENT) {
+            jaxbContext = org.guce.siat.jaxb.cct.PVE.JAXBContextCreator.getInstance();
+            final org.guce.siat.jaxb.cct.PVE.DOCUMENT document = (org.guce.siat.jaxb.cct.PVE.DOCUMENT) documentSerializable;
+            jaxbMarshallerz = jaxbContext.createMarshaller();
+
+            final JAXBSource source = new JAXBSource(jaxbContext, document);
+            validateDocument(source, ConstantsXsdPaths.CCT_PVE_PATH);
 
             jaxbMarshallerz.marshal(document, output);
             documentType = document.getTYPEDOCUMENT();

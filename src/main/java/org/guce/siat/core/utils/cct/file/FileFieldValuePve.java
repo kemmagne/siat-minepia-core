@@ -5,6 +5,7 @@ import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.service.ApplicationPropretiesService;
+import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.FileFieldValueUtils;
 
 /**
@@ -42,6 +43,14 @@ public class FileFieldValuePve {
             case "TYPE_PRODUIT_NOM": {
                 if (document.getCONTENT() != null && document.getCONTENT().getTYPEPRODUIT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getTYPEPRODUIT().getNOM());
+                }
+                break;
+            }
+            case "TYPE_PRODUIT_DETAIL": {
+                if (document.getCONTENT() != null && document.getCONTENT().getTYPEPRODUIT() != null) {
+                    boolean bool = BooleanUtils.toBoolean(document.getCONTENT().getTYPEPRODUIT().isDETAIL());
+                    String label = BooleanUtils.toString(bool, Constants.YES_FR, Constants.NO_FR);
+                    fileFieldValue.setValue(label);
                 }
                 break;
             }
@@ -319,37 +328,37 @@ public class FileFieldValuePve {
             }
             case "LIEU_DESTINATION_UNLOCODE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getLIEUDESTINATION() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getLIEUDESTINATION().getUNLOCODE()));
+                    fileFieldValue.setValue(document.getCONTENT().getLIEUDESTINATION().getUNLOCODE());
                 }
                 break;
             }
             case "LIEU_DESTINATION_LIBELLE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getLIEUDESTINATION() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getLIEUDESTINATION().getLIBELLE()));
+                    fileFieldValue.setValue(document.getCONTENT().getLIEUDESTINATION().getLIBELLE());
                 }
                 break;
             }
             case "LIEU_EMBARQUEMENT_UNLOCODE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getLIEUXEMBARQUEMENT() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getLIEUXEMBARQUEMENT().getUNLOCODE()));
+                    fileFieldValue.setValue(document.getCONTENT().getLIEUXEMBARQUEMENT().getUNLOCODE());
                 }
                 break;
             }
             case "LIEU_EMBARQUEMENT_LIBELLE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getLIEUXEMBARQUEMENT() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getLIEUXEMBARQUEMENT().getLIBELLE()));
+                    fileFieldValue.setValue(document.getCONTENT().getLIEUXEMBARQUEMENT().getLIBELLE());
                 }
                 break;
             }
             case "LIEU_DEDOUANEMENT_UNLOCODE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getLIEUDEDOUANEMENT() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getLIEUDEDOUANEMENT().getUNLOCODE()));
+                    fileFieldValue.setValue(document.getCONTENT().getLIEUDEDOUANEMENT().getUNLOCODE());
                 }
                 break;
             }
             case "LIEU_DEDOUANEMENT_LIBELLE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getLIEUDEDOUANEMENT() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getLIEUDEDOUANEMENT().getLIBELLE()));
+                    fileFieldValue.setValue(document.getCONTENT().getLIEUDEDOUANEMENT().getLIBELLE());
                 }
                 break;
             }
@@ -440,7 +449,7 @@ public class FileFieldValuePve {
             case "POSTE_CONTROLE_DELEGATION": {
                 if (document.getCONTENT() != null && document.getCONTENT().getPOSTECONTROLE() != null) {
                     boolean isDelegation = BooleanUtils.toBoolean(document.getCONTENT().getPOSTECONTROLE().isDELEGATION());
-                    String label = BooleanUtils.toString(isDelegation, "oui", "non");
+                    String label = BooleanUtils.toString(isDelegation, Constants.YES_FR, Constants.NO_FR);
                     fileFieldValue.setValue(label);
                 }
                 break;
@@ -460,7 +469,7 @@ public class FileFieldValuePve {
             case "CEMAC": {
                 if (document.getCONTENT() != null) {
                     boolean bool = BooleanUtils.toBoolean(document.getCONTENT().isCEMAC());
-                    String label = BooleanUtils.toString(bool, "oui", "non");
+                    String label = BooleanUtils.toString(bool, Constants.YES_FR, Constants.NO_FR);
                     fileFieldValue.setValue(label);
                 }
                 break;
@@ -468,7 +477,7 @@ public class FileFieldValuePve {
             case "DEBITES": {
                 if (document.getCONTENT() != null) {
                     boolean bool = BooleanUtils.toBoolean(document.getCONTENT().isDEBITES());
-                    String label = BooleanUtils.toString(bool, "oui", "non");
+                    String label = BooleanUtils.toString(bool, Constants.YES_FR, Constants.NO_FR);
                     fileFieldValue.setValue(label);
                 }
                 break;
@@ -476,7 +485,7 @@ public class FileFieldValuePve {
             case "PLACAGE": {
                 if (document.getCONTENT() != null) {
                     boolean bool = BooleanUtils.toBoolean(document.getCONTENT().isPLACAGE());
-                    String label = BooleanUtils.toString(bool, "oui", "non");
+                    String label = BooleanUtils.toString(bool, Constants.YES_FR, Constants.NO_FR);
                     fileFieldValue.setValue(label);
                 }
                 break;
@@ -484,7 +493,7 @@ public class FileFieldValuePve {
             case "CONTRE_PLAQUE": {
                 if (document.getCONTENT() != null) {
                     boolean bool = BooleanUtils.toBoolean(document.getCONTENT().isCONTREPLAQUE());
-                    String label = BooleanUtils.toString(bool, "oui", "non");
+                    String label = BooleanUtils.toString(bool, Constants.YES_FR, Constants.NO_FR);
                     fileFieldValue.setValue(label);
                 }
                 break;
