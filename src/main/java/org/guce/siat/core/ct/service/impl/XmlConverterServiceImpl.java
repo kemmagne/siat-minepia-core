@@ -105,6 +105,7 @@ import org.guce.siat.core.ct.dao.DecisionHistoryDao;
 import org.guce.siat.core.ct.dao.EssayTestAPDao;
 import org.guce.siat.core.ct.dao.InspectionReportDao;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
+import org.guce.siat.core.ct.dao.PottingReportDao;
 import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
@@ -116,6 +117,7 @@ import org.guce.siat.core.ct.model.EssayTestAP;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
 import org.guce.siat.core.ct.model.PottingPresent;
+import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.WoodSpecification;
 import org.guce.siat.core.ct.service.CotationService;
@@ -259,6 +261,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     @Autowired
     private CommonDao commonDao;
+
+    @Autowired
+    private PottingReportDao pottingReportDao;
 
     @Autowired
     private CoreDao dao;
@@ -536,7 +541,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         return FlowCode.FL_AP_166.name().equals(flowGuceSiat.getFlowSiat())
                 || FlowCode.FL_CT_93.name().equals(flowGuceSiat.getFlowSiat())
                 || FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat())
-                || FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat());
+                || FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat())
+                || FlowCode.FL_CT_135.name().equals(flowGuceSiat.getFlowSiat());
     }
 
     private boolean isAmendment(FlowGuceSiat flowGuceSiat) {
@@ -574,16 +580,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             final List<Attachment> attachmentListFromConvertedFile = fileConverted.getAttachmentsList();
             if (CollectionUtils.isNotEmpty(attachmentListFromConvertedFile)) {
                 if (fileFromSiat.getBureau() != null) {
-                    attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(fileFromSiat)
-                            + AlfrescoDirectoriesInitializer.SLASH + fileFromSiat.getNumeroDossier();
+                    attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(fileFromSiat) + AlfrescoDirectoriesInitializer.SLASH + fileFromSiat.getNumeroDossier();
                 } else {
                     attachmentRootFolder = AlfrescoDirectoriesInitializer.GED_DIRECTORY;
                 }
                 for (final Attachment attachment : attachmentListFromConvertedFile) {
                     attachment.setPath(attachmentRootFolder);
                     attachment.setFile(fileFromSiat);
-                    if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH
-                            + attachment.getDocumentName())) {
+                    if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
                         addedAttachments.add(attachment);
                         attachmentDao.save(attachment);
                     }
@@ -595,7 +599,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             if (isCancelRequest(flowGuceSiat)) {
                 proceedWorkflowForCancelRequest(fileFromSiat, document);
             } else if (isPaymentRequest(flowGuceSiat)) {
-                proceedWorkflowForPaiementRequest(fileFromSiat, document);
+                proceedWorkflowForPaymentRequest(fileFromSiat, document);
             } else if (!FileTypeCode.PAYMENT.equals(flowGuceSiat.getFileType().getCode())) {
                 proceedWorkflow(fileConverted, fileFromSiat, document);
             }
@@ -1231,19 +1235,30 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @param fileFromSiat the file from siat
      * @param document the document
      */
-    private void proceedWorkflowForPaiementRequest(final File fileFromSiat, final Serializable document) {
+    private void proceedWorkflowForPaymentRequest(final File fileFromSiat, final Serializable document) {
 
         List<FileItem> fileItems = fileItemDao.findFileItemsByFile(fileFromSiat);
-        if (!StepCode.ST_CT_42.equals(fileItems.get(0).getStep().getStepCode())) {
+        FileItem item = fileItems.get(0);
+        if (!Arrays.asList(StepCode.ST_CT_42, StepCode.ST_CT_61).contains(item.getStep().getStepCode())) {
             return;
         }
 
-        Flow flowToExecute;
+        final Flow flowToExecute;
         FileTypeCode fileTypeCode = fileFromSiat.getFileType().getCode();
         if (Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_123.name());
-        } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
+        } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
+        } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVE).contains(fileTypeCode)) {
+            ItemFlow invValidItemFlow = itemFlowDao.findItemFlowByFileItemAndFlow2(item, FlowCode.FL_CT_121);
+            if (invValidItemFlow == null) {
+                invValidItemFlow = itemFlowDao.findItemFlowByFileItemAndFlow2(item, FlowCode.FL_CT_133);
+            }
+            if (FlowCode.FL_CT_121.name().equals(invValidItemFlow.getFlow().getCode())) {
+                flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
+            } else {
+                flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_135.name());
+            }
         } else if (Arrays.asList(FileTypeCode.CCT_CT, FileTypeCode.CC_CT, FileTypeCode.CQ_CT).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_93.name());
         } else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
@@ -1283,7 +1298,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
 
             //le STEP dépond du nombre des cotation
-            if (FlowCode.FL_CT_123.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_126.name().equals(flowToExecute.getCode())) {
+            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
@@ -2098,7 +2113,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         return convertFileToPaymentDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     }
                 case CCT_CT_E_PVE:
-                    if (!FlowCode.FL_CT_126.name().equals(flowToExecute.getCode())) {
+                    if (!FlowCode.FL_CT_126.name().equals(flowToExecute.getCode()) && !FlowCode.FL_CT_135.name().equals(flowToExecute.getCode())) {
                         return convertFileToDocumentPve(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     } else {
                         return convertFileToPaymentDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
@@ -2450,11 +2465,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         } else if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode())) {
             String pjType = "INVOICE";
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
-            ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
-                    .add(new PIECEJOINTE(pjType, "INV-" + file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
+            ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECEJOINTE(pjType, "INV-" + file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
         } else if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
-                && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                        flowToExecute.getCode())) {
+                && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2655,78 +2668,33 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         ciDocument.setCONTENT(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT());
 
-        if (FlowCode.FL_CT_89.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_08.name().equals(flowToExecute.getCode())) {
+        if (Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_89.name(), FlowCode.FL_CT_140.name()).contains(flowToExecute.getCode())) {
             String pjType = PottingReportConstants.PVE_ATTACHMENT_TYPE;
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECEJOINTE(pjType, file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
 
             ciDocument.getCONTENT().setPVEMPOTAGE(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PVEMPOTAGE());
 
-            FileFieldValue ffv;
+            PottingReport pottingReport = pottingReportDao.findPottingReportByFile(file);
 
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_NUMBER_FILE_FIELD, file);
-            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROPV(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_TA_NUMBER_FILE_FIELD, file);
-            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROAT(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_TA_DATE_FILE_FIELD, file);
-            ciDocument.getCONTENT().getPVEMPOTAGE().setDATEAT(ffv.getValue());
-
+            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROPV(file.getNumeroDossier());
+            ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROAT(pottingReport.getTreatmentCertNumber());
+            if (pottingReport.getTreatmentCertDate() != null) {
+                ciDocument.getCONTENT().getPVEMPOTAGE().setDATEAT(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, pottingReport.getTreatmentCertDate()));
+            }
             ciDocument.getCONTENT().getPVEMPOTAGE().setDATEPV(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, Calendar.getInstance().getTime()));
-
             ciDocument.getCONTENT().getPVEMPOTAGE().setSIGNATAIRE(String.format("%s %s", file.getSignatory().getLastName(), file.getSignatory().getFirstName()));
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_NUMBER_FILE_FIELD, file);
-            ciDocument.getCONTENT().setNUMEROAUTORISATION(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_AUTHORIZATION_DATE_FILE_FIELD, file);
-            ciDocument.getCONTENT().setDATEAUTORISATION(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_SUPERVISOR_FILE_FIELD, file);
-            ciDocument.getCONTENT().setSUPERVISEUROPERATION(ffv.getValue());
-
-            List<PottingPresent> pottingPresents = commonDao.findPottingPresentsByFile(file);
-            ciDocument.getCONTENT().setPRESENTS(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS());
-            for (PottingPresent pp : pottingPresents) {
-
-                org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS.PRESENT pr = new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.PRESENTS.PRESENT();
-
-                pr.setNOM(pp.getName());
-                pr.setQUALITE(pp.getQuality());
-                pr.setORGANISME(pp.getOrganism());
-
-                ciDocument.getCONTENT().getPRESENTS().getPRESENT().add(pr);
-            }
-
-            ciDocument.getCONTENT().setCONTENEURS(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS());
-            for (Container container : file.getContainers()) {
-
-                org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR cont = new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR();
-
-                cont.setESSENCE(container.getContDenomination());
-                cont.setMARQUE(container.getContMark());
-                cont.setNUMERO(container.getContNumber());
-                cont.setSCELLE1(container.getContSeal1());
-                cont.setTONNAGE(container.getContGrossMass());
-                cont.setTYPE(container.getContType());
-                cont.setVOLUME(container.getContVolume());
-
-                ciDocument.getCONTENT().getCONTENEURS().getCONTENEUR().add(cont);
-            }
-        } else if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode())) {
+            ciDocument.getCONTENT().setNUMEROAUTORISATION(pottingReport.getAuthorizationNumber());
+            ciDocument.getCONTENT().setDATEAUTORISATION(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, pottingReport.getAuthorizationDate()));
+            ciDocument.getCONTENT().setSUPERVISEUROPERATION(String.format("%s %s", pottingReport.getPottingController().getLastName(), pottingReport.getPottingController().getFirstName())); // ???
+            ciDocument.getCONTENT().setDATEEMPOTAGEEFFECTIF(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getPottingEndDate()));
+        } else if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_133.name().equals(flowToExecute.getCode())) {
             String pjType = "INVOICE";
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECEJOINTE(pjType, "INV-" + file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
         } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode())) {
-
-            FileFieldValue ffv;
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_APPOINTMENT_DATE_FILE_FIELD, file);
-            ciDocument.getCONTENT().setDATERDVFINALE(ffv.getValue());
-
-            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_POTTING_END_DATE_FILE_FIELD, file);
-            ciDocument.getCONTENT().setDATEEMPOTAGEEFFECTIF(ffv.getValue());
+            PottingReport pottingReport = pottingReportDao.findPottingReportByFile(file);
+            ciDocument.getCONTENT().setDATERDVFINALE(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getAppointmentDate()));
         }
         // ROUTAGE
         ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce(file));
@@ -2741,7 +2709,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         // si facture
-        if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode())) {
+        if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_133.name().equals(flowToExecute.getCode())) {
             PaymentData paymentData = paymentDataDao.findPaymentDataByFileItem(file.getFileItemsList().get(0));
 
             PAIEMENT paiement = new PAIEMENT();
@@ -2835,14 +2803,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
         // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
         if (flowToExecute.getToStep() != null && BooleanUtils.isTrue(flowToExecute.getToStep().getIsFinal())) {
-
-            ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.SIGNATAIRE());
-
-            ciDocument.getCONTENT().getSIGNATAIRE().setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
-            ciDocument.getCONTENT().getSIGNATAIRE().setLIEU(itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0).getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration().getLabelFr().subSequence(0, 34).toString());
-            ciDocument.getCONTENT().getSIGNATAIRE().setNOM(String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender().getLastName()));
-            ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
         }
+
+        ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.SIGNATAIRE());
+
+        ciDocument.getCONTENT().getSIGNATAIRE().setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
+        ciDocument.getCONTENT().getSIGNATAIRE().setLIEU(itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0).getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration().getLabelFr().subSequence(0, 34).toString());
+        ciDocument.getCONTENT().getSIGNATAIRE().setNOM(String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender().getLastName()));
+        ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
 
         return ciDocument;
     }
@@ -2858,8 +2826,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return the serializable
      * @throws UtilitiesException the utilities exception
      */
-    public Serializable convertFileToDocumentCcCT(final File file, final List<FileItem> fileItemList,
-            final List<ItemFlow> itemFlowList, final Flow flowToExecute, final FlowGuceSiat flowGuceSiat) throws UtilitiesException {
+    public Serializable convertFileToDocumentCcCT(final File file, final List<FileItem> fileItemList, final List<ItemFlow> itemFlowList, final Flow flowToExecute, final FlowGuceSiat flowGuceSiat) throws UtilitiesException {
 
         final org.guce.siat.jaxb.cct.CC_CT.DOCUMENT ciDocument = new org.guce.siat.jaxb.cct.CC_CT.DOCUMENT();
 

@@ -48,6 +48,7 @@ import org.guce.siat.core.ct.filter.SampleFilter;
 import org.guce.siat.core.ct.filter.StatisticBusinessFilter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.PottingPresent;
+import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
@@ -71,11 +72,11 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     private static final Logger LOG = LoggerFactory.getLogger(CommonDaoImpl.class);
 
     private final List<String> CTE_ADMISIBILITY_FLOW = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name());
-    private final List<String> CTE_COTATION_FLOW = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name());
+    private final List<String> CTE_COTATION_FLOW = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name(), FlowCode.FL_CT_136.name());
     private final List<String> CTE_APPOINTMENT_FLOW = Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_105.name(), FlowCode.FL_CT_118.name());
-    private final List<String> CTE_TREATMENT_FLOW = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name());
-    private final List<String> CTE_SIGNATURE_FLOW = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name());
-    private final List<String> CTE_CI_FLOW = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name());
+    private final List<String> CTE_TREATMENT_FLOW = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name());
+    private final List<String> CTE_SIGNATURE_FLOW = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_140.name());
+    private final List<String> CTE_CI_FLOW = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name(), FlowCode.FL_CT_137.name());
 
     /**
      * Instantiates a new common dao impl.
@@ -181,8 +182,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         } else if (filter instanceof PaymentFilter) {
             final List<StepCode> stepCodes = new ArrayList<>();
             stepCodes.add(StepCode.ST_AP_64);
-            stepCodes.add(StepCode.ST_CT_42);
             stepCodes.add(StepCode.ST_AP_65);
+            stepCodes.add(StepCode.ST_CT_42);
+            stepCodes.add(StepCode.ST_CT_61);
             // afficher uniquement les Dossier en attente dans l'etape PAIEMENT
             params.put("stepCodes", stepCodes);
             hqlQuery.append(" AND  fi.step.stepCode IN (:stepCodes)");
@@ -1395,6 +1397,23 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         query.setParameter("fileId", file.getId());
 
         return query.getResultList();
+    }
+
+    @Override
+    public PottingReport findPottingReportByFile(File file) {
+
+        TypedQuery<PottingReport> query = super.entityManager.createQuery("SELECT pr FROM PottingReport pr WHERE pr.file.id = :fileId ORDER BY pr.id DESC", PottingReport.class);
+
+        query.setParameter("fileId", file.getId());
+
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nrex) {
+            return null;
+        }
+
     }
 
 }

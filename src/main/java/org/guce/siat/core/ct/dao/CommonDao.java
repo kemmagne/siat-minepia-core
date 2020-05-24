@@ -12,6 +12,7 @@ import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.PottingPresent;
+import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
@@ -182,5 +183,7 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
     void updatePottingPresent(PottingPresent pottingPresent);
 
     List<PottingPresent> findPottingPresentsByFile(File file);
+
+    PottingReport findPottingReportByFile(File file);
 
 }

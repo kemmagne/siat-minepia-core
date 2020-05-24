@@ -22,6 +22,7 @@ import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PottingPresent;
+import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
 import org.guce.siat.core.ct.model.TreatmentOrder;
@@ -294,5 +295,7 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void updatePottingPresent(PottingPresent pottingPresent);
 
     List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file);
+
+    PottingReport findPottingReportByFile(org.guce.siat.common.model.File file);
 
 }

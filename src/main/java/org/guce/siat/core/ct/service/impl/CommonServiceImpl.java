@@ -75,6 +75,7 @@ import org.guce.siat.core.ct.model.InvoiceLine;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
 import org.guce.siat.core.ct.model.PottingPresent;
+import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
 import org.guce.siat.core.ct.model.TreatmentOrder;
@@ -556,8 +557,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                         }
                         break;
                 }
-            } else if (Constants.MINADER_MINISTRY.equals(itemFlow.getFileItem().getFile().getDestinataire())
-                    && FlowCode.FL_CT_08.name().equals(flowCode)) {
+            } else if (Constants.MINADER_MINISTRY.equals(itemFlow.getFileItem().getFile().getDestinataire()) && FlowCode.FL_CT_08.name().equals(flowCode)) {
                 final CCTCPParamValue paramValue = cCTCPParamValueDao.findCCTCPParamValueByItemFlow(itemFlow);
                 if (paramValue != null) {
                     cCTCPParamValueDao.delete(paramValue);
@@ -590,8 +590,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 appointmentDao.delete(draftAppointmentItemFlow);
             } //Saisie Constat Suite Visite à Quai ou Saisie Constat Suite RDV chez Déclarant
             else if (FlowCode.FL_CT_44.name().equals(flowCode) || FlowCode.FL_CT_28.name().equals(flowCode)) {
-                final InspectionReport daraftInspectionReport = inspectionReportDao.findLastInspectionReportsByFileItem(itemFlow
-                        .getFileItem());
+                final InspectionReport daraftInspectionReport = inspectionReportDao.findLastInspectionReportsByFileItem(itemFlow.getFileItem());
                 inspectionReportDao.delete(daraftInspectionReport);
             } //			Demande d Analyse
             else if (FlowCode.FL_CT_29.name().equals(flowCode)) {
@@ -642,8 +641,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentResultDao.update(draftTreatmentResult);
                 treatmentResultDao.delete(draftTreatmentResult);
                 this.deleteAttachedReports(attachments);
-            } //  Facture
-            else if (FlowCode.FL_CT_120.name().equals(flowCode) || FlowCode.FL_CT_124.name().equals(flowCode)) {
+            } //  Facture FlowCode.FL_CT_120.name().equals(flowCode) || FlowCode.FL_CT_124.name().equals(flowCode)
+            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name()).contains(flowCode)) {
                 PaymentItemFlow paymentItemFlow = paymentDataDao.findPaymentItemFlowByItemFlow(itemFlow);
                 if (paymentItemFlow != null) {
                     paymentData = paymentItemFlow.getPaymentData();
@@ -1343,7 +1342,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         if (CollectionUtils.isNotEmpty(paymentData.getInvoiceLines())) {
             for (InvoiceLine invoiceLine : paymentData.getInvoiceLines()) {
-                invoiceLine.setId(null);
+                if (invoiceLine.getId() < 0) {
+                    invoiceLine.setId(null);
+                }
                 invoiceLine.setMontantTtc(invoiceLine.getMontantHt() + invoiceLine.getMontantTva());
                 invoiceLine.setPaymentData(paymentData);
             }
@@ -1456,6 +1457,11 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Override
     public List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file) {
         return commonDao.findPottingPresentsByFile(file);
+    }
+
+    @Override
+    public PottingReport findPottingReportByFile(org.guce.siat.common.model.File file) {
+        return commonDao.findPottingReportByFile(file);
     }
 
 }
