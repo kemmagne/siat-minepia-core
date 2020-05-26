@@ -18,6 +18,8 @@ import org.apache.commons.collections.Transformer;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
 import org.guce.siat.common.dao.CoreDao;
+import org.guce.siat.common.dao.FileFieldDao;
+import org.guce.siat.common.dao.FileFieldValueDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.dao.ItemFlowDataDao;
@@ -27,6 +29,7 @@ import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
 import org.guce.siat.common.model.AppointmentItemFlowId;
 import org.guce.siat.common.model.Container;
+import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
@@ -37,6 +40,7 @@ import org.guce.siat.common.service.FlowService;
 import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.utils.Constants;
+import org.guce.siat.common.utils.DateUtils;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
@@ -83,6 +87,8 @@ import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
 import org.guce.siat.core.ct.service.CommonService;
+import org.guce.siat.core.ct.service.PottingReportService;
+import org.guce.siat.core.ct.util.PottingReportConstants;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
 import org.guce.siat.core.ct.util.quota.QuotaDto;
 import org.guce.siat.core.utils.CommonUtils;
@@ -233,7 +239,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     private ItemFlowService itemFlowService;
 
     @Autowired
+    private PottingReportService pottingReportService;
+
+    @Autowired
     private CoreDao dao;
+
+    @Autowired
+    private FileFieldValueDao fileFieldValueDao;
+
+    @Autowired
+    private FileFieldDao fileFieldDao;
 
     /**
      * The directory.
@@ -313,8 +328,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             final List<InspectionReport> inspectionReports = (List<InspectionReport>) CollectionUtils.select(reports, new Predicate() {
                 @Override
                 public boolean evaluate(final Object object) {
-                    return ((InspectionReport) object).getFileItem() != null
-                            && ((InspectionReport) object).getFileItem().getId().equals(itemFlow.getFileItem().getId());
+                    return ((InspectionReport) object).getFileItem() != null && ((InspectionReport) object).getFileItem().getId().equals(itemFlow.getFileItem().getId());
                 }
             });
             InspectionReport inspectionReport = null;
@@ -547,13 +561,10 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                         }
                         break;
                     case CCT_CT_E_PVE:
-                        if (file != null) {
-                            for (Container container : file.getContainers()) {
-                                container.setContSeal1(null);
-                            }
-                            dao.update(file.getContainers());
-                            List<PottingPresent> pottingPresents = commonDao.findPottingPresentsByFile(file);
-                            dao.delete(pottingPresents);
+                        PottingReport pottingReport = pottingReportService.findPottingReportByValidationFlow(itemFlow);
+                        if (pottingReport != null) {
+                            pottingReportService.resetValdiationUpdates(pottingReport, itemFlow.getFlow());
+                            pottingReportService.update(pottingReport);
                         }
                         break;
                 }
@@ -648,15 +659,20 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                     paymentData = paymentItemFlow.getPaymentData();
                     paymentDataDao.delete(paymentItemFlow);
                 }
-            } //ANALYSE Result AP
-            else if (acceptationFlows.contains(flowCode)
-                    && FileTypeCode.EH_MINADER.equals(fileItemDao.find(fileItems.get(0)).getFile().getFileType().getCode())) {
+            } // Rendez-vous
+            else if (Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_118.name()).contains(flowCode)) {
+                PottingReport pottingReport = pottingReportService.findPottingReportByAppointmentFlow(itemFlow);
+                if (pottingReport != null) {
+                    pottingReportService.resetAppointmentUpdates(pottingReport, itemFlow.getFlow());
+                    pottingReportService.update(pottingReport);
+                }
+            }//ANALYSE Result AP
+            else if (acceptationFlows.contains(flowCode) && FileTypeCode.EH_MINADER.equals(fileItemDao.find(fileItems.get(0)).getFile().getFileType().getCode())) {
                 final AnalyseResultAp draftAnalyseResult = analyseResultApDao.findAnalyseResultApByItemFlow(itemFlow);
                 analyseResultApDao.delete(draftAnalyseResult);
                 itemFlowDataDao.deleteList(itemFlowDataDao.findByItemFlows(Collections.singletonList(itemFlow)));
             } //EssayTestAP  result AP
-            else if (acceptationFlows.contains(flowCode)
-                    && FileTypeCode.CAT_MINADER.equals(fileItemDao.find(fileItems.get(0)).getFile().getFileType().getCode())) {
+            else if (acceptationFlows.contains(flowCode) && FileTypeCode.CAT_MINADER.equals(fileItemDao.find(fileItems.get(0)).getFile().getFileType().getCode())) {
                 final EssayTestAP draftEssayTestAP = essayTestAPDao.findByItemFlow(itemFlow);
                 essayTestAPDao.delete(draftEssayTestAP);
                 itemFlowDataDao.deleteList(itemFlowDataDao.findByItemFlows(Collections.singletonList(itemFlow)));
@@ -899,6 +915,48 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             dao.save(pottingPresent);
         }
         dao.update(containers);
+    }
+
+    @Override
+    public void takeDecisionAndSavePottingReport(PottingReport pottingReport) {
+        if (pottingReport.getId() == null) {
+            dao.save(pottingReport);
+        } else {
+            dao.update(pottingReport);
+        }
+
+        FileFieldValue ffv;
+
+        if (pottingReport.getAppointmentDate() != null) {
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_APPOINTMENT_DATE_FILE_FIELD, pottingReport.getFile());
+            if (ffv != null) {
+                ffv.setValue(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getAppointmentDate()));
+                fileFieldValueDao.update(ffv);
+            } else {
+                newFileFieldValue(pottingReport.getFile(), PottingReportConstants.PVE_APPOINTMENT_DATE_FILE_FIELD, DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getAppointmentDate()));
+            }
+        }
+
+        if (pottingReport.getPottingEndDate() != null) {
+            ffv = fileFieldValueDao.findValueByFileFieldAndFile(PottingReportConstants.PVE_POTTING_END_DATE_FILE_FIELD, pottingReport.getFile());
+            if (ffv != null) {
+                ffv.setValue(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getPottingEndDate()));
+                fileFieldValueDao.update(ffv);
+            } else {
+                newFileFieldValue(pottingReport.getFile(), PottingReportConstants.PVE_POTTING_END_DATE_FILE_FIELD, DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getPottingEndDate()));
+            }
+        }
+    }
+
+    private void newFileFieldValue(org.guce.siat.common.model.File file, String fileFieldCode, String value) {
+
+        FileFieldValue ffv = new FileFieldValue();
+
+        ffv.setFile(file);
+        ffv.setFileField(fileFieldDao.findFileFieldByCodeAndFileType(fileFieldCode, file.getFileType().getCode()));
+        ffv.setValue(value);
+
+        fileFieldValueDao.save(ffv);
     }
 
     @Override

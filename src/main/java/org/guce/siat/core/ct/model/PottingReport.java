@@ -55,6 +55,9 @@ public class PottingReport extends AbstractModel {
     @Column(name = "APPOINTMENT_DATE")
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date appointmentDate;
+    @Column(name = "APPOINTMENT_DATE_BACK")
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date appointmentDateBack;
     @Column(name = "APPOINTMENT_DETAILS")
     private String appointmentDetails;
 
@@ -148,6 +151,14 @@ public class PottingReport extends AbstractModel {
 
     public void setAppointmentDate(Date appointmentDate) {
         this.appointmentDate = appointmentDate;
+    }
+
+    public Date getAppointmentDateBack() {
+        return appointmentDateBack;
+    }
+
+    public void setAppointmentDateBack(Date appointmentDateBack) {
+        this.appointmentDateBack = appointmentDateBack;
     }
 
     public String getAppointmentDetails() {

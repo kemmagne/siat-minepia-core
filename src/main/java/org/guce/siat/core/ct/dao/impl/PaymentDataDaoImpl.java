@@ -1,16 +1,14 @@
 package org.guce.siat.core.ct.dao.impl;
 
 import java.math.BigDecimal;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
+import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
@@ -115,6 +113,10 @@ public class PaymentDataDaoImpl extends AbstractJpaDaoImpl<PaymentData> implemen
             query.setParameter("fileItemId", fileItem.getId());
 
             List<PaymentData> list = query.getResultList();
+
+            if (CollectionUtils.isEmpty(list)) {
+                return null;
+            }
 
             Collections.sort(list, new Comparator<PaymentData>() {
                 @Override

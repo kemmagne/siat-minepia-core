@@ -154,6 +154,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
 
             final byte[] xmlBytes = (byte[]) ebxmlBytes.get(ESBConstants.FLOW);
             final byte[] message = (byte[]) ebxmlBytes.get(ESBConstants.MESSAGE);
+            final String conversationId = (String) ebxmlBytes.get(ESBConstants.CONVERSATION_ID);
 
             xmlContent = new String(xmlBytes);
             LOG.info(" check if the received message is an APERAK");
@@ -167,7 +168,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             // Validation metier
             validationFlowService.validateFlowFromGuce(rootElement);
             // Injection file in BDD
-            final Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath);
+            final Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath, conversationId);
             LOG.info("################### getReceivedDocument finished");
             final org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
             LOG.info(" saveReceivedFileAndExecuteFlow finished");
@@ -305,7 +306,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
      * @throws XPathExpressionException the x path expression exception
      * @throws JAXBException the JAXB exception
      */
-    private Serializable getReceivedDocument(final byte[] xmlBytes, final String xmlContent, final XPath xPath) throws XPathExpressionException, JAXBException {
+    private Serializable getReceivedDocument(final byte[] xmlBytes, final String xmlContent, final XPath xPath, String conversationId) throws XPathExpressionException, JAXBException {
         final InputSource source = new InputSource(new StringReader(xmlContent));
         final String flowSource = xPath.evaluate(REFERENCE_GUCE_EXPRESSION, source);
 
@@ -477,6 +478,9 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                         // Unmarshalling the document
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
                         document = (org.guce.siat.jaxb.cct.PVE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                        if (StringUtils.isNotBlank(conversationId)) {
+                            ((org.guce.siat.jaxb.cct.PVE.DOCUMENT) document).getREFERENCEDOSSIER().setREFERENCEGUCE(conversationId);
+                        }
                     } else {
                         final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();

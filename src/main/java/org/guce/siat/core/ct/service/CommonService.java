@@ -108,6 +108,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
 
     void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers);
 
+    void takeDecisionAndSavePottingReport(PottingReport pottingReport);
+
     void takeDecisionAndSaveApprovedDecision(ApprovedDecision approvedDecision, List<ItemFlow> itemFlows) throws Exception;
 
     void takeDecisionAndSaveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, List<ItemFlow> itemFlows) throws Exception;
