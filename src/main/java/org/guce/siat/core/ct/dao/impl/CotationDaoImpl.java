@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
+import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.FileFieldValueDao;
 import org.guce.siat.common.dao.UserDao;
 import org.guce.siat.common.model.Bureau;
@@ -76,6 +77,10 @@ public class CotationDaoImpl implements CotationDao {
         query.setParameter("productType", productType.name());
 
         List list = query.getResultList();
+
+        if (CollectionUtils.isEmpty(list)) {
+            return null;
+        }
 
         Object[] line = (Object[]) list.get(0);
 
