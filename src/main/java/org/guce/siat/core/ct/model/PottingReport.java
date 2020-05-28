@@ -87,6 +87,9 @@ public class PottingReport extends AbstractModel {
     @Column(name = "ADDITIONAL_INFORMATIONS")
     private String additionalInformations;
 
+    @Column(name = "VALIDATED")
+    private boolean validated;
+
     @Override
     public Long getId() {
         return id;
@@ -247,6 +250,14 @@ public class PottingReport extends AbstractModel {
 
     public void setPottingController(User pottingController) {
         this.pottingController = pottingController;
+    }
+
+    public boolean isValidated() {
+        return validated;
+    }
+
+    public void setValidated(boolean validated) {
+        this.validated = validated;
     }
 
 }

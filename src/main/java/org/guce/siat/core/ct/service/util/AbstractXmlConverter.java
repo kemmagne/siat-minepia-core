@@ -1,6 +1,8 @@
 package org.guce.siat.core.ct.service.util;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
+import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FlowGuceSiat;
@@ -41,6 +43,24 @@ public abstract class AbstractXmlConverter implements XmlConverter {
             GuceSiatBureau guceSiatBureau = xmlConverterService.getGuceSiatBureauDao().findByBureauGuce(officeCode);
             xmlConverterService.setGuceSiatBureau(guceSiatBureau);
         }
+    }
+
+    protected void setNumeroDossier(File current) {
+
+        String numeroDossier = current.getNumeroDossier();
+
+        File root = xmlConverterService.getFileDao().findByNumDossierGuce(numeroDossier);
+        if (root == null) {
+            return;
+        }
+
+        List<File> children = root.getChildrenList();
+        String suffix = new DecimalFormat("M00").format(children.size() + 1);
+        numeroDossier = numeroDossier.concat(suffix);
+
+        current.setNumeroDossier(numeroDossier);
+        current.setParent(root);
+        xmlConverterService.setNumDossier(numeroDossier);
     }
 
     @Override

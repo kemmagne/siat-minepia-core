@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -460,20 +461,26 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                 case CCT_CT_E_PVI:
                 case CCT_CT_E_ATP:
                 case CCT_CT_E_FSTP: {
-                    if (!FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat()) && !FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat())) {
+                    if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name()).contains(flowGuceSiat.getFlowSiat())) {
+                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    } else {
                         final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CT_E.JAXBContextCreator.getInstance();
                         // Unmarshalling the document
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
                         document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
-                    } else {
-                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
-                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     }
                     break;
                 }
                 case CCT_CT_E_PVE: {
-                    if (!FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat()) && !FlowCode.FL_CT_135.name().equals(flowGuceSiat.getFlowSiat())) {
+                    if (Arrays.asList(FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name()).contains(flowGuceSiat.getFlowSiat())) {
+                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    } else {
                         final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.PVE.JAXBContextCreator.getInstance();
                         // Unmarshalling the document
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
@@ -481,10 +488,6 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                         if (StringUtils.isNotBlank(conversationId)) {
                             ((org.guce.siat.jaxb.cct.PVE.DOCUMENT) document).getREFERENCEDOSSIER().setREFERENCEGUCE(conversationId);
                         }
-                    } else {
-                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
-                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
-                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     }
                     break;
                 }

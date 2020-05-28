@@ -298,6 +298,4 @@ public interface CommonService extends AbstractService<ItemFlow> {
 
     List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file);
 
-    PottingReport findPottingReportByFile(org.guce.siat.common.model.File file);
-
 }

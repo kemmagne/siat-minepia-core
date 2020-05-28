@@ -652,8 +652,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentResultDao.update(draftTreatmentResult);
                 treatmentResultDao.delete(draftTreatmentResult);
                 this.deleteAttachedReports(attachments);
-            } //  Facture FlowCode.FL_CT_120.name().equals(flowCode) || FlowCode.FL_CT_124.name().equals(flowCode)
-            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name()).contains(flowCode)) {
+            } // Facturation
+            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name()).contains(flowCode)) {
                 PaymentItemFlow paymentItemFlow = paymentDataDao.findPaymentItemFlowByItemFlow(itemFlow);
                 if (paymentItemFlow != null) {
                     paymentData = paymentItemFlow.getPaymentData();
@@ -946,6 +946,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 newFileFieldValue(pottingReport.getFile(), PottingReportConstants.PVE_POTTING_END_DATE_FILE_FIELD, DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getPottingEndDate()));
             }
         }
+
     }
 
     private void newFileFieldValue(org.guce.siat.common.model.File file, String fileFieldCode, String value) {
@@ -1515,11 +1516,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Override
     public List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file) {
         return commonDao.findPottingPresentsByFile(file);
-    }
-
-    @Override
-    public PottingReport findPottingReportByFile(org.guce.siat.common.model.File file) {
-        return commonDao.findPottingReportByFile(file);
     }
 
 }

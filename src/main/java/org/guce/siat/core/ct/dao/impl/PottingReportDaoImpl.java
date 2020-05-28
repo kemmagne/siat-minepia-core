@@ -25,7 +25,7 @@ public class PottingReportDaoImpl extends AbstractJpaDaoImpl<PottingReport> impl
     @Override
     public PottingReport findPottingReportByFile(File file) {
 
-        TypedQuery<PottingReport> query = super.entityManager.createQuery("SELECT pr FROM PottingReport pr WHERE pr.file.id = :fileId ORDER BY pr.id DESC", PottingReport.class);
+        TypedQuery<PottingReport> query = super.entityManager.createQuery("SELECT pr FROM PottingReport pr WHERE pr.file.id = :fileId AND pr.validated = true ORDER BY pr.id DESC", PottingReport.class);
 
         query.setParameter("fileId", file.getId());
 

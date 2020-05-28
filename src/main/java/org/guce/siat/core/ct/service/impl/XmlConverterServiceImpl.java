@@ -536,11 +536,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return true, if is payment request
      */
     private boolean isPaymentRequest(final FlowGuceSiat flowGuceSiat) {
-        return FlowCode.FL_AP_166.name().equals(flowGuceSiat.getFlowSiat())
-                || FlowCode.FL_CT_93.name().equals(flowGuceSiat.getFlowSiat())
-                || FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat())
-                || FlowCode.FL_CT_126.name().equals(flowGuceSiat.getFlowSiat())
-                || FlowCode.FL_CT_135.name().equals(flowGuceSiat.getFlowSiat());
+        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name())
+                .contains(flowGuceSiat.getFlowSiat());
     }
 
     private boolean isAmendment(FlowGuceSiat flowGuceSiat) {
@@ -1260,7 +1257,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 invValidItemFlow = itemFlowDao.findItemFlowByFileItemAndFlow2(item, FlowCode.FL_CT_133);
             }
             if (FlowCode.FL_CT_121.name().equals(invValidItemFlow.getFlow().getCode())) {
-                flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
+                if (fileFromSiat.getParent() == null) {
+                    flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
+                } else {
+                    flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_145.name());
+                }
             } else {
                 flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_135.name());
             }
@@ -1303,7 +1304,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
 
             //le STEP dépond du nombre des cotation
-            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name()).contains(flowToExecute.getCode())) {
+            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
@@ -2093,11 +2094,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         return xmlConverter.convertFileToDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     }
                 case CCT_CT_E_PVE:
-                    if (!FlowCode.FL_CT_126.name().equals(flowToExecute.getCode()) && !FlowCode.FL_CT_135.name().equals(flowToExecute.getCode())) {
-                        xmlConverter = new XmlConverterPve(this);
+                    if (Arrays.asList(FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name()).contains(flowToExecute.getCode())) {
+                        xmlConverter = new XmlConverterPayment(this);
                         return xmlConverter.convertFileToDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     } else {
-                        xmlConverter = new XmlConverterPayment(this);
+                        xmlConverter = new XmlConverterPve(this);
                         return xmlConverter.convertFileToDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     }
                 case CC_CT:

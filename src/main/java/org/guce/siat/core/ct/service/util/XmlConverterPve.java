@@ -91,12 +91,6 @@ public class XmlConverterPve extends AbstractXmlConverter {
         file.setFileFieldValueList(fileFieldValues);
         file.setFileType(fileType);
 
-        // Set Parent File
-        if (file.getNumeroDossierBase() != null) {
-            final File parent = xmlConverterService.getFileDao().findByNumDossierGuce(file.getNumeroDossierBase());
-            file.setParent(parent);
-        }
-
         if (FlowCode.FL_CT_61.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())) {
 
             if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCEGUCE() != null) {
@@ -107,20 +101,9 @@ public class XmlConverterPve extends AbstractXmlConverter {
                 file.setFileTypeGuceAnnulation(document.getREFERENCEDOSSIER().getSERVICE());
             }
 
-        } else if (FlowCode.FL_CT_93.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())) {
-
-            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCEGUCE() != null) {
-                file.setReferenceGucePaiement(document.getREFERENCEDOSSIER().getREFERENCEGUCE());
-            }
-
-            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getSERVICE() != null) {
-                file.setFileTypeGucePaiement(document.getREFERENCEDOSSIER().getSERVICE());
-            }
-
         } else {
 
-            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCESIAT() != null
-                    && !document.getREFERENCEDOSSIER().getREFERENCESIAT().isEmpty()) {
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCESIAT() != null && !document.getREFERENCEDOSSIER().getREFERENCESIAT().isEmpty()) {
                 file.setReferenceSiat(document.getREFERENCEDOSSIER().getREFERENCESIAT());
             }
 
@@ -149,6 +132,8 @@ public class XmlConverterPve extends AbstractXmlConverter {
             if (document.getROUTAGE() != null && document.getROUTAGE().getDESTINATAIRE() != null) {
                 file.setDestinataire(document.getROUTAGE().getDESTINATAIRE());
             }
+
+            setNumeroDossier(file);
 
         }
 
@@ -301,7 +286,7 @@ public class XmlConverterPve extends AbstractXmlConverter {
 
         ciDocument.setCONTENT(new org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT());
 
-        if (Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_89.name(), FlowCode.FL_CT_140.name()).contains(flowToExecute.getCode())) {
+        if (Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_89.name(), FlowCode.FL_CT_140.name(), FlowCode.FL_CT_114.name()).contains(flowToExecute.getCode())) {
             String pjType = PottingReportConstants.PVE_ATTACHMENT_TYPE;
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECESJOINTES.PIECEJOINTE(pjType, file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));

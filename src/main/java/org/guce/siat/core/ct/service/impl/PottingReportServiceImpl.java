@@ -1,10 +1,12 @@
 package org.guce.siat.core.ct.service.impl;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.dao.FileFieldValueDao;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
+import org.guce.siat.common.utils.FileUtils;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.core.ct.dao.PottingReportDao;
 import org.guce.siat.core.ct.model.PottingReport;
@@ -20,6 +22,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("pottingReportService")
 @Transactional
 public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport> implements PottingReportService {
+
+    @Autowired
+    private FileFieldValueDao fileFieldValueDao;
 
     @Autowired
     private PottingReportDao pottingReportDao;
@@ -40,6 +45,7 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         return getJpaDao().findPottingReportByFile(file);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void resetAppointmentUpdates(PottingReport pottingReport, Flow currentFlow) {
         if (FlowCode.FL_CT_104.name().equals(currentFlow.getCode())) {
@@ -53,6 +59,7 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         pottingReport.setPottingController(null);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public void resetValdiationUpdates(PottingReport pottingReport, Flow currentFlow) {
         pottingReport.setValidationItemFlow(null);
@@ -67,14 +74,42 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         pottingReport.setTreatmentCertNumber(null);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PottingReport findPottingReportByAppointmentFlow(ItemFlow appointmentItemFlow) {
         return pottingReportDao.findPottingReportByAppointmentFlow(appointmentItemFlow);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public PottingReport findPottingReportByValidationFlow(ItemFlow validationItemFlow) {
         return pottingReportDao.findPottingReportByValidationFlow(validationItemFlow);
+    }
+
+    @Override
+    public void updateAfterSignature(PottingReport pottingReport) {
+
+        if (pottingReport == null) {
+            return;
+        }
+
+        File currentFile = pottingReport.getFile();
+
+        pottingReport.setValidated(true);
+        update(pottingReport);
+
+        File root = currentFile.getParent();
+
+        if (root == null) {
+            return;
+        }
+
+        PottingReport pottingReportRoot = findPottingReportByFile(root);
+        org.springframework.beans.BeanUtils.copyProperties(pottingReport, pottingReportRoot, "id", "file");
+        update(pottingReportRoot);
+
+        FileUtils.applyModifications(currentFile, root);
+        fileFieldValueDao.saveOrUpdateList(root.getFileFieldValueList());
     }
 
 }
