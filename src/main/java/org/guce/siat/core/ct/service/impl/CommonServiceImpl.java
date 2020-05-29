@@ -1370,13 +1370,18 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         }
         fileItemDao.saveOrUpdateList(fileItemList);
 
-        //	final List<PaymentItemFlow> paymentItemFlowList = new ArrayList<PaymentItemFlow>();
         paymentData.setDeleted(false);
+
+        if (CollectionUtils.isEmpty(paymentData.getPaymentItemFlowList())) {
+            paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
+            for (final FileItem fi : fileItemList) {
+                paymentData.getPaymentItemFlowList().add(new PaymentItemFlow(false, fi.getId()));
+            }
+        }
 
         for (final ItemFlow iflow : itemFlowsToAdd) {
             for (final PaymentItemFlow paymentItemFlow : paymentData.getPaymentItemFlowList()) {
                 if (paymentItemFlow.getFileItemId().equals(iflow.getFileItem().getId())) {
-                    //final PaymentItemFlow paymentItemFlow = new PaymentItemFlow();
                     paymentItemFlow.setPaymentData(paymentData);
                     paymentItemFlow.setItemFlow(iflow);
                 }
