@@ -845,15 +845,26 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return the flow
      */
     public Flow ciDestinationFlowToExecute(final File recievedFile) {
+
         String fluxSource = null;
+
         if (decisionDossier != null && !decisionDossier.isEmpty()) {
             fluxSource = decisionDossier.get(recievedFile).getCode();
         } else if (decisionArticles != null && !decisionArticles.isEmpty()) {
             fluxSource = decisionArticles.get(recievedFile.getFileItemsList().get(0)).getCode();
         }
 
-        return flowDao.findCiResponseFlow(fluxSource);
+        Flow ciResponseFlow;
+        if (StringUtils.isNotBlank(fluxSource)) {
+            ciResponseFlow = flowDao.findCiResponseFlow(fluxSource);
+        } else {
+            File file = fileDao.findByNumDossierGuce(numDossier);
+            ItemFlow itemFlow = itemFlowDao.findLastDecisionByFile(file);
+            fluxSource = itemFlow != null ? itemFlow.getFlow().getCode() : null;
+            ciResponseFlow = flowDao.findCiResponseFlow(fluxSource);
+        }
 
+        return ciResponseFlow;
     }
 
     /**
