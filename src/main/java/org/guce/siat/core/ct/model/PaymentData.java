@@ -3,7 +3,6 @@ package org.guce.siat.core.ct.model;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,7 +16,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.guce.siat.common.model.AbstractModel;
 
 /**
@@ -180,7 +178,7 @@ public class PaymentData extends AbstractModel implements Serializable {
     /**
      * The item flow.
      */
-    @OneToMany(mappedBy = "primaryKey.paymentData", cascade = CascadeType.PERSIST)
+    @OneToMany(mappedBy = "primaryKey.paymentData", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<PaymentItemFlow> paymentItemFlowList;
 
     @OneToMany(mappedBy = "paymentData", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})

@@ -1,7 +1,12 @@
 package org.guce.siat.core.ct.service.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.dao.CoreDao;
 import org.guce.siat.common.dao.FileFieldValueDao;
+import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
@@ -28,6 +33,9 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
 
     @Autowired
     private PottingReportDao pottingReportDao;
+
+    @Autowired
+    private CoreDao coreDao;
 
     @Override
     public PottingReportDao getJpaDao() {
@@ -110,6 +118,24 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
 
         FileUtils.applyModifications(currentFile, root);
         fileFieldValueDao.saveOrUpdateList(root.getFileFieldValueList());
+
+        List<Container> modifiedContainers = currentFile.getContainers();
+        if (CollectionUtils.isNotEmpty(modifiedContainers)) {
+
+            List<Container> containers = new ArrayList<>();
+            for (Container mc : modifiedContainers) {
+
+                Container container = new Container();
+
+                org.springframework.beans.BeanUtils.copyProperties(mc, container, "id", "file");
+                container.setFile(root);
+
+                containers.add(container);
+            }
+
+            coreDao.delete(root.getContainers());
+            coreDao.save(containers);
+        }
     }
 
 }

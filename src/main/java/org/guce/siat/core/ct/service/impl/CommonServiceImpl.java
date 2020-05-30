@@ -250,6 +250,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Autowired
     private FileFieldDao fileFieldDao;
 
+    @Autowired
+    private CoreDao coreDao;
+
     /**
      * The directory.
      */
@@ -522,12 +525,11 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Override
     public void rollbackDecision(final List<Long> fileItems) {
         final List<ItemFlow> itemFlows = itemFlowDao.findItemFlowsByFileItemList(fileItems);
-        final List<String> acceptationFlows = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(),
-                FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name());
+        final List<String> acceptationFlows = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(), FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name());
         final List<String> DCC_FLOW_CODES = Arrays.asList(FlowCode.FL_CT_CVS_03.name(), FlowCode.FL_CT_CVS_07.name());
 
-        PaymentData paymentData = null;
         boolean alreadyDeleted = true;
+        boolean rollbackBilling = false;
         org.guce.siat.common.model.File file = null;
         if (CollectionUtils.isNotEmpty(itemFlows)) {
             file = itemFlows.get(0).getFileItem().getFile();
@@ -654,11 +656,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 this.deleteAttachedReports(attachments);
             } // Facturation
             else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name()).contains(flowCode)) {
-                PaymentItemFlow paymentItemFlow = paymentDataDao.findPaymentItemFlowByItemFlow(itemFlow);
-                if (paymentItemFlow != null) {
-                    paymentData = paymentItemFlow.getPaymentData();
-                    paymentDataDao.delete(paymentItemFlow);
-                }
+                rollbackBilling = true;
             } // Rendez-vous
             else if (Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_118.name()).contains(flowCode)) {
                 PottingReport pottingReport = pottingReportService.findPottingReportByAppointmentFlow(itemFlow);
@@ -688,11 +686,17 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 itemFlowDataDao.deleteList(itemFlowData);
             }
 
-            itemFlowDao.delete(itemFlow);
+            if (!rollbackBilling) {
+                itemFlowDao.delete(itemFlow);
+            }
         }
 
-        if (paymentData != null) {
-            paymentDataDao.delete(paymentData);
+        if (rollbackBilling) {
+            PaymentData paymentData = paymentDataDao.findPaymentDataByFileItem(itemFlows.get(0).getFileItem());
+            if (paymentData != null) {
+                paymentDataDao.delete(paymentData);
+                coreDao.delete(itemFlows);
+            }
         }
 
         for (final ItemFlow itemFlow : itemFlows) {
@@ -1372,18 +1376,13 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
         paymentData.setDeleted(false);
 
-        if (CollectionUtils.isEmpty(paymentData.getPaymentItemFlowList())) {
-            paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
-            for (final FileItem fi : fileItemList) {
-                paymentData.getPaymentItemFlowList().add(new PaymentItemFlow(false, fi.getId()));
-            }
-        }
-
-        for (final ItemFlow iflow : itemFlowsToAdd) {
-            for (final PaymentItemFlow paymentItemFlow : paymentData.getPaymentItemFlowList()) {
-                if (paymentItemFlow.getFileItemId().equals(iflow.getFileItem().getId())) {
-                    paymentItemFlow.setPaymentData(paymentData);
-                    paymentItemFlow.setItemFlow(iflow);
+        if (CollectionUtils.isNotEmpty(paymentData.getPaymentItemFlowList())) {
+            for (final ItemFlow iflow : itemFlowsToAdd) {
+                for (final PaymentItemFlow paymentItemFlow : paymentData.getPaymentItemFlowList()) {
+                    if (paymentItemFlow.getFileItemId() != null && paymentItemFlow.getFileItemId().equals(iflow.getFileItem().getId())) {
+                        paymentItemFlow.setPaymentData(paymentData);
+                        paymentItemFlow.setItemFlow(iflow);
+                    }
                 }
             }
         }
@@ -1394,6 +1393,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
                 PaymentItemFlow paymentItemFlow = new PaymentItemFlow();
 
+                paymentItemFlow.setDeleted(Boolean.FALSE);
                 paymentItemFlow.setFileItemId(iflow.getFileItem().getId());
                 paymentItemFlow.setItemFlow(iflow);
                 paymentItemFlow.setMontantHt(paymentData.getMontantHt());
@@ -1414,7 +1414,11 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             }
         }
 
-        paymentDataDao.save(paymentData);
+        if (paymentData.getId() == null) {
+            paymentDataDao.save(paymentData);
+        } else {
+            paymentDataDao.update(paymentData);
+        }
 
         paymentData.setRefFacture(new DecimalFormat("FAC-SIAT-000000").format(paymentData.getId()));
         paymentDataDao.update(paymentData);

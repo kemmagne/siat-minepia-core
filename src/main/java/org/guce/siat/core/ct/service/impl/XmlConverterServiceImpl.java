@@ -2074,12 +2074,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      */
     @Override
     public Serializable convertFileToDocument(final File file, final List<FileItem> fileItemList, final List<ItemFlow> itemFlowList, final Flow flowToExecute) throws UtilitiesException {
-        FlowGuceSiat fgsByFAndFT = flowGuceSiatDao.findFlowGuceSiatByFlowSiatAndFileType(flowToExecute.getCode(), file.getFileType().getId());
 
-        if (null == file.getFileType().getCode()) {
+        FileType fileType = file.getFileType();
+        FlowGuceSiat fgsByFAndFT = flowGuceSiatDao.findFlowGuceSiatByFlowSiatAndFileType(flowToExecute.getCode(), fileType.getId());
+
+        if (null == fileType.getCode()) {
             return null;
         } else {
-            switch (file.getFileType().getCode()) {
+            switch (fileType.getCode()) {
                 case CCT_CT:
                     return convertFileToDocumentCctCT(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                 case CCT_CT_E:
