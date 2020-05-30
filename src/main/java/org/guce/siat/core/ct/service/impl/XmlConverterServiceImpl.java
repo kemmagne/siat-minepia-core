@@ -768,30 +768,35 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         final List<ItemFlow> itemFlowsToAdd = new ArrayList<>();
 
         final Flow flowToExecute;
+        boolean ci = false;
         if (flowGuceSiat.getFlowSiat() != null) {
             flowToExecute = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
         } else {
+            ci = true;
             flowToExecute = ciDestinationFlowToExecute(fileconverted);
         }
         final List<ItemFlowData> itemFlowDataList = retrieveItemFlowDatas(document, flowToExecute);
-        if (decisionDossier != null && !decisionDossier.isEmpty() || fileFromSiat != null && fileFromSiat.getSignatureDate() != null) {
+        File file = fileDao.findByNumDossierGuce(numDossier);
+        if ((decisionDossier != null && !decisionDossier.isEmpty() || fileFromSiat != null && fileFromSiat.getSignatureDate() != null) || (ci && FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode()))) {
 
-            for (final FileItem fileItem : fileFromSiat.getFileItemsList()) {
-                final ItemFlow itemFlow = new ItemFlow();
+            if (fileFromSiat != null) {
+                for (final FileItem fileItem : fileFromSiat.getFileItemsList()) {
+                    final ItemFlow itemFlow = new ItemFlow();
 
-                itemFlow.setFileItem(fileItem);
-                itemFlow.setFlow(flowToExecute);
-                itemFlow.setSender(declarant);
-                itemFlow.setSent(Boolean.TRUE);
-                itemFlow.setUnread(Boolean.TRUE);
-                itemFlow.setItemFlowsDataList(itemFlowDataList);
-                itemFlowsToAdd.add(itemFlow);
+                    itemFlow.setFileItem(fileItem);
+                    itemFlow.setFlow(flowToExecute);
+                    itemFlow.setSender(declarant);
+                    itemFlow.setSent(Boolean.TRUE);
+                    itemFlow.setUnread(Boolean.TRUE);
+                    itemFlow.setItemFlowsDataList(itemFlowDataList);
+                    itemFlowsToAdd.add(itemFlow);
 
-                fileItem.setDraft(Boolean.FALSE);
-                if (!FlowCode.FL_CT_142.name().equals(flowToExecute.getCode())) {
-                    fileItem.setStep(flowToExecute.getToStep());
+                    fileItem.setDraft(Boolean.FALSE);
+                    if (!FlowCode.FL_CT_142.name().equals(flowToExecute.getCode())) {
+                        fileItem.setStep(flowToExecute.getToStep());
+                    }
+                    fileItemDao.save(fileItem);
                 }
-                fileItemDao.save(fileItem);
             }
         }
 

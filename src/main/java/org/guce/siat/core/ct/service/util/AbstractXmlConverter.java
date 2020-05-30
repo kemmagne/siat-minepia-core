@@ -47,9 +47,13 @@ public abstract class AbstractXmlConverter implements XmlConverter {
 
     protected void setNumeroDossier(File current) {
 
+        if (StringUtils.isNotBlank(xmlConverterService.getRefSiat())) { // ce n'est pas un nouveau dossier
+            return;
+        }
+
         String numeroDossier = current.getNumeroDossier();
 
-        File root = xmlConverterService.getFileDao().findByNumDossierGuce(numeroDossier);
+        File root = xmlConverterService.getFileDao().findByRefSiat(numeroDossier);
         if (root == null) {
             return;
         }

@@ -223,28 +223,28 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             LOG.info(" generateEbxmlFiles aperak K finished");
         } catch (final IOException e) {
             LOG.error("#####Error to connect to ressource:" + e.getMessage(), e);
-            throw new RuntimeException("Technical Exception occured : " + e.getMessage());
+            throw new RuntimeException("Technical Exception occured : " + e.getMessage(), e);
         } catch (final ValidationException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
-            throw new ValidationException("Validation Exception : " + e.getMessage());
+            throw new ValidationException("Validation Exception : " + e.getMessage(), e);
         } catch (final ParseException e) {
             LOG.error("####Error ParseException: " + e.getMessage(), e);
             throw new ParseException("Parse Exception : " + e.getMessage(), 0);
         } catch (final SAXException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
-            throw new SAXException("SAX Exception : " + e.getMessage());
+            throw new SAXException("SAX Exception : " + e.getMessage(), e);
         } catch (final ParserConfigurationException e) {
             LOG.error("####Error to parse document: {}", Objects.toString(e));
             throw new ParserConfigurationException("ParserConfiguration Exception : " + e.getMessage());
         } catch (final JAXBException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
-            throw new JAXBException("JAXB Exception " + e.getMessage());
+            throw new JAXBException("JAXB Exception " + e.getMessage(), e);
         } catch (final XPathExpressionException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new XPathExpressionException("XPathExpression Exception " + e.getMessage());
         } catch (final PersistenceException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
-            throw new PersistenceException("PersistenceException Exception " + e.getMessage());
+            throw new PersistenceException("PersistenceException Exception " + e.getMessage(), e);
         } catch (final IndexOutOfBoundsException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new IndexOutOfBoundsException("IndexOutOfBoundsException Exception " + e.getMessage());
