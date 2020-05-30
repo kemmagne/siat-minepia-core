@@ -13,6 +13,8 @@ public interface PottingReportDao extends AbstractJpaDao<PottingReport> {
 
     PottingReport findPottingReportByFile(File file);
 
+    PottingReport findPottingReportByFile(File file, boolean validated);
+
     PottingReport findPottingReportByAppointmentFlow(ItemFlow appointmentItemFlow);
 
     PottingReport findPottingReportByValidationFlow(ItemFlow validationItemFlow);

@@ -53,6 +53,11 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         return getJpaDao().findPottingReportByFile(file);
     }
 
+    @Override
+    public PottingReport findPottingReportByFile(File file, boolean validated) {
+        return getJpaDao().findPottingReportByFile(file, validated);
+    }
+
     @Transactional(readOnly = true)
     @Override
     public void resetAppointmentUpdates(PottingReport pottingReport, Flow currentFlow) {

@@ -14,6 +14,8 @@ public interface PottingReportService extends AbstractService<PottingReport> {
 
     PottingReport findPottingReportByFile(File file);
 
+    PottingReport findPottingReportByFile(File file, boolean validated);
+
     void resetAppointmentUpdates(PottingReport pottingReport, Flow currentFlow);
 
     void resetValdiationUpdates(PottingReport pottingReport, Flow currentFlow);

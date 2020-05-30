@@ -39,6 +39,23 @@ public class PottingReportDaoImpl extends AbstractJpaDaoImpl<PottingReport> impl
     }
 
     @Override
+    public PottingReport findPottingReportByFile(File file, boolean validated) {
+
+        TypedQuery<PottingReport> query = super.entityManager.createQuery("SELECT pr FROM PottingReport pr WHERE pr.file.id = :fileId AND pr.validated = :validated ORDER BY pr.id DESC", PottingReport.class);
+
+        query.setParameter("fileId", file.getId());
+        query.setParameter("validated", validated);
+
+        query.setMaxResults(1);
+
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException nrex) {
+            return null;
+        }
+    }
+
+    @Override
     public PottingReport findPottingReportByAppointmentFlow(ItemFlow appointmentItemFlow) {
 
         TypedQuery<PottingReport> query = super.entityManager.createQuery("SELECT pr FROM PottingReport pr WHERE pr.appointmentItemFlow IS NOT NULL AND pr.appointmentItemFlow.flow.id = :appointmentItemFlowId ORDER BY pr.id DESC", PottingReport.class);
