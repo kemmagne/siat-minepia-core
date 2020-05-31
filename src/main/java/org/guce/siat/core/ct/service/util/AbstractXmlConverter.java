@@ -53,7 +53,7 @@ public abstract class AbstractXmlConverter implements XmlConverter {
 
         String numeroDossier = current.getNumeroDossier();
 
-        File root = xmlConverterService.getFileDao().findByRefSiat(numeroDossier);
+        File root = xmlConverterService.getFileDao().findByNumDossierGuce(numeroDossier);
         if (root == null) {
             return;
         }

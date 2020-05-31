@@ -55,7 +55,8 @@ public class XmlConverterPayment extends AbstractXmlConverter {
         }
         xmlConverterService.setNumDossier(numDossier);
 
-        File fileToReturn = xmlConverterService.getFileDao().findByNumDossierGuce(xmlConverterService.getNumDossier());
+        File fileToReturn = xmlConverterService.getFileDao().findByRefSiat(xmlConverterService.getRefSiat());
+        xmlConverterService.setNumDossier(fileToReturn.getNumeroDossier());
         fileToReturn.setAttachmentsList(null);
         fileToReturn.setFileFieldValueList(null);
         fileToReturn.setFileItemsList(null);

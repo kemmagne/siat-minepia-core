@@ -311,7 +311,7 @@ public class XmlConverterPve extends AbstractXmlConverter {
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECESJOINTES.PIECEJOINTE(pjType, "INV-" + file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
         } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode())) {
-            PottingReport pottingReport = xmlConverterService.getPottingReportDao().findPottingReportByFile(file);
+            PottingReport pottingReport = xmlConverterService.getPottingReportDao().findPottingReportByFile(file, false);
             ciDocument.getCONTENT().setDATERDVFINALE(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getAppointmentDate()));
         }
         // ROUTAGE

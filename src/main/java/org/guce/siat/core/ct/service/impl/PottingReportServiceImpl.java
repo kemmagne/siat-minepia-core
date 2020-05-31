@@ -1,13 +1,17 @@
 package org.guce.siat.core.ct.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.CoreDao;
 import org.guce.siat.common.dao.FileFieldValueDao;
+import org.guce.siat.common.dao.FileItemDao;
+import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.File;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
@@ -36,6 +40,12 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
 
     @Autowired
     private CoreDao coreDao;
+
+    @Autowired
+    private ItemFlowDao itemFlowDao;
+
+    @Autowired
+    private FileItemDao fileItemDao;
 
     @Override
     public PottingReportDao getJpaDao() {
@@ -107,8 +117,14 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         }
 
         File currentFile = pottingReport.getFile();
+        List<FileItem> fileItems = currentFile.getFileItemsList();
+        if (CollectionUtils.isEmpty(fileItems)) {
+            fileItems = fileItemDao.findFileItemsByFile(currentFile);
+        }
+        ItemFlow itemFlow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItems.get(0));
 
-        pottingReport.setValidated(true);
+        boolean pvok = itemFlow != null && Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_114.name(), FlowCode.FL_CT_140.name()).contains(itemFlow.getFlow().getCode());
+        pottingReport.setValidated(pvok);
         update(pottingReport);
 
         File root = currentFile.getParent();

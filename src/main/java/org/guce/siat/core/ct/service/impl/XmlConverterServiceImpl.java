@@ -2065,12 +2065,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             guceSiatBureau = guceSiatBureauDao.findByBureauGuce(returnedDocument.getCONTENT().getCODEBUREAU());
             fileToReturn = convertDocumentToFileIrmpMINCOMMERCE(returnedDocument);
         } else if (document instanceof PaymentDocument) {
-            PaymentDocument returnedDocument = (PaymentDocument) document;
-            if (ESBConstants.INVOICE_FLOW_GUCE.equals(returnedDocument.getTYPEDOCUMENT())) {
-                numDossier = returnedDocument.getREFERENCEDOSSIER().getNUMERODEMANDE();
-            } else {
-                numDossier = returnedDocument.getREFERENCEDOSSIER().getNUMERODOSSIER();
-            }
             xmlConverter = new XmlConverterPayment(this);
             fileToReturn = xmlConverter.convertDocumentToFile(document);
         }
