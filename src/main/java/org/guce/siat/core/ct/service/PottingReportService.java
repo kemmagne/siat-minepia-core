@@ -24,6 +24,6 @@ public interface PottingReportService extends AbstractService<PottingReport> {
 
     PottingReport findPottingReportByValidationFlow(ItemFlow validationItemFlow);
 
-    void updateAfterSignature(PottingReport pottingReport);
+    void updateAfterSignature(File currentFile);
 
 }

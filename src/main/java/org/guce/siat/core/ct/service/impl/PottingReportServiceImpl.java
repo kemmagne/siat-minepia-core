@@ -110,13 +110,13 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
     }
 
     @Override
-    public void updateAfterSignature(PottingReport pottingReport) {
+    public void updateAfterSignature(File currentFile) {
 
+        PottingReport pottingReport = findPottingReportByFile(currentFile, false);
         if (pottingReport == null) {
             return;
         }
 
-        File currentFile = pottingReport.getFile();
         List<FileItem> fileItems = currentFile.getFileItemsList();
         if (CollectionUtils.isEmpty(fileItems)) {
             fileItems = fileItemDao.findFileItemsByFile(currentFile);
