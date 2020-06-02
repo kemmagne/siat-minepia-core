@@ -1,7 +1,6 @@
 package org.guce.siat.core.ct.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
@@ -17,6 +16,7 @@ import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.utils.FileUtils;
 import org.guce.siat.common.utils.enums.FlowCode;
+import org.guce.siat.common.utils.enums.StepCode;
 import org.guce.siat.core.ct.dao.PottingReportDao;
 import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.service.PottingReportService;
@@ -121,9 +121,8 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         if (CollectionUtils.isEmpty(fileItems)) {
             fileItems = fileItemDao.findFileItemsByFile(currentFile);
         }
-        ItemFlow itemFlow = itemFlowDao.findLastOutgoingItemFlowByFileItem(fileItems.get(0));
 
-        boolean pvok = itemFlow != null && Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_114.name(), FlowCode.FL_CT_140.name()).contains(itemFlow.getFlow().getCode());
+        boolean pvok = StepCode.ST_CT_06.equals(fileItems.get(0).getStep().getStepCode());
         pottingReport.setValidated(pvok);
         update(pottingReport);
 
