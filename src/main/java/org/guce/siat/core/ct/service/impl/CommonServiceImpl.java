@@ -36,6 +36,7 @@ import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.ItemFlowData;
 import org.guce.siat.common.model.User;
+import org.guce.siat.common.service.AppointmentService;
 import org.guce.siat.common.service.FlowService;
 import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
@@ -112,6 +113,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
      * The Constant LOG.
      */
     private static final Logger LOG = LoggerFactory.getLogger(CommonServiceImpl.class);
+
+    @Autowired
+    private AppointmentService appointmentService;
 
     /**
      * The item flow dao.
@@ -493,8 +497,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         if (CollectionUtils.isEmpty(visiteAQuaiValidationFlows) || appointment.getId() == null) {
             appointmentDao.save(appointment);
         } else if (appointment.getId() != null) {
-            final ItemFlow propositionVisiteAQuai = itemFlowDao.findLastSentItemFlowByFileItem(itemFlows.get(0).getFileItem()
-                    .getId());
+            final ItemFlow propositionVisiteAQuai = itemFlowDao.findLastSentItemFlowByFileItem(itemFlows.get(0).getFileItem().getId());
             final Appointment proposedAppointment = appointmentDao.findAppointmentsByItemFlow(propositionVisiteAQuai);
             proposedAppointment.setBeginTime(appointment.getBeginTime());
             proposedAppointment.setCar(appointment.getCar());
@@ -516,7 +519,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         }
     }
 
-
     /*
 	 * (non-Javadoc)
 	 *
@@ -527,6 +529,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         final List<ItemFlow> itemFlows = itemFlowDao.findItemFlowsByFileItemList(fileItems);
         final List<String> acceptationFlows = Arrays.asList(FlowCode.FL_AP_101.name(), FlowCode.FL_AP_102.name(), FlowCode.FL_AP_103.name(), FlowCode.FL_AP_104.name(), FlowCode.FL_AP_105.name(), FlowCode.FL_AP_106.name());
         final List<String> DCC_FLOW_CODES = Arrays.asList(FlowCode.FL_CT_CVS_03.name(), FlowCode.FL_CT_CVS_07.name());
+
+        appointmentService.rollbackAppointmentDecision(itemFlows);
 
         boolean alreadyDeleted = true;
         boolean rollbackBilling = false;

@@ -459,8 +459,7 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
                 }
             }
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
-            ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
-                    .add(new PIECESJOINTES.PIECEJOINTE(pjType, file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
+            ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECESJOINTES.PIECEJOINTE(pjType, file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
         } else if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode())) {
             String pjType = "INVOICE";
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
@@ -485,7 +484,13 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
 
             }
         } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_119.name().equals(flowToExecute.getCode())) {
-            final String dateRDV = itemFlowList.get(0).getItemFlowsDataList().get(0).getValue();
+            final String dateRDV;
+            if (CollectionUtils.isNotEmpty(itemFlowList.get(0).getItemFlowsDataList())) {
+                dateRDV = itemFlowList.get(0).getItemFlowsDataList().get(0).getValue();
+            } else {
+                Appointment appointment = xmlConverterService.getAppointmentDao().findAppointmentByItemFlow(itemFlowList.get(0));
+                dateRDV = DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_FR, appointment.getBeginTime());
+            }
             if (file.getFileType().getCode().equals(FileTypeCode.CCT_CT_E_FSTP)) {
                 ciDocument.getCONTENT().setTRAITEMENT(new org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT.CONTENT.TRAITEMENT());
                 ciDocument.getCONTENT().getTRAITEMENT().setDATETRAITEMENT(dateRDV);

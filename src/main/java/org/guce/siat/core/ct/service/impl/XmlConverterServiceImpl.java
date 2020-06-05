@@ -26,6 +26,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.AdministrationDao;
+import org.guce.siat.common.dao.AppointmentDao;
 import org.guce.siat.common.dao.AttachmentDao;
 import org.guce.siat.common.dao.BureauDao;
 import org.guce.siat.common.dao.CompanyDao;
@@ -253,6 +254,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     @Autowired
     private CotationService cotationService;
+
+    @Autowired
+    private AppointmentDao appointmentDao;
 
     @Autowired
     private CommonDao commonDao;
@@ -777,7 +781,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
         final List<ItemFlowData> itemFlowDataList = retrieveItemFlowDatas(document, flowToExecute);
         File file = fileDao.findByNumDossierGuce(numDossier);
-        if ((decisionDossier != null && !decisionDossier.isEmpty() || fileFromSiat != null && fileFromSiat.getSignatureDate() != null) || (ci && FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode()))) {
+        if (decisionDossier != null && !decisionDossier.isEmpty() || fileFromSiat != null && fileFromSiat.getSignatureDate() != null || ci && FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode())) {
 
             if (fileFromSiat != null) {
                 for (final FileItem fileItem : fileFromSiat.getFileItemsList()) {
@@ -16376,6 +16380,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     public void setNumEbmsMessage(String numEbmsMessage) {
         this.numEbmsMessage = numEbmsMessage;
+    }
+
+    public AppointmentDao getAppointmentDao() {
+        return appointmentDao;
     }
 
 }
