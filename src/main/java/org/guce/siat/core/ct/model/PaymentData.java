@@ -181,7 +181,7 @@ public class PaymentData extends AbstractModel implements Serializable {
     @OneToMany(mappedBy = "primaryKey.paymentData", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
     private List<PaymentItemFlow> paymentItemFlowList;
 
-    @OneToMany(mappedBy = "paymentData", cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
+    @OneToMany(mappedBy = "paymentData", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     private List<InvoiceLine> invoiceLines;
 
     /**
