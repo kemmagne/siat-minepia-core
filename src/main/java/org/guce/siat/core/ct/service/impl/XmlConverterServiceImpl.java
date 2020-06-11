@@ -796,7 +796,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     itemFlowsToAdd.add(itemFlow);
 
                     fileItem.setDraft(Boolean.FALSE);
-                    if (!FlowCode.FL_CT_142.name().equals(flowToExecute.getCode())) {
+                    if (flowToExecute.getToStep() != null) {
                         fileItem.setStep(flowToExecute.getToStep());
                     }
                     fileItemDao.save(fileItem);
@@ -821,7 +821,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 itemFlowsToAdd.add(itemFlow);
 
                 fileItem.setDraft(Boolean.FALSE);
-                if (!FlowCode.FL_CT_142.name().equals(flowToExecute.getCode())) {
+                if (flowToExecute.getToStep() != null) {
                     fileItem.setStep(flowToExecute.getToStep());
                 }
                 fileItemDao.update(fileItem);

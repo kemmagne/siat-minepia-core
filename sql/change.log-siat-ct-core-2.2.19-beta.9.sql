@@ -1,0 +1,6 @@
+/**
+ * Author:  ht
+ * Created: 30 mai 2020
+ */
+
+INSERT INTO SIAT_CT.DATA_TYPE (ID,FLOW_ID,LABEL,LABEL_EN,REQUIRED,TYPE) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL,(SELECT ID FROM SIAT_CT.FLOW WHERE CODE = 'FL_CT_136'),'Observations','Observations',0,'inputTextarea');
