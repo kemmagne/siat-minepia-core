@@ -445,25 +445,34 @@ public class XmlConverterPve extends AbstractXmlConverter {
     public void update(File file, Serializable serializable) {
 
         // notification de rendez-vous après confirmation par l'administration technique principale
-        if (xmlConverterService.getFlowGuceSiat() != null && FlowCode.FL_CT_130.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())) {
+        boolean notifRdv = FlowCode.FL_CT_130.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat());
+        // notification par l'admin princ après émission de la modification du rapport d'empotage
+        boolean notifPpModified = FlowCode.FL_CT_110.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())
+                && "E030".equals(xmlConverterService.getFlowGuceSiat().getFlowGuce());
+        if (notifRdv || notifPpModified) {
 
             final org.guce.siat.jaxb.cct.PVE.DOCUMENT document = checkInstance(serializable);
 
             PottingReport pottingReport = new PottingReport();
-            Appointment appointment = new Appointment();
 
-            appointment.setBundle("Appointment_".concat(file.getFileType().getCode().name()));
+            Appointment appointment = null;
+            if (notifRdv) {
+                appointment = new Appointment();
+            }
 
-            List<ItemFlow> itemFlows = xmlConverterService.getItemFlowDao().findLastItemFlowsByFileAndFlow(file, FlowCode.FL_CT_130);
-            for (ItemFlow itemFlow : itemFlows) {
-                AppointmentItemFlow appIflow = new AppointmentItemFlow();
+            if (appointment != null) {
+                appointment.setBundle("Appointment_".concat(file.getFileType().getCode().name()));
+                List<ItemFlow> itemFlows = xmlConverterService.getItemFlowDao().findLastItemFlowsByFileAndFlow(file, FlowCode.FL_CT_130);
+                for (ItemFlow itemFlow : itemFlows) {
+                    AppointmentItemFlow appIflow = new AppointmentItemFlow();
 
-                appIflow.setAppointment(appointment);
-                appIflow.setAppointmentDate(appointment.getBeginTime());
-                appIflow.setDeleted(Boolean.FALSE);
-                appIflow.setItemFlow(itemFlow);
+                    appIflow.setAppointment(appointment);
+                    appIflow.setAppointmentDate(appointment.getBeginTime());
+                    appIflow.setDeleted(Boolean.FALSE);
+                    appIflow.setItemFlow(itemFlow);
 
-                appointment.getAppointmentItemFlowList().add(appIflow);
+                    appointment.getAppointmentItemFlowList().add(appIflow);
+                }
             }
 
             pottingReport.setFile(file);
@@ -471,17 +480,23 @@ public class XmlConverterPve extends AbstractXmlConverter {
             if (document.getCONTENT().getDATERDVFINALE() != null) {
                 Date start = DateUtils.parse(document.getCONTENT().getDATERDVFINALE(), DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR);
                 pottingReport.setAppointmentDate(start);
-                appointment.setBeginTime(start);
+                if (appointment != null) {
+                    appointment.setBeginTime(start);
+                }
             }
 
             if (document.getCONTENT().getDATEEMPOTAGEEFFECTIF() != null) {
                 Date end = DateUtils.parse(document.getCONTENT().getDATEEMPOTAGEEFFECTIF(), DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR);
                 pottingReport.setPottingEndDate(end);
-                appointment.setEndTime(end);
+                if (appointment != null) {
+                    appointment.setEndTime(end);
+                }
             }
 
             xmlConverterService.getPottingReportDao().save(pottingReport);
-            xmlConverterService.getAppointmentDao().save(appointment);
+            if (appointment != null) {
+                xmlConverterService.getAppointmentDao().save(appointment);
+            }
         }
     }
 
