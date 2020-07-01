@@ -3,11 +3,9 @@ package org.guce.siat.core.ct.dao.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.apache.commons.collections.CollectionUtils;
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
 import org.guce.siat.common.model.FileItem;
@@ -66,16 +64,21 @@ public class InspectionReportDaoImpl extends AbstractJpaDaoImpl<InspectionReport
      */
     @Override
     public InspectionReport findByItemFlow(final ItemFlow itemFlow) {
+
+        if (itemFlow == null) {
+            return null;
+        }
+
         try {
-            if (itemFlow != null) {
-                final String hql = "SELECT a FROM InspectionReport a WHERE a.itemFlow.id = :itemFlowId ";
-                final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hql, InspectionReport.class);
-                query.setParameter("itemFlowId", itemFlow.getId());
-                return query.getSingleResult();
-            }
+            TypedQuery<InspectionReport> query = super.entityManager.createQuery("SELECT a FROM InspectionReport a WHERE a.itemFlow.id = :itemFlowId ORDER BY a.itemFlow.id DESC", InspectionReport.class);
+
+            query.setParameter("itemFlowId", itemFlow.getId());
+
+            return query.getSingleResult();
         } catch (final NoResultException | NonUniqueResultException e) {
             LOG.info(Objects.toString(e), e);
         }
+
         return null;
     }
 
@@ -86,10 +89,9 @@ public class InspectionReportDaoImpl extends AbstractJpaDaoImpl<InspectionReport
 
             hqlBuilder.append("SELECT a FROM InspectionReport a ");
             hqlBuilder.append("WHERE a.itemFlow.fileItem.id = :fileItemId ");
-            hqlBuilder.append("ORDER BY a.reportDate DESC");
+            hqlBuilder.append("ORDER BY a.id DESC");
 
-            final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hqlBuilder.toString(),
-                    InspectionReport.class);
+            final TypedQuery<InspectionReport> query = super.entityManager.createQuery(hqlBuilder.toString(), InspectionReport.class);
             query.setParameter("fileItemId", fileItem.getId());
             query.setMaxResults(1);
             try {
