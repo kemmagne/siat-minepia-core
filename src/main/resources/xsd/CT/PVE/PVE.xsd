@@ -777,21 +777,21 @@
                                                     <xs:element name="SCELLE_1" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="10"/>
+                                                                <xs:maxLength value="35"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
                                                     <xs:element name="SCELLE_2" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="10"/>
+                                                                <xs:maxLength value="35"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
                                                     <xs:element name="SCELLE_3" minOccurs="0">
                                                         <xs:simpleType>
                                                             <xs:restriction base="xs:string">
-                                                                <xs:maxLength value="10"/>
+                                                                <xs:maxLength value="35"/>
                                                             </xs:restriction>
                                                         </xs:simpleType>
                                                     </xs:element>
