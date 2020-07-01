@@ -2,9 +2,9 @@ package org.guce.siat.core.ct.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -27,7 +27,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.FileItem;
@@ -93,11 +92,11 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @Column(name = "REPORT_DATE")
     @Temporal(TemporalType.DATE)
     private Date reportDate;
-    
+
     @Column(name = "INSPECTION_START_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inspectionStartDate;
-    
+
     @Column(name = "INSPECTION_END_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date inspectionEndDate;
@@ -488,7 +487,6 @@ public class InspectionReport extends AbstractModel implements Serializable {
     public void setInspectionEndDate(Date inspectionEndDate) {
         this.inspectionEndDate = inspectionEndDate;
     }
-    
 
     /**
      * Gets the report date.
@@ -1328,7 +1326,7 @@ public class InspectionReport extends AbstractModel implements Serializable {
     @PrePersist
     public void prePersist() {
         if (id == null) {
-            reportDate = new Date();
+            reportDate = Calendar.getInstance().getTime();
         }
         treatmentTypes = StringUtils.collectionToCommaDelimitedString(treatmentTypesList);
         storageEnvs = StringUtils.collectionToCommaDelimitedString(storageEnvsList);
@@ -1341,4 +1339,3 @@ public class InspectionReport extends AbstractModel implements Serializable {
     }
 
 }
-
