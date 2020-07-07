@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -23,7 +22,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import org.guce.siat.common.model.AbstractModel;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.core.ct.util.annotations.CustomProperty;
@@ -134,7 +132,7 @@ public class TreatmentResult extends AbstractModel implements Serializable {
             enumClass = PVITreatmentType.class)
     @Column(name = "TSS_TREATMENT_MODE")
     private String treatmentMode;
-	@Transient
+    @Transient
     private List<String> treatmentModesList;
     @CustomProperty(labelEn = "Treatment Mode", labelFr = "Mode de traitement")
     @Column(name = "TSS_OTHER_TREATMENT_MODE")
@@ -143,7 +141,7 @@ public class TreatmentResult extends AbstractModel implements Serializable {
             enumClass = TRProductUsed.class)
     @Column(name = "TSS_PRODUCT_USED")
     private String productUsed;
-	@Transient
+    @Transient
     private List<String> productUsedList;
     @Column(name = "TSS_OTHER_PRODUCT_USED")
     private String otherProductUsed;
@@ -209,7 +207,7 @@ public class TreatmentResult extends AbstractModel implements Serializable {
             enumClass = TRProtectionEquipement.class)
     @Column(name = "TSS_PROTECTION_EQUIP")
     private String protectionEquipements;
-	@Transient
+    @Transient
     private List<String> protectionEquipementsList;
     @CustomProperty(labelEn = "General observations", labelFr = "Observations générales")
     @Column(name = "TSS_GENERAL_OBS")
@@ -245,7 +243,6 @@ public class TreatmentResult extends AbstractModel implements Serializable {
      * @return the id
      */
     @Override
-
     public Long getId() {
         return id;
     }
@@ -706,38 +703,37 @@ public class TreatmentResult extends AbstractModel implements Serializable {
         this.savedDate = savedDate;
     }
 
-	public List<String> getTreatmentModesList() {
-		return treatmentModesList;
-	}
+    public List<String> getTreatmentModesList() {
+        return treatmentModesList;
+    }
 
-	public void setTreatmentModesList(List<String> treatmentModesList) {
-		this.treatmentModesList = treatmentModesList;
-	}
+    public void setTreatmentModesList(List<String> treatmentModesList) {
+        this.treatmentModesList = treatmentModesList;
+    }
 
-	public List<String> getProductUsedList() {
-		return productUsedList;
-	}
+    public List<String> getProductUsedList() {
+        return productUsedList;
+    }
 
-	public void setProductUsedList(List<String> productUsedList) {
-		this.productUsedList = productUsedList;
-	}
+    public void setProductUsedList(List<String> productUsedList) {
+        this.productUsedList = productUsedList;
+    }
 
-	public List<String> getProtectionEquipementsList() {
-		return protectionEquipementsList;
-	}
+    public List<String> getProtectionEquipementsList() {
+        return protectionEquipementsList;
+    }
 
-	public void setProtectionEquipementsList(List<String> protectionEquipementsList) {
-		this.protectionEquipementsList = protectionEquipementsList;
-	}
-	
-	
-	@PreUpdate
+    public void setProtectionEquipementsList(List<String> protectionEquipementsList) {
+        this.protectionEquipementsList = protectionEquipementsList;
+    }
+
+    @PreUpdate
     @PrePersist
     public void prePersist() {
-		savedDate = java.util.Calendar.getInstance().getTime();
+        savedDate = java.util.Calendar.getInstance().getTime();
         treatmentMode = StringUtils.collectionToCommaDelimitedString(treatmentModesList);
-		productUsed = StringUtils.collectionToCommaDelimitedString(productUsedList);
-		protectionEquipements = StringUtils.collectionToCommaDelimitedString(protectionEquipementsList);
+        productUsed = StringUtils.collectionToCommaDelimitedString(productUsedList);
+        protectionEquipements = StringUtils.collectionToCommaDelimitedString(protectionEquipementsList);
     }
 
     @PostLoad

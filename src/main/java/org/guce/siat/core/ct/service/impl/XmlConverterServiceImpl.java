@@ -918,22 +918,22 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case IRMP_MINCOMMERCE:
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_AP_85.name());
                     break;
-                case CCT_CT:
-                case CCT_CT_E:
-                case CC_CT:
-                case CQ_CT:
-                case CCT_CT_E_ATP: {
-                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())) {
-                        firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
-                    } else {
-                        firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
-                    }
-                    break;
-                }
-                case CCT_CT_E_PVI:
-                case CCT_CT_E_FSTP:
-                    firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
-                    break;
+//                case CCT_CT:
+//                case CCT_CT_E:
+//                case CC_CT:
+//                case CQ_CT:
+//                case CCT_CT_E_ATP: {
+//                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())) {
+//                        firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
+//                    } else {
+//                        firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
+//                    }
+//                    break;
+//                }
+//                case CCT_CT_E_PVI:
+//                case CCT_CT_E_FSTP:
+//                    firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
+//                    break;
                 default:
                     firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
                     break;
