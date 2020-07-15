@@ -81,7 +81,7 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
             wheres.add(String.format("CREATED_DATE <= TO_DATE('%s', 'YYYY-MM-DD HH24:MI')", df.format(toEndOfDay(filter.getToDate()))));
         }
 
-        String queryStr = "SELECT NUMERO_DEMANDE, NUMERO_DOSSIER, FILE_TYPE_CODE, FILE_TYPE_NAME_FR, FILE_TYPE_NAME_EN, CREATED_DATE, NUM_CONTRIBUABLE, COMPANY_NAME, TYPE_PRODUIT_CODE, TYPE_PRODUIT_NOM, BUREAU_ID, BUREAU_CODE, BUREAU_NAME_FR, BUREAU_NAME_EN FROM MINADER_FILES_TRACKING";
+        String queryStr = "SELECT NUMERO_DEMANDE, NUMERO_DOSSIER, FILE_TYPE_CODE, FILE_TYPE_NAME_FR, FILE_TYPE_NAME_EN, CREATED_DATE, NUM_CONTRIBUABLE, COMPANY_NAME, TYPE_PRODUIT_CODE, TYPE_PRODUIT_NOM, BUREAU_ID, CODE_BUREAU, BUREAU_NAME_FR, BUREAU_NAME_EN FROM MINADER_FILES";
         if (!wheres.isEmpty()) {
             queryStr = queryStr.concat(" WHERE ").concat(StringUtils.join(wheres, " AND "));
         }
