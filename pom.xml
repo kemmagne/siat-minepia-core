@@ -23,8 +23,8 @@
         <repository>
             <id>guce-repository</id>
             <name>Depot Maven du GUCE</name>
-            <!--<url>https://repo.guce.local/maven/repository/releases</url>-->
-            <url>https://git.guichetunique.cm/maven/repository/releases</url>
+            <url>https://repo.guce.local/maven/repository/releases</url>
+            <!--<url>https://git.guichetunique.cm/maven/repository/releases</url>-->
         </repository>
         <snapshotRepository>
             <id>guce-repository</id>
