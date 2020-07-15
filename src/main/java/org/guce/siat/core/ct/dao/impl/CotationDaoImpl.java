@@ -32,7 +32,7 @@ public class CotationDaoImpl implements CotationDao {
      * The entity manager.
      */
     @PersistenceContext
-    protected EntityManager entityManager;
+    private EntityManager entityManager;
 
     @Autowired
     private UserDao userDao;

@@ -1114,6 +1114,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         }
 
         final List<Object[]> list = query.getResultList();
+
         return list;
     }
 
