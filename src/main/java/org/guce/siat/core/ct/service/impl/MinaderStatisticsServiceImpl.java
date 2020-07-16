@@ -6,10 +6,16 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import org.apache.commons.lang3.BooleanUtils;
+import org.guce.siat.common.dao.AppointmentDao;
 import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileTypeStepDao;
+import org.guce.siat.common.dao.ItemFlowDao;
+import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.File;
+import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileTypeStep;
+import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.StepCode;
@@ -32,9 +38,13 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
     private static final List<StepCode> TREATMENT_STEPS_CODES = Arrays.asList(StepCode.ST_CT_04, StepCode.ST_CT_48, StepCode.ST_CT_63, StepCode.ST_CT_55);
 
     @Autowired
+    private FileTypeStepDao fileTypeStepDao;
+    @Autowired
     private FileDao fileDao;
     @Autowired
-    private FileTypeStepDao fileTypeStepDao;
+    private ItemFlowDao itemFlowDao;
+    @Autowired
+    private AppointmentDao appointmentDao;
 
     @Autowired
     private MinaderStatisticsDao minaderStatisticsDao;
@@ -58,11 +68,26 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
             int i = 0;
             mft.setRequestNumber(Objects.toString(objects[i++]));
             mft.setFileNumber(Objects.toString(objects[i++]));
+
+            File file = fileDao.findByNumDossierGuce(mft.getFileNumber());
+            if (file.getFileItemsList().isEmpty()) {
+                continue;
+            }
+
+            FileItem fileItem = file.getFileItemsList().get(0);
+            Step currentStep = file.getFileItemsList().get(0).getStep();
+            boolean fileClosed = BooleanUtils.toBoolean(currentStep.getIsFinal());
+
+            if (MinaderFileTrackingFilter.FileStateFilter.IN_PROCESS.equals(filter.getFileState()) && fileClosed) {
+                continue;
+            } else if (MinaderFileTrackingFilter.FileStateFilter.CLOSED.equals(filter.getFileState()) && !fileClosed) {
+                continue;
+            }
+
             mft.setFileTypeCode(Objects.toString(objects[i++]));
             mft.setFileTypeNameFr(Objects.toString(objects[i++]));
             mft.setFileTypeNameEn(Objects.toString(objects[i++]));
             i++;
-//            mft.setCreationDate((Date) objects[i++]);
             mft.setNiu(Objects.toString(objects[i++]));
             mft.setExporterName(Objects.toString(objects[i++]));
             mft.setProductyTypeCode(Objects.toString(objects[i++]));
@@ -72,28 +97,34 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
             mft.setOfficeNameFr(Objects.toString(objects[i++]));
             mft.setOfficeNameFr(Objects.toString(objects[i++]));
 
-            File file = fileDao.findByNumDossierGuce(mft.getFileNumber());
-            mft.setCreationDate(file.getCreatedDate());
-            mft.setFile(file);
-            if (file.getSignatureDate() == null) {
-                mft.setUserReceivedDate(file.getLastDecisionDate());
-                Date now = Calendar.getInstance().getTime();
-                mft.setUserDeadline(now.getTime() - file.getLastDecisionDate().getTime());
-                mft.setGlobalDeadline(now.getTime() - file.getCreatedDate().getTime());
-            } else {
-                mft.setGlobalDeadline(file.getLastDecisionDate().getTime() - file.getCreatedDate().getTime());
+//            Date createdDate = file.getCreatedDate();
+            List<ItemFlow> itemFlows = itemFlowDao.findItemFlowByFileItem(fileItem);
+            Date createdDate = itemFlows.get(0).getCreated();
+            FileTypeStep fileTypeStep = fileTypeStepDao.findFileTypeStepByFileTypeAndStep(file.getFileType(), currentStep);
+            if (fileTypeStep != null) {
+                currentStep.setLabelFr(fileTypeStep.getLabelFr());
+                currentStep.setLabelEn(fileTypeStep.getLabelEn());
             }
-            if (!file.getFileItemsList().isEmpty()) {
-                Step currentStep = file.getFileItemsList().get(0).getStep();
-                FileTypeStep fileTypeStep = fileTypeStepDao.findFileTypeStepByFileTypeAndStep(file.getFileType(), currentStep);
-                if (fileTypeStep != null) {
-                    currentStep.setLabelFr(fileTypeStep.getLabelFr());
-                    currentStep.setLabelEn(fileTypeStep.getLabelEn());
-                }
-                mft.setCurrenStep(currentStep);
-                if (TREATMENT_STEPS_CODES.contains(currentStep.getStepCode())) {
-                    mft.setCurrenStepUser(file.getAssignedUser());
-                }
+            mft.setCurrenStep(currentStep);
+            if (TREATMENT_STEPS_CODES.contains(currentStep.getStepCode())) {
+                mft.setCurrenStepUser(file.getAssignedUser());
+            }
+            Appointment appointment = appointmentDao.findAppointmentByFileItem(fileItem);
+            if (appointment != null) {
+                mft.setAppointmentDate(appointment.getBeginTime());
+            }
+
+            mft.setFile(file);
+            mft.setCreationDate(createdDate);
+
+            Date now = Calendar.getInstance().getTime();
+
+            if (!fileClosed) {
+                mft.setUserReceivedDate(file.getLastDecisionDate());
+                mft.setUserDeadline(now.getTime() - file.getLastDecisionDate().getTime());
+                mft.setGlobalDeadline(now.getTime() - createdDate.getTime());
+            } else {
+                mft.setGlobalDeadline(file.getLastDecisionDate().getTime() - createdDate.getTime());
             }
 
             result.add(mft);
