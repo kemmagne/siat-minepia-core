@@ -70,12 +70,12 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     private static final Logger LOG = LoggerFactory.getLogger(CommonDaoImpl.class);
 
-    private final List<String> CTE_ADMISIBILITY_FLOW = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name());
+    private final List<String> CTE_ADMISIBILITY_FLOW = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name(), FlowCode.FL_CT_131.name());
     private final List<String> CTE_COTATION_FLOW = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name(), FlowCode.FL_CT_136.name());
     private final List<String> CTE_APPOINTMENT_FLOW = Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_105.name(), FlowCode.FL_CT_118.name());
     private final List<String> CTE_TREATMENT_FLOW = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name());
-    private final List<String> CTE_SIGNATURE_FLOW = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name());
-    private final List<String> CTE_CI_FLOW = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name(), FlowCode.FL_CT_137.name());
+    private final List<String> CTE_SIGNATURE_FLOW = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_140.name());
+    private final List<String> CTE_CI_FLOW = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name(), FlowCode.FL_CT_137.name(), FlowCode.FL_CT_148.name());
 
     /**
      * Instantiates a new common dao impl.
@@ -1127,7 +1127,8 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         hqlQuery.append(",f.TYPE_PRODUIT_NOM,p.COUNTRY_NAME_FR PAYS_DESTINATION,f.CREATED_DATE,COALESCE(f.SIGNATURE_DATE,f.DATE_REJET) DATE_SORTIE");
         hqlQuery.append(",s.LABELFR ETAPE,f.CODE_BUREAU, f.NOM_BUREAU, f.TRANSITAIRE_NOM ");
         hqlQuery.append(" FROM MINADER_FILES f ");
-        hqlQuery.append(" JOIN COMPANY C ON f.CLIENT_ID = C.ID JOIN REP_COUNTRY p ON f.COUNTRY_OF_DESTINATION = p.COUNTRY_ID_ALPHA2 ");
+        hqlQuery.append(" JOIN COMPANY C ON f.CLIENT_ID = C.ID ");
+        hqlQuery.append(" LEFT JOIN REP_COUNTRY p ON f.COUNTRY_OF_DESTINATION = p.COUNTRY_ID_ALPHA2 ");
         hqlQuery.append(" JOIN FILE_ITEM fi ON f.ID = fi.FILE_ID JOIN STEP s ON fi.STEP_ID = s.ID ");
         hqlQuery.append(" WHERE f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
