@@ -1,6 +1,8 @@
 package org.guce.siat.core.ct.filter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import org.guce.siat.common.model.User;
 
 /**
@@ -21,6 +23,7 @@ public class MinaderFileTrackingFilter extends Filter {
     private List<String> producTypesList;
     private List<Long> officesList;
     private User loggedUser;
+    private FileStateFilter fileState;
 
     public List<String> getFileTypesList() {
         return fileTypesList;
@@ -68,6 +71,34 @@ public class MinaderFileTrackingFilter extends Filter {
 
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
+    }
+
+    public FileStateFilter getFileState() {
+        return fileState;
+    }
+
+    public void setFileState(FileStateFilter fileState) {
+        this.fileState = fileState;
+    }
+
+    public static enum FileStateFilter {
+
+        CLOSED,
+        IN_PROCESS,
+        ALL;
+
+        public static Map<String, String> getMap() {
+
+            Map<String, String> map = new HashMap<>();
+
+            FileStateFilter[] all = FileStateFilter.values();
+            for (FileStateFilter fs : all) {
+                map.put(fs.name(), fs.name());
+            }
+
+            return map;
+        }
+
     }
 
 }
