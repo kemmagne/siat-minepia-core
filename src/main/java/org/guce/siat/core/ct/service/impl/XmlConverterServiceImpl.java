@@ -594,12 +594,22 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             if (CollectionUtils.isNotEmpty(addedAttachments)) {
                 fileFromSiat.getAttachmentsList().addAll(addedAttachments);
             }
+
+            boolean lastDecDateModified = false;
             if (isCancelRequest(flowGuceSiat)) {
                 proceedWorkflowForCancelRequest(fileFromSiat, document);
+                lastDecDateModified = true;
             } else if (isPaymentRequest(flowGuceSiat)) {
                 proceedWorkflowForPaymentRequest(fileFromSiat, document);
+                lastDecDateModified = true;
             } else if (!FileTypeCode.PAYMENT.equals(flowGuceSiat.getFileType().getCode())) {
                 proceedWorkflow(fileConverted, fileFromSiat, document);
+                lastDecDateModified = true;
+            }
+
+            if (lastDecDateModified) {
+                fileFromSiat.setLastDecisionDate(Calendar.getInstance().getTime());
+                fileDao.update(fileFromSiat);
             }
 
             return fileFromSiat;
@@ -689,6 +699,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
 
             // set the file last decision date to the current date
+            fileConverted.setCreatedDate(Calendar.getInstance().getTime());
             fileConverted.setLastDecisionDate(Calendar.getInstance().getTime());
             final File addedFile = fileDao.save(fileConverted);
 
