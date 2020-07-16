@@ -32,6 +32,7 @@ public class MinaderFileTracking implements Serializable {
     private Step currenStep;
     private User currenStepUser;
     private Date userReceivedDate;
+    private Date appointmentDate;
     private Long userDeadline;
     private Long globalDeadline;
 
@@ -171,6 +172,14 @@ public class MinaderFileTracking implements Serializable {
 
     public void setUserReceivedDate(Date userReceivedDate) {
         this.userReceivedDate = userReceivedDate;
+    }
+
+    public Date getAppointmentDate() {
+        return appointmentDate;
+    }
+
+    public void setAppointmentDate(Date appointmentDate) {
+        this.appointmentDate = appointmentDate;
     }
 
     public Long getUserDeadline() {
