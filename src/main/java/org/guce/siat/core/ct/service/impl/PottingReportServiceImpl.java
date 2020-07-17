@@ -91,7 +91,7 @@ public class PottingReportServiceImpl extends AbstractServiceImpl<PottingReport>
         pottingReport.setAuthorizationNumber(null);
         pottingReport.setPottingController(null);
         pottingReport.setOtherProcductTypeDescription(null);
-        pottingReport.setPottingEndDate(null);
+//        pottingReport.setPottingEndDate(null);
         pottingReport.setQuality(null);
         pottingReport.setTreatmentCertDate(null);
         pottingReport.setTreatmentCertNumber(null);
