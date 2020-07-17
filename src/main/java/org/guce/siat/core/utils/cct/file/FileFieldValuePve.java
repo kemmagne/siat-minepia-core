@@ -34,6 +34,12 @@ public class FileFieldValuePve {
                 }
                 break;
             }
+            case "TYPE_DOSSIER_EGUCE": {
+                if (document.getCONTENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getTYPEDOSSIERTRANSACTION());
+                }
+                break;
+            }
             case "TYPE_PRODUIT_CODE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getTYPEPRODUIT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getTYPEPRODUIT().getCODE());

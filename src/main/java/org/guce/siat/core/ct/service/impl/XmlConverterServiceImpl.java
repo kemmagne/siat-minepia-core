@@ -567,6 +567,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 fileFromSiat = fileDao.findByRefSiat(refSiat);
             }
 
+            fileFromSiat.setLastDecisionDate(Calendar.getInstance().getTime());
+
             fileDao.update(prepareFileFromSiat(fileFromSiat, fileConverted));
 
             /* PRESENTS */
@@ -595,21 +597,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 fileFromSiat.getAttachmentsList().addAll(addedAttachments);
             }
 
-            boolean lastDecDateModified = false;
             if (isCancelRequest(flowGuceSiat)) {
                 proceedWorkflowForCancelRequest(fileFromSiat, document);
-                lastDecDateModified = true;
             } else if (isPaymentRequest(flowGuceSiat)) {
                 proceedWorkflowForPaymentRequest(fileFromSiat, document);
-                lastDecDateModified = true;
             } else if (!FileTypeCode.PAYMENT.equals(flowGuceSiat.getFileType().getCode())) {
                 proceedWorkflow(fileConverted, fileFromSiat, document);
-                lastDecDateModified = true;
-            }
-
-            if (lastDecDateModified) {
-                fileFromSiat.setLastDecisionDate(Calendar.getInstance().getTime());
-                fileDao.update(fileFromSiat);
             }
 
             return fileFromSiat;
