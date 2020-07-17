@@ -5040,6 +5040,7 @@ public class DOCUMENT implements Serializable {
         "dateautorisation",
         "numeroautorisation",
         "postecontrole",
+        "typedossiertransaction",
         "typeproduit",
         "cemac",
         "debites",
@@ -5114,6 +5115,8 @@ public class DOCUMENT implements Serializable {
         protected String numeroautorisation;
         @XmlElement(name = "POSTE_CONTROLE")
         protected DOCUMENT.CONTENT.POSTECONTROLE postecontrole;
+        @XmlElement(name = "TYPE_DOSSIER_TRANSACTION")
+        protected String typedossiertransaction;
         @XmlElement(name = "TYPE_PRODUIT")
         protected DOCUMENT.CONTENT.TYPEPRODUIT typeproduit;
         @XmlElement(name = "CEMAC")
@@ -5761,6 +5764,26 @@ public class DOCUMENT implements Serializable {
          */
         public void setPOSTECONTROLE(DOCUMENT.CONTENT.POSTECONTROLE value) {
             this.postecontrole = value;
+        }
+
+        /**
+         * Obtient la valeur de la propriété typedossiertransaction.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getTYPEDOSSIERTRANSACTION() {
+            return typedossiertransaction;
+        }
+
+        /**
+         * Définit la valeur de la propriété typedossiertransaction.
+         *
+         * @param value allowed object is {@link String }
+         *
+         */
+        public void setTYPEDOSSIERTRANSACTION(String value) {
+            this.typedossiertransaction = value;
         }
 
         /**
