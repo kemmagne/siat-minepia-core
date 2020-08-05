@@ -5,7 +5,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -51,57 +53,78 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
 
         List<String> wheres = new ArrayList<>();
 
+        Map<String, Object> params = new HashMap<>();
+
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        wheres.add("CREATED_DATE >= TO_DATE(:fromDate, 'YYYY-MM-DD')");
+        params.put("fromDate", df.format(toStartOfDay(filter.getFromDate())));
+        wheres.add("CREATED_DATE < TO_DATE(:toDate, 'YYYY-MM-DD')");
+        params.put("toDate", df.format(toNextDay(filter.getToDate())));
+
         if (StringUtils.isNotBlank(filter.getFileNumber())) {
-            wheres.add(String.format("NUMERO_DOSSIER = '%s'", filter.getFileNumber()));
+            wheres.add("NUMERO_DOSSIER = :fileNumber");
+            params.put("fileNumber", filter.getFileNumber());
         }
 
         if (StringUtils.isNotBlank(filter.getRequestNumber())) {
-            wheres.add(String.format("NUMERO_DEMANDE = '%s'", filter.getRequestNumber()));
+            wheres.add("NUMERO_DEMANDE = :requestNumber");
+            params.put("requestNumber", filter.getRequestNumber());
         }
 
         if (CollectionUtils.isNotEmpty(filter.getFileTypesList())) {
-            wheres.add(String.format("FILE_TYPE_CODE IN (%s)", StringUtils.join(transform(filter.getFileTypesList()), ", ")));
+            wheres.add("FILE_TYPE_CODE IN (:fileTypesList)");
+            params.put("fileTypesList", filter.getFileTypesList());
         }
 
         if (CollectionUtils.isNotEmpty(filter.getOfficesList())) {
-            wheres.add(String.format("BUREAU_ID IN (%s)", StringUtils.join(transform(filter.getOfficesList()), ", ")));
+            wheres.add("BUREAU_ID IN (:officesList)");
+            params.put("officesList", filter.getOfficesList());
         }
 
         if (CollectionUtils.isNotEmpty(filter.getProducTypesList())) {
-            wheres.add(String.format("TYPE_PRODUIT_CODE IN (%s)", StringUtils.join(transform(filter.getProducTypesList()), ", ")));
+            wheres.add("TYPE_PRODUIT_CODE IN (:producTypesList)");
+            params.put("producTypesList", filter.getProducTypesList());
         }
 
-        DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
-        if (filter.getFromDate() != null) {
-            wheres.add(String.format("CREATED_DATE >= TO_DATE('%s', 'YYYY-MM-DD HH24:MI')", df.format(toStartOfDay(filter.getFromDate()))));
-        }
-
-        if (filter.getToDate() != null) {
-            wheres.add(String.format("CREATED_DATE <= TO_DATE('%s', 'YYYY-MM-DD HH24:MI')", df.format(toEndOfDay(filter.getToDate()))));
+        if (null != filter.getFileState()) {
+            switch (filter.getFileState()) {
+                case IN_PROCESS:
+                    wheres.add("SIGNATURE_DATE IS NULL");
+                    wheres.add("DATE_REJET IS NULL");
+                    break;
+                case SIGNED:
+                    wheres.add("SIGNATURE_DATE IS NOT NULL");
+                    break;
+                case REJECTED:
+                    wheres.add("DATE_REJET IS NOT NULL");
+                    break;
+                default:
+                    break;
+            }
         }
 
         String queryStr = "SELECT NUMERO_DEMANDE, NUMERO_DOSSIER, FILE_TYPE_CODE, FILE_TYPE_NAME_FR, FILE_TYPE_NAME_EN, CREATED_DATE, NUM_CONTRIBUABLE, COMPANY_NAME, TYPE_PRODUIT_CODE, TYPE_PRODUIT_NOM, BUREAU_ID, CODE_BUREAU, BUREAU_NAME_FR, BUREAU_NAME_EN FROM MINADER_FILES";
-        if (!wheres.isEmpty()) {
-            queryStr = queryStr.concat(" WHERE ").concat(StringUtils.join(wheres, " AND "));
-        }
+        queryStr = queryStr.concat(" WHERE ").concat(StringUtils.join(wheres, " AND "));
 
         Query query = entityManager.createNativeQuery(queryStr);
+
+        for (Map.Entry<String, Object> entry : params.entrySet()) {
+            String key = entry.getKey();
+            Object value = entry.getValue();
+            query.setParameter(key, value);
+        }
 
         List<Object[]> list = query.getResultList();
 
         return list;
     }
 
-    private <T extends Object> List<String> transform(List<T> list) {
+    public void initCalendar(Calendar calendar) {
 
-        List<String> result = new ArrayList<>();
-
-        for (Object object : list) {
-            result.add(String.format("'%s'", object));
-        }
-
-        return result;
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
     }
 
     private Date toStartOfDay(Date date) {
@@ -109,21 +132,18 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
         Calendar calendar = Calendar.getInstance();
 
         calendar.setTime(date);
-
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
+        initCalendar(calendar);
 
         return calendar.getTime();
     }
 
-    private Date toEndOfDay(Date date) {
+    private Date toNextDay(Date date) {
 
         Calendar calendar = Calendar.getInstance();
 
         calendar.setTime(date);
-
-        calendar.set(Calendar.HOUR, 23);
-        calendar.set(Calendar.MINUTE, 59);
+        initCalendar(calendar);
+        calendar.add(Calendar.DAY_OF_MONTH, 1);
 
         return calendar.getTime();
     }
