@@ -70,12 +70,12 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     private static final Logger LOG = LoggerFactory.getLogger(CommonDaoImpl.class);
 
-    private final List<String> CTE_ADMISIBILITY_FLOW = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name(), FlowCode.FL_CT_131.name());
-    private final List<String> CTE_COTATION_FLOW = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name(), FlowCode.FL_CT_136.name());
-    private final List<String> CTE_APPOINTMENT_FLOW = Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_105.name(), FlowCode.FL_CT_118.name());
-    private final List<String> CTE_TREATMENT_FLOW = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name());
-    private final List<String> CTE_SIGNATURE_FLOW = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_140.name());
-    private final List<String> CTE_CI_FLOW = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name(), FlowCode.FL_CT_137.name(), FlowCode.FL_CT_148.name());
+    private static final List<String> CTE_ADMISIBILITY_FLOWS = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name(), FlowCode.FL_CT_131.name());
+    private static final List<String> CTE_COTATION_FLOWS = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name(), FlowCode.FL_CT_136.name());
+    private static final List<String> CTE_APPOINTMENT_FLOWS = Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_105.name(), FlowCode.FL_CT_118.name());
+    private static final List<String> CTE_TREATMENT_FLOWS = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name());
+    private static final List<String> CTE_SIGNATURE_FLOWS = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_140.name());
+    private static final List<String> CTE_CI_FLOWS = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name(), FlowCode.FL_CT_137.name(), FlowCode.FL_CT_148.name());
 
     /**
      * Instantiates a new common dao impl.
@@ -1082,17 +1082,17 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         StringBuilder selectCountCi = new StringBuilder("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME RAISON_SOCIALE, f.TYPE_PRODUIT_NOM,CASE WHEN ctr.COUNTRY_NAME IS NULL THEN f.COUNTRY_OF_DESTINATION ELSE ctr.COUNTRY_NAME END PAYS_DESTINATION,'' AGENT_RECEVABILITE, 0 DELAI_RECEVABILITE,'' AGENT_COTATION, 0 DELAI_COTATION,'' AGENT_TRAITEMENT, 0 DELAI_CONFIRMATION_RDV, 0 DELAI_TRAITEMENT, '' SIGNATAIRE, 0 DELAI_SIGNATURE, 0 DELAI_REPONSE_CI, COUNT(NUMERO_DOSSIER) NOMBRE_CI");
 
         selectAdmisibility.append(String.format(commomFrom.toString(), "admisibilityFlow"));
-        params.put("admisibilityFlow", CTE_ADMISIBILITY_FLOW);
+        params.put("admisibilityFlow", CTE_ADMISIBILITY_FLOWS);
         selectcotation.append(String.format(commomFrom.toString(), "cotationFlow"));
-        params.put("cotationFlow", CTE_COTATION_FLOW);
+        params.put("cotationFlow", CTE_COTATION_FLOWS);
         selectApointment.append(String.format(commomFrom.toString(), "apointmentFlow"));
-        params.put("apointmentFlow", CTE_APPOINTMENT_FLOW);
+        params.put("apointmentFlow", CTE_APPOINTMENT_FLOWS);
         selectTreatment.append(String.format(commomFrom.toString(), "treatmentFlow"));
-        params.put("treatmentFlow", CTE_TREATMENT_FLOW);
+        params.put("treatmentFlow", CTE_TREATMENT_FLOWS);
         selectSignature.append(String.format(commomFrom.toString(), "signatureFlow"));
-        params.put("signatureFlow", CTE_SIGNATURE_FLOW);
+        params.put("signatureFlow", CTE_SIGNATURE_FLOWS);
         selectCountCi.append(String.format(commomFrom.toString(), "ciFlow")).append(groupByCountCi);
-        params.put("ciFlow", CTE_CI_FLOW);
+        params.put("ciFlow", CTE_CI_FLOWS);
         hqlQuery.append("SELECT DISTINCT NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, NUM_CONTRIBUABLE, RAISON_SOCIALE, TYPE_PRODUIT_NOM, PAYS_DESTINATION,MAX(AGENT_RECEVABILITE) AGENT_RECEVABILITE, SUM(DELAI_RECEVABILITE) DELAI_RECEVABILITE, MAX(AGENT_COTATION) AGENT_COTATION, SUM(DELAI_COTATION)  DELAI_COTATION,MAX(AGENT_TRAITEMENT) AGENT_TRAITEMENT, SUM(DELAI_CONFIRMATION_RDV)  DELAI_CONFIRMATION_RDV, SUM(DELAI_TRAITEMENT)  DELAI_TRAITEMENT, MAX(SIGNATAIRE) SIGNATAIRE, SUM(DELAI_SIGNATURE)  DELAI_SIGNATURE, SUM(DELAI_REPONSE_CI)  DELAI_REPONSE_CI, SUM(NOMBRE_CI) NOMBRE_CI FROM (")
                 //                .append(" FROM (")
                 .append(selectAdmisibility)
@@ -1179,26 +1179,26 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     public List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList) {
         final Map<String, Object> params = new HashMap<>();
         final StringBuilder hqlQuery = new StringBuilder();
-        final String where1 = " f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
-        final String where2 = " f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
-        final String where3 = " f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        final String creationDateWhere = " f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        final String signatureDateWhere = " f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        final String rejectionDateWhere = " f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
         final String groupBy = " GROUP BY FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU ";
-        final StringBuilder where4 = new StringBuilder();
+        final StringBuilder commonWhereBuilder = new StringBuilder();
 
         if (filter.getOperationType() != null && filter.getOperationType().length > 0) {
-            where4.append(" AND f.TYPE_OPERATION IN (:operationType)");
+            commonWhereBuilder.append(" AND f.TYPE_OPERATION IN (:operationType)");
             params.put("operationType", Arrays.asList(filter.getOperationType()));
         }
         if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0) {
-            where4.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
+            commonWhereBuilder.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
             params.put("productType", Arrays.asList(filter.getProductNatureList()));
         }
 
         if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0) {
-            where4.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            commonWhereBuilder.append(" AND f.BUREAU_ID  IN (:officeCode)");
             params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
         }
-        where4.append(" AND f.FILE_TYPE_ID  IN (:fileTypeIdList)");
+        commonWhereBuilder.append(" AND f.FILE_TYPE_ID  IN (:fileTypeIdList)");
         if (filter.getProcessCodeList() != null && filter.getProcessCodeList().length > 0) {
             params.put("fileTypeIdList", Arrays.asList(filter.getProcessCodeList()));
         } else {
@@ -1209,24 +1209,24 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         hqlQuery.append("FROM ( ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, COUNT(*) NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS ");
         hqlQuery.append("FROM MINADER_FILES f WHERE ");
-        hqlQuery.append(where1).append(where4).append(groupBy);
+        hqlQuery.append(creationDateWhere).append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" UNION ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, COUNT(*) NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
-        hqlQuery.append(where2).append(where4).append(groupBy);
+        hqlQuery.append(signatureDateWhere).append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" UNION ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,COUNT(*) NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
-        hqlQuery.append(where1).append(" AND f.SIGNATURE_DATE IS NOT NULL ").append(where4).append(groupBy);
+        hqlQuery.append(creationDateWhere).append(" AND f.SIGNATURE_DATE IS NOT NULL ").append(commonWhereBuilder).append(groupBy);
 //        hqlQuery.append(where1).append(" AND ").append(where2).append(where4).append(groupBy);
         hqlQuery.append(" UNION ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, COUNT(*) NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
-        hqlQuery.append(where3).append(where4).append(groupBy);
+        hqlQuery.append(rejectionDateWhere).append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" UNION ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, COUNT(*) NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
-        hqlQuery.append(where1).append(" AND f.DATE_REJET IS NOT NULL ").append(where4).append(groupBy);
+        hqlQuery.append(creationDateWhere).append(" AND f.DATE_REJET IS NOT NULL ").append(commonWhereBuilder).append(groupBy);
 //        hqlQuery.append(where1).append(" AND ").append(where3).append(where4).append(groupBy);
         hqlQuery.append(" UNION ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, COUNT(*) NB_COURS FROM MINADER_FILES f WHERE ");
-        hqlQuery.append(where1).append(" AND f.DATE_REJET IS NULL AND f.SIGNATURE_DATE IS NULL ").append(where4).append(groupBy);
+        hqlQuery.append(creationDateWhere).append(" AND f.DATE_REJET IS NULL AND f.SIGNATURE_DATE IS NULL ").append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" ) ");
         hqlQuery.append(groupBy);
 
