@@ -5957,21 +5957,38 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             return;
         }
 
-        if (CollectionUtils.isNotEmpty(file.getContainers())) {
-            dao.delete(file.getContainers());
+        List<Container> containersList = dao.findContainersByFile(file);
+        if (CollectionUtils.isEmpty(containersList)) {
+            File file1 = fileDao.findByNumDossierGuce(file.getNumeroDossier());
+            if (file1 != null) {
+                containersList = dao.findContainersByFile(file1);
+            }
+        }
+        if (CollectionUtils.isNotEmpty(containersList)) {
+            dao.delete(containersList);
         }
 
+//        if (CollectionUtils.isNotEmpty(file.getContainers())) {
+//            for (Iterator<Container> iterator = file.getContainers().iterator(); iterator.hasNext();) {
+//                Container next = iterator.next();
+//                next.setFile(null);
+//                iterator.remove();
+//            }
+//        }
+//
         List<org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR> conteneurs = document.getCONTENT().getCONTENEURS().getCONTENEUR();
-        Set<Container> containers = new HashSet<>();
+        Set<Container> containersToSave = new HashSet<>();
+        Container container;
         for (org.guce.siat.jaxb.cct.PVE.DOCUMENT.CONTENT.CONTENEURS.CONTENEUR conteneur : conteneurs) {
 
-            final Container container = new Container();
+            container = new Container();
+            String contNumber = conteneur.getNUMERO();
 
             if (file.getId() != null) {
                 container.setFile(file);
             }
 
-            container.setContNumber(conteneur.getNUMERO());
+            container.setContNumber(contNumber);
             container.setContSeal1(StringUtils.isNotBlank(conteneur.getSCELLE1()) ? conteneur.getSCELLE1() : "-");
             container.setContType(StringUtils.isNotBlank(conteneur.getTYPE()) ? conteneur.getTYPE() : "-");
             container.setContVolume(conteneur.getVOLUME());
@@ -5980,13 +5997,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             container.setContNumberOfPackages(conteneur.getQUANTITECOLIS() != null ? conteneur.getQUANTITECOLIS().intValue() : null);
             container.setContDenomination(StringUtils.isNotBlank(conteneur.getESSENCE()) ? conteneur.getESSENCE() : "-");
 
-            containers.add(container);
+            containersToSave.add(container);
         }
 
         if (file.getId() == null) {
-            file.setContainers(new ArrayList<>(containers));
+            file.setContainers(new ArrayList<>(containersToSave));
         } else {
-            dao.save(new ArrayList<>(containers));
+            dao.save(new ArrayList<>(containersToSave));
         }
     }
 
@@ -16388,6 +16405,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     public AppointmentDao getAppointmentDao() {
         return appointmentDao;
+    }
+
+    public void setDao(CoreDao dao) {
+        this.dao = dao;
     }
 
 }
