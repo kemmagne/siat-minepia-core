@@ -83,8 +83,9 @@ public class MinaderFileTrackingFilter extends Filter {
 
     public static enum FileStateFilter {
 
-        CLOSED,
         IN_PROCESS,
+        SIGNED,
+        REJECTED,
         ALL;
 
         public static Map<String, String> getMap() {
