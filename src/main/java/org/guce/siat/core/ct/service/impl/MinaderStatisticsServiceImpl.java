@@ -1,7 +1,6 @@
 package org.guce.siat.core.ct.service.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +17,6 @@ import org.guce.siat.common.model.FileTypeStep;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
-import org.guce.siat.common.utils.enums.StepCode;
 import org.guce.siat.core.ct.dao.MinaderStatisticsDao;
 import org.guce.siat.core.ct.filter.MinaderFileTrackingFilter;
 import org.guce.siat.core.ct.model.MinaderFileTracking;
@@ -34,8 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service("minaderStatisticsService")
 @Transactional(readOnly = true)
 public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
-
-    private static final List<StepCode> TREATMENT_STEPS_CODES = Arrays.asList(StepCode.ST_CT_04, StepCode.ST_CT_48, StepCode.ST_CT_63, StepCode.ST_CT_55);
 
     @Autowired
     private FileTypeStepDao fileTypeStepDao;
@@ -77,13 +73,13 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
             FileItem fileItem = file.getFileItemsList().get(0);
             Step currentStep = file.getFileItemsList().get(0).getStep();
             boolean fileClosed = BooleanUtils.toBoolean(currentStep.getIsFinal());
-
-            if (MinaderFileTrackingFilter.FileStateFilter.IN_PROCESS.equals(filter.getFileState()) && fileClosed) {
-                continue;
-            } else if (MinaderFileTrackingFilter.FileStateFilter.CLOSED.equals(filter.getFileState()) && !fileClosed) {
-                continue;
-            }
-
+//
+//            if (MinaderFileTrackingFilter.FileStateFilter.IN_PROCESS.equals(filter.getFileState()) && fileClosed) {
+//                continue;
+//            } else if (MinaderFileTrackingFilter.FileStateFilter.CLOSED.equals(filter.getFileState()) && !fileClosed) {
+//                continue;
+//            }
+//
             mft.setFileTypeCode(Objects.toString(objects[i++]));
             mft.setFileTypeNameFr(Objects.toString(objects[i++]));
             mft.setFileTypeNameEn(Objects.toString(objects[i++]));
@@ -118,7 +114,6 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
             mft.setCreationDate(createdDate);
 
             Date now = Calendar.getInstance().getTime();
-
             if (!fileClosed) {
                 mft.setUserReceivedDate(file.getLastDecisionDate());
                 mft.setUserDeadline(now.getTime() - file.getLastDecisionDate().getTime());
