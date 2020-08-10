@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author ht
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(classes = {DataSourceConfig.class})
 @ContextConfiguration("classpath:spring-config.xml")
 public class CoreDaoTest {
 
@@ -92,7 +91,7 @@ public class CoreDaoTest {
     /**
      * Test of findContainersByFile method, of class CoreDao.
      */
-//    @Ignore
+    @Ignore
     @Test
     public void testFindContainersByFile() {
         File file = fileDao.findByNumDossierGuce("EM003865");

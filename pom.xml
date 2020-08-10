@@ -38,41 +38,7 @@
             <id>profile-ht</id>
             <properties>
                 <environment>ht</environment>
-                <db.username>SIAT_CT</db.username>
-                <db.password>siat</db.password>
-                <db.url>jdbc:oracle:thin:@htserver:1521:GUCE</db.url>
-                <database.maxConnectionsPerPartition>10</database.maxConnectionsPerPartition>
-                <database.minConnectionsPerPartition>2</database.minConnectionsPerPartition>
-                <database.partitionCount>2</database.partitionCount>
-                <database.acquireIncrement>3</database.acquireIncrement>
-                <database.autoCommit>false</database.autoCommit>
-                <database.minimumIdle>10</database.minimumIdle>
-                <database.maximumPoolSize>10</database.maximumPoolSize>
-                <ged.url>http://gedurl:8080</ged.url>
-                <jms.url>failover:(tcp://brokerurl:61616)</jms.url>
-                <version>${application.version}</version>
-                <ged.username>admin</ged.username>
-                <ged.password>admin</ged.password>
-                <uri.in>amq:CT</uri.in>
-                <uri.out>SIAT</uri.out>
-                <uri.dead.in>direct:dead</uri.dead.in>
-                <uri.dead.out>amq:deadQueue</uri.dead.out>
-                <ebxml.folder>/opt/glassfish/data/siat/eguce/ebxml</ebxml.folder>
-                <xml.folder>/opt/glassfish/data/siat/eguce/xml</xml.folder>
-                <attachement.folder>/opt/glassfish/data/siat/eguce/attachement</attachement.folder>
-                <hibernate.default_schema>SIAT_CT</hibernate.default_schema>
-                <jms.username>admin</jms.username>
-                <jms.password>admin</jms.password>
-                <mailSender.host>thehost</mailSender.host>
-                <mailSender.port>25</mailSender.port>
-                <mailSender.username>siat@guce-lu-cameroun.org</mailSender.username>
-                <mailSender.password>s1@t</mailSender.password>
-                <mailSender.from>siat@guce-lu-cameroun.org</mailSender.from>
-                <mailSender.replyTo></mailSender.replyTo>
-                <mail.smtp.starttls.enable>false</mail.smtp.starttls.enable>
-                <webservice.url>http://thehost:9759/orchestra/privacy/siat/messageService/ebxml</webservice.url>
-                <messages.folder>/opt/glassfish/data/siat/eguce/messages/ct</messages.folder>
-                <mails.folder>/opt/glassfish/data/siat/eguce/mails/ct</mails.folder>
+                <global-config.properties>${user.home}/siat/config/ct/global-config.properties</global-config.properties>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
@@ -82,30 +48,13 @@
                 </property>
             </activation>
         </profile>
-        <profile>
-            <id>profile-prod</id>
-            <properties>
-                <environment>prod</environment>
-                <uri.in>amq:CT</uri.in>
-                <uri.out>SIAT</uri.out>
-                <uri.dead.in>direct:dead</uri.dead.in>
-                <uri.dead.out>amq:SIAT</uri.dead.out>
-            </properties>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-                <property>
-                    <name>environment</name>
-                    <value>preprod</value>
-                </property>
-            </activation>
-        </profile>
     </profiles>
 
     <dependencies>
         <dependency>
             <groupId>org.guce.siat.common</groupId>
             <artifactId>siat-common</artifactId>
-            <version>2.0.24</version>
+            <version>2.0.25</version>
         </dependency>
         <dependency>
             <groupId>commons-beanutils</groupId>
