@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class CotationServiceImpl implements CotationService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(CotationServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private FileService fileService;
@@ -105,7 +105,7 @@ public class CotationServiceImpl implements CotationService {
         }
 
         if (cotationFlow == null) {
-            LOG.error("Cannot not determine the cotation flow : {} - {}", currentFile, cotationStep);
+            logger.error("Cannot not determine the cotation flow : {} - {}", currentFile, cotationStep);
             return;
         }
 
@@ -116,11 +116,13 @@ public class CotationServiceImpl implements CotationService {
         Transfer existingTransfer = transferDao.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
         if (existingTransfer != null) {
             assignedUser = existingTransfer.getAssignedUser();
+            assignedUser = checkUser(assignedUser, currentFile);
         }
 
         if (assignedUser == null) {
             List<File> files = fileService.findByNumeroDemandeAndBureau(currentFile, treatmentStep);
             assignedUser = !files.isEmpty() ? files.get(0).getAssignedUser() : null;
+            assignedUser = checkUser(assignedUser, currentFile);
         }
 
         if (assignedUser == null) {
@@ -129,7 +131,7 @@ public class CotationServiceImpl implements CotationService {
             try {
                 productType = CctExportProductType.valueOf(ffv.getValue());
             } catch (Exception ex) {
-                LOG.error("Cannot map the product type to the {} enum : {} - {}", CctExportProductType.class, currentFile, ffv.getValue());
+                logger.error("Cannot map the product type to the {} enum : {} - {}", CctExportProductType.class, currentFile, ffv.getValue());
                 return;
             }
             Bureau bureau = currentFile.getBureau();
@@ -137,7 +139,7 @@ public class CotationServiceImpl implements CotationService {
         }
 
         if (assignedUser == null) {
-            LOG.error("Cannot not determine the user to assign the file : {} - {}", currentFile, cotationStep);
+            logger.error("Cannot not determine the user to assign the file : {} - {}", currentFile, cotationStep);
             return;
         }
 
@@ -153,6 +155,21 @@ public class CotationServiceImpl implements CotationService {
         transferDao.save(transfer);
 
         // notification
+    }
+
+    private User checkUser(User user, File currentFile) {
+
+        if (!BooleanUtils.toBoolean(user.getEnabled())) {
+            logger.warn("The user {} has been disabled. The file {} cannot assigned to him/he", user, currentFile);
+            return null;
+        }
+
+        if (BooleanUtils.toBoolean(user.getDeleted())) {
+            logger.warn("The user {} has been deleted. The file {} cannot assigned to him/he", user, currentFile);
+            return null;
+        }
+
+        return user;
     }
 
     private void takeDecision(File currentFile, List<FileItem> fileItems, User sender, User assignedUser, Flow cotationFlow) {
