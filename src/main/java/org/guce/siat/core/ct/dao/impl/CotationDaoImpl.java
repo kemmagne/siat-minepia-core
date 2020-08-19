@@ -43,7 +43,7 @@ public class CotationDaoImpl implements CotationDao {
     @Override
     public List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile) {
 
-        TypedQuery<User> query = entityManager.createQuery("SELECT DISTINCT upt.user FROM UserCctExportProductType upt JOIN upt.user.userAuthorityList aut, UserAuthorityFileType auft WHERE upt.user.deleted = false AND upt.user.administration.id = :bureauId AND aut.authorityGranted.role IN (:authoritiesList) AND aut.id = auft.primaryKey.userAuthority.id AND auft.primaryKey.fileType.id = :fileTypeId AND upt.user.deleted = false AND upt.productType = :productType", User.class);
+        TypedQuery<User> query = entityManager.createQuery("SELECT DISTINCT upt.user FROM UserCctExportProductType upt JOIN upt.user.userAuthorityList aut, UserAuthorityFileType auft WHERE upt.user.deleted = false AND upt.user.enabled = true AND upt.user.administration.id = :bureauId AND aut.authorityGranted.role IN (:authoritiesList) AND aut.id = auft.primaryKey.userAuthority.id AND auft.primaryKey.fileType.id = :fileTypeId AND upt.user.deleted = false AND upt.productType = :productType", User.class);
 
         FileFieldValue ffv = fileFieldValueDao.findValueByFileFieldAndFile(CctExportProductType.getFileFieldCode(), currentFile);
         CctExportProductType productType = CctExportProductType.valueOf(ffv.getValue());
@@ -60,7 +60,7 @@ public class CotationDaoImpl implements CotationDao {
     public User findUserForCotation(CctExportProductType productType, Bureau bureau) {
 
         StringBuilder builder = new StringBuilder("SELECT UPT.USER_ID, NVL(T.NB,0) NB FROM USERS_CCT_EXPORT_PRODUCT_TYPE UPT ");
-        builder.append("JOIN USERS U ON U.ID = UPT.USER_ID AND U.DELETED = 0 AND U.ADMINISTRATION_ID = :bureauId AND U.ID IN (SELECT UA.USER_ID FROM USER_AUTHORITY UA JOIN AUTHORITY A ON UA.AUTHORITY_ID = A.ID AND A.ROLE IN (:authoritiesList)) ")
+        builder.append("JOIN USERS U ON U.ID = UPT.USER_ID AND U.DELETED = 0 AND U.ENABLED = 1 AND U.ADMINISTRATION_ID = :bureauId AND U.ID IN (SELECT UA.USER_ID FROM USER_AUTHORITY UA JOIN AUTHORITY A ON UA.AUTHORITY_ID = A.ID AND A.ROLE IN (:authoritiesList)) ")
                 .append("LEFT JOIN (SELECT ASSIGNED_USER_ID, COUNT(*) NB FROM (")
                 .append("SELECT DISTINCT TR.ASSIGNED_USER_ID, TR.NUMERO_DEMANDE FROM TRANSFER TR ")
                 .append("JOIN FILES F ON F.NUMERO_DEMANDE = TR.NUMERO_DEMANDE ")
