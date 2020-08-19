@@ -136,6 +136,7 @@ public class CotationServiceImpl implements CotationService {
             }
             Bureau bureau = currentFile.getBureau();
             assignedUser = cotationDao.findUserForCotation(productType, bureau);
+            assignedUser = checkUser(assignedUser, currentFile);
         }
 
         if (assignedUser == null) {
@@ -158,6 +159,10 @@ public class CotationServiceImpl implements CotationService {
     }
 
     private User checkUser(User user, File currentFile) {
+
+        if (user == null) {
+            return null;
+        }
 
         if (!BooleanUtils.toBoolean(user.getEnabled())) {
             logger.warn("The user {} has been disabled. The file {} cannot assigned to him/he", user, currentFile);
