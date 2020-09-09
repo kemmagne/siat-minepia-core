@@ -13,7 +13,7 @@ import org.guce.siat.core.ct.model.MinaderFileTracking;
  */
 public interface MinaderStatisticsService {
 
-    List<StepCode> TREATMENT_STEPS_CODES = Arrays.asList(StepCode.ST_CT_04, StepCode.ST_CT_48, StepCode.ST_CT_63, StepCode.ST_CT_55);
+    List<StepCode> TREATMENT_STEPS_CODES = Arrays.asList(StepCode.ST_CT_04, StepCode.ST_CT_48, StepCode.ST_CT_55, StepCode.ST_CT_63);
 
     List<User> retrievePotentialAgents(MinaderFileTracking fileTracking);
 
