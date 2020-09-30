@@ -848,7 +848,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
          * Notification par email depot de dossier *
          */
         notificationEmail(fileFromSiat, flowToExecute);
-
     }
 
     /**
@@ -957,6 +956,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
             fileItem.setStep(firstFlow.getToStep());
             fileItemDao.save(fileItem);
+        }
+
+        if (FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode())) {
+            cotationService.dispatch(file, firstFlow);
         }
 
         /**
