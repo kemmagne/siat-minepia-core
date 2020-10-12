@@ -607,9 +607,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             return fileFromSiat;
         } else {
-            final List<Attachment> addedAttachments = new ArrayList<>();
+//            final List<Attachment> addedAttachments = new ArrayList<>();
             final List<Attachment> attachmentList = fileConverted.getAttachmentsList();
-            final List<FileItem> addedFileItemList = new ArrayList<>();
+//            final List<FileItem> addedFileItemList = new ArrayList<>();
             final List<FileItem> fileItemList = fileConverted.getFileItemsList();
 
             String nsh;
@@ -688,7 +688,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
             for (final FileItem fileItem : fileItemList) {
                 fileItem.setFile(fileConverted);
-                addedFileItemList.add(fileItem);
+//                addedFileItemList.add(fileItem);
             }
 
             // set the file last decision date to the current date
@@ -704,6 +704,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         woodSpecificationDao.save(spec);
                     }
                 }
+            } else if (addedFile == null) {
+                throw new RuntimeException(String.format("The file got from %s cannot be null", fileConverted));
             }
 
             // save related decision histories
@@ -748,7 +750,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     attachment.setFile(addedFile);
                     attachment.setPath(attachmentRootFolder);
                     if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
-                        addedAttachments.add(attachment);
+//                        addedAttachments.add(attachment);
                         attachmentDao.save(attachment);
                     }
                 }
@@ -921,26 +923,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case IRMP_MINCOMMERCE:
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_AP_85.name());
                     break;
-//                case CCT_CT:
-//                case CCT_CT_E:
-//                case CC_CT:
-//                case CQ_CT:
-//                case CCT_CT_E_ATP: {
-//                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())) {
-//                        firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
-//                    } else {
-//                        firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
-//                    }
-//                    break;
-//                }
-//                case CCT_CT_E_PVI:
-//                case CCT_CT_E_FSTP:
-//                    firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
-//                    break;
                 default:
                     firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
                     break;
             }
+        }
+
+        if (firstFlow == null) {
+            throw new RuntimeException(String.format("It wasn't possible to find the the first flow for %s", file));
         }
 
         final User declarant1 = userDao.getUserByLogin("DECLARANT");
@@ -1140,7 +1130,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 break;
             }
         }
-        if (CollectionUtils.isNotEmpty(newFileFieldValueList)) {
+        if (newFileFieldValueList != null && !newFileFieldValueList.isEmpty()) {
             for (FileFieldValue fileFieldValue : newFileFieldValueList) {
                 fileFieldValue.setFile(currentFile);
                 fileFieldValueDao.save(fileFieldValue);

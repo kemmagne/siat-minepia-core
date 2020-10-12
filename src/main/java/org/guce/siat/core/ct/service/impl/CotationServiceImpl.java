@@ -27,6 +27,7 @@ import org.guce.siat.common.service.FileFieldValueService;
 import org.guce.siat.common.service.FileService;
 import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.MailService;
+import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.AperakType;
 import org.guce.siat.core.ct.dao.CotationDao;
 import org.guce.siat.core.ct.service.CotationService;
@@ -110,7 +111,7 @@ public class CotationServiceImpl implements CotationService {
         }
 
         Step treatmentStep = cotationFlow.getToStep();
-        User sender = userDao.getUserByLogin("SYSTEM");
+        User sender = userDao.getUserByLogin(Constants.SYSTEM_USER_LOGIN);
         User assignedUser = null;
 
         Transfer existingTransfer = transferDao.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
