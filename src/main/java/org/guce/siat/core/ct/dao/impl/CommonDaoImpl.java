@@ -73,7 +73,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     private static final List<String> CTE_ADMISIBILITY_FLOWS = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name(), FlowCode.FL_CT_131.name());
     private static final List<String> CTE_COTATION_FLOWS = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name(), FlowCode.FL_CT_136.name());
     private static final List<String> CTE_APPOINTMENT_FLOWS = Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_105.name(), FlowCode.FL_CT_118.name());
-    private static final List<String> CTE_TREATMENT_FLOWS = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name());
+    private static final List<String> CTE_TREATMENT_FLOWS = Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name(), FlowCode.FL_CT_151.name());
     private static final List<String> CTE_SIGNATURE_FLOWS = Arrays.asList(FlowCode.FL_CT_08.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_140.name());
     private static final List<String> CTE_CI_FLOWS = Arrays.asList(FlowCode.FL_CT_02.name(), FlowCode.FL_CT_24.name(), FlowCode.FL_CT_101.name(), FlowCode.FL_CT_96.name(), FlowCode.FL_CT_137.name(), FlowCode.FL_CT_148.name());
 
