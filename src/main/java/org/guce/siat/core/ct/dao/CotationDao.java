@@ -14,6 +14,9 @@ public interface CotationDao {
 
     List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile);
 
+    @Deprecated
     User findUserForCotation(CctExportProductType productType, Bureau bureau);
+
+    List<User> findUsersForCotation(Bureau bureau, CctExportProductType productType);
 
 }
