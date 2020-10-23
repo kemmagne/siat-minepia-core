@@ -15711,7 +15711,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final Map<String, String> map = new HashMap<>();
 
-        if (file.getAssignedUser() != null) {
+        if (file.getAssignedUser() != null && firstFlow.getToStep() != null) {
             final User usr = file.getAssignedUser();
 
             if ("FR".equals(usr.getPreferedLanguage())) {
@@ -15729,7 +15729,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             mailService.sendMail(map);
 
-        } else if (file.getBureau() != null) {
+        } else if (file.getBureau() != null && firstFlow.getToStep() != null) {
 
             final Administration administration = administrationDao.find(file.getBureau().getId());
             final List<Administration> adminList = new ArrayList<>();
