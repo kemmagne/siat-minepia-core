@@ -72,6 +72,9 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
 
             FileItem fileItem = file.getFileItemsList().get(0);
             Step currentStep = file.getFileItemsList().get(0).getStep();
+            if (currentStep == null) {
+                continue;
+            }
             boolean fileClosed = BooleanUtils.toBoolean(currentStep.getIsFinal());
 //
 //            if (MinaderFileTrackingFilter.FileStateFilter.IN_PROCESS.equals(filter.getFileState()) && fileClosed) {
