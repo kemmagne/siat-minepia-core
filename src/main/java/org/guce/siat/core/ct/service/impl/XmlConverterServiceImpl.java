@@ -849,7 +849,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         /**
          * Notification par email depot de dossier *
          */
-        notificationEmail(fileFromSiat, flowToExecute);
+        try {
+            notificationEmail(fileFromSiat, flowToExecute);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
     }
 
     /**
@@ -955,7 +959,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         /**
          * Notification par email depot de dossier *
          */
-        notificationEmail(file, firstFlow);
+        try {
+            notificationEmail(file, firstFlow);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
 
     }
 
@@ -1244,8 +1252,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         /**
          * Notification par email depot de dossier *
          */
-        notificationEmail(fileFromSiat, flowToExecute);
-
+        try {
+            notificationEmail(fileFromSiat, flowToExecute);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
     }
 
     /**
