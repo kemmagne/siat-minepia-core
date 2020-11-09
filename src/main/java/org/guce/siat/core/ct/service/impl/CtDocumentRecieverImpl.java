@@ -32,7 +32,7 @@ import javax.xml.xpath.XPathFactory;
 import org.apache.chemistry.opencmis.client.api.Folder;
 import org.apache.chemistry.opencmis.client.api.Session;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
-import org.apache.commons.collections.MapUtils;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.model.FlowGuceSiat;
 import org.guce.siat.common.service.AbstractDocumentReciever;
@@ -41,6 +41,8 @@ import org.guce.siat.common.service.EbxmlPropertiesService;
 import org.guce.siat.common.service.FlowGuceSiatService;
 import org.guce.siat.common.service.ValidationFlowService;
 import org.guce.siat.common.service.XmlConverterService;
+import org.guce.siat.common.utils.PropertiesConstants;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.guce.siat.common.utils.XmlXPathUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.guce.siat.common.utils.ebms.EbmsUtility;
@@ -52,7 +54,6 @@ import org.guce.siat.common.utils.exception.ValidationException;
 import org.guce.siat.common.utils.ged.AlfrescoDirectoriesInitializer;
 import org.guce.siat.common.utils.ged.CmisSession;
 import org.guce.siat.common.utils.ged.CmisUtils;
-import org.guce.siat.common.utils.io.IOUtils;
 import org.guce.siat.core.ct.service.CtDocumentReciever;
 import org.guce.siat.utility.jaxb.common.ERREURS;
 import org.guce.siat.utility.jaxb.common.ERREURS.ERREUR;
@@ -93,6 +94,9 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
      * The Constant REFERENCE_GUCE_EXPRESSION.
      */
     private static final String REFERENCE_GUCE_EXPRESSION = "/DOCUMENT/TYPE_DOCUMENT";
+
+    @Autowired
+    private PropertiesLoader propertiesLoader;
 
     /**
      * The xml converter service.
@@ -144,7 +148,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
     @Override
     public Map<String, Object> uploadEbxmlFile(final Map<String, Object> ebxmlBytes) throws Exception {
 
-        final Map<String, Object> data = new HashMap<>();
+        Map<String, Object> data = new HashMap<>();
         Map<String, byte[]> attached;
         byte[] response;
         String xmlContent;
@@ -153,9 +157,9 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
 
             attached = (ebxmlBytes.get(ESBConstants.ATTACHMENT) != null ? (HashMap<String, byte[]>) ebxmlBytes.get(ESBConstants.ATTACHMENT) : null);
 
-            final byte[] xmlBytes = (byte[]) ebxmlBytes.get(ESBConstants.FLOW);
-            final byte[] message = (byte[]) ebxmlBytes.get(ESBConstants.MESSAGE);
-            final String conversationId = (String) ebxmlBytes.get(ESBConstants.CONVERSATION_ID);
+            byte[] xmlBytes = (byte[]) ebxmlBytes.get(ESBConstants.FLOW);
+            byte[] message = (byte[]) ebxmlBytes.get(ESBConstants.MESSAGE);
+            String conversationId = (String) ebxmlBytes.get(ESBConstants.CONVERSATION_ID);
 
             xmlContent = new String(xmlBytes);
             LOG.info(" check if the received message is an APERAK");
@@ -169,39 +173,40 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             // Validation metier
             validationFlowService.validateFlowFromGuce(rootElement);
             // Injection file in BDD
-            final Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath, conversationId);
+            Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath, conversationId);
             LOG.info("################### getReceivedDocument finished");
-            final org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
+            org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
             LOG.info(" saveReceivedFileAndExecuteFlow finished");
-            if (MapUtils.isNotEmpty(attached)) {
+            if (attached != null && !attached.isEmpty()) {
                 // Add PJ to GED
                 LOG.info("Liste des fichiers attachés : {}", attached.size());
                 alfrescoDirectoryCreator.createDirectory(savedFile);
-                final String attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(savedFile);
+                String attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(savedFile);
 
-                final Session sessionCmisClient = CmisSession.getInstance();
+                Session sessionCmisClient = CmisSession.getInstance();
                 if (savedFile.getBureau() != null) {
                     try {
                         CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
-                    } catch (final CmisObjectNotFoundException e) {
+                    } catch (CmisObjectNotFoundException e) {
                         LOG.info(Objects.toString(e), e);
-                        final String bureauRootPath = attachmentRootFolder.replace(AlfrescoDirectoriesInitializer.SLASH
+                        String bureauRootPath = attachmentRootFolder.replace(AlfrescoDirectoriesInitializer.SLASH
                                 + savedFile.getBureau().getCode(), StringUtils.EMPTY);
-                        final Folder bureauFolder = CmisUtils.getRootFolder(sessionCmisClient, bureauRootPath);
+                        Folder bureauFolder = CmisUtils.getRootFolder(sessionCmisClient, bureauRootPath);
                         CmisUtils.createFolder(bureauFolder, savedFile.getBureau().getCode());
                     }
                 }
 
-                final List<File> attachedFiles = new ArrayList<>();
-                for (final Map.Entry<String, byte[]> entry : attached.entrySet()) {
-                    final File tempFile = new File(entry.getKey());
-                    IOUtils.writeBytesToFile(tempFile, entry.getValue());
+                List<File> attachedFiles = new ArrayList<>();
+                for (Map.Entry<String, byte[]> entry : attached.entrySet()) {
+                    String attachmentFolder = propertiesLoader.getProperty(PropertiesConstants.ATTACHMENT_FOLDER);
+                    File tempFile = new File(attachmentFolder, entry.getKey());
+                    FileUtils.writeByteArrayToFile(tempFile, entry.getValue());
                     attachedFiles.add(tempFile);
                 }
 
-                final Folder folder = CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
+                Folder folder = CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
                 CmisUtils.createFolder(folder, savedFile.getNumeroDossier());
-                final StringBuilder directory = new StringBuilder();
+                StringBuilder directory = new StringBuilder();
                 directory.append(attachmentRootFolder);
                 directory.append(AlfrescoDirectoriesInitializer.SLASH);
                 directory.append(savedFile.getNumeroDossier());
@@ -221,34 +226,34 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             data.put(ESBConstants.TO_PARTY_ID, propertiesService.getToPartyId());
             data.put(ESBConstants.DEAD, "0");
             LOG.info(" generateEbxmlFiles aperak K finished");
-        } catch (final IOException e) {
+        } catch (IOException e) {
             LOG.error("#####Error to connect to ressource:" + e.getMessage(), e);
             throw new RuntimeException("Technical Exception occured : " + e.getMessage(), e);
-        } catch (final ValidationException e) {
+        } catch (ValidationException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new ValidationException("Validation Exception : " + e.getMessage(), e);
-        } catch (final ParseException e) {
+        } catch (ParseException e) {
             LOG.error("####Error ParseException: " + e.getMessage(), e);
             throw new ParseException("Parse Exception : " + e.getMessage(), 0);
-        } catch (final SAXException e) {
+        } catch (SAXException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new SAXException("SAX Exception : " + e.getMessage(), e);
-        } catch (final ParserConfigurationException e) {
+        } catch (ParserConfigurationException e) {
             LOG.error("####Error to parse document: {}", Objects.toString(e));
             throw new ParserConfigurationException("ParserConfiguration Exception : " + e.getMessage());
-        } catch (final JAXBException e) {
+        } catch (JAXBException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new JAXBException("JAXB Exception " + e.getMessage(), e);
-        } catch (final XPathExpressionException e) {
+        } catch (XPathExpressionException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new XPathExpressionException("XPathExpression Exception " + e.getMessage());
-        } catch (final PersistenceException e) {
+        } catch (PersistenceException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new PersistenceException("PersistenceException Exception " + e.getMessage(), e);
-        } catch (final IndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             LOG.error("####Error to parse document: " + Objects.toString(e), e);
             throw new IndexOutOfBoundsException("IndexOutOfBoundsException Exception " + e.getMessage());
-        } catch (final NullPointerException e) {
+        } catch (NullPointerException e) {
             LOG.error("####Error to parse document: ", e);
             throw new NullPointerException("NullPointerException Exception " + e.getMessage());
         } catch (Exception e) {
