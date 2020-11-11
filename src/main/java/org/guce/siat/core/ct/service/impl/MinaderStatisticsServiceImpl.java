@@ -101,10 +101,11 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
             Date createdDate = itemFlows.get(0).getCreated();
             FileTypeStep fileTypeStep = fileTypeStepDao.findFileTypeStepByFileTypeAndStep(file.getFileType(), currentStep);
             if (fileTypeStep != null) {
-                currentStep.setLabelFr(fileTypeStep.getLabelFr());
-                currentStep.setLabelEn(fileTypeStep.getLabelEn());
+                file.setRedefinedLabelEn(fileTypeStep.getLabelEn());
+                file.setRedefinedLabelFr(fileTypeStep.getLabelFr());
             }
             mft.setCurrenStep(currentStep);
+            file.setStep(currentStep);
             if (TREATMENT_STEPS_CODES.contains(currentStep.getStepCode())) {
                 mft.setCurrenStepUser(file.getAssignedUser());
             }
