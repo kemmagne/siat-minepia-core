@@ -1,18 +1,23 @@
 package org.guce.siat.core.ct.service.impl;
 
+import java.math.BigDecimal;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.Set;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.FileTypeDao;
 import org.guce.siat.common.dao.FlowDao;
+import org.guce.siat.common.dao.ParamsDao;
 import org.guce.siat.common.dao.TransferDao;
 import org.guce.siat.common.dao.UserDao;
-import org.guce.siat.common.mail.MailConstants;
 import org.guce.siat.common.model.Bureau;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
@@ -20,14 +25,15 @@ import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.MinistryFileType;
+import org.guce.siat.common.model.Params;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.Transfer;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.FileFieldValueService;
-import org.guce.siat.common.service.FileService;
 import org.guce.siat.common.service.ItemFlowService;
-import org.guce.siat.common.service.MailService;
+import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.enums.AperakType;
+import org.guce.siat.common.utils.enums.ParamsCategory;
 import org.guce.siat.core.ct.dao.CotationDao;
 import org.guce.siat.core.ct.service.CotationService;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
@@ -36,6 +42,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  *
@@ -47,31 +54,36 @@ public class CotationServiceImpl implements CotationService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    @Autowired
-    private FileService fileService;
+    /**
+     * the cotation param format
+     *
+     * 0 : the bureau code
+     *
+     * 1 : the product type
+     */
+    private static final String COTATION_PARAM_FORMAT = "cotation.{0}.{1}";
+
     @Autowired
     private FileFieldValueService fileFieldValueService;
     @Autowired
     private ItemFlowService itemFlowService;
-    @Autowired
-    private MailService mailService;
 
     @Autowired
     private UserDao userDao;
     @Autowired
     private FlowDao flowDao;
     @Autowired
+    private FileDao fileDao;
+    @Autowired
     private TransferDao transferDao;
     @Autowired
     private FileTypeDao fileTypeDao;
-
-    /**
-     * The file item dao.
-     */
     @Autowired
     private FileItemDao fileItemDao;
     @Autowired
     private CotationDao cotationDao;
+    @Autowired
+    private ParamsDao paramsDao;
 
     @Override
     public void dispatch(File currentFile, Flow currentFlow) {
@@ -105,12 +117,11 @@ public class CotationServiceImpl implements CotationService {
         }
 
         if (cotationFlow == null) {
-            logger.error("Cannot not determine the cotation flow : {} - {}", currentFile, cotationStep);
+            logger.error("Cannot determine the cotation flow : {} - {}", currentFile, cotationStep);
             return;
         }
 
-        Step treatmentStep = cotationFlow.getToStep();
-        User sender = userDao.getUserByLogin("SYSTEM");
+        User sender = userDao.getUserByLogin(Constants.SYSTEM_USER_LOGIN);
         User assignedUser = null;
 
         Transfer existingTransfer = transferDao.findLastByNumeroDemandeAndBureau(currentFile.getNumeroDemande(), currentFile.getBureau());
@@ -120,23 +131,7 @@ public class CotationServiceImpl implements CotationService {
         }
 
         if (assignedUser == null) {
-            List<File> files = fileService.findByNumeroDemandeAndBureau(currentFile, treatmentStep);
-            assignedUser = !files.isEmpty() ? files.get(0).getAssignedUser() : null;
-            assignedUser = checkUser(assignedUser, currentFile);
-        }
-
-        if (assignedUser == null) {
-            FileFieldValue ffv = fileFieldValueService.findValueByFileFieldAndFile(CctExportProductType.getFileFieldCode(), currentFile);
-            CctExportProductType productType;
-            try {
-                productType = CctExportProductType.valueOf(ffv.getValue());
-            } catch (Exception ex) {
-                logger.error("Cannot map the product type to the {} enum : {} - {}", CctExportProductType.class, currentFile, ffv.getValue());
-                return;
-            }
-            Bureau bureau = currentFile.getBureau();
-            assignedUser = cotationDao.findUserForCotation(productType, bureau);
-            assignedUser = checkUser(assignedUser, currentFile);
+            assignedUser = findUserForCotation(currentFile);
         }
 
         if (assignedUser == null) {
@@ -154,8 +149,73 @@ public class CotationServiceImpl implements CotationService {
         transfer.setUser(sender);
 
         transferDao.save(transfer);
+    }
 
-        // notification
+    private synchronized User findUserForCotation(File currentFile) {
+        FileFieldValue ffv = fileFieldValueService.findValueByFileFieldAndFile(CctExportProductType.getFileFieldCode(), currentFile);
+        CctExportProductType productType;
+        try {
+            productType = CctExportProductType.valueOf(ffv.getValue());
+        } catch (Exception ex) {
+            logger.error("Cannot map the product type to the {} enum : {} - {}", CctExportProductType.class, currentFile, ffv.getValue());
+            logger.error(null, ex);
+            return null;
+        }
+        Bureau bureau = currentFile.getBureau();
+        List<User> potentialUsers = cotationDao.findUsersForCotation(bureau, productType);
+        if (potentialUsers.isEmpty()) {
+            logger.error("There's not potential users for cotation : bureau {}, product type {}", bureau, productType);
+            return null;
+        }
+        Collections.sort(potentialUsers, new Comparator<User>() {
+            @Override
+            public int compare(User user1, User user2) {
+                return new BigDecimal(user1.getId()).compareTo(new BigDecimal(user2.getId()));
+            }
+        });
+        String cotationStringParam = MessageFormat.format(COTATION_PARAM_FORMAT, bureau.getCode(), productType.name());
+        Params params = paramsDao.findParamsByName(cotationStringParam);
+        final Long assignedUserId;
+        if (params != null) {
+            List<Long> potential = new ArrayList<>();
+            for (User pu : potentialUsers) {
+                potential.add(pu.getId());
+            }
+            String cotationString = params.getValue();
+            logger.info("cotation string for file {}, bureau {} and product type {} : {}", currentFile, bureau, productType, cotationString);
+            Set<String> assignedSet = StringUtils.commaDelimitedListToSet(cotationString);
+            Set<Long> assigned = new HashSet<>();
+            for (String as : assignedSet) {
+                assigned.add(Long.parseLong(as));
+            }
+            List<Long> remaningList = new ArrayList<>(CollectionUtils.subtract(potential, assigned));
+            if (!remaningList.isEmpty()) {
+                Collections.sort(remaningList, new Comparator<Long>() {
+                    @Override
+                    public int compare(Long o1, Long o2) {
+                        return o1.compareTo(o2);
+                    }
+                });
+                assignedUserId = remaningList.get(0);
+                assigned.add(assignedUserId);
+            } else {
+                assignedUserId = potential.get(0);
+                assigned = Collections.singleton(potential.get(0));
+            }
+            params.setValue(StringUtils.collectionToCommaDelimitedString(assigned));
+            paramsDao.update(params);
+        } else {
+            params = new Params();
+            params.setParamsCategory(ParamsCategory.GN);
+            params.setName(cotationStringParam);
+            assignedUserId = potentialUsers.get(0).getId();
+            params.setValue(assignedUserId.toString());
+            paramsDao.save(params);
+        }
+
+        User assignedUser = userDao.find(assignedUserId);
+
+        return assignedUser;
     }
 
     private User checkUser(User user, File currentFile) {
@@ -200,7 +260,7 @@ public class CotationServiceImpl implements CotationService {
         itemFlowService.takeDecision(itemFlowsToAdd, null);
 
         currentFile.setAssignedUser(assignedUser);
-        fileService.update(currentFile);
+        fileDao.update(currentFile);
 
         itemFlowService.sendDecisionsToDispatchCctFile(currentFile, fileItems);
     }
@@ -209,28 +269,6 @@ public class CotationServiceImpl implements CotationService {
     @Override
     public List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile) {
         return cotationDao.findCotationAgentsByBureauAndRoleAndProductType(currentFile);
-    }
-
-    private void notify(User user, File file) {
-
-        Map<String, String> map = new HashMap<>();
-        String object = "";
-
-        if (Locale.FRENCH.getLanguage().toUpperCase().equals(user.getPreferedLanguage())) {
-//            object = ResourceBundle.getBundle(ControllerConstants.Bundle.LOCAL_BUNDLE_NAME, Locale.FRANCE).getString(ControllerConstants.Bundle.Messages.OBJECT_MAIL_NOTIFICATION_RECEPT_FOLDER);
-//            map.put(MailConstants.VMF, EMAIL_BODY_NOTIFICATION_FR);
-        } else if (Locale.ENGLISH.getLanguage().toUpperCase().equals(user.getPreferedLanguage())) {
-//            object = ResourceBundle.getBundle(ControllerConstants.Bundle.LOCAL_BUNDLE_NAME, Locale.ENGLISH).getString(ControllerConstants.Bundle.Messages.OBJECT_MAIL_NOTIFICATION_RECEPT_FOLDER);
-//            map.put(MailConstants.VMF, EMAIL_BODY_NOTIFICATION_EN);
-        }
-
-        map.put(MailConstants.SUBJECT, object);
-        map.put("firstName", user.getFirstName());
-        map.put(MailConstants.FROM, mailService.getFromValue());
-        map.put(MailConstants.EMAIL, user.getEmail());
-        map.put("referenceSiat", file.getReferenceSiat());
-
-        mailService.sendMail(map);
     }
 
 }

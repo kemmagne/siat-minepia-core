@@ -607,9 +607,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             return fileFromSiat;
         } else {
-            final List<Attachment> addedAttachments = new ArrayList<>();
+//            final List<Attachment> addedAttachments = new ArrayList<>();
             final List<Attachment> attachmentList = fileConverted.getAttachmentsList();
-            final List<FileItem> addedFileItemList = new ArrayList<>();
+//            final List<FileItem> addedFileItemList = new ArrayList<>();
             final List<FileItem> fileItemList = fileConverted.getFileItemsList();
 
             String nsh;
@@ -688,7 +688,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
             for (final FileItem fileItem : fileItemList) {
                 fileItem.setFile(fileConverted);
-                addedFileItemList.add(fileItem);
+//                addedFileItemList.add(fileItem);
             }
 
             // set the file last decision date to the current date
@@ -704,6 +704,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         woodSpecificationDao.save(spec);
                     }
                 }
+            } else if (addedFile == null) {
+                throw new RuntimeException(String.format("The file got from %s cannot be null", fileConverted));
             }
 
             // save related decision histories
@@ -748,7 +750,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     attachment.setFile(addedFile);
                     attachment.setPath(attachmentRootFolder);
                     if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
-                        addedAttachments.add(attachment);
+//                        addedAttachments.add(attachment);
                         attachmentDao.save(attachment);
                     }
                 }
@@ -847,8 +849,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         /**
          * Notification par email depot de dossier *
          */
-        notificationEmail(fileFromSiat, flowToExecute);
-
+        try {
+            notificationEmail(fileFromSiat, flowToExecute);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
     }
 
     /**
@@ -922,26 +927,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case IRMP_MINCOMMERCE:
                     firstFlow = flowDao.findFlowByCode(FlowCode.FL_AP_85.name());
                     break;
-//                case CCT_CT:
-//                case CCT_CT_E:
-//                case CC_CT:
-//                case CQ_CT:
-//                case CCT_CT_E_ATP: {
-//                    if (flowGuceSiat != null && flowGuceSiat.getFlowSiat() != null && AMENDEMENT_CTE_FLOW_LIST.contains(flowGuceSiat.getFlowSiat())) {
-//                        firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
-//                    } else {
-//                        firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_01.name());
-//                    }
-//                    break;
-//                }
-//                case CCT_CT_E_PVI:
-//                case CCT_CT_E_FSTP:
-//                    firstFlow = flowDao.findFlowByCode(FlowCode.FL_CT_99.name());
-//                    break;
                 default:
                     firstFlow = flowDao.findFlowByCode(flowGuceSiat.getFlowSiat());
                     break;
             }
+        }
+
+        if (firstFlow == null) {
+            throw new RuntimeException(String.format("It wasn't possible to find the the first flow for %s", file));
         }
 
         final User declarant1 = userDao.getUserByLogin("DECLARANT");
@@ -959,10 +952,18 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItemDao.save(fileItem);
         }
 
+        if (FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode())) {
+            cotationService.dispatch(file, firstFlow);
+        }
+
         /**
          * Notification par email depot de dossier *
          */
-        notificationEmail(file, firstFlow);
+        try {
+            notificationEmail(file, firstFlow);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
 
     }
 
@@ -1137,7 +1138,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 break;
             }
         }
-        if (CollectionUtils.isNotEmpty(newFileFieldValueList)) {
+        if (newFileFieldValueList != null && !newFileFieldValueList.isEmpty()) {
             for (FileFieldValue fileFieldValue : newFileFieldValueList) {
                 fileFieldValue.setFile(currentFile);
                 fileFieldValueDao.save(fileFieldValue);
@@ -1251,8 +1252,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         /**
          * Notification par email depot de dossier *
          */
-        notificationEmail(fileFromSiat, flowToExecute);
-
+        try {
+            notificationEmail(fileFromSiat, flowToExecute);
+        } catch (Exception ex) {
+            LOG.error(ex.getMessage(), ex);
+        }
     }
 
     /**
@@ -2211,7 +2215,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                        flowToExecute.getCode())) {
+                flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2359,7 +2363,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2483,7 +2487,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         .setLIEU(
                                 itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                                 .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                        .getLabelFr().subSequence(0, 34).toString());
+                                .getLabelFr().subSequence(0, 34).toString());
                 ciDocument
                         .getCONTENT()
                         .getSIGNATAIRE()
@@ -2519,7 +2523,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_CT_26.name(), FlowCode.FL_CT_42.name(), FlowCode.FL_CT_41.name()).contains(
-                        flowToExecute.getCode())) {
+                flowToExecute.getCode())) {
             ciDocument.getCONTENT().setINSPECTION(new org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT.CONTENT.INSPECTION());
             final Appointment appointment = appointmentService.findAppointmentByItemFlowList(itemFlowList);
             if (appointment != null) {
@@ -2610,7 +2614,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         .setLIEU(
                                 itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                                 .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                        .getLabelFr().subSequence(0, 34).toString());
+                                .getLabelFr().subSequence(0, 34).toString());
                 ciDocument
                         .getCONTENT()
                         .getSIGNATAIRE()
@@ -2679,7 +2683,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
                         FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name())
-                        .contains(flowToExecute.getCode())) {
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -2710,7 +2714,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2742,17 +2746,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -2818,7 +2822,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                        .contains(flowToExecute.getCode())) {
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -2850,7 +2854,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -2882,17 +2886,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -2978,7 +2982,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3011,17 +3015,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3109,7 +3113,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3141,17 +3145,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3278,7 +3282,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3310,17 +3314,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3407,7 +3411,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3440,17 +3444,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3537,7 +3541,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3570,17 +3574,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3674,7 +3678,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3706,17 +3710,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3780,7 +3784,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                        .contains(flowToExecute.getCode())) {
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.CAT_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -3812,7 +3816,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -3870,17 +3874,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -3946,7 +3950,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                        .contains(flowToExecute.getCode())) {
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -3977,7 +3981,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4050,17 +4054,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -4126,7 +4130,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                        .contains(flowToExecute.getCode())) {
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -4158,7 +4162,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4190,17 +4194,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -4299,7 +4303,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4332,17 +4336,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -4429,7 +4433,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4462,17 +4466,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -4558,7 +4562,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4590,17 +4594,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -4752,7 +4756,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4784,17 +4788,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -4880,7 +4884,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -4913,16 +4917,16 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -5009,7 +5013,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5041,17 +5045,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -5118,7 +5122,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5150,17 +5154,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -5349,7 +5353,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5381,17 +5385,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             break;
                         case "Date validité":
                             try {
-                            if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                ciDocument
-                                        .getCONTENT()
-                                        .getDECISION()
-                                        .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
+                                    ciDocument
+                                            .getCONTENT()
+                                            .getDECISION()
+                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                                }
+                            } catch (final ParseException e) {
+                                LOG.info(Objects.toString(e), e);
+                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
-                        } catch (final ParseException e) {
-                            LOG.info(Objects.toString(e), e);
-                            ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                        }
-                        break;
+                            break;
                         default:
                             break;
                     }
@@ -5482,7 +5486,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5566,7 +5570,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name())
-                        .contains(flowToExecute.getCode())) {
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.CO_MINFOF_FAUNE.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
                     FlowCode.valueOf(flowToExecute.getCode()));
@@ -5584,7 +5588,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -5859,7 +5863,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -6317,7 +6321,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -6607,7 +6611,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -6873,7 +6877,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -7196,7 +7200,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -7500,7 +7504,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -7830,7 +7834,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -8177,7 +8181,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -8525,7 +8529,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -8797,7 +8801,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -9134,7 +9138,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -9469,7 +9473,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -9778,7 +9782,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -10114,7 +10118,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -10385,7 +10389,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -10721,7 +10725,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ().toUpperCase());
@@ -11055,7 +11059,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -11389,7 +11393,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -11723,7 +11727,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -11994,7 +11998,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -12329,7 +12333,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -12658,7 +12662,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -12841,7 +12845,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -13049,7 +13053,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 if (pieceJointe.getLIBELLEPJ() != null && pieceJointe.getTYPEPJ() != null) {
                     final Attachment attachment = new Attachment();
                     if (pieceJointe.getLIBELLEPJ() != null) {
-                        attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                        attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                     }
                     if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                         attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -13355,7 +13359,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -13672,7 +13676,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -14067,7 +14071,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -14394,7 +14398,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -14665,7 +14669,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -15010,7 +15014,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -15335,7 +15339,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -15590,7 +15594,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());
@@ -15695,7 +15699,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -15718,7 +15722,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final Map<String, String> map = new HashMap<>();
 
-        if (file.getAssignedUser() != null) {
+        if (file.getAssignedUser() != null && firstFlow.getToStep() != null) {
             final User usr = file.getAssignedUser();
 
             if ("FR".equals(usr.getPreferedLanguage())) {
@@ -15736,7 +15740,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             mailService.sendMail(map);
 
-        } else if (file.getBureau() != null) {
+        } else if (file.getBureau() != null && firstFlow.getToStep() != null) {
 
             final Administration administration = administrationDao.find(file.getBureau().getId());
             final List<Administration> adminList = new ArrayList<>();
@@ -15954,7 +15958,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     .setLIEU(
                             itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
                             .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
-                                    .getLabelFr().subSequence(0, 34).toString());
+                            .getLabelFr().subSequence(0, 34).toString());
             ciDocument
                     .getCONTENT()
                     .getSIGNATAIRE()
@@ -16172,7 +16176,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (final PIECESJOINTES.PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
                 final Attachment attachment = new Attachment();
                 if (pieceJointe.getLIBELLEPJ() != null) {
-                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ());
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
                 }
                 if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
                     attachment.setAttachmentType(pieceJointe.getTYPEPJ());

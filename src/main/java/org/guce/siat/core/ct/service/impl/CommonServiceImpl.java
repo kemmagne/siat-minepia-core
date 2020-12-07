@@ -542,7 +542,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
             final String flowCode = itemFlow.getFlow().getCode();
             // suppression des décisions relatives au phyto
             if (Constants.MINADER_MINISTRY.equals(itemFlow.getFileItem().getFile().getDestinataire())
-                    && Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name()).contains(flowCode)) {
+                    && Arrays.asList(FlowCode.FL_CT_07.name(), FlowCode.FL_CT_117.name(), FlowCode.FL_CT_112.name(), FlowCode.FL_CT_138.name(), FlowCode.FL_CT_151.name()).contains(flowCode)) {
                 switch (itemFlow.getFileItem().getFile().getFileType().getCode()) {
                     case CCT_CT_E:
                         final TreatmentInfos ti = treatmentInfosDao.findTreatmentInfosByItemFlow(itemFlow);

@@ -13,6 +13,7 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
@@ -140,6 +141,17 @@ public class CommonUtilsTest {
         }
 
         return null;
+    }
+
+    @Test
+    public void testCollectionsSubtraction() {
+        System.out.println("org.guce.siat.core.utils.CommonUtilsTest.testCollectionsSubtraction()");
+        List<Long> list1 = Arrays.asList(1l, 4l, 5l);
+        List<Long> list2 = Arrays.asList(2l, 1l, 3l, 6l, 13l, 10l, 9l, 4l);
+        System.out.println(CollectionUtils.subtract(list1, list2));
+        System.out.println(CollectionUtils.subtract(list2, list1));
+        System.out.println(CollectionUtils.subtract(Arrays.asList(), list1));
+        System.out.println(CollectionUtils.subtract(Arrays.asList(), list2));
     }
 
 }

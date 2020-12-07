@@ -1,11 +1,8 @@
 package org.guce.siat.core.ct.dao.impl;
 
 import java.util.Objects;
-
 import javax.persistence.NoResultException;
-import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
-
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
@@ -44,16 +41,22 @@ public class TreatmentInfosDaoImpl extends AbstractJpaDaoImpl<TreatmentInfos> im
      */
     @Override
     public TreatmentInfos findTreatmentInfosByItemFlow(final ItemFlow itemFlow) {
-        if (itemFlow != null) {
-            try {
-                final TypedQuery<TreatmentInfos> query = super.entityManager.createQuery("SELECT ti FROM TreatmentInfos ti WHERE ti.itemFlow.id = :itemFlowId",
-                        TreatmentInfos.class);
-                query.setParameter("itemFlowId", itemFlow.getId());
-                return query.getSingleResult();
-            } catch (NoResultException | NonUniqueResultException e) {
-                LOG.error(Objects.toString(e), e);
-            }
+
+        if (itemFlow == null) {
+            return null;
         }
+
+        try {
+            TypedQuery<TreatmentInfos> query = super.entityManager.createQuery("SELECT ti FROM TreatmentInfos ti WHERE ti.itemFlow.id = :itemFlowId ORDER BY ti.id DESC", TreatmentInfos.class);
+
+            query.setParameter("itemFlowId", itemFlow.getId());
+            query.setMaxResults(1);
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            LOG.error(Objects.toString(e), e);
+        }
+
         return null;
     }
 
@@ -64,16 +67,22 @@ public class TreatmentInfosDaoImpl extends AbstractJpaDaoImpl<TreatmentInfos> im
      */
     @Override
     public TreatmentInfos findTreatmentInfosByFileItem(final FileItem fileItem) {
-        if (fileItem != null) {
-            try {
-                final TypedQuery<TreatmentInfos> query = super.entityManager.createQuery("SELECT ti FROM TreatmentInfos ti WHERE ti.itemFlow.fileItem.id = :fileItemId",
-                        TreatmentInfos.class);
-                query.setParameter("fileItemId", fileItem.getId());
-                return query.getSingleResult();
-            } catch (NoResultException | NonUniqueResultException e) {
-                LOG.error(Objects.toString(e), e);
-            }
+
+        if (fileItem == null) {
+            return null;
         }
+
+        try {
+            TypedQuery<TreatmentInfos> query = super.entityManager.createQuery("SELECT ti FROM TreatmentInfos ti WHERE ti.itemFlow.fileItem.id = :fileItemId ORDER BY ti.id DESC", TreatmentInfos.class);
+
+            query.setParameter("fileItemId", fileItem.getId());
+            query.setMaxResults(1);
+
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            LOG.error(Objects.toString(e), e);
+        }
+
         return null;
     }
 }

@@ -72,6 +72,9 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
 
             FileItem fileItem = file.getFileItemsList().get(0);
             Step currentStep = file.getFileItemsList().get(0).getStep();
+            if (currentStep == null) {
+                continue;
+            }
             boolean fileClosed = BooleanUtils.toBoolean(currentStep.getIsFinal());
 //
 //            if (MinaderFileTrackingFilter.FileStateFilter.IN_PROCESS.equals(filter.getFileState()) && fileClosed) {
@@ -98,10 +101,11 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
             Date createdDate = itemFlows.get(0).getCreated();
             FileTypeStep fileTypeStep = fileTypeStepDao.findFileTypeStepByFileTypeAndStep(file.getFileType(), currentStep);
             if (fileTypeStep != null) {
-                currentStep.setLabelFr(fileTypeStep.getLabelFr());
-                currentStep.setLabelEn(fileTypeStep.getLabelEn());
+                file.setRedefinedLabelEn(fileTypeStep.getLabelEn());
+                file.setRedefinedLabelFr(fileTypeStep.getLabelFr());
             }
             mft.setCurrenStep(currentStep);
+            file.setStep(currentStep);
             if (TREATMENT_STEPS_CODES.contains(currentStep.getStepCode())) {
                 mft.setCurrenStepUser(file.getAssignedUser());
             }

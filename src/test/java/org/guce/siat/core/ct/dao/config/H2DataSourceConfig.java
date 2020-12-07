@@ -22,28 +22,24 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 @ComponentScan(basePackages = {
-    "org.guce.siat.common.utils",
-    "org.guce.siat.common.dao", "org.guce.siat.common.service",
-    "org.guce.siat.core.ct.dao", "org.guce.siat.core.gr.dao"
+    "org.guce.siat.common.dao",
+    "org.guce.siat.core.ct.dao",
+    "org.guce.siat.core.gr.dao"
 })
-public class DataSourceConfig {
+public class H2DataSourceConfig {
 
     @Bean
     public DataSource dataSource() throws Exception {
 
-        Properties props = new Properties();
-        props.load(new ClassPathResource("datasource.properties").getInputStream());
-//        HikariConfig config = new HikariConfig(props);
         HikariConfig config = new HikariConfig();
-        config.setDriverClassName("oracle.jdbc.OracleDriver");
-        config.setJdbcUrl("jdbc:oracle:thin:@htserver:1521:GUCE");
-        config.setUsername("SIAT_CT");
-        config.setPassword("siat");
-        config.setAutoCommit(false);
-//        config.setConnectionTestQuery("SELECT 1");
+        config.setDriverClassName("org.h2.Driver");
+        config.setJdbcUrl("jdbc:h2:mem:testdb");
+        config.setUsername("user");
+        config.setPassword("password");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
         HikariDataSource ds = new HikariDataSource(config);
 
         return ds;
@@ -54,8 +50,8 @@ public class DataSourceConfig {
 
         final HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
 
-        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.Oracle10gDialect");
-        jpaVendorAdapter.setGenerateDdl(false);
+        jpaVendorAdapter.setDatabasePlatform("org.hibernate.dialect.H2Dialect");
+        jpaVendorAdapter.setGenerateDdl(true);
 
         return jpaVendorAdapter;
     }
@@ -68,7 +64,7 @@ public class DataSourceConfig {
         entityManagerFactoryBean.setDataSource(dataSource());
         entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter());
         entityManagerFactoryBean.setJpaProperties(jpaProperties());
-        entityManagerFactoryBean.setPackagesToScan("org.guce.siat.common.model", "org.guce.siat.core.ct.model", "org.guce.siat.core.gr.model");
+        entityManagerFactoryBean.setPackagesToScan("org.guce.siat.common.model", "org.guce.siat.core.ct.model");
 
         return entityManagerFactoryBean;
     }

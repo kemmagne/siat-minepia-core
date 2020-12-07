@@ -14,6 +14,7 @@ import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.AuthorityConstants;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.core.ct.dao.CotationDao;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author tadzotsa
  */
 @Repository("cotationDao")
-@Transactional
+@Transactional(readOnly = true)
 public class CotationDaoImpl implements CotationDao {
 
     /**
@@ -39,7 +40,6 @@ public class CotationDaoImpl implements CotationDao {
     @Autowired
     private FileFieldValueDao fileFieldValueDao;
 
-    @Transactional(readOnly = true)
     @Override
     public List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile) {
 
@@ -56,6 +56,7 @@ public class CotationDaoImpl implements CotationDao {
         return query.getResultList();
     }
 
+    @Deprecated
     @Override
     public User findUserForCotation(CctExportProductType productType, Bureau bureau) {
 
@@ -87,6 +88,19 @@ public class CotationDaoImpl implements CotationDao {
         Number id = (Number) line[0];
 
         return userDao.find(id.longValue());
+    }
+
+    @Override
+    public List<User> findUsersForCotation(Bureau bureau, CctExportProductType productType) {
+
+        TypedQuery<User> query = entityManager.createQuery("SELECT DISTINCT upt.user FROM UserCctExportProductType upt JOIN upt.user.userAuthorityList aut, UserAuthorityFileType auft WHERE upt.user.deleted = false AND upt.user.enabled = true AND upt.user.administration.id = :bureauId AND aut.authorityGranted.role IN (:authoritiesList) AND aut.id = auft.primaryKey.userAuthority.id AND auft.primaryKey.fileType.code IN (:fileTypesCodes) AND upt.user.deleted = false AND upt.productType = :productType", User.class);
+
+        query.setParameter("bureauId", bureau.getId());
+        query.setParameter("authoritiesList", Arrays.asList(AuthorityConstants.INSPECTEUR.getCode()));
+        query.setParameter("fileTypesCodes", Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE, FileTypeCode.CCT_CT_E_PVI));
+        query.setParameter("productType", productType);
+
+        return query.getResultList();
     }
 
 }
