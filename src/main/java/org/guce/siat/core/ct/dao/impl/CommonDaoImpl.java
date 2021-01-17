@@ -62,7 +62,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class CommonDaoImpl.
  */
 @Repository("commonDaoImpl")
-@Transactional(propagation = Propagation.REQUIRED)
+@Transactional
 public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements CommonDao {
 
     /**
@@ -89,6 +89,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 *
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findSampleByFileItem(org.guce.siat.common.model.FileItem)
      */
+    @Transactional(readOnly = true)
     @Override
     public Sample findSampleByFileItem(final FileItem fileItem) {
         try {
@@ -112,11 +113,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.FileItemDao#findByFilter(org.guce.siat.core.ct.utils.fiter.FileItemFilter,
 	 * org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findByFilter(final Filter filter, final Administration administration, final List<FileTypeCode> fileTypeCodes) {
-        return this.findByFilter(filter, new ArrayList<>(Collections.singletonList(administration)), fileTypeCodes);
+        return findByFilter(filter, new ArrayList<>(Collections.singletonList(administration)), fileTypeCodes);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findByFilter(final Filter filter, final List<Administration> administrations, final List<FileTypeCode> fileTypeCodes) {
         final Map<String, Object> params = new HashMap<>();
@@ -272,6 +275,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 *
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findStatisticByFilter(org.guce.siat.core.ct.filter.Filter)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<AnalyseOrder> findStatisticByFilter(final Filter filter) {
         if (filter != null) {
@@ -351,6 +355,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#fileItemByDesicionByFilter(org.guce.siat.core.ct.filter.Filter,
 	 * java.util.List, java.util.List, java.util.List, org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByDesicionByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
             final List<String> flowCodeList, final List<String> restrectionFlowCode, final Administration administration) {
@@ -412,6 +417,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#fileItemByCompanyAndDecicionByFilter(org.guce.siat.core.ct.filter.Filter,
 	 * java.util.List, org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByCompanyAndDecicionByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
             final Administration administration) {
@@ -477,6 +483,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#fileItemByCompanyAndProductByFilter(org.guce.siat.core.ct.filter.Filter,
 	 * java.util.List, org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByCompanyAndProductByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
             final Administration administration) {
@@ -542,6 +549,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#fileItemByInspectionDestribByFilter(org.guce.siat.core.ct.filter.Filter,
 	 * java.util.List, org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByInspectionDestribByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
             final Administration administration) {
@@ -599,12 +607,11 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * org.guce.siat.core.ct.dao.CommonDao#serviceItemProductsQuantitiesByFilter(org.guce.siat.core.ct.filter.Filter,
 	 * java.util.List, org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> serviceItemProductsQuantitiesByFilter(final Filter filter, final List<Long> fileTypeIdList,
-            final Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
-                Collections.singletonList(administration)));
+    public List<Object[]> serviceItemProductsQuantitiesByFilter(final Filter filter, final List<Long> fileTypeIdList, Administration administration) {
+        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
 
         final Map<String, Object> params = new HashMap<>();
         final StringBuilder hqlQuery = new StringBuilder();
@@ -662,6 +669,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * org.guce.siat.core.ct.dao.CommonDao#serviceItemProductsQuantitiesByDrdByFilter(org.guce.siat.core.ct.filter.Filter
 	 * , java.util.List, java.util.List, org.guce.siat.common.model.Administration)
      */
+    @Transactional(readOnly = true)
     @SuppressWarnings("unchecked")
     @Override
     public List<Object[]> serviceItemProductsQuantitiesByDrdByFilter(final Filter filter, final List<Long> flowIdList,
@@ -729,6 +737,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 *
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findQuotsByCreteria(org.guce.siat.core.ct.util.quota.QuotaDto)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<QuotaDto> findQuotsByCreteria(final QuotaDto searchFilter) {
         final StringBuilder hqlBuilder = new StringBuilder();
@@ -757,13 +766,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 *
 	 * @see org.guce.siat.core.ct.dao.CommonDao#getImportedExportedQuatityByQuotaList(java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<QuotaDto> getImportedExportedQuatityByQuotaList(final List<QuotaDto> quotaList) {
         final List<QuotaDto> quotaDtoList = new ArrayList<>();
         for (final QuotaDto quota : quotaList) {
             final List<FileTypeCode> imputaionList = Arrays.asList(FileTypeCode.IDE, FileTypeCode.IDI);
-            final TypedQuery<String> query = entityManager.createQuery(
-                    "SELECT f.quantity FROM FileItem f WHERE f.nsh=:nsh AND f.file.fileType.code IN (:fileTypeList)", String.class);
+            final TypedQuery<String> query = entityManager.createQuery("SELECT f.quantity FROM FileItem f WHERE f.nsh=:nsh AND f.file.fileType.code IN (:fileTypeList)", String.class);
             query.setParameter("nsh", quota.getProduct().getNsh());
             query.setParameter("fileTypeList", imputaionList);
             try {
@@ -786,6 +795,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 *
 	 * @see org.guce.siat.core.ct.dao.CommonDao#getGrantedQuantityByQuotaList(java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<QuotaDto> getGrantedQuantityByQuotaList(final List<QuotaDto> quotaList, final QuotaDto searchFilter) {
         final List<QuotaDto> quotaDtoList = new ArrayList<>();
@@ -829,6 +839,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#fileItemByStatisticBusinessByFilter(org.guce.siat.core.ct.filter.Filter,
 	 * org.guce.siat.common.model.Administration, java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByStatisticBusinessByFilter(final Filter filter, final Administration administration,
             final List<FileTypeCode> fileTypeCodes) {
@@ -903,6 +914,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * @see org.guce.siat.core.ct.dao.CommonDao#findPindingFileItem(org.guce.siat.core.ct.filter.Filter,
 	 * org.guce.siat.common.model.User, java.util.List)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findPindingFileItem(final Filter filter, final User user) {
         final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
@@ -948,6 +960,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getExportNshDestination(CteFilter filter, List<Long> fileTypeIdList) {
         final Map<String, Object> params = new HashMap<>();
@@ -989,6 +1002,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getExportNshDestinationSender(CteFilter filter, List<Long> fileTypeIdList) {
         final Map<String, Object> params = new HashMap<>();
@@ -1034,6 +1048,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList) {
         final Map<String, Object> params = new HashMap<>();
@@ -1119,6 +1134,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getGlobalDelayListing(CteFilter filter, List<Long> fileTypeIdList) {
         final Map<String, Object> params = new HashMap<>();
@@ -1132,6 +1148,45 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         hqlQuery.append(" JOIN FILE_ITEM fi ON f.ID = fi.FILE_ID JOIN STEP s ON fi.STEP_ID = s.ID ");
         hqlQuery.append(" WHERE f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
+        buildWhere(filter, fileTypeIdList, hqlQuery, params);
+
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
+    @Override
+    public List<Object[]> getGlobalQuantityListing(CteFilter filter, List<Long> fileTypeIdList) {
+        final Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
+        hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ");
+        hqlQuery.append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fq.QUANTITY, fv.VOLUME ");
+        hqlQuery.append("FROM MINADER_FILES f ");
+        hqlQuery.append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ");
+        hqlQuery.append("LEFT JOIN (SELECT FILE_ID, SUM(QUANTITY) QUANTITY FROM MINADER_FILE_ITEM WHERE QUANTITY IS NOT NULL GROUP BY FILE_ID) fq ON fq.FILE_ID = f.ID ");
+        hqlQuery.append("LEFT JOIN (SELECT FILE_ID, SUM(VOLUME) VOLUME FROM MINADER_FILE_ITEM WHERE VOLUME IS NOT NULL GROUP BY FILE_ID) fv ON fv.FILE_ID = f.ID ");
+        hqlQuery.append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+
+        buildWhere(filter, fileTypeIdList, hqlQuery, params);
+
+        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (final Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        final List<Object[]> list = query.getResultList();
+        return list;
+    }
+
+    private void buildWhere(CteFilter filter, List<Long> fileTypeIdList, StringBuilder hqlQuery, Map<String, Object> params) {
         if (filter.getOperationType() != null && filter.getOperationType().length > 0) {
             hqlQuery.append(" AND f.TYPE_OPERATION IN (:operationType)");
             params.put("operationType", Arrays.asList(filter.getOperationType()));
@@ -1142,14 +1197,14 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         }
 
         if (filter.getOfficeCodeList() != null && filter.getOfficeCodeList().length > 0) {
-            hqlQuery.append(" AND f.BUREAU_ID  IN (:officeCode)");
+            hqlQuery.append(" AND f.BUREAU_ID IN (:officeCode)");
             params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
         }
         if (filter.getClientNiu() != null && !filter.getClientNiu().isEmpty()) {
             hqlQuery.append(" AND C.NUM_CONTRIBUABLE =:numContribuable ");
             params.put("numContribuable", filter.getClientNiu());
         }
-        hqlQuery.append(" AND f.FILE_TYPE_ID  IN (:fileTypeIdList)");
+        hqlQuery.append(" AND f.FILE_TYPE_ID IN (:fileTypeIdList)");
         if (filter.getProcessCodeList() != null && filter.getProcessCodeList().length > 0) {
             params.put("fileTypeIdList", Arrays.asList(filter.getProcessCodeList()));
         } else {
@@ -1163,18 +1218,10 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
         params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationFromDate()));
         params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationToDate()));
-
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
-
-        for (final Entry<String, Object> entry : params.entrySet()) {
-            query.setParameter(entry.getKey(), entry.getValue());
-        }
-
-        final List<Object[]> list = query.getResultList();
-        return list;
     }
 
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList) {
         final Map<String, Object> params = new HashMap<>();
@@ -1390,6 +1437,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         this.entityManager.merge(pottingPresent);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<PottingPresent> findPottingPresentsByFile(File file) {
 

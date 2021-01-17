@@ -322,11 +322,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * java.util.List)
      */
     @Override
-    @Transactional
     public void takeDecisionAndSaveInspectionReports(final List<InspectionReport> reports, final List<ItemFlow> itemFlowsToAdd) {
 
         final List<FileItem> fileItemList = new ArrayList<>();
-        final List<InspectionReport> irsToSave = new ArrayList<>();
 
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlowDao.save(itemFlow);
@@ -375,7 +373,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
      * java.util.List)
      */
     @Override
-    @Transactional
     public void takeDecisionAndSaveInspectionReport(final InspectionReport report, final List<ItemFlow> itemFlowsToAdd) throws Exception {
 
         final List<FileItem> fileItemList = new ArrayList<>();
@@ -399,30 +396,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         fileItemDao.saveOrUpdateList(fileItemList);
     }
 
-    /**
-     * Clone inspection controller list.
-     *
-     * @param inspectionControllerList the inspection controller list
-     * @return the list
-     */
-    private List<InspectionController> cloneInspectionControllerList(final List<InspectionController> inspectionControllerList) {
-        final List<InspectionController> insContList = new ArrayList<>();
-
-        for (final InspectionController inspectionController : inspectionControllerList) {
-            final InspectionController insCont = new InspectionController();
-
-            insCont.setName(inspectionController.getName());
-            insCont.setPosition(inspectionController.getPosition());
-            insCont.setService(inspectionController.getService());
-            insCont.setInspection(inspectionController.getInspection());
-
-            insContList.add(insCont);
-        }
-
-        return insContList;
-    }
-
-
     /*
 	 * (non-Javadoc)
 	 *
@@ -430,7 +403,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * org.guce.siat.core.ct.model.AnalyseOrder, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveAnalyseRequest(final List<AnalysePart> analysePartsList, final AnalyseOrder analyseOrder,
             final List<ItemFlow> itemFlowsToAdd) {
 
@@ -462,7 +434,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * org.guce.siat.common.model.Appointment)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndAppointment(final List<ItemFlow> itemFlows, final Appointment appointment) {
         @SuppressWarnings("unchecked")
         final Collection<ItemFlow> visiteAQuaiValidationFlows = CollectionUtils.select(itemFlows, new Predicate() {
@@ -719,7 +690,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * org.guce.siat.core.ct.model.TreatmentOrder, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveTreatmentRequest(final List<TreatmentPart> treatmentPartsList,
             final TreatmentOrder treatmentOrder, final List<ItemFlow> itemFlowsToAdd) {
 
@@ -743,7 +713,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void saveTreatmentOrder(final TreatmentOrder treatmentOrder, final ItemFlow itemFlow) {
         itemFlowDao.save(itemFlow);
 
@@ -755,7 +724,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void saveTreatmentInfos(final TreatmentInfos treatmentInfos, final ItemFlow itemFlow) {
         itemFlowDao.save(itemFlow);
 
@@ -767,7 +735,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void saveApprovedDecision(final ApprovedDecision approvedDecision, final ItemFlow itemFlow) {
         itemFlowDao.save(itemFlow);
 
@@ -786,7 +753,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * AnalyseResult, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveAnalyzeResult(final AnalyseResult analyseResult, final List<ItemFlow> itemFlows) {
         final AnalyseOrder analyseOrder = analyseResult.getAnalyseOrder();
 
@@ -819,7 +785,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * TreatmentResult, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveTreatmentResult(final TreatmentResult treatmentResult, final List<ItemFlow> itemFlows) {
         final TreatmentOrder treatmentOrder = treatmentResult.getTreatmentOrder();
 
@@ -856,7 +821,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
      * java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveTreatmentResult2(final TreatmentResult treatmentResult, final List<ItemFlow> itemFlowsToAdd) throws Exception {
 
         final List<FileItem> fileItemList = new ArrayList<>();
@@ -880,7 +844,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveInterceptionNotification(final InterceptionNotification interceptionNotif, final List<ItemFlow> itemFlows) {
         if (CollectionUtils.isNotEmpty(itemFlows) && itemFlows.size() == Constants.ONE) {
             final ItemFlow itemFlow = itemFlows.get(0);
@@ -893,7 +856,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveTreatmentInfos(final TreatmentInfos treatmentInfos, final List<ItemFlow> itemFlowsToAdd) throws Exception {
 
         final List<FileItem> fileItemList = new ArrayList<>();
@@ -916,7 +878,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers) {
         for (PottingPresent pottingPresent : pottingPresents) {
             pottingPresent.setId(null);
@@ -969,7 +930,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveApprovedDecision(final ApprovedDecision approvedDecision, final List<ItemFlow> itemFlowsToAdd) throws Exception {
 
         final List<FileItem> fileItemList = new ArrayList<>();
@@ -993,7 +953,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void takeDecisionAndSaveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, List<ItemFlow> itemFlowsToAdd) throws Exception {
         final List<FileItem> fileItemList = new ArrayList<>();
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
@@ -1048,7 +1007,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    @Transactional(readOnly = false)
     public void saveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, ItemFlow itemFlow) {
         itemFlowDao.save(itemFlow);
 
@@ -1064,6 +1022,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 *
 	 * @see org.guce.siat.core.ct.service.CommonService#findSampleByFileItem(org.guce.siat.common.model.FileItem)
      */
+    @Transactional(readOnly = true)
     @Override
     public Sample findSampleByFileItem(final FileItem fileItem) {
         return commonDao.findSampleByFileItem(fileItem);
@@ -1076,6 +1035,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * org.guce.siat.common.model.User, org.guce.siat.common.model.Administration, java.util.List)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findByFilter(final Filter filter, final User loggedUser, final Administration administration) {
 
@@ -1096,17 +1056,16 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         return commonDao.findByFilter(filter, administrations, fileTypeCodes);
     }
 
-
     /*
 	 * (non-Javadoc)
 	 *
 	 * @see org.guce.siat.core.ct.service.CommonService#findStatisticByFilter(org.guce.siat.core.ct.filter.Filter)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<AnalyseOrder> findStatisticByFilter(final Filter filter) {
         return commonDao.findStatisticByFilter(filter);
     }
-
 
     /*
 	 * (non-Javadoc)
@@ -1115,6 +1074,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * org.guce.siat.common.model.User, java.util.List, java.util.List, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByDesicionByFilter(final Filter filter, final User loggedUser, final List<String> flowCodeList,
             final List<String> restrectionFlowCode, final Administration administration) {
@@ -1138,6 +1098,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * Filter, org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByCompanyAndDecicionByFilter(final Filter filter, final User loggedUser,
             final Administration administration) {
@@ -1159,6 +1120,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * Filter , org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByCompanyAndProductByFilter(final Filter filter, final User loggedUser,
             final Administration administration) {
@@ -1181,6 +1143,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * Filter , org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByInspectionDestribByFilter(final Filter filter, final User loggedUser,
             final Administration administration) {
@@ -1204,6 +1167,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * .Filter, org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> serviceItemProductsQuantitiesByFilter(final Filter filter, final User loggedUser,
             final Administration administration) {
@@ -1224,6 +1188,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         }
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getActivitiesReport(final CteFilter filter, final User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1239,6 +1204,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         return commonDao.getActivitiesReport(filter, fileTypeIdList);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getDelayListingStakeholder(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1253,6 +1219,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         return commonDao.getDelayListingStakeholder(filter, fileTypeIdList);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getGlobalDelayListing(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1267,6 +1234,21 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         return commonDao.getGlobalDelayListing(filter, fileTypeIdList);
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<Object[]> getGlobalQuantityListing(CteFilter filter, User loggedUser) {
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+        return commonDao.getGlobalQuantityListing(filter, fileTypeIdList);
+    }
+
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getExportNshDestination(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1281,6 +1263,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         return commonDao.getExportNshDestination(filter, fileTypeIdList);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> getExportNshDestinationSender(CteFilter filter, User loggedUser) {
         final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
@@ -1302,6 +1285,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * filter .Filter, java.util.List, org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<Object[]> serviceItemProductsQuantitiesByDrdByFilter(final Filter filter, final List<String> flowCodeList,
             final User loggedUser, final Administration administration) {
@@ -1330,6 +1314,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 *
 	 * @see org.guce.siat.core.ct.service.CommonService#findQuotsByCreteria(org.guce.siat.core.ct.util.quota.QuotaDto)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<QuotaDto> findQuotsByCreteria(final QuotaDto searchFilter) {
         List<QuotaDto> quotaDtos = commonDao.findQuotsByCreteria(searchFilter);
@@ -1344,6 +1329,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * Filter , org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
     @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> fileItemByStatisticBusinessByFilter(final Filter filter, final User loggedUser,
             final Administration administration) {
@@ -1365,7 +1351,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * @see org.guce.siat.core.co.service.CommonService#takeDacisionAndSavePayment(java.util.List, java.util.List)
      */
     @Override
-    @Transactional(readOnly = false)
     public void takeDacisionAndSavePayment(final List<ItemFlow> itemFlowsToAdd, final PaymentData paymentData) {
 
         itemFlowDao.saveOrUpdateList(itemFlowsToAdd);
@@ -1435,11 +1420,13 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * @see org.guce.siat.core.ct.service.CommonService#findPindingFileItem(org.guce.siat.core.ct.filter.Filter,
 	 * org.guce.siat.common.model.User)
      */
+    @Transactional(readOnly = true)
     @Override
     public List<FileItem> findPindingFileItem(final Filter filter, final User user) {
         return commonDao.findPindingFileItem(filter, user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public boolean showEnabledFileItem(final FileItem item, final ItemFlow itemFlow, final User user) {
         final List<StepCode> specificStepsCodesList = Arrays.asList(StepCode.ST_CT_12, StepCode.ST_CT_14, StepCode.ST_CT_15,
@@ -1456,13 +1443,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                     return false;
                 }
             }
-//            else if (StepCode.ST_CT_14.equals(item.getStep().getStepCode())) {
-//                final TreatmentOrder treatmentOrder = treatmentOrderDao.findTreatmentOrderByItemFlow(itemFlow);
-//                if (treatmentOrder != null
-//                        && !((Administration) treatmentOrder.getTreatmentCompany()).equals(user.getAdministration())) {
-//                    return false;
-//                }
-//            }
         }
         return true;
     }

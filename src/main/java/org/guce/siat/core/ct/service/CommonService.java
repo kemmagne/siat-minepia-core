@@ -213,6 +213,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
 
     List<Object[]> getGlobalDelayListing(CteFilter filter, User loggedUser);
 
+    List<Object[]> getGlobalQuantityListing(CteFilter filter, User loggedUser);
+
     List<Object[]> getDelayListingStakeholder(CteFilter filter, User loggedUser);
 
     List<Object[]> getExportNshDestination(CteFilter filter, User loggedUser);

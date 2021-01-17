@@ -11,6 +11,7 @@ import javax.persistence.IdClass;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+//import org.guce.siat.common.model.u
 import org.guce.siat.common.model.User;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
 
@@ -22,6 +23,8 @@ import org.guce.siat.core.ct.util.enums.CctExportProductType;
 @Table(name = "USERS_CCT_EXPORT_PRODUCT_TYPE")
 @IdClass(UserCctExportProductType.UserCctExportProductTypeID.class)
 public class UserCctExportProductType implements Serializable {
+
+    private static final long serialVersionUID = -2391801697523747134L;
 
     @Id
     @ManyToOne
@@ -83,6 +86,8 @@ public class UserCctExportProductType implements Serializable {
     }
 
     public static class UserCctExportProductTypeID implements Serializable {
+
+        private static final long serialVersionUID = 2563171069849918015L;
 
         private Long user;
         private CctExportProductType productType;
