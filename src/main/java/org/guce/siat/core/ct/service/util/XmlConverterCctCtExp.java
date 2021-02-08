@@ -156,96 +156,17 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
             if (document.getROUTAGE() != null && document.getROUTAGE().getDESTINATAIRE() != null) {
                 file.setDestinataire(document.getROUTAGE().getDESTINATAIRE());
             }
-
         }
 
         /* ADD CLIENT */
         if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null && document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE() != null) {
             Company client = xmlConverterService.getCompanyDao().findCompanyByNumContribuable(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
-            if (client != null) {
-
-                file.setClient(client);
+            Company buildClient = buildCompany(document);
+            boolean newClient = !buildClient.equalsWithoutId(client);
+            if (newClient) {
+                xmlConverterService.getCompanyDao().save(buildClient);
+                file.setClient(buildClient);
             } else {
-                client = new Company();
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null) {
-                    client.setNumContribuable(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
-                    client.setCompanyName(document.getCONTENT().getCLIENT().getRAISONSOCIALE());
-                    client.setCompanyType(CompanyType.DECLARANT);
-                    if (document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE() != null) {
-                        client.setCommerceApprovalRegistrationNumberFile(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
-                                .getNUMEROINSCRIPTIONFICHIER());
-                        client.setCommerceApprovalObtainedDate(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
-                                .getDATEOBTENTION());
-                        client.setCommerceApprovalValidityDate(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
-                                .getDATEVALIDITE());
-                        client.setCommerceApprovalNumberTraderMap(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
-                                .getNUMEROCARTECOMMERCANT());
-                    }
-                    if (document.getCONTENT().getCLIENT().getAGREMENTMETIER() != null) {
-                        client.setBusinessApprovalType(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getTYPEAGREMENT());
-                        client.setBusinessApprovalRegistrationNumber(document.getCONTENT().getCLIENT().getAGREMENTMETIER()
-                                .getNUMEROAGREMENT());
-                        client.setBusinessApprovalDate(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getDATEAGREMENT());
-                        client.setBusinessApprovalValidityDate(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getDATEVALIDITE());
-                    }
-                    if (document.getCONTENT().getCLIENT().getPERMIS() != null) {
-                        client.setPermitNumber(document.getCONTENT().getCLIENT().getPERMIS().getNUMEROPERMIS());
-                        client.setPermitObtainingDate(document.getCONTENT().getCLIENT().getPERMIS().getDATEOBTENTION());
-                        client.setPermitApprovalDate(document.getCONTENT().getCLIENT().getPERMIS().getDATEVALIDITE());
-                        client.setPermitType(document.getCONTENT().getCLIENT().getPERMIS().getTYPE());
-                    }
-                    client.setProfession(document.getCONTENT().getCLIENT().getPROFESSION());
-                    client.setTradeRegisterNumber(document.getCONTENT().getCLIENT().getNUMEROREGISTRECOMMERCE());
-                    client.setcNI(document.getCONTENT().getCLIENT().getCNI());
-                    if (document.getCONTENT().getCLIENT().getADRESSE() != null) {
-                        client.setFirstAddress(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1());
-                        client.setSecondAddress(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2());
-                        client.setPostalCode(document.getCONTENT().getCLIENT().getADRESSE().getBP());
-                        client.setCity(document.getCONTENT().getCLIENT().getADRESSE().getVILLE());
-                        client.setEmail(document.getCONTENT().getCLIENT().getADRESSE().getEMAIL());
-                        client.setWebSite(document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB());
-                        // Get country from database
-                    }
-                    if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                            && document.getCONTENT().getCLIENT().getADRESSE() != null
-                            && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
-                            && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
-                        Country country = xmlConverterService.getCountryDao().findCountryByCountryIdAlpha2(document.getCONTENT().getCLIENT().getADRESSE()
-                                .getPAYSADRESSE().getCODEPAYS());
-                        if (country != null) {
-                            client.setCountry(country);
-                        } else {
-                            country = new Country();
-                            if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                                    && document.getCONTENT().getCLIENT().getADRESSE() != null
-                                    && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null) {
-                                country.setCountryIdAlpha2(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS());
-                                country.setCountryName(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS());
-                                xmlConverterService.getCountryDao().save(country);
-                                client.setCountry(country);
-                            }
-                        }
-                    }
-                    if (document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null) {
-                        client.setPhone(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() != null ? "("
-                                + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() + ")"
-                                + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO() : StringUtils.EMPTY
-                                + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO());
-                    }
-                    if (document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null) {
-                        client.setMobile(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() != null ? "("
-                                + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() + ")"
-                                + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO() : StringUtils.EMPTY
-                                + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO());
-                    }
-                    if (document.getCONTENT().getCLIENT().getFAX() != null) {
-                        client.setFax(document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() != null ? "("
-                                + document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() + ")"
-                                + document.getCONTENT().getCLIENT().getFAX().getNUMERO() : StringUtils.EMPTY
-                                + document.getCONTENT().getCLIENT().getFAX().getNUMERO());
-                    }
-                }
-                xmlConverterService.getCompanyDao().save(client);
                 file.setClient(client);
             }
         }
@@ -293,38 +214,8 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
                 //				ServicesItem subfamily = null;
                 if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH())) {
                     fileItem.setNsh(xmlConverterService.getItemDao().findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
-                    //					if (marchandise.getSOUSFAMILLE() != null
-                    //							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-                    //					{
-                    //						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-                    //								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-                    //
-                    //					}
-                    //					else
-                    //					{
-                    //						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-                    //
-                    //					}
                 }
 
-                //				if (subfamily != null)
-                //				{
-                //					fileItem.setNsh(subfamily.getNsh());
-                //					fileItem.setSubfamily(subfamily);
-                //				}
-                //				else
-                //				{
-                //					throw new ValidationException(ExceptionConstants.NSH);
-                //				}
-                // ADD Decisions des articles
-//                if (marchandise.getDECISIONORGANISME() != null) {
-//                    final DecisionOrganism decisionOrganism = new DecisionOrganism();
-//                    decisionOrganism.setCode(marchandise.getDECISIONORGANISME().getCODE());
-//                    decisionOrganism.setLibelle(marchandise.getDECISIONORGANISME().getLIBELLE());
-//                    decisionOrganism.setObservation(marchandise.getDECISIONORGANISME().getOBSERVATION());
-//
-//                    decisionArticles.put(fileItem, decisionOrganism);
-//                }
                 fileItems.add(fileItem);
 
             }
@@ -384,27 +275,6 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
             }
         }
 
-//        if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-//                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null
-//                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getCODEPAYS() != null) {
-//            Country countryOfProvenance = xmlConverterService.getCountryDao().findCountryByCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES()
-//                    .getPAYSPROVENANCE().getCODEPAYS());
-//            if (countryOfProvenance != null) {
-//                file.setCountryOfProvenance(countryOfProvenance);
-//            } else {
-//                countryOfProvenance = new Country();
-//                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-//                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null) {
-//                    countryOfProvenance.setCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE()
-//                            .getCODEPAYS());
-//                    countryOfProvenance.setCountryName(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE()
-//                            .getNOMPAYS());
-//
-//                    xmlConverterService.getCountryDao().save(countryOfProvenance);
-//                    file.setCountryOfProvenance(countryOfProvenance);
-//                }
-//            }
-//        }
         if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                 && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
                 && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null) {
@@ -429,6 +299,90 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
 
         return file;
 
+    }
+
+    private Company buildCompany(org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT document) {
+        Company client = new Company();
+        if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null) {
+            client.setNumContribuable(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
+            client.setCompanyName(document.getCONTENT().getCLIENT().getRAISONSOCIALE());
+            client.setCompanyType(CompanyType.DECLARANT);
+            if (document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE() != null) {
+                client.setCommerceApprovalRegistrationNumberFile(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                        .getNUMEROINSCRIPTIONFICHIER());
+                client.setCommerceApprovalObtainedDate(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                        .getDATEOBTENTION());
+                client.setCommerceApprovalValidityDate(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                        .getDATEVALIDITE());
+                client.setCommerceApprovalNumberTraderMap(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                        .getNUMEROCARTECOMMERCANT());
+            }
+            if (document.getCONTENT().getCLIENT().getAGREMENTMETIER() != null) {
+                client.setBusinessApprovalType(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getTYPEAGREMENT());
+                client.setBusinessApprovalRegistrationNumber(document.getCONTENT().getCLIENT().getAGREMENTMETIER()
+                        .getNUMEROAGREMENT());
+                client.setBusinessApprovalDate(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getDATEAGREMENT());
+                client.setBusinessApprovalValidityDate(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getDATEVALIDITE());
+            }
+            if (document.getCONTENT().getCLIENT().getPERMIS() != null) {
+                client.setPermitNumber(document.getCONTENT().getCLIENT().getPERMIS().getNUMEROPERMIS());
+                client.setPermitObtainingDate(document.getCONTENT().getCLIENT().getPERMIS().getDATEOBTENTION());
+                client.setPermitApprovalDate(document.getCONTENT().getCLIENT().getPERMIS().getDATEVALIDITE());
+                client.setPermitType(document.getCONTENT().getCLIENT().getPERMIS().getTYPE());
+            }
+            client.setProfession(document.getCONTENT().getCLIENT().getPROFESSION());
+            client.setTradeRegisterNumber(document.getCONTENT().getCLIENT().getNUMEROREGISTRECOMMERCE());
+            client.setcNI(document.getCONTENT().getCLIENT().getCNI());
+            if (document.getCONTENT().getCLIENT().getADRESSE() != null) {
+                client.setFirstAddress(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1());
+                client.setSecondAddress(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2());
+                client.setPostalCode(document.getCONTENT().getCLIENT().getADRESSE().getBP());
+                client.setCity(document.getCONTENT().getCLIENT().getADRESSE().getVILLE());
+                client.setEmail(document.getCONTENT().getCLIENT().getADRESSE().getEMAIL());
+                client.setWebSite(document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB());
+                // Get country from database
+            }
+            if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                    && document.getCONTENT().getCLIENT().getADRESSE() != null
+                    && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
+                    && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
+                Country country = xmlConverterService.getCountryDao().findCountryByCountryIdAlpha2(document.getCONTENT().getCLIENT().getADRESSE()
+                        .getPAYSADRESSE().getCODEPAYS());
+                if (country != null) {
+                    client.setCountry(country);
+                } else {
+                    country = new Country();
+                    if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                            && document.getCONTENT().getCLIENT().getADRESSE() != null
+                            && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null) {
+                        country.setCountryIdAlpha2(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS());
+                        country.setCountryName(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS());
+                        xmlConverterService.getCountryDao().save(country);
+                        client.setCountry(country);
+                    }
+                }
+            }
+            if (document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null) {
+                client.setPhone(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() != null ? "("
+                        + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() + ")"
+                        + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO() : StringUtils.EMPTY
+                        + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO());
+            }
+            if (document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null) {
+                client.setMobile(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() != null ? "("
+                        + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() + ")"
+                        + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO() : StringUtils.EMPTY
+                        + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO());
+            }
+            if (document.getCONTENT().getCLIENT().getFAX() != null) {
+                client.setFax(document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() != null ? "("
+                        + document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() + ")"
+                        + document.getCONTENT().getCLIENT().getFAX().getNUMERO() : StringUtils.EMPTY
+                        + document.getCONTENT().getCLIENT().getFAX().getNUMERO());
+            }
+        }
+
+        return client;
     }
 
     @Override
