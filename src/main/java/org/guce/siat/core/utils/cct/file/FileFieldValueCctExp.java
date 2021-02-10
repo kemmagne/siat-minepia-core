@@ -428,6 +428,34 @@ public class FileFieldValueCctExp {
                 }
                 break;
             }
+            case "INFORMATIONS_GENERALES_PAYS_ORIGINE_CODEPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_PAYS_ORIGINE_NOMPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_PAYS_DESTINATION_CODEPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_PAYS_DESTINATION_NOMPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS());
+                }
+                break;
+            }
             case "EXIGENCES_PHYTOSANITAIRES": {
                 fileFieldValue.setValue(document.getCONTENT().getEXIGENCESPHYTOSANITAIRES());
                 break;
