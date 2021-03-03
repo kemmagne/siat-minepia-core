@@ -202,40 +202,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
             LOG.info("saveReceivedFileAndExecuteFlow finished");
             if (attached != null && !attached.isEmpty()) {
-                // Add PJ to GED
-                LOG.info("Liste des fichiers attachés : {}", attached.size());
-                alfrescoDirectoryCreator.createDirectory(savedFile);
-                String attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(savedFile);
-
-                Session sessionCmisClient = CmisSession.getInstance();
-                if (savedFile.getBureau() != null) {
-                    try {
-                        CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
-                    } catch (CmisObjectNotFoundException e) {
-                        LOG.info(Objects.toString(e), e);
-                        String bureauRootPath = attachmentRootFolder.replace(AlfrescoDirectoriesInitializer.SLASH
-                                + savedFile.getBureau().getCode(), StringUtils.EMPTY);
-                        Folder bureauFolder = CmisUtils.getRootFolder(sessionCmisClient, bureauRootPath);
-                        CmisUtils.createFolder(bureauFolder, savedFile.getBureau().getCode());
-                    }
-                }
-
-                List<File> attachedFiles = new ArrayList<>();
-                for (Map.Entry<String, byte[]> entry : attached.entrySet()) {
-                    String attachmentFolder = propertiesLoader.getProperty(PropertiesConstants.ATTACHMENT_FOLDER);
-                    File tempFile = new File(attachmentFolder, entry.getKey());
-                    FileUtils.writeByteArrayToFile(tempFile, entry.getValue());
-                    attachedFiles.add(tempFile);
-                }
-
-                Folder folder = CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
-                CmisUtils.createFolder(folder, savedFile.getNumeroDossier());
-                StringBuilder directory = new StringBuilder();
-                directory.append(attachmentRootFolder);
-                directory.append(AlfrescoDirectoriesInitializer.SLASH);
-                directory.append(savedFile.getNumeroDossier());
-                CmisUtils.sendDocument(attachedFiles, CmisSession.getInstance(), directory.toString());
-                LOG.info("################# Attachment Path is {} ", attachmentRootFolder);
+                CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attached);
             }
             // SIAT reference must be sent in the APERAK_F
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_K.getCode(), null, savedFile);

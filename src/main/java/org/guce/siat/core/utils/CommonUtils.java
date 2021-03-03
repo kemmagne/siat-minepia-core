@@ -93,11 +93,13 @@ public class CommonUtils {
         String referenceGuceExpression = "/DOCUMENT/REFERENCE_DOSSIER/NUMERO_DOSSIER";
         String numeroDossier = XmlXPathUtils.findSingleValue(referenceGuceExpression, rootElement);
         org.guce.siat.common.model.File savedFile = fileService.findByNumDossierGuce(numeroDossier);
-//        if (savedFile == null) {
-//            LOG.info("The file with number {} doesn't exist in the database", numeroDossier);
-//            return null;
-//        }
 
+        addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attached);
+
+        return savedFile;
+    }
+
+    public static void addAttachmentsToGED(PropertiesLoader propertiesLoader, AlfrescoDirectoryCreator alfrescoDirectoryCreator, org.guce.siat.common.model.File savedFile, Map<String, byte[]> attached) throws IOException {
         // Add PJ to GED
         LOG.info("Liste des fichiers attachés : {}", attached.size());
         alfrescoDirectoryCreator.createDirectory(savedFile);
@@ -136,8 +138,6 @@ public class CommonUtils {
         directory.append(savedFile.getNumeroDossier());
         CmisUtils.sendDocument(attachedFiles, CmisSession.getInstance(), directory.toString());
         LOG.info("################# Attachment Path is {} ", attachmentRootFolder);
-
-        return savedFile;
     }
 
     public static Map<String, Object> generateAperak(EbxmlPropertiesService propertiesService, CtDocumentRecieverImpl documentReciever, String xmlContent, XPath xPath, byte[] message, org.guce.siat.common.model.File savedFile) throws JAXBException, SAXException, IOException, XPathExpressionException {
