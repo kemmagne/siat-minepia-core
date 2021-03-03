@@ -73,7 +73,6 @@ import org.guce.siat.core.ct.model.AnalyseResultAp;
 import org.guce.siat.core.ct.model.ApprovedDecision;
 import org.guce.siat.core.ct.model.CCTCPParamValue;
 import org.guce.siat.core.ct.model.EssayTestAP;
-import org.guce.siat.core.ct.model.InspectionController;
 import org.guce.siat.core.ct.model.InspectionReport;
 import org.guce.siat.core.ct.model.InterceptionNotification;
 import org.guce.siat.core.ct.model.InvoiceLine;
@@ -1245,6 +1244,8 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 return ((FileType) fileType).getId();
             }
         });
+
+        filter.setOfficeCodeList(new String[]{loggedUser.getAdministration().getId().toString()});
         return commonDao.getGlobalQuantityListing(filter, fileTypeIdList);
     }
 
