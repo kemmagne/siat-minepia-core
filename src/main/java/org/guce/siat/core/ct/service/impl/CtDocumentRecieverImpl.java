@@ -10,6 +10,8 @@ import java.io.StringReader;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +40,7 @@ import org.guce.siat.common.model.FlowGuceSiat;
 import org.guce.siat.common.service.AbstractDocumentReciever;
 import org.guce.siat.common.service.AlfrescoDirectoryCreator;
 import org.guce.siat.common.service.EbxmlPropertiesService;
+import org.guce.siat.common.service.FileService;
 import org.guce.siat.common.service.FlowGuceSiatService;
 import org.guce.siat.common.service.ValidationFlowService;
 import org.guce.siat.common.service.XmlConverterService;
@@ -55,6 +58,7 @@ import org.guce.siat.common.utils.ged.AlfrescoDirectoriesInitializer;
 import org.guce.siat.common.utils.ged.CmisSession;
 import org.guce.siat.common.utils.ged.CmisUtils;
 import org.guce.siat.core.ct.service.CtDocumentReciever;
+import org.guce.siat.core.utils.CommonUtils;
 import org.guce.siat.utility.jaxb.common.ERREURS;
 import org.guce.siat.utility.jaxb.common.ERREURS.ERREUR;
 import org.guce.siat.utility.jaxb.common.MESSAGE;
@@ -95,8 +99,17 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
      */
     private static final String REFERENCE_GUCE_EXPRESSION = "/DOCUMENT/TYPE_DOCUMENT";
 
+    /**
+     * The properties loader
+     */
     @Autowired
     private PropertiesLoader propertiesLoader;
+
+    /**
+     * The file service
+     */
+    @Autowired
+    private FileService fileService;
 
     /**
      * The xml converter service.
@@ -171,47 +184,25 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             }
 
             // Validation metier
-            validationFlowService.validateFlowFromGuce(rootElement);
+            try {
+                validationFlowService.validateFlowFromGuce(rootElement);
+            } catch (ValidationException ve) {
+                try {
+                    org.guce.siat.common.model.File file = CommonUtils.saveAttachments(ve, rootElement, attached, alfrescoDirectoryCreator, propertiesLoader, fileService);
+                    if (file != null) {
+                        return CommonUtils.generateAperak(propertiesService, this, xmlContent, xPath, message, file);
+                    }
+                } catch (ValidationException ve2) {
+                    throw new ValidationException("Validation Exception : " + ve2.getMessage(), ve2);
+                }
+            }
             // Injection file in BDD
             Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath, conversationId);
             LOG.info("################### getReceivedDocument finished");
             org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
-            LOG.info(" saveReceivedFileAndExecuteFlow finished");
+            LOG.info("saveReceivedFileAndExecuteFlow finished");
             if (attached != null && !attached.isEmpty()) {
-                // Add PJ to GED
-                LOG.info("Liste des fichiers attachés : {}", attached.size());
-                alfrescoDirectoryCreator.createDirectory(savedFile);
-                String attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(savedFile);
-
-                Session sessionCmisClient = CmisSession.getInstance();
-                if (savedFile.getBureau() != null) {
-                    try {
-                        CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
-                    } catch (CmisObjectNotFoundException e) {
-                        LOG.info(Objects.toString(e), e);
-                        String bureauRootPath = attachmentRootFolder.replace(AlfrescoDirectoriesInitializer.SLASH
-                                + savedFile.getBureau().getCode(), StringUtils.EMPTY);
-                        Folder bureauFolder = CmisUtils.getRootFolder(sessionCmisClient, bureauRootPath);
-                        CmisUtils.createFolder(bureauFolder, savedFile.getBureau().getCode());
-                    }
-                }
-
-                List<File> attachedFiles = new ArrayList<>();
-                for (Map.Entry<String, byte[]> entry : attached.entrySet()) {
-                    String attachmentFolder = propertiesLoader.getProperty(PropertiesConstants.ATTACHMENT_FOLDER);
-                    File tempFile = new File(attachmentFolder, entry.getKey());
-                    FileUtils.writeByteArrayToFile(tempFile, entry.getValue());
-                    attachedFiles.add(tempFile);
-                }
-
-                Folder folder = CmisUtils.getRootFolder(sessionCmisClient, attachmentRootFolder);
-                CmisUtils.createFolder(folder, savedFile.getNumeroDossier());
-                StringBuilder directory = new StringBuilder();
-                directory.append(attachmentRootFolder);
-                directory.append(AlfrescoDirectoriesInitializer.SLASH);
-                directory.append(savedFile.getNumeroDossier());
-                CmisUtils.sendDocument(attachedFiles, CmisSession.getInstance(), directory.toString());
-                LOG.info("################# Attachment Path is {} ", attachmentRootFolder);
+                CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attached);
             }
             // SIAT reference must be sent in the APERAK_F
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_K.getCode(), null, savedFile);
@@ -720,7 +711,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
      * @throws SAXException the SAX exception
      * @throws IOException Signals that an I/O exception has occurred.
      */
-    private byte[] generateAperakData(final org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDocument)
+    public byte[] generateAperakData(final org.guce.siat.utility.jaxb.aperak.DOCUMENT aperakDocument)
             throws JAXBException, SAXException, IOException {
 
         // JAXB instance of DOCUMENT

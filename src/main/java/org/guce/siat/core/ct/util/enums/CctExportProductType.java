@@ -18,6 +18,7 @@ public enum CctExportProductType {
     GR("GRUMES"),
     OA("OBJETS D'ART"),
     PS("PRODUITS SPECIAUX"),
+    PM("PLANTES MEDICINALES"),
     AUTRES("AUTRES");
 
     private final String label;

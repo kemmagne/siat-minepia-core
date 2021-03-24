@@ -1,34 +1,31 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.guce.siat.core.ct.filter;
 
 import java.util.Date;
+import org.guce.siat.common.model.User;
 
 /**
  *
  * @author yenke
  */
 public class CteFilter {
-    
-    
+
     private Date validationFromDate;
     private Date validationToDate;
-    
+
     private Date creationFromDate;
     private Date creationToDate;
-    
+
     private String[] processCodeList;
-    
+
     private String[] productNatureList;
-    
+
     private String[] officeCodeList;
-    
+
     private String[] operationType;
-    
+
     private String clientNiu;
+
+    private User loggedUser;
 
     public Date getValidationFromDate() {
         return validationFromDate;
@@ -102,9 +99,12 @@ public class CteFilter {
         this.clientNiu = clientNiu;
     }
 
-    public CteFilter() {
-        
+    public User getLoggedUser() {
+        return loggedUser;
     }
-    
-    
+
+    public void setLoggedUser(User loggedUser) {
+        this.loggedUser = loggedUser;
+    }
+
 }

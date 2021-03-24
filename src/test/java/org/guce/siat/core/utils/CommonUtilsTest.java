@@ -154,4 +154,13 @@ public class CommonUtilsTest {
         System.out.println(CollectionUtils.subtract(Arrays.asList(), list2));
     }
 
+    @Test
+    public void tes() {
+        String s = "20210222175805-r.e.pdf";
+        if (s.matches("\\d{14}-.*")) {
+            String s1 = s.substring(15);
+            System.out.println(s1);
+        }
+    }
+
 }
