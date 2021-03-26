@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.dao.AppointmentDao;
@@ -11,6 +12,7 @@ import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileTypeStepDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.Appointment;
+import org.guce.siat.common.model.Country;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileTypeStep;
@@ -44,6 +46,21 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
 
     @Autowired
     private MinaderStatisticsDao minaderStatisticsDao;
+
+    @Override
+    public Map<String, String> findCDAs() {
+        return minaderStatisticsDao.findCDAs();
+    }
+
+    @Override
+    public Map<String, String> findTreatmentSocieties() {
+        return minaderStatisticsDao.findTreatmentSocieties();
+    }
+
+    @Override
+    public List<Country> findDestinationCountries() {
+        return minaderStatisticsDao.findDestinationCountries();
+    }
 
     @Override
     public List<User> retrievePotentialAgents(MinaderFileTracking fileTracking) {

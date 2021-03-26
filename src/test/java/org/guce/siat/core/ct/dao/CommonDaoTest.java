@@ -1,6 +1,7 @@
 package org.guce.siat.core.ct.dao;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import org.guce.siat.core.ct.dao.config.H2DataSourceConfig;
@@ -30,8 +31,8 @@ public class CommonDaoTest {
         Calendar calendar = Calendar.getInstance();
         filter.setCreationFromDate(calendar.getTime());
         filter.setCreationToDate(calendar.getTime());
-        List<Long> fileTypeIdList = new ArrayList<>();
-//        List<Object[]> list = commonDao.getGlobalDelayListing(filter, fileTypeIdList);
+        List<Long> fileTypeIdList = Arrays.asList(1l);
+        List<Object[]> list = commonDao.getGlobalDelayListing(filter, fileTypeIdList);
     }
 
     @Test
@@ -40,8 +41,18 @@ public class CommonDaoTest {
         Calendar calendar = Calendar.getInstance();
         filter.setCreationFromDate(calendar.getTime());
         filter.setCreationToDate(calendar.getTime());
-        List<Long> fileTypeIdList = new ArrayList<>();
-//        List<Object[]> list = commonDao.getGlobalQuantityListing(filter, fileTypeIdList);
+        List<Long> fileTypeIdList = Arrays.asList(1l);
+        List<Object[]> list = commonDao.getGlobalQuantityListing(filter, fileTypeIdList);
+    }
+
+    @Test
+    public void test_getGlobalQuantityDetailListing() {
+        CteFilter filter = new CteFilter();
+        Calendar calendar = Calendar.getInstance();
+        filter.setCreationFromDate(calendar.getTime());
+        filter.setCreationToDate(calendar.getTime());
+        List<Long> fileTypeIdList = Arrays.asList(1l);
+        List<Object[]> list = commonDao.getGlobalQuantityDetailListing(filter, fileTypeIdList);
     }
 
 }

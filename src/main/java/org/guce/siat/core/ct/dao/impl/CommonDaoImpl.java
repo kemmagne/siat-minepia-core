@@ -55,7 +55,6 @@ import org.guce.siat.core.ct.util.quota.QuotaDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -1160,37 +1159,76 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getGlobalQuantityListing(CteFilter filter, List<Long> fileTypeIdList) {
-        final Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         StringBuilder hqlQuery = new StringBuilder();
-        hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ");
-        hqlQuery.append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fq.QUANTITY, fv.VOLUME ");
-        hqlQuery.append("FROM MINADER_FILES f ");
-        hqlQuery.append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ");
-        hqlQuery.append("LEFT JOIN (SELECT FILE_ID, SUM(QUANTITY) QUANTITY FROM MINADER_FILE_ITEM WHERE QUANTITY IS NOT NULL GROUP BY FILE_ID) fq ON fq.FILE_ID = f.ID ");
-        hqlQuery.append("LEFT JOIN (SELECT FILE_ID, SUM(VOLUME) VOLUME FROM MINADER_FILE_ITEM WHERE VOLUME IS NOT NULL GROUP BY FILE_ID) fv ON fv.FILE_ID = f.ID ");
-        hqlQuery.append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+        hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ")
+                .append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fi.QUANTITY, fi.VOLUME, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, ")
+                .append("f.SOCIETE_TRAITEMENT_NOM, f.TRANSITAIRE_NOM ")
+                .append("FROM MINADER_FILES f ")
+                .append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ")
+                .append("JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")
+                .append("JOIN (SELECT FILE_ID, SUM(QUANTITY) QUANTITY, SUM(VOLUME) VOLUME FROM (")
+                .append("SELECT FILE_ID, SUM(QUANTITY) QUANTITY, 0 VOLUME FROM MINADER_FILE_ITEM GROUP BY FILE_ID ")
+                .append("UNION ")
+                .append("SELECT FILE_ID, 0 QUANTITY, SUM(VOLUME) VOLUME FROM MINADER_FILE_ITEM GROUP BY FILE_ID")
+                .append(") GROUP BY FILE_ID) fi ON fi.FILE_ID = f.ID ")
+                .append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
         buildWhere(filter, fileTypeIdList, hqlQuery, params);
 
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
 
-        final List<Object[]> list = query.getResultList();
+        List<Object[]> list = query.getResultList();
+
+        return list;
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Object[]> getGlobalQuantityDetailListing(CteFilter filter, List<Long> fileTypeIdList) {
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
+        hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ")
+                .append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fi.QUANTITY, fi.VOLUME, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, ")
+                .append("f.SOCIETE_TRAITEMENT_NOM, f.TRANSITAIRE_NOM, fi.NSH_ID NSH, SH.GOODS_ITEM_DESC ")
+                .append("FROM MINADER_FILES f ")
+                .append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ")
+                .append("JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")
+                .append("JOIN (SELECT FILE_ID, NSH_ID, SUM(QUANTITY) QUANTITY, SUM(VOLUME) VOLUME FROM (")
+                .append("SELECT FILE_ID, NSH_ID, SUM(QUANTITY) QUANTITY, 0 VOLUME FROM MINADER_FILE_ITEM WHERE NSH_ID IS NOT NULL GROUP BY FILE_ID, NSH_ID ")
+                .append("UNION ")
+                .append("SELECT FILE_ID, NSH_ID, 0 QUANTITY, SUM(VOLUME) VOLUME FROM MINADER_FILE_ITEM WHERE NSH_ID IS NOT NULL GROUP BY FILE_ID, NSH_ID")
+                .append(") GROUP BY FILE_ID, NSH_ID) fi ON fi.FILE_ID = f.ID ")
+                .append("JOIN REP_NSH SH ON SH.GOODS_ITEM_CODE = fi.NSH_ID ")
+                .append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+
+        buildWhere(filter, fileTypeIdList, hqlQuery, params);
+
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+
+        for (Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+
+        List<Object[]> list = query.getResultList();
+
         return list;
     }
 
     private void buildWhere(CteFilter filter, List<Long> fileTypeIdList, StringBuilder hqlQuery, Map<String, Object> params) {
+
         if (filter.getOperationType() != null && filter.getOperationType().length > 0) {
             hqlQuery.append(" AND f.TYPE_OPERATION IN (:operationType)");
             params.put("operationType", Arrays.asList(filter.getOperationType()));
         }
+
         if (filter.getProductNatureList() != null && filter.getProductNatureList().length > 0) {
             hqlQuery.append(" AND f.TYPE_PRODUIT_CODE IN (:productType)");
             params.put("productType", Arrays.asList(filter.getProductNatureList()));
@@ -1200,16 +1238,44 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             hqlQuery.append(" AND f.BUREAU_ID IN (:officeCode)");
             params.put("officeCode", Arrays.asList(filter.getOfficeCodeList()));
         }
-        if (filter.getClientNiu() != null && !filter.getClientNiu().isEmpty()) {
-            hqlQuery.append(" AND C.NUM_CONTRIBUABLE =:numContribuable ");
+
+        if (StringUtils.isNotBlank(filter.getClientNiu())) {
+            hqlQuery.append(" AND C.NUM_CONTRIBUABLE = :numContribuable ");
             params.put("numContribuable", filter.getClientNiu());
         }
+
+        if (StringUtils.isNotBlank(filter.getCompanyName())) {
+            hqlQuery.append(" AND C.COMPANY_NAME = :companyName ");
+            params.put("companyName", filter.getCompanyName());
+        }
+
+        if (StringUtils.isNotBlank(filter.getDestinationCountry())) {
+            hqlQuery.append(" AND f.COUNTRY_OF_DESTINATION = :destinationCountry ");
+            params.put("destinationCountry", filter.getDestinationCountry());
+        }
+
+        if (StringUtils.isNotBlank(filter.getCda())) {
+            hqlQuery.append(" AND f.TRANSITAIRE_NIU = :cda ");
+            params.put("cda", filter.getCda());
+        }
+
+        if (StringUtils.isNotBlank(filter.getTreatmentSociety())) {
+            hqlQuery.append(" AND f.SOCIETE_TRAITEMENT_CODE = :treatmentSociety ");
+            params.put("treatmentSociety", filter.getTreatmentSociety());
+        }
+
+        if (StringUtils.isNotBlank(filter.getNsh())) {
+            hqlQuery.append(" AND fi.NSH_ID = :nsh ");
+            params.put("nsh", filter.getNsh());
+        }
+
         hqlQuery.append(" AND f.FILE_TYPE_ID IN (:fileTypeIdList)");
         if (filter.getProcessCodeList() != null && filter.getProcessCodeList().length > 0) {
             params.put("fileTypeIdList", Arrays.asList(filter.getProcessCodeList()));
         } else {
             params.put("fileTypeIdList", fileTypeIdList);
         }
+
         if (filter.getValidationFromDate() != null && filter.getValidationToDate() != null) {
             hqlQuery.append(" AND ((f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')) OR (f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateSignatureDebut,'yyyy-MM-dd') AND TO_DATE(:dateSignatureFin,'yyyy-MM-dd')))");
             params.put("dateSignatureDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));

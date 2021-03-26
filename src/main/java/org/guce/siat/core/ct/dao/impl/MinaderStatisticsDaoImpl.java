@@ -14,6 +14,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.guce.siat.common.model.Country;
 import org.guce.siat.common.model.User;
 import org.guce.siat.core.ct.dao.MinaderStatisticsDao;
 import org.guce.siat.core.ct.filter.MinaderFileTrackingFilter;
@@ -35,6 +36,48 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
      */
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Override
+    public Map<String, String> findCDAs() {
+
+        Query query = entityManager.createQuery("SELECT DISTINCT mf.transitaireNiu, mf.transitaireName FROM MinaderFile mf WHERE mf.transitaireNiu IS NOT NULL AND mf.transitaireName IS NOT NULL");
+
+        List<Object[]> list = query.getResultList();
+        Map<String, String> result = new HashMap<>();
+        for (Object[] line : list) {
+            result.put((String) line[0], (String) line[1]);
+        }
+
+        return result;
+    }
+
+    @Override
+    public Map<String, String> findTreatmentSocieties() {
+
+        Query query = entityManager.createQuery("SELECT DISTINCT mf.treatmentSocietyCode, mf.treatmentSocietyName FROM MinaderFile mf WHERE mf.treatmentSocietyCode IS NOT NULL AND mf.treatmentSocietyName IS NOT NULL");
+
+        List<Object[]> list = query.getResultList();
+        Map<String, String> result = new HashMap<>();
+        for (Object[] line : list) {
+            result.put((String) line[0], (String) line[1]);
+        }
+
+        return result;
+    }
+
+    @Override
+    public List<Country> findDestinationCountries() {
+
+        Query query = entityManager.createQuery("SELECT DISTINCT mf.countryOfDestination, c.countryName FROM MinaderFile mf, Country c WHERE mf.countryOfDestination = c.countryIdAlpha2");
+
+        List<Object[]> list = query.getResultList();
+        List<Country> countries = new ArrayList<>();
+        for (Object[] line : list) {
+            countries.add(new Country((String) line[0], (String) line[1]));
+        }
+
+        return countries;
+    }
 
     @Override
     public List<User> retrievePotentialAgents(MinaderFileTracking fileTracking) {

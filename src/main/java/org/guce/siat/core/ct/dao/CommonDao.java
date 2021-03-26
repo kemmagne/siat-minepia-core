@@ -167,6 +167,8 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
 
     List<Object[]> getGlobalQuantityListing(CteFilter filter, List<Long> fileTypeIdList);
 
+    List<Object[]> getGlobalQuantityDetailListing(CteFilter filter, List<Long> fileTypeIdList);
+
     List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList);
 
     void save(List<UserCctExportProductType> userProductTypes);

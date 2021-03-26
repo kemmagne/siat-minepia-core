@@ -17,7 +17,7 @@ public enum CctExportProductType {
     BT("BOIS TRANSFORMES"),
     GR("GRUMES"),
     OA("OBJETS D'ART"),
-    PS("PRODUITS SPECIAUX"),
+    PS("BOIS - PRODUITS SPECIAUX"),
     PM("PLANTES MEDICINALES"),
     AUTRES("AUTRES");
 
