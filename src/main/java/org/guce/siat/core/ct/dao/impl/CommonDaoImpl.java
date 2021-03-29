@@ -1166,7 +1166,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ")
                 .append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fi.QUANTITY, fi.VOLUME, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, ")
-                .append("f.SOCIETE_TRAITEMENT_NOM, f.TRANSITAIRE_NOM ")
+                .append("f.SOCIETE_TRAITEMENT_NOM, f.TRANSITAIRE_NOM, f.DATE_TRAITEMENT ")
                 .append("FROM MINADER_FILES f ")
                 .append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ")
                 .append("JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")

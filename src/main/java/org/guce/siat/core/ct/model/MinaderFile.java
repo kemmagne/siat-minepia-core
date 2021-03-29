@@ -244,6 +244,9 @@ public class MinaderFile implements Serializable {
     private String treatmentSocietyCode;
     @Column(name = "SOCIETE_TRAITEMENT_NOM")
     private String treatmentSocietyName;
+    @Column(name = "DATE_TRAITEMENT")
+    @Temporal(TemporalType.DATE)
+    private Date treatmentDate;
 
     public Long getId() {
         return id;
@@ -595,6 +598,14 @@ public class MinaderFile implements Serializable {
 
     public void setTreatmentSocietyName(String treatmentSocietyName) {
         this.treatmentSocietyName = treatmentSocietyName;
+    }
+
+    public Date getTreatmentDate() {
+        return treatmentDate;
+    }
+
+    public void setTreatmentDate(Date treatmentDate) {
+        this.treatmentDate = treatmentDate;
     }
 
 }
