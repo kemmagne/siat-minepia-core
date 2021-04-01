@@ -12,6 +12,8 @@ import org.guce.siat.common.model.User;
  */
 public class MinaderFileTracking implements Serializable {
 
+    private static final long serialVersionUID = 5327902509535034095L;
+
     private String fileNumber;
     /**
      * n° e-FORCE

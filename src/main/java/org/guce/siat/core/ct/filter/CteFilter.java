@@ -24,8 +24,17 @@ public class CteFilter {
     private String[] operationType;
 
     private String clientNiu;
+    private String companyName;
+
+    private String cda;
+
+    private String treatmentSociety;
 
     private User loggedUser;
+
+    private String destinationCountry;
+
+    private String nsh;
 
     public Date getValidationFromDate() {
         return validationFromDate;
@@ -99,12 +108,52 @@ public class CteFilter {
         this.clientNiu = clientNiu;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCda() {
+        return cda;
+    }
+
+    public void setCda(String cda) {
+        this.cda = cda;
+    }
+
     public User getLoggedUser() {
         return loggedUser;
     }
 
     public void setLoggedUser(User loggedUser) {
         this.loggedUser = loggedUser;
+    }
+
+    public String getDestinationCountry() {
+        return destinationCountry;
+    }
+
+    public void setDestinationCountry(String destinationCountry) {
+        this.destinationCountry = destinationCountry;
+    }
+
+    public String getTreatmentSociety() {
+        return treatmentSociety;
+    }
+
+    public void setTreatmentSociety(String treatmentSociety) {
+        this.treatmentSociety = treatmentSociety;
+    }
+
+    public String getNsh() {
+        return nsh;
+    }
+
+    public void setNsh(String nsh) {
+        this.nsh = nsh;
     }
 
 }

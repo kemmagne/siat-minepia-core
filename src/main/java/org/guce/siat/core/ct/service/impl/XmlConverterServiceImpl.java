@@ -211,13 +211,13 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class XmlConverterServiceImpl.
  */
 @Service("xmlConverterService")
-@Transactional(readOnly = false)
+@Transactional
 public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     /**
      * The Constant LOG.
      */
-    private static final Logger LOG = LoggerFactory.getLogger(XmlConverterServiceImpl.class);
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     /**
      * The Constant DATE_FORMAT.
@@ -745,7 +745,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     }
                 }
             } catch (Exception ex) {
-                LOG.error("Problem occured when trying to create decision histories", ex);
+                logger.error("Problem occured when trying to create decision histories", ex);
             }
 
             final String formatPrefix = InformationSystemCode.CT.name();
@@ -861,7 +861,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         try {
             notificationEmail(fileFromSiat, flowToExecute);
         } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -971,7 +971,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         try {
             notificationEmail(file, firstFlow);
         } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
         }
 
     }
@@ -1022,7 +1022,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     }
                 }
             } catch (UtilitiesException ex) {
-                LOG.error(XmlConverterServiceImpl.class.getName(), ex);
+                logger.error(XmlConverterServiceImpl.class.getName(), ex);
             }
         }
         List<FileFieldValue> newFileFieldValueList = null;
@@ -1264,7 +1264,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         try {
             notificationEmail(fileFromSiat, flowToExecute);
         } catch (Exception ex) {
-            LOG.error(ex.getMessage(), ex);
+            logger.error(ex.getMessage(), ex);
         }
     }
 
@@ -2094,7 +2094,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         return fileToReturn;
-
     }
 
     /*
@@ -2762,7 +2761,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -2902,7 +2901,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3031,7 +3030,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3161,7 +3160,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3330,7 +3329,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3460,7 +3459,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3590,7 +3589,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3726,7 +3725,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -3890,7 +3889,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -4070,7 +4069,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -4210,7 +4209,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -4352,7 +4351,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -4482,7 +4481,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -4610,7 +4609,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -4804,7 +4803,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -5061,7 +5060,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -5170,7 +5169,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;
@@ -5401,7 +5400,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                                             .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
                                 }
                             } catch (final ParseException e) {
-                                LOG.info(Objects.toString(e), e);
+                                logger.info(Objects.toString(e), e);
                                 ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
                             }
                             break;

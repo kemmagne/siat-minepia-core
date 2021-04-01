@@ -1236,17 +1236,33 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getGlobalQuantityListing(CteFilter filter, User loggedUser) {
-        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+        List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
 
-        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+        List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
             @Override
-            public Object transform(final Object fileType) {
+            public Object transform(Object fileType) {
                 return ((FileType) fileType).getId();
             }
         });
 
         filter.setOfficeCodeList(new String[]{loggedUser.getAdministration().getId().toString()});
         return commonDao.getGlobalQuantityListing(filter, fileTypeIdList);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Object[]> getGlobalQuantityDetailListing(CteFilter filter, User loggedUser) {
+        List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+
+        filter.setOfficeCodeList(new String[]{loggedUser.getAdministration().getId().toString()});
+        return commonDao.getGlobalQuantityDetailListing(filter, fileTypeIdList);
     }
 
     @Transactional(readOnly = true)
@@ -1285,7 +1301,6 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 	 * @see org.guce.siat.core.ct.service.CommonService#serviceItemProductsQuantitiesByDrdByFilter(org.guce.siat.core.ct.
 	 * filter .Filter, java.util.List, org.guce.siat.common.model.User, org.guce.siat.common.model.Administration)
      */
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> serviceItemProductsQuantitiesByDrdByFilter(final Filter filter, final List<String> flowCodeList,
