@@ -52,8 +52,6 @@ import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.UserCctExportProductType;
 import org.guce.siat.core.ct.util.enums.CctExportProductType;
 import org.guce.siat.core.ct.util.quota.QuotaDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,11 +61,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository("commonDaoImpl")
 @Transactional
 public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements CommonDao {
-
-    /**
-     * The Constant LOG.
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(CommonDaoImpl.class);
 
     private static final List<String> CTE_ADMISIBILITY_FLOWS = Arrays.asList(FlowCode.FL_CT_05.name(), FlowCode.FL_CT_100.name(), FlowCode.FL_CT_95.name(), FlowCode.FL_CT_111.name(), FlowCode.FL_CT_131.name());
     private static final List<String> CTE_COTATION_FLOWS = Arrays.asList(FlowCode.FL_CT_06.name(), FlowCode.FL_CT_103.name(), FlowCode.FL_CT_109.name(), FlowCode.FL_CT_136.name());
@@ -90,18 +83,18 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public Sample findSampleByFileItem(final FileItem fileItem) {
+    public Sample findSampleByFileItem(FileItem fileItem) {
         try {
-            final StringBuilder hqlBuilder = new StringBuilder();
+            StringBuilder hqlBuilder = new StringBuilder();
             hqlBuilder.append("FROM Sample s ");
             hqlBuilder.append("WHERE s.fileItem.id = :fileItemId");
 
-            final TypedQuery<Sample> query = super.entityManager.createQuery(hqlBuilder.toString(), Sample.class);
+            TypedQuery<Sample> query = super.entityManager.createQuery(hqlBuilder.toString(), Sample.class);
             query.setParameter("fileItemId", fileItem.getId());
 
             return query.getSingleResult();
-        } catch (final NoResultException | NonUniqueResultException e) {
-            LOG.info(Objects.toString(e), e);
+        } catch (NoResultException | NonUniqueResultException e) {
+            logger.info(Objects.toString(e), e);
             return null;
         }
     }
@@ -114,16 +107,16 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> findByFilter(final Filter filter, final Administration administration, final List<FileTypeCode> fileTypeCodes) {
+    public List<FileItem> findByFilter(Filter filter, Administration administration, List<FileTypeCode> fileTypeCodes) {
         return findByFilter(filter, new ArrayList<>(Collections.singletonList(administration)), fileTypeCodes);
     }
 
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> findByFilter(final Filter filter, final List<Administration> administrations, final List<FileTypeCode> fileTypeCodes) {
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(administrations);
+    public List<FileItem> findByFilter(Filter filter, List<Administration> administrations, List<FileTypeCode> fileTypeCodes) {
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(administrations);
 
         hqlQuery.append("SELECT DISTINCT fi FROM FileItem fi ");
         hqlQuery.append("LEFT OUTER JOIN fi.fileItemFieldValueList fifv ");
@@ -155,8 +148,8 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             params.put("toDate", DateUtils.addDays(filter.getToDate(), 1));
         }
         if (filter instanceof AssignedFileItemFilter) {
-            final List<StepCode> stepCodes = new ArrayList<>();
-            final AssignedFileItemFilter assignedFileItemFilter = (AssignedFileItemFilter) filter;
+            List<StepCode> stepCodes = new ArrayList<>();
+            AssignedFileItemFilter assignedFileItemFilter = (AssignedFileItemFilter) filter;
             // afficher uniquement les dossiers en attente de traitement
             stepCodes.add(StepCode.ST_CT_48);
             stepCodes.add(StepCode.ST_CT_04);
@@ -167,7 +160,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 params.put("fileTypeId", assignedFileItemFilter.getFileType().getId());
             }
         } else if (filter instanceof FileItemFilter) {
-            final FileItemFilter fileItemFilter = (FileItemFilter) filter;
+            FileItemFilter fileItemFilter = (FileItemFilter) filter;
 
             if (fileItemFilter.getStep() != null) {
                 hqlQuery.append(" AND  fi.step.id = :stepId");
@@ -181,7 +174,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
             hqlQuery.append(advancedFileItemFilter(fileItemFilter, params));
         } else if (filter instanceof PaymentFilter) {
-            final List<StepCode> stepCodes = new ArrayList<>();
+            List<StepCode> stepCodes = new ArrayList<>();
             stepCodes.add(StepCode.ST_AP_64);
             stepCodes.add(StepCode.ST_AP_65);
             stepCodes.add(StepCode.ST_CT_42);
@@ -190,7 +183,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             params.put("stepCodes", stepCodes);
             hqlQuery.append(" AND  fi.step.stepCode IN (:stepCodes)");
 
-            final PaymentFilter paymentFilter = (PaymentFilter) filter;
+            PaymentFilter paymentFilter = (PaymentFilter) filter;
 
             if (paymentFilter.getOperator() != null) {
                 hqlQuery.append(" AND  fi.file.client.numContribuable = :numContribuable");
@@ -198,9 +191,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             }
 
         }
-        final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+        TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
         return query.getResultList();
@@ -214,8 +207,8 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      * @param params the params
      * @return the string
      */
-    private String advancedFileItemFilter(final FileItemFilter filter, final Map<String, Object> params) {
-        final StringBuilder advacedFilterBuilder = new StringBuilder();
+    private String advancedFileItemFilter(FileItemFilter filter, Map<String, Object> params) {
+        StringBuilder advacedFilterBuilder = new StringBuilder();
 
         if (filter.getOperator() != null) {
             advacedFilterBuilder.append(" AND  fi.file.client.numContribuable = :numContribuable");
@@ -276,13 +269,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<AnalyseOrder> findStatisticByFilter(final Filter filter) {
+    public List<AnalyseOrder> findStatisticByFilter(Filter filter) {
         if (filter != null) {
-            final Map<String, Object> params = new HashMap<>();
-            final StringBuilder hqlQuery = new StringBuilder();
+            Map<String, Object> params = new HashMap<>();
+            StringBuilder hqlQuery = new StringBuilder();
 
             if (filter instanceof AnalyseFilter) {
-                final AnalyseFilter analyseFilter = (AnalyseFilter) filter;
+                AnalyseFilter analyseFilter = (AnalyseFilter) filter;
                 hqlQuery.append("SELECT DISTINCT a FROM AnalyseOrder a WHERE 1=1 ");
 
                 if (analyseFilter.getLaboratory() != null) {
@@ -311,7 +304,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                     params.put("toDate", DateUtils.addDays(analyseFilter.getToDate(), 1));
                 }
             } else if (filter instanceof SampleFilter) {
-                final SampleFilter sampleFilter = (SampleFilter) filter;
+                SampleFilter sampleFilter = (SampleFilter) filter;
                 hqlQuery.append("SELECT DISTINCT a FROM AnalyseOrder a WHERE 1=1 ");
 
                 if (sampleFilter.getLaboratory() != null) {
@@ -338,9 +331,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 }
 
             }
-            final TypedQuery<AnalyseOrder> query = super.entityManager.createQuery(hqlQuery.toString(), AnalyseOrder.class);
+            TypedQuery<AnalyseOrder> query = super.entityManager.createQuery(hqlQuery.toString(), AnalyseOrder.class);
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
             return query.getResultList();
@@ -356,12 +349,12 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> fileItemByDesicionByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-            final List<String> flowCodeList, final List<String> restrectionFlowCode, final Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
+    public List<FileItem> fileItemByDesicionByFilter(Filter filter, List<FileTypeCode> fileTypeCodes,
+            List<String> flowCodeList, List<String> restrectionFlowCode, Administration administration) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
                 Collections.singletonList(administration)));
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT i.fileItem FROM ItemFlow i ");
         hqlQuery.append("WHERE i.fileItem.file.fileType.code IN (:fileTypeCodes) ");
         params.put("fileTypeCodes", fileTypeCodes);
@@ -401,9 +394,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             params.put("confirmRDDCode", restrectionFlowCode);
         }
 
-        final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+        TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
         return query.getResultList();
@@ -418,14 +411,12 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> fileItemByCompanyAndDecicionByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-            final Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
-                Collections.singletonList(administration)));
+    public List<FileItem> fileItemByCompanyAndDecicionByFilter(Filter filter, List<FileTypeCode> fileTypeCodes, Administration administration) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
 
-        final HistoricClientFilter historicClientFilter = (HistoricClientFilter) filter;
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        HistoricClientFilter historicClientFilter = (HistoricClientFilter) filter;
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT f FROM FileItem f ");
         hqlQuery.append("WHERE ");
         hqlQuery.append(" f.file.fileType.code IN (:fileTypeCodes) ");
@@ -465,9 +456,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 params.put("toDate", DateUtils.addDays(historicClientFilter.getToDate(), 1));
             }
 
-            final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+            TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
             return query.getResultList();
@@ -484,14 +475,12 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> fileItemByCompanyAndProductByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-            final Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
-                Collections.singletonList(administration)));
+    public List<FileItem> fileItemByCompanyAndProductByFilter(Filter filter, List<FileTypeCode> fileTypeCodes, Administration administration) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
 
-        final HistoricClientFilter historicClientFilter = (HistoricClientFilter) filter;
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        HistoricClientFilter historicClientFilter = (HistoricClientFilter) filter;
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT f FROM FileItem f ");
         hqlQuery.append("WHERE f.file.fileType.code IN (:fileTypeCodes) ");
         params.put("fileTypeCodes", fileTypeCodes);
@@ -531,9 +520,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 params.put("toDate", DateUtils.addDays(historicClientFilter.getToDate(), 1));
             }
 
-            final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+            TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
             return query.getResultList();
@@ -550,17 +539,14 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> fileItemByInspectionDestribByFilter(final Filter filter, final List<FileTypeCode> fileTypeCodes,
-            final Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
-                Collections.singletonList(administration)));
+    public List<FileItem> fileItemByInspectionDestribByFilter(Filter filter, List<FileTypeCode> fileTypeCodes, Administration administration) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
 
-        final InspectionDestribFilter inspectionDestribFilter = (InspectionDestribFilter) filter;
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        InspectionDestribFilter inspectionDestribFilter = (InspectionDestribFilter) filter;
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT i.fileItem FROM ItemFlow i ");
-        hqlQuery
-                .append("WHERE i.fileItem.file.fileType.code IN (:fileTypeCodes)  AND i.id IN (SELECT DISTINCT ins.fileItem.id FROM InspectionReport ins)");
+        hqlQuery.append("WHERE i.fileItem.file.fileType.code IN (:fileTypeCodes)  AND i.id IN (SELECT DISTINCT ins.fileItem.id FROM InspectionReport ins)");
         params.put("fileTypeCodes", fileTypeCodes);
 
         if (CollectionUtils.isNotEmpty(bureausList)) {
@@ -588,9 +574,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 params.put("toDate", DateUtils.addDays(inspectionDestribFilter.getToDate(), 1));
             }
 
-            final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+            TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
             return query.getResultList();
@@ -607,16 +593,14 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * java.util.List, org.guce.siat.common.model.Administration)
      */
     @Transactional(readOnly = true)
-    @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> serviceItemProductsQuantitiesByFilter(final Filter filter, final List<Long> fileTypeIdList, Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
+    public List<Object[]> serviceItemProductsQuantitiesByFilter(Filter filter, List<Long> fileTypeIdList, Administration administration) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
 
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
 
-        hqlQuery
-                .append("SELECT (FILE_ITEM.NSH_ID) SSNH, SERVICES_ITEM.LABEL, SUM(FILE_ITEM.QUANTITY), SUM (FILE_ITEM.VALEUR_FOB) FROM FILE_ITEM ");
+        hqlQuery.append("SELECT (FILE_ITEM.NSH_ID) SSNH, SERVICES_ITEM.LABEL, SUM(FILE_ITEM.QUANTITY), SUM (FILE_ITEM.VALEUR_FOB) FROM FILE_ITEM ");
         hqlQuery.append("JOIN  SERVICES_ITEM ON FILE_ITEM.SUBFAMILY_ID = SERVICES_ITEM.ID LEFT ");
         hqlQuery.append("JOIN FILES ON FILE_ITEM.FILE_ID  = FILES.ID ");
         hqlQuery.append("WHERE FILES.FILE_TYPE_ID IN (:fileTypeIdList)");
@@ -649,14 +633,15 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
             hqlQuery.append(" GROUP BY (FILE_ITEM.NSH_ID, SERVICES_ITEM.LABEL)");
 
-            final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+            Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
-            final List<Object[]> list = query.getResultList();
+            List<Object[]> list = query.getResultList();
             return list;
         }
+
         return Collections.emptyList();
     }
 
@@ -669,15 +654,14 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 	 * , java.util.List, java.util.List, org.guce.siat.common.model.Administration)
      */
     @Transactional(readOnly = true)
-    @SuppressWarnings("unchecked")
     @Override
-    public List<Object[]> serviceItemProductsQuantitiesByDrdByFilter(final Filter filter, final List<Long> flowIdList,
-            final List<Long> fileTypeIdList, final Administration administration) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
+    public List<Object[]> serviceItemProductsQuantitiesByDrdByFilter(Filter filter, List<Long> flowIdList,
+            List<Long> fileTypeIdList, Administration administration) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
                 Collections.singletonList(administration)));
 
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
 
         hqlQuery
                 .append("SELECT (FILE_ITEM.NSH_ID) SSNH, SERVICES_ITEM.LABEL, SUM(FILE_ITEM.QUANTITY), SUM (FILE_ITEM.VALEUR_FOB) FROM FILE_ITEM ");
@@ -719,13 +703,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
             hqlQuery.append(" GROUP BY (FILE_ITEM.NSH_ID, SERVICES_ITEM.LABEL)");
 
-            final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+            Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
 
-            final List<Object[]> list = query.getResultList();
+            List<Object[]> list = query.getResultList();
             return list;
         }
         return Collections.emptyList();
@@ -738,9 +722,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<QuotaDto> findQuotsByCreteria(final QuotaDto searchFilter) {
-        final StringBuilder hqlBuilder = new StringBuilder();
-        final Map<String, Object> params = new HashMap<>();
+    public List<QuotaDto> findQuotsByCreteria(QuotaDto searchFilter) {
+        StringBuilder hqlBuilder = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
         hqlBuilder.append("SELECT new org.guce.siat.core.ct.util.quota.QuotaDto(f.file.client.numContribuable,f) FROM FileItem f");
         hqlBuilder
                 .append(" JOIN f.itemFlowsList if WHERE  if.flow.code IN ('FL_AP_101','FL_AP_102','FL_AP_103','FL_AP_104','FL_AP_105','FL_AP_106') AND if.sent=true");
@@ -752,9 +736,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             hqlBuilder.append(" AND if.created > :beginDate");
             params.put("beginDate", searchFilter.getBeginDateFilter());
         }
-        final TypedQuery<org.guce.siat.core.ct.util.quota.QuotaDto> query = entityManager.createQuery(hqlBuilder.toString(),
+        TypedQuery<org.guce.siat.core.ct.util.quota.QuotaDto> query = entityManager.createQuery(hqlBuilder.toString(),
                 org.guce.siat.core.ct.util.quota.QuotaDto.class);
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
         return query.getResultList();
@@ -767,11 +751,11 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<QuotaDto> getImportedExportedQuatityByQuotaList(final List<QuotaDto> quotaList) {
-        final List<QuotaDto> quotaDtoList = new ArrayList<>();
-        for (final QuotaDto quota : quotaList) {
-            final List<FileTypeCode> imputaionList = Arrays.asList(FileTypeCode.IDE, FileTypeCode.IDI);
-            final TypedQuery<String> query = entityManager.createQuery("SELECT f.quantity FROM FileItem f WHERE f.nsh=:nsh AND f.file.fileType.code IN (:fileTypeList)", String.class);
+    public List<QuotaDto> getImportedExportedQuatityByQuotaList(List<QuotaDto> quotaList) {
+        List<QuotaDto> quotaDtoList = new ArrayList<>();
+        for (QuotaDto quota : quotaList) {
+            List<FileTypeCode> imputaionList = Arrays.asList(FileTypeCode.IDE, FileTypeCode.IDI);
+            TypedQuery<String> query = entityManager.createQuery("SELECT f.quantity FROM FileItem f WHERE f.nsh=:nsh AND f.file.fileType.code IN (:fileTypeList)", String.class);
             query.setParameter("nsh", quota.getProduct().getNsh());
             query.setParameter("fileTypeList", imputaionList);
             try {
@@ -781,7 +765,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                     quota.setImpExpQuantity(0);
                 }
             } catch (NonUniqueResultException | NoResultException noResultException) {
-                LOG.info(Objects.toString(noResultException), noResultException);
+                logger.info(Objects.toString(noResultException), noResultException);
                 quota.setImpExpQuantity(0);
             }
             quotaDtoList.add(quota);
@@ -796,19 +780,18 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<QuotaDto> getGrantedQuantityByQuotaList(final List<QuotaDto> quotaList, final QuotaDto searchFilter) {
-        final List<QuotaDto> quotaDtoList = new ArrayList<>();
+    public List<QuotaDto> getGrantedQuantityByQuotaList(List<QuotaDto> quotaList, QuotaDto searchFilter) {
+        List<QuotaDto> quotaDtoList = new ArrayList<>();
 
-        for (final QuotaDto quota : quotaList) {
-            final StringBuilder hqlBuilder = new StringBuilder();
-            hqlBuilder
-                    .append("SELECT i FROM ItemFlowData i WHERE i.itemFlow.fileItem= :fileItem AND i.itemFlow.flow.code IN('FL_AP_101','FL_AP_102','FL_AP_103','FL_AP_104','FL_AP_105','FL_AP_106')");
-            final TypedQuery<ItemFlowData> query = entityManager.createQuery(hqlBuilder.toString(), ItemFlowData.class);
+        for (QuotaDto quota : quotaList) {
+            StringBuilder hqlBuilder = new StringBuilder();
+            hqlBuilder.append("SELECT i FROM ItemFlowData i WHERE i.itemFlow.fileItem= :fileItem AND i.itemFlow.flow.code IN('FL_AP_101','FL_AP_102','FL_AP_103','FL_AP_104','FL_AP_105','FL_AP_106')");
+            TypedQuery<ItemFlowData> query = entityManager.createQuery(hqlBuilder.toString(), ItemFlowData.class);
             query.setParameter("fileItem", quota.getProduct());
-            final List<ItemFlowData> result = query.getResultList();
-            final String dateValidite = ((ItemFlowData) CollectionUtils.find(result, new Predicate() {
+            List<ItemFlowData> result = query.getResultList();
+            String dateValidite = ((ItemFlowData) CollectionUtils.find(result, new Predicate() {
                 @Override
-                public boolean evaluate(final Object object) {
+                public boolean evaluate(Object object) {
                     return ((ItemFlowData) object).getDataType().getLabel().equals("Date validité");
                 }
             })).getValue();
@@ -817,7 +800,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                         && searchFilter.getEndDateFilter().after(new SimpleDateFormat(DateUtils.FRENCH_DATE).parse(dateValidite))) {
                     quota.setQuantity(Integer.valueOf(((ItemFlowData) CollectionUtils.find(result, new Predicate() {
                         @Override
-                        public boolean evaluate(final Object object) {
+                        public boolean evaluate(Object object) {
                             return ((ItemFlowData) object).getDataType().getLabel().equals("Quantité accordé");
                         }
                     })).getValue()));
@@ -826,7 +809,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                     quotaDtoList.add(quota);
                 }
             } catch (NumberFormatException | ParseException e) {
-                LOG.error("############# {}", e);
+                logger.error("############# {}", e);
             }
         }
         return quotaDtoList;
@@ -840,14 +823,12 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> fileItemByStatisticBusinessByFilter(final Filter filter, final Administration administration,
-            final List<FileTypeCode> fileTypeCodes) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
-                Collections.singletonList(administration)));
+    public List<FileItem> fileItemByStatisticBusinessByFilter(Filter filter, Administration administration, List<FileTypeCode> fileTypeCodes) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(administration)));
 
-        final StatisticBusinessFilter statisticBusinessFilter = (StatisticBusinessFilter) filter;
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        StatisticBusinessFilter statisticBusinessFilter = (StatisticBusinessFilter) filter;
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT f FROM FileItem f ");
         hqlQuery.append("WHERE f.file.fileType.code IN (:fileTypeCodes) ");
         params.put("fileTypeCodes", fileTypeCodes);
@@ -897,9 +878,9 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 params.put("toDate", DateUtils.addDays(statisticBusinessFilter.getToDate(), 1));
             }
 
-            final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+            TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-            for (final Entry<String, Object> entry : params.entrySet()) {
+            for (Entry<String, Object> entry : params.entrySet()) {
                 query.setParameter(entry.getKey(), entry.getValue());
             }
             return query.getResultList();
@@ -915,12 +896,11 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
      */
     @Transactional(readOnly = true)
     @Override
-    public List<FileItem> findPindingFileItem(final Filter filter, final User user) {
-        final List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(
-                Collections.singletonList(user.getAdministration())));
+    public List<FileItem> findPindingFileItem(Filter filter, User user) {
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(new ArrayList<>(Collections.singletonList(user.getAdministration())));
 
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT f FROM FileItem f ");
         hqlQuery.append("WHERE f.step.isFinal=false ");
 
@@ -949,25 +929,23 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             params.put("toDate", DateUtils.addDays(filter.getToDate(), 1));
         }
 
-        final TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
+        TypedQuery<FileItem> query = super.entityManager.createQuery(hqlQuery.toString(), FileItem.class);
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
         return query.getResultList();
 
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getExportNshDestination(CteFilter filter, List<Long> fileTypeIdList) {
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
 
-        hqlQuery
-                .append("SELECT fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, SUM(fi.NOMBRE_GRUMES) NOMBRE_GRUMES, SUM(fi.NOMBRE_SACS) NOMBRE_SACS, SUM(fi.VOLUME) VOLUME, SUM(fi.POIDS_BRUT) POIDS_BRUT, SUM(fi.POIDS_NET) POIDS_NET, c.COUNTRY_NAME_FR LIBELLE_PAYS_DESTINATION, f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR LIBELLE_PAYS_ORIGIN, f.CODE_BUREAU, f.NOM_BUREAU ");
-        hqlQuery.append("FROM MINADER_FILE_ITEM fi JOIN MINADER_FILES f ON fi.FILE_ID = f.ID JOIN REP_COUNTRY c ON f.COUNTRY_OF_DESTINATION = c.COUNTRY_ID_ALPHA2");
+        hqlQuery.append("SELECT fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, SUM(fi.NOMBRE_GRUMES) NOMBRE_GRUMES, SUM(fi.NOMBRE_SACS) NOMBRE_SACS, SUM(fi.VOLUME) VOLUME, SUM(fi.POIDS_BRUT) POIDS_BRUT, SUM(fi.POIDS_NET) POIDS_NET, c.COUNTRY_NAME_FR LIBELLE_PAYS_DESTINATION, f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR LIBELLE_PAYS_ORIGIN, f.CODE_BUREAU, f.NOM_BUREAU ");
+        hqlQuery.append("FROM SIAT_CT.MINADER_FILE_ITEM fi JOIN SIAT_CT.MINADER_FILES f ON fi.FILE_ID = f.ID JOIN REP_COUNTRY c ON f.COUNTRY_OF_DESTINATION = c.COUNTRY_ID_ALPHA2");
         hqlQuery.append(" JOIN REP_COUNTRY c1 ON f.COUNTRY_OF_ORIGIN = c1.COUNTRY_ID_ALPHA2 ");
         hqlQuery.append(" WHERE f.FILE_TYPE_ID = 33 AND f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
@@ -990,26 +968,24 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
         params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
 
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
 
-        final List<Object[]> list = query.getResultList();
+        List<Object[]> list = query.getResultList();
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getExportNshDestinationSender(CteFilter filter, List<Long> fileTypeIdList) {
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
 
-        hqlQuery
-                .append("SELECT fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, SUM(fi.NOMBRE_GRUMES) NOMBRE_GRUMES, SUM(fi.NOMBRE_SACS) NOMBRE_SACS, SUM(fi.VOLUME) VOLUME, SUM(fi.POIDS_BRUT) POIDS_BRUT, SUM(fi.POIDS_NET) POIDS_NET, c.COUNTRY_NAME_FR LIBELLE_PAYS_DESTINATION, f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR LIBELLE_PAYS_ORIGIN, f.CODE_BUREAU, f.NOM_BUREAU ");
-        hqlQuery.append(", co.NUM_CONTRIBUABLE,co.COMPANY_NAME FROM MINADER_FILE_ITEM fi JOIN MINADER_FILES f ON fi.FILE_ID = f.ID JOIN COMPANY co ON f.CLIENT_ID = co.ID JOIN REP_COUNTRY c ON f.COUNTRY_OF_DESTINATION = c.COUNTRY_ID_ALPHA2");
+        hqlQuery.append("SELECT fi.NSH_ID, f.COUNTRY_OF_DESTINATION, f.TYPE_PRODUIT_NOM, fi.GOODS_ITEM_DESC, SUM(fi.NOMBRE_GRUMES) NOMBRE_GRUMES, SUM(fi.NOMBRE_SACS) NOMBRE_SACS, SUM(fi.VOLUME) VOLUME, SUM(fi.POIDS_BRUT) POIDS_BRUT, SUM(fi.POIDS_NET) POIDS_NET, c.COUNTRY_NAME_FR LIBELLE_PAYS_DESTINATION, f.COUNTRY_OF_ORIGIN, c1.COUNTRY_NAME_FR LIBELLE_PAYS_ORIGIN, f.CODE_BUREAU, f.NOM_BUREAU ");
+        hqlQuery.append(", co.NUM_CONTRIBUABLE,co.COMPANY_NAME FROM SIAT_CT.MINADER_FILE_ITEM fi JOIN SIAT_CT.MINADER_FILES f ON fi.FILE_ID = f.ID JOIN COMPANY co ON f.CLIENT_ID = co.ID JOIN REP_COUNTRY c ON f.COUNTRY_OF_DESTINATION = c.COUNTRY_ID_ALPHA2");
         hqlQuery.append(" JOIN REP_COUNTRY c1 ON f.COUNTRY_OF_ORIGIN = c1.COUNTRY_ID_ALPHA2 ");
         hqlQuery.append(" WHERE f.FILE_TYPE_ID = 33 AND f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
@@ -1036,24 +1012,24 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationFromDate()));
         params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getValidationToDate()));
 
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
 
-        final List<Object[]> list = query.getResultList();
+        List<Object[]> list = query.getResultList();
+
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getDelayListingStakeholder(CteFilter filter, List<Long> fileTypeIdList) {
-        final Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         StringBuilder hqlQuery = new StringBuilder();
 
-        StringBuilder commomFrom = new StringBuilder(" FROM MINADER_FILES f JOIN COMPANY c ON c.ID = f.CLIENT_ID JOIN FILE_ITEM fi ON fi.FILE_ID = (SELECT MAX(FILE_ID) FROM FILE_ITEM WHERE FILE_ID = f.ID) LEFT JOIN REP_COUNTRY ctr ON ctr.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION JOIN FILES_PROCESSING proc ON (proc.FILE_ITEM_ID = fi.ID AND proc.FLOW_CODE IN (:%s)) JOIN USERS agent ON agent.ID = proc.SENDER_ID WHERE f.CREATED_DATE BETWEEN TO_DATE(:dateCreationDebut,'yyyy-MM-dd') AND TO_DATE(:dateCreationFin,'yyyy-MM-dd') ");
+        StringBuilder commomFrom = new StringBuilder(" FROM SIAT_CT.MINADER_FILES f JOIN COMPANY c ON c.ID = f.CLIENT_ID JOIN FILE_ITEM fi ON fi.FILE_ID = (SELECT MAX(FILE_ID) FROM FILE_ITEM WHERE FILE_ID = f.ID) LEFT JOIN REP_COUNTRY ctr ON ctr.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION JOIN FILES_PROCESSING proc ON (proc.FILE_ITEM_ID = fi.ID AND proc.FLOW_CODE IN (:%s)) JOIN USERS agent ON agent.ID = proc.SENDER_ID WHERE f.CREATED_DATE BETWEEN TO_DATE(:dateCreationDebut,'yyyy-MM-dd') AND TO_DATE(:dateCreationFin,'yyyy-MM-dd') ");
         String groupByCountCi = " GROUP BY NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, c.NUM_CONTRIBUABLE, c.COMPANY_NAME, f.TYPE_PRODUIT_NOM,ctr.COUNTRY_NAME,f.COUNTRY_OF_DESTINATION";
 
         if (filter.getOperationType() != null && filter.getOperationType().length > 0) {
@@ -1121,27 +1097,26 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
                 .append(" UNION ")
                 .append(selectCountCi)
                 .append(" ) GROUP BY NUMERO_DOSSIER,NUMERO_DEMANDE, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, NUM_CONTRIBUABLE, TYPE_PRODUIT_NOM, RAISON_SOCIALE, PAYS_DESTINATION");
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
 
-        final List<Object[]> list = query.getResultList();
+        List<Object[]> list = query.getResultList();
 
         return list;
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getGlobalDelayListing(CteFilter filter, List<Long> fileTypeIdList) {
-        final Map<String, Object> params = new HashMap<>();
+        Map<String, Object> params = new HashMap<>();
         StringBuilder hqlQuery = new StringBuilder();
         hqlQuery.append("SELECT DISTINCT f.NUMERO_DOSSIER, f.FILE_TYPE_NAME,f.NUMERO_DEMANDE,C.NUM_CONTRIBUABLE,C.COMPANY_NAME");
         hqlQuery.append(",f.TYPE_PRODUIT_NOM,p.COUNTRY_NAME_FR PAYS_DESTINATION,f.CREATED_DATE,COALESCE(f.SIGNATURE_DATE,f.DATE_REJET) DATE_SORTIE");
         hqlQuery.append(",s.LABELFR ETAPE,f.CODE_BUREAU, f.NOM_BUREAU, f.TRANSITAIRE_NOM ");
-        hqlQuery.append(" FROM MINADER_FILES f ");
+        hqlQuery.append(" FROM SIAT_CT.MINADER_FILES f ");
         hqlQuery.append(" JOIN COMPANY C ON f.CLIENT_ID = C.ID ");
         hqlQuery.append(" LEFT JOIN REP_COUNTRY p ON f.COUNTRY_OF_DESTINATION = p.COUNTRY_ID_ALPHA2 ");
         hqlQuery.append(" JOIN FILE_ITEM fi ON f.ID = fi.FILE_ID JOIN STEP s ON fi.STEP_ID = s.ID ");
@@ -1149,13 +1124,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
 
         buildWhere(filter, fileTypeIdList, hqlQuery, params);
 
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
 
-        final List<Object[]> list = query.getResultList();
+        List<Object[]> list = query.getResultList();
         return list;
     }
 
@@ -1164,18 +1139,17 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     public List<Object[]> getGlobalQuantityListing(CteFilter filter, List<Long> fileTypeIdList) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder hqlQuery = new StringBuilder();
-        hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ")
-                .append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fi.QUANTITY, fi.VOLUME, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, ")
-                .append("f.SOCIETE_TRAITEMENT_NOM, f.TRANSITAIRE_NOM, f.DATE_TRAITEMENT ")
-                .append("FROM MINADER_FILES f ")
+        hqlQuery.append("SELECT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, f.TYPE_PRODUIT_NOM, f.TRANSITAIRE_NOM, ")
+                .append("f.SOCIETE_TRAITEMENT_NOM, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, fi.QUANTITY, fi.VOLUME, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, f.DATE_TRAITEMENT ")
+                .append("FROM SIAT_CT.MINADER_FILES f ")
                 .append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ")
-                .append("JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")
+                .append("LEFT JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")
                 .append("JOIN (SELECT FILE_ID, SUM(QUANTITY) QUANTITY, SUM(VOLUME) VOLUME FROM (")
-                .append("SELECT FILE_ID, SUM(QUANTITY) QUANTITY, 0 VOLUME FROM MINADER_FILE_ITEM GROUP BY FILE_ID ")
+                .append("SELECT FILE_ID, SUM(QUANTITY) QUANTITY, 0 VOLUME FROM SIAT_CT.MINADER_FILE_ITEM GROUP BY FILE_ID ")
                 .append("UNION ")
-                .append("SELECT FILE_ID, 0 QUANTITY, SUM(VOLUME) VOLUME FROM MINADER_FILE_ITEM GROUP BY FILE_ID")
+                .append("SELECT FILE_ID, 0 QUANTITY, SUM(VOLUME) VOLUME FROM SIAT_CT.MINADER_FILE_ITEM GROUP BY FILE_ID")
                 .append(") GROUP BY FILE_ID) fi ON fi.FILE_ID = f.ID ")
-                .append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+                .append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE >= TO_DATE(:dateDebut,'yyyy-MM-dd') AND f.CREATED_DATE <= TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
         buildWhere(filter, fileTypeIdList, hqlQuery, params);
 
@@ -1195,19 +1169,16 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
     public List<Object[]> getGlobalQuantityDetailListing(CteFilter filter, List<Long> fileTypeIdList) {
         Map<String, Object> params = new HashMap<>();
         StringBuilder hqlQuery = new StringBuilder();
-        hqlQuery.append("SELECT DISTINCT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, ")
-                .append("f.TYPE_PRODUIT_NOM, f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, fi.QUANTITY, fi.VOLUME, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, ")
-                .append("f.SOCIETE_TRAITEMENT_NOM, f.TRANSITAIRE_NOM, fi.NSH_ID NSH, SH.GOODS_ITEM_DESC ")
-                .append("FROM MINADER_FILES f ")
+
+        hqlQuery.append("SELECT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, f.TYPE_PRODUIT_NOM, f.TRANSITAIRE_NOM, ")
+                .append("f.SOCIETE_TRAITEMENT_NOM, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, fi.NSH_ID NSH, SH.GOODS_ITEM_DESC, fi.QUANTITY, fi.VOLUME, ")
+                .append("f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, f.DATE_TRAITEMENT ")
+                .append("FROM SIAT_CT.MINADER_FILES f ")
                 .append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ")
-                .append("JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")
-                .append("JOIN (SELECT FILE_ID, NSH_ID, SUM(QUANTITY) QUANTITY, SUM(VOLUME) VOLUME FROM (")
-                .append("SELECT FILE_ID, NSH_ID, SUM(QUANTITY) QUANTITY, 0 VOLUME FROM MINADER_FILE_ITEM WHERE NSH_ID IS NOT NULL GROUP BY FILE_ID, NSH_ID ")
-                .append("UNION ")
-                .append("SELECT FILE_ID, NSH_ID, 0 QUANTITY, SUM(VOLUME) VOLUME FROM MINADER_FILE_ITEM WHERE NSH_ID IS NOT NULL GROUP BY FILE_ID, NSH_ID")
-                .append(") GROUP BY FILE_ID, NSH_ID) fi ON fi.FILE_ID = f.ID ")
-                .append("JOIN REP_NSH SH ON SH.GOODS_ITEM_CODE = fi.NSH_ID ")
-                .append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ");
+                .append("LEFT JOIN REP_COUNTRY dc ON dc.COUNTRY_ID_ALPHA2 = f.COUNTRY_OF_DESTINATION ")
+                .append("JOIN SIAT_CT.MINADER_FILE_ITEM fi ON fi.FILE_ID = f.ID ")
+                .append("LEFT JOIN REP_NSH SH ON SH.GOODS_ITEM_CODE = fi.NSH_ID ")
+                .append("WHERE f.SIGNATURE_DATE IS NOT NULL AND f.CREATED_DATE >= TO_DATE(:dateDebut,'yyyy-MM-dd') AND f.CREATED_DATE <= TO_DATE(:dateFin,'yyyy-MM-dd') ");
 
         buildWhere(filter, fileTypeIdList, hqlQuery, params);
 
@@ -1286,17 +1257,16 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationToDate()));
     }
 
-    @SuppressWarnings("unchecked")
     @Transactional(readOnly = true)
     @Override
     public List<Object[]> getActivitiesReport(CteFilter filter, List<Long> fileTypeIdList) {
-        final Map<String, Object> params = new HashMap<>();
-        final StringBuilder hqlQuery = new StringBuilder();
-        final String creationDateWhere = " f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
-        final String signatureDateWhere = " f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
-        final String rejectionDateWhere = " f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
-        final String groupBy = " GROUP BY FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU ";
-        final StringBuilder commonWhereBuilder = new StringBuilder();
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
+        String creationDateWhere = " f.CREATED_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        String signatureDateWhere = " f.SIGNATURE_DATE IS NOT NULL AND f.SIGNATURE_DATE BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        String rejectionDateWhere = " f.DATE_REJET IS NOT NULL AND f.DATE_REJET BETWEEN TO_DATE(:dateDebut,'yyyy-MM-dd') AND TO_DATE(:dateFin,'yyyy-MM-dd') ";
+        String groupBy = " GROUP BY FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU ";
+        StringBuilder commonWhereBuilder = new StringBuilder();
 
         if (filter.getOperationType() != null && filter.getOperationType().length > 0) {
             commonWhereBuilder.append(" AND f.TYPE_OPERATION IN (:operationType)");
@@ -1321,24 +1291,24 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, SUM(NB_RECU) NB_RECU, SUM(NB_SIGNE) NB_SIGNE,SUM(NB_RECU_SIGNE) NB_RECU_SIGNE, SUM(NB_REJETE) NB_REJETE, SUM(NB_RECU_REJETE) NB_RECU_REJETE, SUM(NB_COURS) NB_COURS ");
         hqlQuery.append("FROM ( ");
         hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, COUNT(*) NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS ");
-        hqlQuery.append("FROM MINADER_FILES f WHERE ");
+        hqlQuery.append("FROM SIAT_CT.MINADER_FILES f WHERE ");
         hqlQuery.append(creationDateWhere).append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" UNION ");
-        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, COUNT(*) NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, COUNT(*) NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM SIAT_CT.MINADER_FILES f WHERE ");
         hqlQuery.append(signatureDateWhere).append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" UNION ");
-        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,COUNT(*) NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,COUNT(*) NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM SIAT_CT.MINADER_FILES f WHERE ");
         hqlQuery.append(creationDateWhere).append(" AND f.SIGNATURE_DATE IS NOT NULL ").append(commonWhereBuilder).append(groupBy);
 //        hqlQuery.append(where1).append(" AND ").append(where2).append(where4).append(groupBy);
         hqlQuery.append(" UNION ");
-        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, COUNT(*) NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, COUNT(*) NB_REJETE, 0 NB_RECU_REJETE, 0 NB_COURS FROM SIAT_CT.MINADER_FILES f WHERE ");
         hqlQuery.append(rejectionDateWhere).append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" UNION ");
-        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, COUNT(*) NB_RECU_REJETE, 0 NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, COUNT(*) NB_RECU_REJETE, 0 NB_COURS FROM SIAT_CT.MINADER_FILES f WHERE ");
         hqlQuery.append(creationDateWhere).append(" AND f.DATE_REJET IS NOT NULL ").append(commonWhereBuilder).append(groupBy);
 //        hqlQuery.append(where1).append(" AND ").append(where3).append(where4).append(groupBy);
         hqlQuery.append(" UNION ");
-        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, COUNT(*) NB_COURS FROM MINADER_FILES f WHERE ");
+        hqlQuery.append("SELECT FILE_TYPE_ID, FILE_TYPE_NAME, CODE_BUREAU, NOM_BUREAU, 0 NB_RECU, 0 NB_SIGNE ,0 NB_RECU_SIGNE, 0 NB_REJETE, 0 NB_RECU_REJETE, COUNT(*) NB_COURS FROM SIAT_CT.MINADER_FILES f WHERE ");
         hqlQuery.append(creationDateWhere).append(" AND f.DATE_REJET IS NULL AND f.SIGNATURE_DATE IS NULL ").append(commonWhereBuilder).append(groupBy);
         hqlQuery.append(" ) ");
         hqlQuery.append(groupBy);
@@ -1346,13 +1316,13 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         params.put("dateDebut", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationFromDate()));
         params.put("dateFin", new SimpleDateFormat("yyyy-MM-dd").format(filter.getCreationToDate()));
 
-        final Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
+        Query query = super.entityManager.createNativeQuery(hqlQuery.toString());
 
-        for (final Entry<String, Object> entry : params.entrySet()) {
+        for (Entry<String, Object> entry : params.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
 
-        final List<Object[]> list = query.getResultList();
+        List<Object[]> list = query.getResultList();
         return list;
     }
 
