@@ -33,7 +33,7 @@ public class H2DataSourceConfig {
 
         HikariConfig config = new HikariConfig();
         config.setDriverClassName("org.h2.Driver");
-        config.setJdbcUrl("jdbc:h2:mem:testdb");
+        config.setJdbcUrl("jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=Oracle;TRACE_LEVEL_SYSTEM_OUT=2;INIT=CREATE SCHEMA IF NOT EXISTS SIAT_CT\\;SET SCHEMA SIAT_CT");
         config.setUsername("user");
         config.setPassword("password");
         config.addDataSourceProperty("cachePrepStmts", "true");
