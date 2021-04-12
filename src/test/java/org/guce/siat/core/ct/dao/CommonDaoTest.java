@@ -1,6 +1,5 @@
 package org.guce.siat.core.ct.dao;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
