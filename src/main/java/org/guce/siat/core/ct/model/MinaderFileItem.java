@@ -5,12 +5,20 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import org.guce.siat.common.model.File;
+import org.guce.siat.common.model.FileItem;
+import org.guce.siat.common.model.Item;
+import org.guce.siat.common.model.Step;
+import org.hibernate.annotations.Immutable;
 
 /**
  *
  * @author tadzotsa
  */
+@Immutable
 @Entity
 @Table(name = "MINADER_FILE_ITEM")
 public class MinaderFileItem implements Serializable {
@@ -18,8 +26,9 @@ public class MinaderFileItem implements Serializable {
     private static final long serialVersionUID = -696142840365509220L;
 
     @Id
-    @Column(name = "ID")
-    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "ID")
+    private FileItem id;
 
     /**
      * The draft.
@@ -39,16 +48,19 @@ public class MinaderFileItem implements Serializable {
     @Column(name = "VALEUR_FOB")
     private BigDecimal fobValue;
 
-    @Column(name = "FILE_ID")
-    private Long file;
+    @ManyToOne
+    @JoinColumn(name = "FILE_ID")
+    private File file;
 
-    @Column(name = "NSH_ID")
-    private String nsh;
+    @ManyToOne
+    @JoinColumn(name = "NSH_ID")
+    private Item nsh;
     @Column(name = "GOODS_ITEM_DESC")
     private String nshDesc;
 
-    @Column(name = "STEP_ID")
-    private Long step;
+    @ManyToOne
+    @JoinColumn(name = "STEP_ID")
+    private Step step;
 
     @Column(name = "SUBFAMILY_ID")
     private Long subFamily;
@@ -64,11 +76,11 @@ public class MinaderFileItem implements Serializable {
     @Column(name = "POIDS_NET")
     private BigDecimal netWeight;
 
-    public Long getId() {
+    public FileItem getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(FileItem id) {
         this.id = id;
     }
 
@@ -96,19 +108,19 @@ public class MinaderFileItem implements Serializable {
         this.fobValue = fobValue;
     }
 
-    public Long getFile() {
+    public File getFile() {
         return file;
     }
 
-    public void setFile(Long file) {
+    public void setFile(File file) {
         this.file = file;
     }
 
-    public String getNsh() {
+    public Item getNsh() {
         return nsh;
     }
 
-    public void setNsh(String nsh) {
+    public void setNsh(Item nsh) {
         this.nsh = nsh;
     }
 
@@ -120,11 +132,11 @@ public class MinaderFileItem implements Serializable {
         this.nshDesc = nshDesc;
     }
 
-    public Long getStep() {
+    public Step getStep() {
         return step;
     }
 
-    public void setStep(Long step) {
+    public void setStep(Step step) {
         this.step = step;
     }
 
