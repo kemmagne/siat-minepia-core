@@ -2,20 +2,32 @@ package org.guce.siat.core.ct.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.guce.siat.common.model.Bureau;
+import org.guce.siat.common.model.Company;
+import org.guce.siat.common.model.Country;
+import org.guce.siat.common.model.File;
+import org.guce.siat.common.model.FileType;
+import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.FileTypeCode;
+import org.hibernate.annotations.Immutable;
 
 /**
  *
  * @author ht
  */
+@Immutable
 @Entity
 @Table(name = "MINADER_FILES")
 public class MinaderFile implements Serializable {
@@ -23,8 +35,9 @@ public class MinaderFile implements Serializable {
     private static final long serialVersionUID = -7684683208191041947L;
 
     @Id
-    @Column(name = "ID")
-    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "ID")
+    private File id;
 
     /**
      * The reference SIAT.
@@ -129,8 +142,9 @@ public class MinaderFile implements Serializable {
     /**
      * The bureau.
      */
-    @Column(name = "BUREAU_ID")
-    private Long bureau;
+    @ManyToOne
+    @JoinColumn(name = "BUREAU_ID")
+    private Bureau bureau;
     @Column(name = "CODE_BUREAU")
     private String bureauCode;
     @Column(name = "NOM_BUREAU")
@@ -143,20 +157,23 @@ public class MinaderFile implements Serializable {
     /**
      * The assigned user.
      */
-    @Column(name = "ASSIGNED_USER_ID")
-    private Long assignedUser;
+    @ManyToOne
+    @JoinColumn(name = "ASSIGNED_USER_ID")
+    private User assignedUser;
 
     /**
      * The operator.
      */
-    @Column(name = "CLIENT_ID")
-    private Long client;
+    @ManyToOne
+    @JoinColumn(name = "CLIENT_ID")
+    private Company client;
 
     /**
      * The file type.
      */
-    @Column(name = "FILE_TYPE_ID")
-    private Long fileType;
+    @ManyToOne
+    @JoinColumn(name = "FILE_TYPE_ID")
+    private FileType fileType;
     /**
      * The code.
      */
@@ -194,26 +211,30 @@ public class MinaderFile implements Serializable {
     /**
      * The country of origin.
      */
-    @Column(name = "COUNTRY_OF_ORIGIN")
-    private String countryOfOrigin;
+    @ManyToOne
+    @JoinColumn(name = "COUNTRY_OF_ORIGIN")
+    private Country countryOfOrigin;
 
     /**
      * The country of destination.
      */
-    @Column(name = "COUNTRY_OF_DESTINATION")
-    private String countryOfDestination;
+    @ManyToOne
+    @JoinColumn(name = "COUNTRY_OF_DESTINATION")
+    private Country countryOfDestination;
 
     /**
      * The country of provenance.
      */
-    @Column(name = "COUNTRY_OF_PROVENANCE")
-    private String countryOfProvenance;
+    @ManyToOne
+    @JoinColumn(name = "COUNTRY_OF_PROVENANCE")
+    private Country countryOfProvenance;
 
     /**
      * the signatory of file
      */
-    @Column(name = "SIGNATORY_USER_ID")
-    private Long signatory;
+    @ManyToOne
+    @JoinColumn(name = "SIGNATORY_USER_ID")
+    private User signatory;
 
     /**
      * The last decision date.
@@ -248,11 +269,17 @@ public class MinaderFile implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date treatmentDate;
 
-    public Long getId() {
+    /**
+     * The file items list.
+     */
+    @OneToMany(mappedBy = "file")
+    private List<MinaderFileItem> fileItemsList;
+
+    public File getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(File id) {
         this.id = id;
     }
 
@@ -384,11 +411,11 @@ public class MinaderFile implements Serializable {
         this.validityDate = validityDate;
     }
 
-    public Long getBureau() {
+    public Bureau getBureau() {
         return bureau;
     }
 
-    public void setBureau(Long bureau) {
+    public void setBureau(Bureau bureau) {
         this.bureau = bureau;
     }
 
@@ -424,27 +451,27 @@ public class MinaderFile implements Serializable {
         this.bureauNameEn = bureauNameEn;
     }
 
-    public Long getAssignedUser() {
+    public User getAssignedUser() {
         return assignedUser;
     }
 
-    public void setAssignedUser(Long assignedUser) {
+    public void setAssignedUser(User assignedUser) {
         this.assignedUser = assignedUser;
     }
 
-    public Long getClient() {
+    public Company getClient() {
         return client;
     }
 
-    public void setClient(Long client) {
+    public void setClient(Company client) {
         this.client = client;
     }
 
-    public Long getFileType() {
+    public FileType getFileType() {
         return fileType;
     }
 
-    public void setFileType(Long fileType) {
+    public void setFileType(FileType fileType) {
         this.fileType = fileType;
     }
 
@@ -496,35 +523,35 @@ public class MinaderFile implements Serializable {
         this.numContribuable = numContribuable;
     }
 
-    public String getCountryOfOrigin() {
+    public Country getCountryOfOrigin() {
         return countryOfOrigin;
     }
 
-    public void setCountryOfOrigin(String countryOfOrigin) {
+    public void setCountryOfOrigin(Country countryOfOrigin) {
         this.countryOfOrigin = countryOfOrigin;
     }
 
-    public String getCountryOfDestination() {
+    public Country getCountryOfDestination() {
         return countryOfDestination;
     }
 
-    public void setCountryOfDestination(String countryOfDestination) {
+    public void setCountryOfDestination(Country countryOfDestination) {
         this.countryOfDestination = countryOfDestination;
     }
 
-    public String getCountryOfProvenance() {
+    public Country getCountryOfProvenance() {
         return countryOfProvenance;
     }
 
-    public void setCountryOfProvenance(String countryOfProvenance) {
+    public void setCountryOfProvenance(Country countryOfProvenance) {
         this.countryOfProvenance = countryOfProvenance;
     }
 
-    public Long getSignatory() {
+    public User getSignatory() {
         return signatory;
     }
 
-    public void setSignatory(Long signatory) {
+    public void setSignatory(User signatory) {
         this.signatory = signatory;
     }
 
@@ -606,6 +633,14 @@ public class MinaderFile implements Serializable {
 
     public void setTreatmentDate(Date treatmentDate) {
         this.treatmentDate = treatmentDate;
+    }
+
+    public List<MinaderFileItem> getFileItemsList() {
+        return fileItemsList;
+    }
+
+    public void setFileItemsList(List<MinaderFileItem> fileItemsList) {
+        this.fileItemsList = fileItemsList;
     }
 
 }

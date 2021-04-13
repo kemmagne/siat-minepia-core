@@ -14,7 +14,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.guce.siat.common.model.Country;
+import org.guce.siat.common.model.Pair;
 import org.guce.siat.common.model.User;
 import org.guce.siat.core.ct.dao.MinaderStatisticsDao;
 import org.guce.siat.core.ct.filter.MinaderFileTrackingFilter;
@@ -38,45 +38,49 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
     private EntityManager entityManager;
 
     @Override
-    public Map<String, String> findCDAs() {
+    public List<Pair> findCDAs() {
 
-        Query query = entityManager.createQuery("SELECT DISTINCT mf.transitaireNiu, mf.transitaireName FROM MinaderFile mf WHERE mf.transitaireNiu IS NOT NULL AND mf.transitaireName IS NOT NULL");
+        String queryString = "SELECT DISTINCT TNC.VALUE NIU_CDA, TRS.VALUE NOM_CDA FROM (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRANSITAIRE_NUMERO_CONTRIBUABLE') TNC JOIN (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRANSITAIRE_RAISONSOCIALE') TRS ON TRS.FILE_ID = TNC.FILE_ID";
+
+        Query query = entityManager.createNativeQuery(queryString);
 
         List<Object[]> list = query.getResultList();
-        Map<String, String> result = new HashMap<>();
+        List<Pair> result = new ArrayList<>();
         for (Object[] line : list) {
-            result.put((String) line[0], (String) line[1]);
+            result.add(new Pair((String) line[0], (String) line[1]));
         }
 
         return result;
     }
 
     @Override
-    public Map<String, String> findTreatmentSocieties() {
+    public List<Pair> findTreatmentSocieties() {
 
-        Query query = entityManager.createQuery("SELECT DISTINCT mf.treatmentSocietyCode, mf.treatmentSocietyName FROM MinaderFile mf WHERE mf.treatmentSocietyCode IS NOT NULL AND mf.treatmentSocietyName IS NOT NULL");
+        String queryString = "SELECT DISTINCT STC.VALUE NIU_CDA, STN.VALUE NOM_CDA FROM (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRAITEMENT_SOCIETE_TRAITEMENT_CODE') STC JOIN (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRAITEMENT_SOCIETE_TRAITEMENT_NOM') STN ON STN.FILE_ID = STC.FILE_ID";
+
+        Query query = entityManager.createNativeQuery(queryString);
 
         List<Object[]> list = query.getResultList();
-        Map<String, String> result = new HashMap<>();
+        List<Pair> result = new ArrayList<>();
         for (Object[] line : list) {
-            result.put((String) line[0], (String) line[1]);
+            result.add(new Pair((String) line[0], (String) line[1]));
         }
 
         return result;
     }
 
     @Override
-    public List<Country> findDestinationCountries() {
+    public List<Pair> findDestinationCountries() {
 
-        Query query = entityManager.createQuery("SELECT DISTINCT mf.countryOfDestination, c.countryName FROM MinaderFile mf, Country c WHERE mf.countryOfDestination = c.countryIdAlpha2");
+        Query query = entityManager.createNativeQuery("SELECT COUNTRY_ID_ALPHA2, COUNTRY_NAME FROM REP_COUNTRY");
 
         List<Object[]> list = query.getResultList();
-        List<Country> countries = new ArrayList<>();
+        List<Pair> result = new ArrayList<>();
         for (Object[] line : list) {
-            countries.add(new Country((String) line[0], (String) line[1]));
+            result.add(new Pair((String) line[0], (String) line[1]));
         }
 
-        return countries;
+        return result;
     }
 
     @Override

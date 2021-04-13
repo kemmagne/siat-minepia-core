@@ -12,11 +12,11 @@ import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileTypeStepDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.Appointment;
-import org.guce.siat.common.model.Country;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileTypeStep;
 import org.guce.siat.common.model.ItemFlow;
+import org.guce.siat.common.model.Pair;
 import org.guce.siat.common.model.Step;
 import org.guce.siat.common.model.User;
 import org.guce.siat.core.ct.dao.MinaderStatisticsDao;
@@ -48,17 +48,17 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
     private MinaderStatisticsDao minaderStatisticsDao;
 
     @Override
-    public Map<String, String> findCDAs() {
+    public List<Pair> findCDAs() {
         return minaderStatisticsDao.findCDAs();
     }
 
     @Override
-    public Map<String, String> findTreatmentSocieties() {
+    public List<Pair> findTreatmentSocieties() {
         return minaderStatisticsDao.findTreatmentSocieties();
     }
 
     @Override
-    public List<Country> findDestinationCountries() {
+    public List<Pair> findDestinationCountries() {
         return minaderStatisticsDao.findDestinationCountries();
     }
 

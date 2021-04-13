@@ -825,7 +825,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             for (FileItem fileItem : fileconverted.getFileItemsList()) {
                 final ItemFlow itemFlow = new ItemFlow();
 
-                itemFlow.setCreated(Calendar.getInstance().getTime());
                 final List<FileItem> fileItems = fileItemDao.findByLineNumberAndNumSiat(Collections.singletonList(fileItem.getLineNumber()), fileconverted.getReferenceSiat());
                 fileItem = CollectionUtils.isNotEmpty(fileItems) ? fileItems.get(0) : null;
                 itemFlow.setFileItem(fileItem);
@@ -1322,7 +1321,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             final ItemFlow itemFlow = new ItemFlow();
 
-            itemFlow.setCreated(java.util.Calendar.getInstance().getTime());
             itemFlow.setFileItem(fileItem);
             itemFlow.setFlow(flowToExecute);
             itemFlow.setSender(null);
