@@ -26,6 +26,7 @@ import javax.xml.validation.Validator;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.model.FlowGuceSiat;
 import org.guce.siat.common.service.AbstractDocumentReciever;
@@ -186,11 +187,11 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             // Injection file in BDD
             Serializable document = getReceivedDocument(xmlBytes, xmlContent, xPath, conversationId);
             LOG.info("################### getReceivedDocument finished");
-            org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndExecuteFlow(document);
+            org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndAttachmentsAndExecuteFlow(document, attached);
             LOG.info("saveReceivedFileAndExecuteFlow finished");
-            if (attached != null && !attached.isEmpty()) {
-                CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attached);
-            }
+//            if (attached != null && !attached.isEmpty()) {
+//                CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attached);
+//            }
             // SIAT reference must be sent in the APERAK_F
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_K.getCode(), null, savedFile);
             LOG.info("############## generateAperakDocument K finished");
@@ -204,6 +205,9 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             data.put(ESBConstants.TO_PARTY_ID, propertiesService.getToPartyId());
             data.put(ESBConstants.DEAD, "0");
             LOG.info(" generateEbxmlFiles aperak K finished");
+        } catch (CmisConnectionException e) {
+            LOG.error("#####Error to connect to Alfresco:" + e.getMessage(), e);
+            throw new Exception("Technical Exception occured : " + e.getMessage(), e);
         } catch (IOException e) {
             LOG.error("#####Error to connect to ressource:" + e.getMessage(), e);
             throw new RuntimeException("Technical Exception occured : " + e.getMessage(), e);

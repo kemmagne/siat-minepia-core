@@ -22,6 +22,7 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.persistence.PersistenceException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.SerializationUtils;
@@ -511,7 +512,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
     private DecisionHistoryDao decisionHistoryDao;
 
     List<WoodSpecification> woodSpecifications;
-    
+
     /**
      * The properties loader
      */
@@ -563,7 +564,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 	 * @see org.guce.siat.common.service.XmlConverterService# saveReceivedFileAndExecuteFlow(java.io.Serializable)
      */
     @Override
-    public File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException {
+    public File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException, CmisConnectionException {
         init();
         final File fileConverted = convertDocumentToFile(document);
         String attachmentRootFolder;
@@ -16416,8 +16417,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
     }
 
     @Override
-    public File saveReceivedFileAndAttachmentsAndExecuteFlow(Serializable document, Map<String, byte[]> attachementsMap) throws ParseException, PersistenceException, NullPointerException, ValidationException, IOException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public File saveReceivedFileAndAttachmentsAndExecuteFlow(Serializable document, Map<String, byte[]> attachementsMap) throws ParseException, PersistenceException, NullPointerException, ValidationException, CmisConnectionException, IOException {
+        org.guce.siat.common.model.File savedFile = this.saveReceivedFileAndExecuteFlow(document);
+        if (attachementsMap != null && !attachementsMap.isEmpty()) {
+            CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attachementsMap);
+        }
+        return savedFile;
     }
 
 }
