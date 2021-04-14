@@ -23,6 +23,8 @@ import java.util.Set;
 import java.util.TimeZone;
 import javax.persistence.PersistenceException;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisContentAlreadyExistsException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.SerializationUtils;
@@ -212,7 +214,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class XmlConverterServiceImpl.
  */
 @Service("xmlConverterService")
-@Transactional
+@Transactional(noRollbackFor = {CmisObjectNotFoundException.class, CmisContentAlreadyExistsException.class})
 public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     /**

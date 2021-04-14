@@ -27,6 +27,8 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisContentAlreadyExistsException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.model.FlowGuceSiat;
 import org.guce.siat.common.service.AbstractDocumentReciever;
@@ -69,7 +71,7 @@ import org.xml.sax.SAXException;
  * The Class DocumentRecieverWSImpl.
  */
 @Service("ctDocumentReciever")
-@Transactional
+@Transactional(noRollbackFor = {CmisObjectNotFoundException.class, CmisContentAlreadyExistsException.class})
 public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements CtDocumentReciever {
 
     /**
