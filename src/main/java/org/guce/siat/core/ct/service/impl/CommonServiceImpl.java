@@ -3,8 +3,10 @@ package org.guce.siat.core.ct.service.impl;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +19,7 @@ import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.Transformer;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
+import org.guce.siat.common.dao.AuditDao;
 import org.guce.siat.common.dao.CoreDao;
 import org.guce.siat.common.dao.FileFieldDao;
 import org.guce.siat.common.dao.FileFieldValueDao;
@@ -28,6 +31,7 @@ import org.guce.siat.common.model.Administration;
 import org.guce.siat.common.model.Appointment;
 import org.guce.siat.common.model.AppointmentItemFlow;
 import org.guce.siat.common.model.AppointmentItemFlowId;
+import org.guce.siat.common.model.AuditEntity;
 import org.guce.siat.common.model.Container;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
@@ -42,6 +46,8 @@ import org.guce.siat.common.service.ItemFlowService;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
 import org.guce.siat.common.utils.Constants;
 import org.guce.siat.common.utils.DateUtils;
+import org.guce.siat.common.utils.SecurityUtils;
+import org.guce.siat.common.utils.enums.AuditConstants;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.common.utils.enums.StepCode;
@@ -115,6 +121,12 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     @Autowired
     private AppointmentService appointmentService;
+
+    /**
+     * The audit dao
+     */
+    @Autowired
+    private AuditDao auditDao;
 
     /**
      * The item flow dao.
@@ -1464,25 +1476,44 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     }
 
     @Override
-    public void save(User user, List<CctExportProductType> productTypes) {
-        List<CctExportProductType> currentProductTypes = commonDao.findProductTypesByUser(user);
+    public void associateAgentToProductTypes(User loggedUser, User agent, List<CctExportProductType> productTypes) {
+        List<CctExportProductType> currentProductTypes = commonDao.findProductTypesByUser(agent);
         List<UserCctExportProductType> toSave = new ArrayList<>();
         List<UserCctExportProductType> toRemove = new ArrayList<>();
 
         for (CctExportProductType pt : productTypes) {
             if (!currentProductTypes.contains(pt)) {
-                toSave.add(new UserCctExportProductType(user, pt));
+                toSave.add(new UserCctExportProductType(agent, pt));
             }
         }
 
         for (CctExportProductType pt : currentProductTypes) {
             if (!productTypes.contains(pt)) {
-                toRemove.add(new UserCctExportProductType(user, pt));
+                toRemove.add(new UserCctExportProductType(agent, pt));
             }
         }
 
         commonDao.remove(toRemove);
         commonDao.save(toSave);
+
+        createHistory(loggedUser, agent, currentProductTypes, productTypes);
+    }
+
+    private void createHistory(User loggedUser, User agent, List<CctExportProductType> currentProductTypes, List<CctExportProductType> productTypes) {
+
+        AuditEntity agentAssociationHistory = new AuditEntity();
+
+        agentAssociationHistory.setAction(AuditConstants.PRODUCT_TYPE_AGENT_ASSOCIATION.getCode());
+        agentAssociationHistory.setAuditDate(Calendar.getInstance().getTime());
+        agentAssociationHistory.setIdModel(agent.getId());
+        agentAssociationHistory.setIpAddress(SecurityUtils.getCurrentAddressIp());
+        agentAssociationHistory.setMacAddress(SecurityUtils.getCurrentMacAddress());
+        agentAssociationHistory.setModel(agent.getClass().getSimpleName());
+        agentAssociationHistory.setUsername(loggedUser.getLogin());
+        String history = MessageFormat.format("now = {0}; before = {1}", productTypes, currentProductTypes);
+        agentAssociationHistory.setValue(history);
+
+        auditDao.save(agentAssociationHistory);
     }
 
     @Transactional(readOnly = true)
