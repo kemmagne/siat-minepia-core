@@ -3,7 +3,6 @@ package org.guce.siat.core.ct.service.impl;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -245,7 +244,6 @@ public class CotationServiceImpl implements CotationService {
 
             final ItemFlow itemFlow = new ItemFlow();
 
-            itemFlow.setCreated(Calendar.getInstance().getTime());
             itemFlow.setFileItem(fileItem);
             itemFlow.setFlow(cotationFlow);
             itemFlow.setSender(sender);
