@@ -76,6 +76,9 @@ public class MinaderFileItem implements Serializable {
     @Column(name = "POIDS_NET")
     private BigDecimal netWeight;
 
+    @Column(name = "NOM_PRODUIT")
+    private String productName;
+
     public FileItem getId() {
         return id;
     }
@@ -186,6 +189,14 @@ public class MinaderFileItem implements Serializable {
 
     public void setNetWeight(BigDecimal netWeight) {
         this.netWeight = netWeight;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
 }
