@@ -12,6 +12,8 @@ import org.guce.siat.core.ct.model.MinaderFileTracking;
  */
 public interface MinaderStatisticsDao {
 
+    List<String> findMinaderProductNames();
+
     List<Pair> findCDAs();
 
     List<Pair> findTreatmentSocieties();

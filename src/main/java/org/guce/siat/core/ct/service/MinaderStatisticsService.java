@@ -16,6 +16,8 @@ public interface MinaderStatisticsService {
 
     List<StepCode> TREATMENT_STEPS_CODES = Arrays.asList(StepCode.ST_CT_04, StepCode.ST_CT_48, StepCode.ST_CT_55, StepCode.ST_CT_63);
 
+    List<String> findMinaderProductNames();
+
     List<Pair> findCDAs();
 
     List<Pair> findTreatmentSocieties();

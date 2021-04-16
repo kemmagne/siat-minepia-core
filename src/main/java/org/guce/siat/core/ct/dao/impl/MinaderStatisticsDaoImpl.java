@@ -3,6 +3,7 @@ package org.guce.siat.core.ct.dao.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.guce.siat.common.model.Pair;
 import org.guce.siat.common.model.User;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.core.ct.dao.MinaderStatisticsDao;
 import org.guce.siat.core.ct.filter.MinaderFileTrackingFilter;
 import org.guce.siat.core.ct.model.MinaderFileTracking;
@@ -36,6 +38,20 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
      */
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Override
+    public List<String> findMinaderProductNames() {
+
+        String queryString = "SELECT DISTINCT PNFIFV.VALUE FROM FILE_ITEM_FIELD PNFIF JOIN FILE_ITEM_FIELD_VALUE PNFIFV ON PNFIFV.FILE_ITEM_FIELD_ID = PNFIF.ID AND PNFIF.CODE = 'NOM_PRODUIT' JOIN FILE_TYPE FT ON FT.ID = PNFIF.FILE_TYPE_ID AND FT.CODE IN (:minaderFileTypes)";
+
+        Query query = entityManager.createNativeQuery(queryString);
+
+        query.setParameter("minaderFileTypes", Arrays.asList(FileTypeCode.CCT_CT_E_PVI.name(), FileTypeCode.CCT_CT_E_FSTP.name(), FileTypeCode.CCT_CT_E_ATP.name(), FileTypeCode.CCT_CT_E_PVE.name(), FileTypeCode.CCT_CT_E.name()));
+
+        List<String> result = query.getResultList();
+
+        return result;
+    }
 
     @Override
     public List<Pair> findCDAs() {

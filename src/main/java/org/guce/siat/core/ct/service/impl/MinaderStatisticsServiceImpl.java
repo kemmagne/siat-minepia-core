@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import org.apache.commons.lang3.BooleanUtils;
 import org.guce.siat.common.dao.AppointmentDao;
@@ -46,6 +45,11 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
 
     @Autowired
     private MinaderStatisticsDao minaderStatisticsDao;
+
+    @Override
+    public List<String> findMinaderProductNames() {
+        return minaderStatisticsDao.findMinaderProductNames();
+    }
 
     @Override
     public List<Pair> findCDAs() {
