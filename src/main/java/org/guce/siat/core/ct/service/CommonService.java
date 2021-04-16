@@ -257,7 +257,6 @@ public interface CommonService extends AbstractService<ItemFlow> {
      *
      * @param filter the filter
      * @param user the user
-     * @param fileTypeCodes the file type codes
      * @return the list
      */
     List<FileItem> findPindingFileItem(Filter filter, User user);
@@ -290,7 +289,15 @@ public interface CommonService extends AbstractService<ItemFlow> {
 
     void saveCCTCPParamValue(CCTCPParamValue cCTCPParamValue, ItemFlow itemFlow);
 
-    void save(User user, List<CctExportProductType> productTypes);
+    /**
+     * make sure that the specify agent is finally associated to the product
+     * types specified in the list productTypes
+     *
+     * @param loggedUser the logged user
+     * @param agent the agent to who the product types should be affected
+     * @param productTypes the list of product types
+     */
+    void associateAgentToProductTypes(User loggedUser, User agent, List<CctExportProductType> productTypes);
 
     List<CctExportProductType> findProductTypesByUser(User user);
 
