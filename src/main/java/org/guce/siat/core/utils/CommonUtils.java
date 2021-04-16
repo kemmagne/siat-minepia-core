@@ -101,6 +101,12 @@ public class CommonUtils {
 
     public static void addAttachmentsToGED(PropertiesLoader propertiesLoader, AlfrescoDirectoryCreator alfrescoDirectoryCreator, org.guce.siat.common.model.File savedFile, Map<String, byte[]> attached) throws IOException {
         // Add PJ to GED
+        if(attached == null || attached.isEmpty()){
+            return;
+        }
+        if(savedFile == null){
+            return;
+        }
         LOG.info("Liste des fichiers attachés : {}", attached.size());
         alfrescoDirectoryCreator.createDirectory(savedFile);
         String attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(savedFile);

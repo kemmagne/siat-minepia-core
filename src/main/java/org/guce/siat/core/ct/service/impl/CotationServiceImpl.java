@@ -88,7 +88,7 @@ public class CotationServiceImpl implements CotationService {
     public void dispatch(File currentFile, Flow currentFlow) {
 
         MinistryFileType ministryFileType = fileTypeDao.findMinistryFileType(currentFile.getFileType().getCode(), currentFile.getDestinataire());
-        if (!BooleanUtils.toBoolean(ministryFileType.getAutomaticCotationAllowed())) {
+        if (ministryFileType != null && !BooleanUtils.toBoolean(ministryFileType.getAutomaticCotationAllowed())) {
             return;
         }
 

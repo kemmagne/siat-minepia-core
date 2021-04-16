@@ -1,5 +1,6 @@
 package org.guce.siat.core.ct.service.impl;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -21,6 +22,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
 import javax.persistence.PersistenceException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisContentAlreadyExistsException;
+import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.SerializationUtils;
@@ -85,6 +89,7 @@ import org.guce.siat.common.utils.DecisionOrganism;
 import org.guce.siat.common.utils.ExceptionConstants;
 import org.guce.siat.common.utils.FileFieldValueUtils;
 import org.guce.siat.common.utils.FileItemUtils;
+import org.guce.siat.common.utils.PropertiesLoader;
 import org.guce.siat.common.utils.SiatUtils;
 import org.guce.siat.common.utils.ebms.ESBConstants;
 import org.guce.siat.common.utils.ebms.EbmsUtility;
@@ -125,6 +130,7 @@ import org.guce.siat.core.ct.service.util.XmlConverterAeMINADER;
 import org.guce.siat.core.ct.service.util.XmlConverterCctCtExp;
 import org.guce.siat.core.ct.service.util.XmlConverterPayment;
 import org.guce.siat.core.ct.service.util.XmlConverterPve;
+import org.guce.siat.core.utils.CommonUtils;
 import org.guce.siat.core.utils.PaiementGenerator;
 import org.guce.siat.core.utils.ap.file.FileFieldValueAeMINMIDT;
 import org.guce.siat.core.utils.ap.file.FileFieldValueAiMINMIDT;
@@ -208,7 +214,7 @@ import org.springframework.transaction.annotation.Transactional;
  * The Class XmlConverterServiceImpl.
  */
 @Service("xmlConverterService")
-@Transactional
+@Transactional(noRollbackFor = {CmisObjectNotFoundException.class, CmisContentAlreadyExistsException.class})
 public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     /**
@@ -510,6 +516,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
     List<WoodSpecification> woodSpecifications;
 
     /**
+     * The properties loader
+     */
+    @Autowired
+    private PropertiesLoader propertiesLoader;
+
+    /**
      * Inits the.
      */
     private void init() {
@@ -554,7 +566,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 	 * @see org.guce.siat.common.service.XmlConverterService# saveReceivedFileAndExecuteFlow(java.io.Serializable)
      */
     @Override
-    public File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException {
+    public File saveReceivedFileAndExecuteFlow(final Serializable document) throws ParseException, PersistenceException, NullPointerException, ValidationException, CmisConnectionException {
         init();
         final File fileConverted = convertDocumentToFile(document);
         String attachmentRootFolder;
@@ -16402,6 +16414,15 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     public void setDao(CoreDao dao) {
         this.dao = dao;
+    }
+
+    @Override
+    public File saveReceivedFileAndAttachmentsAndExecuteFlow(Serializable document, Map<String, byte[]> attachementsMap) throws ParseException, PersistenceException, NullPointerException, ValidationException, CmisConnectionException, IOException {
+        org.guce.siat.common.model.File savedFile = this.saveReceivedFileAndExecuteFlow(document);
+        if (attachementsMap != null && !attachementsMap.isEmpty()) {
+            CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attachementsMap);
+        }
+        return savedFile;
     }
 
 }
