@@ -1171,7 +1171,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         StringBuilder hqlQuery = new StringBuilder();
 
         hqlQuery.append("SELECT f.NUMERO_DEMANDE, f.NUMERO_DOSSIER, f.FILE_TYPE_NAME, C.NUM_CONTRIBUABLE, C.COMPANY_NAME, f.TYPE_PRODUIT_NOM, f.TRANSITAIRE_NOM, ")
-                .append("f.SOCIETE_TRAITEMENT_NOM, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, fi.NSH_ID NSH, SH.GOODS_ITEM_DESC, fi.QUANTITY, fi.VOLUME, ")
+                .append("f.SOCIETE_TRAITEMENT_NOM, dc.COUNTRY_NAME COUNTRY_OF_DESTINATION, fi.NSH_ID NSH, SH.GOODS_ITEM_DESC, fi.NOM_PRODUIT, fi.QUANTITY, fi.VOLUME, ")
                 .append("f.CREATED_DATE, f.SIGNATURE_DATE DATE_SIGNATURE, f.DATE_TRAITEMENT ")
                 .append("FROM SIAT_CT.MINADER_FILES f ")
                 .append("JOIN COMPANY C ON f.CLIENT_ID = C.ID ")
@@ -1223,6 +1223,11 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         if (StringUtils.isNotBlank(filter.getDestinationCountry())) {
             hqlQuery.append(" AND f.COUNTRY_OF_DESTINATION = :destinationCountry ");
             params.put("destinationCountry", filter.getDestinationCountry());
+        }
+
+        if (StringUtils.isNotBlank(filter.getProductName())) {
+            hqlQuery.append(" AND fi.NOM_PRODUIT = :productName ");
+            params.put("productName", filter.getProductName());
         }
 
         if (StringUtils.isNotBlank(filter.getCda())) {
