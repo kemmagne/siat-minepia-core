@@ -36,6 +36,8 @@ public class CteFilter {
 
     private String nsh;
 
+    private String productName;
+
     public Date getValidationFromDate() {
         return validationFromDate;
     }
@@ -154,6 +156,14 @@ public class CteFilter {
 
     public void setNsh(String nsh) {
         this.nsh = nsh;
+    }
+
+    public String getProductName() {
+        return productName;
+    }
+
+    public void setProductName(String productName) {
+        this.productName = productName;
     }
 
 }
