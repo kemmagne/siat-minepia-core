@@ -55,8 +55,7 @@ public class ParamCCTCPDaoImpl extends AbstractJpaDaoImpl<ParamCCTCP> implements
     @Override
     public ParamCCTCP findParamCCTCPDefault() {
         try {
-            final TypedQuery<ParamCCTCP> query = super.entityManager.createQuery("SELECT ti FROM ParamCCTCP ti WHERE ti.id = :id",
-                    ParamCCTCP.class);
+            final TypedQuery<ParamCCTCP> query = super.entityManager.createQuery("SELECT ti FROM ParamCCTCP ti WHERE ti.id = :id", ParamCCTCP.class);
             query.setParameter("id", Long.valueOf(1));
             return query.getSingleResult();
         } catch (NoResultException | NonUniqueResultException e) {
