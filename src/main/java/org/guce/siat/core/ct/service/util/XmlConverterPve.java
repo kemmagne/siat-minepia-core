@@ -299,8 +299,15 @@ public class XmlConverterPve extends AbstractXmlConverter {
             PottingReport pottingReport = xmlConverterService.getPottingReportDao().findPottingReportByFile(file);
             if (pottingReport == null) {
                 pottingReport = xmlConverterService.getPottingReportDao().findPottingReportByFile(file, false);
-                pottingReport.setValidated(true);
-                xmlConverterService.getPottingReportDao().update(pottingReport);
+                if (pottingReport != null) {
+                    pottingReport.setValidated(true);
+                    if (pottingReport.getPottingController() == null) {
+                        if(file.getAssignedUser() != null){
+                            pottingReport.setPottingController(file.getAssignedUser());
+                        }
+                    }
+                    xmlConverterService.getPottingReportDao().update(pottingReport);
+                }
             }
 
             ciDocument.getCONTENT().getPVEMPOTAGE().setNUMEROPV(file.getNumeroDossier());
@@ -311,16 +318,24 @@ public class XmlConverterPve extends AbstractXmlConverter {
             ciDocument.getCONTENT().getPVEMPOTAGE().setDATEPV(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, Calendar.getInstance().getTime()));
             ciDocument.getCONTENT().getPVEMPOTAGE().setSIGNATAIRE(String.format("%s %s", file.getSignatory().getLastName(), file.getSignatory().getFirstName()));
             ciDocument.getCONTENT().setNUMEROAUTORISATION(pottingReport.getAuthorizationNumber());
-            ciDocument.getCONTENT().setDATEAUTORISATION(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, pottingReport.getAuthorizationDate()));
-            ciDocument.getCONTENT().setSUPERVISEUROPERATION(String.format("%s %s", pottingReport.getPottingController().getLastName(), pottingReport.getPottingController().getFirstName())); // ???
-            ciDocument.getCONTENT().setDATEEMPOTAGEEFFECTIF(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getPottingEndDate()));
+            if (pottingReport.getAuthorizationDate() != null) {
+                ciDocument.getCONTENT().setDATEAUTORISATION(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, pottingReport.getAuthorizationDate()));
+            }
+            if (pottingReport.getPottingController() != null) {
+                ciDocument.getCONTENT().setSUPERVISEUROPERATION(String.format("%s %s", pottingReport.getPottingController().getLastName(), pottingReport.getPottingController().getFirstName())); // ???
+            }
+            if (pottingReport.getPottingEndDate() != null) {
+                ciDocument.getCONTENT().setDATEEMPOTAGEEFFECTIF(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getPottingEndDate()));
+            }
         } else if (FlowCode.FL_CT_121.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_133.name().equals(flowToExecute.getCode())) {
             String pjType = "INVOICE";
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE().add(new PIECESJOINTES.PIECEJOINTE(pjType, "INV-" + file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
         } else if (FlowCode.FL_CT_104.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_118.name().equals(flowToExecute.getCode())) {
             PottingReport pottingReport = xmlConverterService.getPottingReportDao().findPottingReportByFile(file, false);
-            ciDocument.getCONTENT().setDATERDVFINALE(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getAppointmentDate()));
+            if (pottingReport.getAppointmentDate() != null) {
+                ciDocument.getCONTENT().setDATERDVFINALE(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_FR, pottingReport.getAppointmentDate()));
+            }
         }
         // ROUTAGE
         ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce(file));
@@ -490,6 +505,12 @@ public class XmlConverterPve extends AbstractXmlConverter {
                 pottingReport.setPottingEndDate(end);
                 if (appointment != null) {
                     appointment.setEndTime(end);
+                }
+            }
+
+            if (pottingReport.getPottingController() == null) {
+                if (file.getAssignedUser() != null) {
+                    pottingReport.setPottingController(file.getAssignedUser());
                 }
             }
 
