@@ -153,4 +153,19 @@ public class MinaderStatisticsServiceImpl implements MinaderStatisticsService {
         return result;
     }
 
+    @Override
+    public List<Pair> findDestinationCountriesByCodeORNameLike(String searchQuery) {
+        return minaderStatisticsDao.findDestinationCountriesByCodeORNameLike(searchQuery);
+    }
+
+    @Override
+    public List<Pair> findCDAsByNuiOrNameLike(String searchQuery) {
+        return minaderStatisticsDao.findCDAsByNuiOrNameLike(searchQuery);
+    }
+
+    @Override
+    public List<Pair> findTreatmentSocietiesByNuiOrNameLike(String searchQuery) {
+        return minaderStatisticsDao.findTreatmentSocietiesByNuiOrNameLike(searchQuery);
+    }
+
 }

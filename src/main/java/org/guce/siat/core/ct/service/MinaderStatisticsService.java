@@ -19,10 +19,16 @@ public interface MinaderStatisticsService {
     List<String> findMinaderProductNames();
 
     List<Pair> findCDAs();
+    
+    List<Pair> findCDAsByNuiOrNameLike(String searchQuery);
 
     List<Pair> findTreatmentSocieties();
+    
+    List<Pair> findTreatmentSocietiesByNuiOrNameLike(String searchQuery);
 
     List<Pair> findDestinationCountries();
+    
+    List<Pair> findDestinationCountriesByCodeORNameLike(String searchQuery);
 
     List<User> retrievePotentialAgents(MinaderFileTracking fileTracking);
 

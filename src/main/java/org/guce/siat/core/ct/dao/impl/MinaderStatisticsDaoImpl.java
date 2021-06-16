@@ -68,6 +68,22 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
 
         return result;
     }
+    
+    @Override
+    public List<Pair> findCDAsByNuiOrNameLike(String searchQuery) {
+
+        String queryString = "SELECT DISTINCT TNC.VALUE NIU_CDA, TRS.VALUE NOM_CDA FROM (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRANSITAIRE_NUMERO_CONTRIBUABLE') TNC JOIN (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRANSITAIRE_RAISONSOCIALE') TRS ON TRS.FILE_ID = TNC.FILE_ID WHERE (LOWER(TNC.VALUE) LIKE concat('%', concat(:searchQuery,'%')) OR LOWER(TRS.VALUE) LIKE concat('%', concat(:searchQuery,'%'))) ORDER BY TRS.VALUE ASC";
+
+        Query query = entityManager.createNativeQuery(queryString);
+        query.setParameter("searchQuery", searchQuery);
+        List<Object[]> list = query.getResultList();
+        List<Pair> result = new ArrayList<>();
+        for (Object[] line : list) {
+            result.add(new Pair((String) line[0], (String) line[1]));
+        }
+
+        return result;
+    }
 
     @Override
     public List<Pair> findTreatmentSocieties() {
@@ -84,12 +100,42 @@ public class MinaderStatisticsDaoImpl implements MinaderStatisticsDao {
 
         return result;
     }
+    
+    @Override
+    public List<Pair> findTreatmentSocietiesByNuiOrNameLike(String searchQuery) {
+
+        String queryString = "SELECT DISTINCT STC.VALUE NIU_CDA, STN.VALUE NOM_CDA FROM (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRAITEMENT_SOCIETE_TRAITEMENT_CODE') STC JOIN (SELECT FFV.VALUE, FFV.FILE_ID FROM FILE_FIELD FF JOIN FILE_FIELD_VALUE FFV ON FFV.FILE_FIELD_ID = FF.ID WHERE FF.CODE = 'TRAITEMENT_SOCIETE_TRAITEMENT_NOM') STN ON STN.FILE_ID = STC.FILE_ID WHERE (LOWER(STC.VALUE) LIKE concat('%', concat(:searchQuery,'%')) OR LOWER(STN.VALUE) LIKE concat('%', concat(:searchQuery,'%'))) ORDER BY STN.VALUE ASC";
+
+        Query query = entityManager.createNativeQuery(queryString);
+        query.setParameter("searchQuery", searchQuery);
+        List<Object[]> list = query.getResultList();
+        List<Pair> result = new ArrayList<>();
+        for (Object[] line : list) {
+            result.add(new Pair((String) line[0], (String) line[1]));
+        }
+
+        return result;
+    }
 
     @Override
     public List<Pair> findDestinationCountries() {
 
         Query query = entityManager.createNativeQuery("SELECT COUNTRY_ID_ALPHA2, COUNTRY_NAME FROM REP_COUNTRY");
 
+        List<Object[]> list = query.getResultList();
+        List<Pair> result = new ArrayList<>();
+        for (Object[] line : list) {
+            result.add(new Pair((String) line[0], (String) line[1]));
+        }
+
+        return result;
+    }
+    
+    @Override
+    public List<Pair> findDestinationCountriesByCodeORNameLike(String searchQuery) {
+
+        Query query = entityManager.createNativeQuery("SELECT COUNTRY_ID_ALPHA2, COUNTRY_NAME FROM REP_COUNTRY WHERE (LOWER(COUNTRY_ID_ALPHA2) LIKE concat('%', concat(:searchQuery,'%')) OR LOWER(COUNTRY_NAME) LIKE concat('%', concat(:searchQuery,'%'))) ORDER BY COUNTRY_NAME ASC");
+        query.setParameter("searchQuery", searchQuery);
         List<Object[]> list = query.getResultList();
         List<Pair> result = new ArrayList<>();
         for (Object[] line : list) {
