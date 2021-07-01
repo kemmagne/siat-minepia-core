@@ -599,7 +599,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 for (final Attachment attachment : attachmentListFromConvertedFile) {
                     attachment.setPath(attachmentRootFolder);
                     attachment.setFile(fileFromSiat);
-                    if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
+                    //if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
+                    if (attachmentDao.findAttachmentByFileAndAttachmentTypeAndDocumentNameAndDocumentPath(attachment.getFile(), attachment.getAttachmentType(), attachment.getDocumentName(), attachment.getPath()) == null) {
                         addedAttachments.add(attachment);
                         attachmentDao.save(attachment);
                     }
@@ -761,7 +762,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 for (final Attachment attachment : attachmentList) {
                     attachment.setFile(addedFile);
                     attachment.setPath(attachmentRootFolder);
-                    if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
+                    //if (!alfrescoDirectoryCreator.attachmentExist(attachmentRootFolder + AlfrescoDirectoriesInitializer.SLASH + attachment.getDocumentName())) {
+                    if (attachmentDao.findAttachmentByFileAndAttachmentTypeAndDocumentNameAndDocumentPath(attachment.getFile(), attachment.getAttachmentType(), attachment.getDocumentName(), attachment.getPath()) == null) {
 //                        addedAttachments.add(attachment);
                         attachmentDao.save(attachment);
                     }
