@@ -1,0 +1,59 @@
+/* 
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+/**
+ * Author:  lissouck
+ * Created: 29 août 2021
+ */
+-- Set FileTypeStep for file type : CCT_CT_E_FSTP
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Demande de modification - Fiche de supervision', 'Demande de modification - Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT st.ID FROM STEP st WHERE st.CODE ='ST_CT_51'));
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Recevabilité - Demande de modification fiche de supervision', 'Recevabilité - Demande de modification fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT st.ID FROM STEP st WHERE st.CODE ='ST_CT_52'));
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Cotation - Demande de modification fiche de supervision', 'Cotation - Demande de modification fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT st.ID FROM STEP st WHERE st.CODE ='ST_CT_53'));
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Rejet - Demande de modification fiche de supervision', 'Rejet - Demande de modification supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT st.ID FROM STEP st WHERE st.CODE ='ST_CT_54'));
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Traitement - Demande de modification fiche de supervision', 'Traitement - Demande de modification fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT st.ID FROM STEP st WHERE st.CODE ='ST_CT_55'));
+INSERT INTO FILE_TYPE_STEP (LABEL_EN,LABEL_FR,FILE_TYPE_ID,STEP_ID) VALUES ('Signature - Demande de modification fiche de supervision', 'Signature - Demande de modification fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT st.ID FROM STEP st WHERE st.CODE ='ST_CT_56'));
+
+-- Set FileTypeFlow for file type : CCT_CT_E_FSTP
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Validation Modification fiche de supervision pour signature', 'Validation Modification fiche de supervision pour signature', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_112'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Rejet Suite Recevabilité - Demande de modification fiche de supervision', 'Rejet Suite Recevabilité - Demande de modification fiche supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_108'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Rejet Suite Etude Approfondie - Demande de modification fiche de supervision', 'Rejet Suite Etude Approfondie - Demande de modification fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_113'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Signature Modification Fiche de supervision', 'Signature Modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_114'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Refus de signature modification Fiche de supervision', 'Refus de signature modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_115'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Demande de modification Fiche de supervision', 'Demande de modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_110'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Validation suite recevabilité - Demande de modification Fiche de supervision', 'Validation suite recevabilité - Demande de modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_111'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Cotation - Demande de modification Fiche de supervision', 'Cotation - Demande de modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_109'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Rejet Suite Etude Approfondie Cotation - Demande de modification Fiche de supervision', 'Rejet Suite Etude Approfondie Cotation - Demande de modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_116'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN, LABEL_FR, FILE_TYPE_ID, FLOW_ID) VALUES ('Validation Suite Etude Approfondie Cotation - Demande de modification Fiche de supervision', 'Validation Suite Etude Approfondie Cotation - Demande de modification Fiche de supervision', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'));
+
+-- Set FlowGuceSiat
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT(ID, FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES ((SELECT MAX(ID) + 1 FROM SIAT_CT.FLOW_GUCE_SIAT), 'CTE301M1', 'FL_CT_110', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'));
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT(ID, FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES ((SELECT MAX(ID) + 1 FROM SIAT_CT.FLOW_GUCE_SIAT), 'CTE301M3', 'FL_CT_108', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'));
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT(ID, FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES ((SELECT MAX(ID) + 1 FROM SIAT_CT.FLOW_GUCE_SIAT), 'CTE301M3', 'FL_CT_113', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'));
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT(ID, FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES ((SELECT MAX(ID) + 1 FROM SIAT_CT.FLOW_GUCE_SIAT), 'CTE301M3', 'FL_CT_116', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'));
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT(ID, FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES ((SELECT MAX(ID) + 1 FROM SIAT_CT.FLOW_GUCE_SIAT), 'CTE301M4', 'FL_CT_114', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'));
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT(ID, FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES ((SELECT MAX(ID) + 1 FROM SIAT_CT.FLOW_GUCE_SIAT), 'CTE301M4', 'FL_CT_117', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'));
+
+-- Set FileTypeReport 
+INSERT INTO FILE_TYPE_FLOW_REPORT (ID, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID, REPORT_CLASS_NAME, REPORT_NAME) VALUES(FILE_TYPE_FLOW_REPORT_SEQ.NEXTVAL, 'NUMERO_CCT_CT_E_FSTP', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE = 'CCT_CT_E_FSTP'), (SELECT MAX(ID) FROM FLOW WHERE CODE = 'FL_CT_114'), 3, 'org.guce.siat.web.reports.exporter.CtCctCpEExporter', 'NUMERO_CT_CCT_CP_E.pdf');
+
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Observation', '', '0', 'inputTextarea', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Comment', '', '', '');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Numéro Autorisation', '', '1', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Authorization Number', 'fileTypes=CCT_CT_E_PVE', 'NUMERO_AUTORISATION', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Supervisor Opération', '', '1', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Supervisor', 'fileTypes=CCT_CT_E_PVE', 'SUPERVISEUR_OPERATION', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Date Autorisation', '', '0', 'calendar', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Authorization Date', 'pattern=yyyyMMdd
+fileTypes=CCT_CT_E_PVE', 'DATE_AUTORISATION', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Numéro Procès Verbal', '', '1', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Potting Report Number', 'fileTypes=CCT_CT_E_PVE', 'PV_EMPOTAGE_NUMERO', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Numéro Attestation Traitement', '', '0', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Treatment Certificate Number', 'fileTypes=CCT_CT_E_PVE', 'PV_EMPOTAGE_NUMERO_AT', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Date Attestation Traitement', '', '0', 'calendar', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Treatment Certificate Date', 'pattern=yyyyMMdd
+fileTypes=CCT_CT_E_PVE', 'PV_EMPOTAGE_DATE_AT', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Numéro Autorisation', '', '1', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Authorization Number', 'fileTypes=CCT_CT_E_PVE', 'NUMERO_AUTORISATION', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Supervisor Opération', '', '1', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Supervisor', 'fileTypes=CCT_CT_E_PVE', 'SUPERVISEUR_OPERATION', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Date Autorisation', '', '0', 'calendar', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Authorization Date', 'pattern=yyyyMMdd
+fileTypes=CCT_CT_E_PVE', 'DATE_AUTORISATION', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Numéro Procès Verbal', '', '1', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Potting Report Number', 'fileTypes=CCT_CT_E_PVE', 'PV_EMPOTAGE_NUMERO', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Numéro Attestation Traitement', '', '0', 'inputText', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Treatment Certificate Number', 'fileTypes=CCT_CT_E_PVE', 'PV_EMPOTAGE_NUMERO_AT', '1');
+INSERT INTO SIAT_CT.DATA_TYPE (ID,LABEL,OBJECT_TYPE,REQUIRED,TYPE,FLOW_ID,LABEL_EN,PROPS,CODE,DISABLED) VALUES (SIAT_CT.DATA_TYPE_SEQ.NEXTVAL, 'Date Attestation Traitement', '', '0', 'calendar', (SELECT MAX(ID) FROM FLOW WHERE CODE='FL_CT_117'), 'Treatment Certificate Date', 'pattern=yyyyMMdd
+fileTypes=CCT_CT_E_PVE', 'PV_EMPOTAGE_DATE_AT', '1');
+
+
