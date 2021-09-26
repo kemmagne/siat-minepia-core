@@ -952,6 +952,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final User declarant1 = userDao.getUserByLogin("DECLARANT");
         final List<FileItem> fileItemList = fileItemDao.findFileItemsByFile(file);
+        //Les flows initiaux pour les demandes de modification
+        final List<String> updatedFirstFlows = Arrays.asList(FlowCode.FL_CT_110.name());
+        List<DataType> dataTypeOfFistFlows = null;
         for (final FileItem fileItem : fileItemList) {
             final ItemFlow itemFlow = new ItemFlow();
             itemFlow.setSender(declarant1);
@@ -963,6 +966,19 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
             fileItem.setStep(firstFlow.getToStep());
             fileItemDao.save(fileItem);
+            //Creation d'un ItemFlowData pour le flow de demande de modification en lui affectant la raison de la demande de modification envoyée par l'opération.
+            if (updatedFirstFlows.contains(firstFlow.getCode())) {
+                dataTypeOfFistFlows = firstFlow.getDataTypeList();
+                for (DataType dataTypeOfFistFlow : dataTypeOfFistFlows) {
+                    if (dataTypeOfFistFlow.getType().equalsIgnoreCase("inputTextArea") && dataTypeOfFistFlow.getLabel().equalsIgnoreCase("Observation")) {
+                        final ItemFlowData itemFlowData = new ItemFlowData();
+                        itemFlowData.setDataType(dataTypeOfFistFlow);
+                        itemFlowData.setValue(fileFieldValueDao.findValueByFileFieldAndFile("INFORMATIONS_GENERALES_OBSERVATIONS", fileItem.getFile()).getValue());
+                        itemFlowData.setItemFlow(itemFlow);
+                        itemFlowDataDao.save(itemFlowData);
+                    }
+                }
+            }
         }
 
         if (FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode())) {
