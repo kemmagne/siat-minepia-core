@@ -178,9 +178,11 @@ import org.guce.siat.core.utils.ap.item.FileItemFieldValueVtdMINSANTE;
 import org.guce.siat.core.utils.ap.item.FileItemFieldValueVtpMINSANTE;
 import org.guce.siat.core.utils.cct.file.FileFieldValueCc;
 import org.guce.siat.core.utils.cct.file.FileFieldValueCct;
+import org.guce.siat.core.utils.cct.file.FileFieldValueCctCsv;
 import org.guce.siat.core.utils.cct.file.FileFieldValueCq;
 import org.guce.siat.core.utils.cct.item.FileItemFieldValueCc;
 import org.guce.siat.core.utils.cct.item.FileItemFieldValueCct;
+import org.guce.siat.core.utils.cct.item.FileItemFieldValueCctCsv;
 import org.guce.siat.core.utils.cct.item.FileItemFieldValueCq;
 import org.guce.siat.core.utils.monotoring.file.FileFieldValueAsMINCOMMERCE;
 import org.guce.siat.core.utils.monotoring.file.FileFieldValueDeMINCOMMERCE;
@@ -200,6 +202,7 @@ import org.guce.siat.core.utils.monotoring.item.FileItemFieldValueIrmpMINCOMMERC
 import org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT.CONTENT;
 import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT;
 import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE;
+import org.guce.siat.utility.jaxb.common.PAIEMENT;
 import org.guce.siat.utility.jaxb.common.PIECESJOINTES;
 import org.guce.siat.utility.jaxb.common.PIECESJOINTES.PIECEJOINTE;
 import org.guce.siat.utility.jaxb.common.PaymentDocument;
@@ -692,7 +695,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 }
                 // in fine le bureau auquel doit être affecté le dossier est celui auquel il a été
                 // envoyé depus WEBGUCE
-                if (Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE).contains(fileConverted.getFileType().getCode())) {
+                if (Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP, FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP, FileTypeCode.CCT_CT_E_PVE).contains(fileConverted.getFileType().getCode())) {
                     final Bureau bureau1 = bureauDao.findByCode(guceSiatBureau.getSiatBureau());
                     if (bureau1 != null) {
                         fileConverted.setBureau(bureau1);
@@ -710,8 +713,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             final File addedFile = fileDao.save(fileConverted);
 
             if (addedFile != null && addedFile.getFileType() != null) {
-                FileTypeCode fileCode = addedFile.getFileType().getCode();
-                if (FileTypeCode.BSBE_MINFOF.equals(fileCode) && CollectionUtils.isNotEmpty(woodSpecifications)) {
+                FileTypeCode fileTypeCode = addedFile.getFileType().getCode();
+                if (FileTypeCode.BSBE_MINFOF.equals(fileTypeCode) && CollectionUtils.isNotEmpty(woodSpecifications)) {
                     for (WoodSpecification spec : woodSpecifications) {
                         spec.setFile(addedFile);
                         woodSpecificationDao.save(spec);
@@ -754,7 +757,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             final String formatPrefix = InformationSystemCode.CT.name();
 
-            addedFile.setReferenceSiat(new DecimalFormat(formatPrefix + "000000").format(addedFile.getId()));
+            addedFile.setReferenceSiat(new DecimalFormat(formatPrefix + StringUtils.repeat("0", 6)).format(addedFile.getId()));
             if (CollectionUtils.isNotEmpty(attachmentList)) {
 
                 attachmentRootFolder = alfrescoDirectoryCreator.generateAlfrescoPath(fileConverted) + AlfrescoDirectoriesInitializer.SLASH + fileConverted.getNumeroDossier();
@@ -954,7 +957,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         final List<FileItem> fileItemList = fileItemDao.findFileItemsByFile(file);
         //Les flows initiaux pour les demandes de modification
         final List<String> updatedFirstFlows = Arrays.asList(FlowCode.FL_CT_110.name());
-        List<DataType> dataTypeOfFistFlows = null;
+        List<DataType> dataTypeOfFistFlows;
         for (final FileItem fileItem : fileItemList) {
             final ItemFlow itemFlow = new ItemFlow();
             itemFlow.setSender(declarant1);
@@ -1304,7 +1307,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final Flow flowToExecute;
         FileTypeCode fileTypeCode = fileFromSiat.getFileType().getCode();
-        if (Arrays.asList(FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
+        if (Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_123.name());
         } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
@@ -1833,7 +1836,14 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             numEbmsMessage = returnedDocument.getMESSAGE().getNUMEROMESSAGE();
             guceSiatBureau = guceSiatBureauDao.findByBureauGuce(returnedDocument.getCONTENT().getCODEBUREAU());
             fileToReturn = convertDocumentToFileCctCT(returnedDocument);
-
+        } else if (document instanceof org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT) {
+            final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT returnedDocument = (org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT) document;
+            flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(returnedDocument.getTYPEDOCUMENT());
+            refSiat = returnedDocument.getREFERENCEDOSSIER().getREFERENCESIAT();
+            numDossier = returnedDocument.getREFERENCEDOSSIER().getNUMERODOSSIER();
+            numEbmsMessage = returnedDocument.getMESSAGE().getNUMEROMESSAGE();
+            guceSiatBureau = guceSiatBureauDao.findByBureauGuce(returnedDocument.getCONTENT().getCODEBUREAU());
+            fileToReturn = convertDocumentToFileCctCsv(returnedDocument);
         } else if (document instanceof org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) {
             xmlConverter = new XmlConverterCctCtExp(this);
             fileToReturn = xmlConverter.convertDocumentToFile(document);
@@ -2133,6 +2143,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             switch (fileType.getCode()) {
                 case CCT_CT:
                     return convertFileToDocumentCctCT(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
+                case CCT_CSV:
+                    if (!FlowCode.FL_CT_123.name().equals(flowToExecute.getCode())) {
+                        return convertFileToDocumentCctCSV(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
+                    } else {
+                        xmlConverter = new XmlConverterPayment(this);
+                        return xmlConverter.convertFileToDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
+                    }
                 case CCT_CT_E:
                 case CCT_CT_E_PVI:
                 case CCT_CT_E_ATP:
@@ -2382,6 +2399,165 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
         if (flowToExecute.getToStep() != null && BooleanUtils.isTrue(flowToExecute.getToStep().getIsFinal())) {
             ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.SIGNATAIRE());
+            ciDocument.getCONTENT().getSIGNATAIRE()
+                    .setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
+            ciDocument
+                    .getCONTENT()
+                    .getSIGNATAIRE()
+                    .setLIEU(
+                            itemFlowList.get(0).getSender().getAdministration().getLabelFr().length() <= 35 ? itemFlowList.get(0)
+                            .getSender().getAdministration().getLabelFr() : itemFlowList.get(0).getSender().getAdministration()
+                                    .getLabelFr().subSequence(0, 34).toString());
+            ciDocument
+                    .getCONTENT()
+                    .getSIGNATAIRE()
+                    .setNOM(
+                            String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender()
+                                    .getLastName()));
+            ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
+        }
+        return ciDocument;
+    }
+
+    /**
+     * Convert file to cct document.
+     *
+     * @param file the file
+     * @param fileItemList the file item list
+     * @param itemFlowList the item flow list
+     * @param flowToExecute the flow to execute
+     * @param flowGuceSiat the flow guce siat
+     * @return the serializable
+     * @throws UtilitiesException the utilities exception
+     */
+    public Serializable convertFileToDocumentCctCSV(final File file, final List<FileItem> fileItemList,
+            final List<ItemFlow> itemFlowList, final Flow flowToExecute, final FlowGuceSiat flowGuceSiat) throws UtilitiesException {
+
+        final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT ciDocument = new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT();
+
+        ciDocument.setCONTENT(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT());
+
+        if (flowGuceSiat != null) {
+            ciDocument.setTYPEDOCUMENT(flowGuceSiat.getFlowGuce());
+        }
+        if (FlowCode.FL_CT_89.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_08.name().equals(flowToExecute.getCode())) {
+            ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
+            ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
+                    .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
+        }
+//        if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
+//                && Arrays.asList(FlowCode.FL_CT_92.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_159.name()).contains(flowToExecute.getCode())) {
+//            ciDocument.setCONTENT(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT());
+//            final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
+//                    FlowCode.valueOf(flowToExecute.getCode()));
+//            final PaymentData paymentData = paymentDataDao.findPaymentDataByItemFlow(paymentFlow);
+//            ciDocument.getCONTENT().setPAIEMENT(PaiementGenerator.generatePaiement(paymentData, flowToExecute.getCode()));
+//        }
+
+        // SI FACTURATION
+        if (FlowCode.FL_CT_159.name().equals(flowToExecute.getCode())) {
+            PaymentData paymentData = getPaymentDataDao().findPaymentDataByFileItem(file.getFileItemsList().get(0));
+
+            PAIEMENT paiement = new PAIEMENT();
+
+            PAIEMENT.FACTURE facture = new PAIEMENT.FACTURE();
+
+            ItemFlow itemFlow = itemFlowList.get(0);
+
+            facture.setREFERENCEFACTURE(paymentData.getRefFacture());
+            facture.setTYPEFACTURE(file.getFileType().getPaymentFileType());
+            facture.setMONTANTHT(paymentData.getMontantHt().toString());
+            facture.setMONTANTTVA(paymentData.getMontantTva().toString());
+            facture.setMONTANTTTC(Long.toString(paymentData.getMontantHt() + paymentData.getMontantTva()));
+            facture.setOBJET(paymentData.getNatureFrais());
+            facture.setDATEFACTURATION(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS_XXX, itemFlow.getCreated()));
+
+            paiement.setFACTURE(facture);
+
+            PAIEMENT.CHARGEUR chargeur = new PAIEMENT.CHARGEUR();
+            chargeur.setNUMEROCONTRIBUABLE(file.getClient().getNumContribuable());
+            chargeur.setRAISONSOCIALE(file.getClient().getCompanyName());
+            paiement.setCHARGEUR(chargeur);
+
+            PAIEMENT.BENEFICIAIRE beneficiaire = new PAIEMENT.BENEFICIAIRE();
+            beneficiaire.setCODE(file.getBureau().getCode());
+            beneficiaire.setLIBELLE(file.getBureau().getLabelFr());
+            paiement.setBENEFICIAIRE(beneficiaire);
+
+            if (ciDocument.getCONTENT() == null) {
+                ciDocument.setCONTENT(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT());
+            }
+
+            ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.SIGNATAIRE());
+            ciDocument.getCONTENT().getSIGNATAIRE().setNOM(itemFlow.getSender().getLastName());
+            ciDocument.getCONTENT().getSIGNATAIRE().setLIEU(itemFlow.getSender().getAdministration().getLabelFr());
+            ciDocument.getCONTENT().getSIGNATAIRE().setDATE(DateUtils.formatSimpleDate(DateUtils.PATTERN_YYYY_MM_DD_HH_MM_SS, itemFlow.getCreated()));
+            ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlow.getSender().getPosition().getLabelFr());
+
+            ciDocument.getCONTENT().setPAIEMENT(paiement);
+        }
+
+        // ROUTAGE
+        ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce(file));
+
+        // REFERENCE DOSSIER
+        if (FlowCode.FL_CT_63.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_62.name().equals(flowToExecute.getCode())) {
+            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, true));
+            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0)
+                    .getNumEbmsMessageAnnulation()));
+        } else {
+            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, false));
+            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
+        }
+
+        /* DETECTER SI DECISION PAR ARTICLE OU PAR DOSSIER */
+        if (CollectionUtils.isEmpty(flowToExecute.getCopyRecipientsList())
+                && ConverterGuceSiatUtils.isDecisionDossier(file, fileItemList)) {
+            // Decision organisme
+
+            ItemFlowData itemFlowDataToInsert = null;
+
+            if (CollectionUtils.isNotEmpty(itemFlowList.get(0).getItemFlowsDataList())) {
+                itemFlowDataToInsert = itemFlowList.get(0).getItemFlowsDataList().get(0);
+            }
+            ciDocument.getCONTENT().setDECISIONORGANISME(ConverterGuceSiatUtils.generateDecisionOrganisme(flowToExecute, itemFlowDataToInsert));
+
+        } else if (CollectionUtils.isEmpty(flowToExecute.getCopyRecipientsList())) {
+            /* DECISION PAR ARTICLE */
+            final List<org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> marchandiseList = new ArrayList<>();
+            for (final FileItem fileItem : fileItemList) {
+                ItemFlowData itemFlowDataToInsert = null;
+                for (final ItemFlow itemFlow : itemFlowList) {
+                    if (itemFlow.getFileItem().getId().equals(fileItem.getId())) {
+
+                        if (CollectionUtils.isNotEmpty(itemFlow.getItemFlowsDataList())) {
+                            itemFlowDataToInsert = itemFlow.getItemFlowsDataList().get(0);
+                        }
+                        break;
+                    }
+                }
+                final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise = new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE();
+
+                marchandise.setLINENUMBER(fileItem.getLineNumber());
+                // code tarif
+                final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF codetarif = new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF();
+                final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE sousfamille = new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE();
+                codetarif.setCODENSH(fileItem.getNsh() != null ? fileItem.getNsh().getGoodsItemCode() : null);
+                sousfamille.setCODESOUSFAMILLE(fileItem.getSubfamily() != null ? fileItem.getSubfamily().getCode() : null);
+                marchandise.setCODETARIF(codetarif);
+                marchandise.setSOUSFAMILLE(sousfamille);
+                marchandise.setDECISIONORGANISME(ConverterGuceSiatUtils.generateDecisionOrganisme(flowToExecute, itemFlowDataToInsert));
+
+                marchandiseList.add(marchandise);
+
+            }
+            ciDocument.getCONTENT().setMARCHANDISES(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES());
+            ciDocument.getCONTENT().getMARCHANDISES().getMARCHANDISE().addAll(marchandiseList);
+
+        }
+        // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
+        if (flowToExecute.getToStep() != null && BooleanUtils.isTrue(flowToExecute.getToStep().getIsFinal())) {
+            ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.SIGNATAIRE());
             ciDocument.getCONTENT().getSIGNATAIRE()
                     .setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
             ciDocument
@@ -5881,6 +6057,337 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
 
             file.setFileItemsList(fileItems);
+        }
+
+        /* PIECES JOINTES */
+        final List<Attachment> attachmentList = new ArrayList<>();
+        if (document.getCONTENT() != null && document.getCONTENT().getPIECESJOINTES() != null
+                && document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE() != null) {
+            for (final PIECEJOINTE pieceJointe : document.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()) {
+                final Attachment attachment = new Attachment();
+                if (pieceJointe.getLIBELLEPJ() != null) {
+                    attachment.setDocumentName(pieceJointe.getLIBELLEPJ().trim());
+                }
+                if (StringUtils.isNotBlank(pieceJointe.getTYPEPJ())) {
+                    attachment.setAttachmentType(pieceJointe.getTYPEPJ());
+                } else {
+                    throw new ValidationException(ExceptionConstants.ATTACHEMENT);
+                }
+
+                attachmentList.add(attachment);
+            }
+
+            file.setAttachmentsList(attachmentList);
+        }
+
+        /* ADD DECISION ORGANISM POUR DOSSIER */
+        if (document.getCONTENT() != null && document.getCONTENT().getDECISIONORGANISME() != null) {
+            final DecisionOrganism decisionOrganism = new DecisionOrganism();
+            decisionOrganism.setCode(document.getCONTENT().getDECISIONORGANISME().getCODE());
+            decisionOrganism.setLibelle(document.getCONTENT().getDECISIONORGANISME().getLIBELLE());
+            decisionOrganism.setObservation(document.getCONTENT().getDECISIONORGANISME().getOBSERVATION());
+
+            decisionDossier.put(file, decisionOrganism);
+        }
+        /* PAYS */
+        if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
+                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS() != null) {
+            Country countryOfOrigin = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES()
+                    .getPAYSORIGINE().getCODEPAYS());
+            if (countryOfOrigin != null) {
+                file.setCountryOfOrigin(countryOfOrigin);
+            } else {
+                countryOfOrigin = new Country();
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null) {
+                    countryOfOrigin
+                            .setCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
+                    countryOfOrigin.setCountryName(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
+
+                    countryDao.save(countryOfOrigin);
+                    file.setCountryOfOrigin(countryOfOrigin);
+                }
+            }
+        }
+
+        if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null
+                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE().getCODEPAYS() != null) {
+            Country countryOfProvenance = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES()
+                    .getPAYSPROVENANCE().getCODEPAYS());
+            if (countryOfProvenance != null) {
+                file.setCountryOfProvenance(countryOfProvenance);
+            } else {
+                countryOfProvenance = new Country();
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE() != null) {
+                    countryOfProvenance.setCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE()
+                            .getCODEPAYS());
+                    countryOfProvenance.setCountryName(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSPROVENANCE()
+                            .getNOMPAYS());
+
+                    countryDao.save(countryOfProvenance);
+                    file.setCountryOfProvenance(countryOfProvenance);
+                }
+            }
+        }
+
+        if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
+                && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null) {
+            Country countryOfDestination = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES()
+                    .getPAYSDESTINATION().getCODEPAYS());
+            if (countryOfDestination != null) {
+                file.setCountryOfDestination(countryOfDestination);
+            } else {
+                countryOfDestination = new Country();
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null) {
+                    countryOfDestination.setCountryIdAlpha2(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION()
+                            .getCODEPAYS());
+                    countryOfDestination.setCountryName(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION()
+                            .getNOMPAYS());
+
+                    countryDao.save(countryOfDestination);
+                    file.setCountryOfProvenance(countryOfDestination);
+                }
+            }
+        }
+
+        return file;
+    }
+
+    /**
+     * Convert document to file.
+     *
+     * @param document the document
+     * @return the file cct
+     * @throws ParseException the parse exception
+     * @throws ValidationException the validation exception
+     */
+    public File convertDocumentToFileCctCsv(final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT document) throws ParseException, ValidationException {
+
+        final File file = new File();
+        final List<FileFieldValue> fileFieldValues = new ArrayList<>();
+        // Set file type
+        final FileType fileType = fileTypeDao.findByCode(FileTypeCode.CCT_CSV);
+
+        for (final FileField fileField : fileType.getFileFieldList()) {
+            final FileFieldValue fileFieldValue = FileFieldValueCctCsv.generateFileFieldValueCctCSV(file, fileField, document, applicationPropretiesService);
+            if (StringUtils.isNotBlank(fileFieldValue.getValue())) {
+                fileFieldValues.add(fileFieldValue);
+            }
+        }
+
+        file.setFileFieldValueList(fileFieldValues);
+        file.setFileType(fileType);
+
+        if (FlowCode.FL_CT_61.name().equals(flowGuceSiat.getFlowSiat())) {
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCEGUCE() != null) {
+                file.setReferenceGuceAnnulation(document.getREFERENCEDOSSIER().getREFERENCEGUCE());
+            }
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getSERVICE() != null) {
+                file.setFileTypeGuceAnnulation(document.getREFERENCEDOSSIER().getSERVICE());
+            }
+
+        } else if (FlowCode.FL_CT_93.name().equals(flowGuceSiat.getFlowSiat())) {
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCEGUCE() != null) {
+                file.setReferenceGucePaiement(document.getREFERENCEDOSSIER().getREFERENCEGUCE());
+            }
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getSERVICE() != null) {
+                file.setFileTypeGucePaiement(document.getREFERENCEDOSSIER().getSERVICE());
+            }
+
+        } else {
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCESIAT() != null
+                    && !document.getREFERENCEDOSSIER().getREFERENCESIAT().isEmpty()) {
+                file.setReferenceSiat(document.getREFERENCEDOSSIER().getREFERENCESIAT());
+            }
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCEGUCE() != null) {
+                file.setReferenceGuce(document.getREFERENCEDOSSIER().getREFERENCEGUCE());
+            }
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODEMANDE() != null) {
+                file.setNumeroDemande(document.getREFERENCEDOSSIER().getNUMERODEMANDE());
+            }
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODOSSIER() != null) {
+                file.setNumeroDossier(document.getREFERENCEDOSSIER().getNUMERODOSSIER());
+            }
+
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getDATECREATION() != null) {
+                file.setCreatedDate(DATE_FORMAT.parse(document.getREFERENCEDOSSIER().getDATECREATION()));
+            }
+            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getSERVICE() != null) {
+                file.setFileTypeGuce(document.getREFERENCEDOSSIER().getSERVICE());
+            }
+            if (document.getROUTAGE() != null && document.getROUTAGE().getEMETTEUR() != null) {
+                file.setEmetteur(document.getROUTAGE().getEMETTEUR());
+            }
+
+            if (document.getROUTAGE() != null && document.getROUTAGE().getDESTINATAIRE() != null) {
+                file.setDestinataire(document.getROUTAGE().getDESTINATAIRE());
+            }
+
+        }
+
+        /* ADD CLIENT */
+        if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                && document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE() != null) {
+            Company client = companyDao.findCompanyByNumContribuable(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
+            if (client != null) {
+
+                file.setClient(client);
+            } else {
+                client = new Company();
+                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null) {
+                    client.setNumContribuable(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
+                    client.setCompanyName(document.getCONTENT().getCLIENT().getRAISONSOCIALE());
+                    client.setCompanyType(CompanyType.DECLARANT);
+                    if (document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE() != null) {
+                        client.setCommerceApprovalRegistrationNumberFile(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                                .getNUMEROINSCRIPTIONFICHIER());
+                        client.setCommerceApprovalObtainedDate(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                                .getDATEOBTENTION());
+                        client.setCommerceApprovalValidityDate(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                                .getDATEVALIDITE());
+                        client.setCommerceApprovalNumberTraderMap(document.getCONTENT().getCLIENT().getAGREMENTCOMMERCE()
+                                .getNUMEROCARTECOMMERCANT());
+                    }
+                    if (document.getCONTENT().getCLIENT().getAGREMENTMETIER() != null) {
+                        client.setBusinessApprovalType(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getTYPEAGREMENT());
+                        client.setBusinessApprovalRegistrationNumber(document.getCONTENT().getCLIENT().getAGREMENTMETIER()
+                                .getNUMEROAGREMENT());
+                        client.setBusinessApprovalDate(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getDATEAGREMENT());
+                        client.setBusinessApprovalValidityDate(document.getCONTENT().getCLIENT().getAGREMENTMETIER().getDATEVALIDITE());
+                    }
+                    if (document.getCONTENT().getCLIENT().getPERMIS() != null) {
+                        client.setPermitNumber(document.getCONTENT().getCLIENT().getPERMIS().getNUMEROPERMIS());
+                        client.setPermitObtainingDate(document.getCONTENT().getCLIENT().getPERMIS().getDATEOBTENTION());
+                        client.setPermitApprovalDate(document.getCONTENT().getCLIENT().getPERMIS().getDATEVALIDITE());
+                        client.setPermitType(document.getCONTENT().getCLIENT().getPERMIS().getTYPE());
+                    }
+                    client.setProfession(document.getCONTENT().getCLIENT().getPROFESSION());
+                    client.setTradeRegisterNumber(document.getCONTENT().getCLIENT().getNUMEROREGISTRECOMMERCE());
+                    client.setcNI(document.getCONTENT().getCLIENT().getCNI());
+                    if (document.getCONTENT().getCLIENT().getADRESSE() != null) {
+                        client.setFirstAddress(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1());
+                        client.setSecondAddress(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2());
+                        client.setPostalCode(document.getCONTENT().getCLIENT().getADRESSE().getBP());
+                        client.setCity(document.getCONTENT().getCLIENT().getADRESSE().getVILLE());
+                        client.setEmail(document.getCONTENT().getCLIENT().getADRESSE().getEMAIL());
+                        client.setWebSite(document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB());
+                        // Get country from database
+                    }
+                    if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                            && document.getCONTENT().getCLIENT().getADRESSE() != null
+                            && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
+                            && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
+                        Country country = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getCLIENT().getADRESSE()
+                                .getPAYSADRESSE().getCODEPAYS());
+                        if (country != null) {
+                            client.setCountry(country);
+                        } else {
+                            country = new Country();
+                            if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
+                                    && document.getCONTENT().getCLIENT().getADRESSE() != null
+                                    && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null) {
+                                country.setCountryIdAlpha2(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS());
+                                country.setCountryName(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS());
+                                countryDao.save(country);
+                                client.setCountry(country);
+                            }
+                        }
+                    }
+                    if (document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null) {
+                        client.setPhone(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() != null ? "("
+                                + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() + ")"
+                                + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO() : StringUtils.EMPTY
+                                + document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO());
+                    }
+                    if (document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null) {
+                        client.setMobile(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() != null ? "("
+                                + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() + ")"
+                                + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO() : StringUtils.EMPTY
+                                + document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO());
+                    }
+                    if (document.getCONTENT().getCLIENT().getFAX() != null) {
+                        client.setFax(document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() != null ? "("
+                                + document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() + ")"
+                                + document.getCONTENT().getCLIENT().getFAX().getNUMERO() : StringUtils.EMPTY
+                                + document.getCONTENT().getCLIENT().getFAX().getNUMERO());
+                    }
+                }
+                companyDao.save(client);
+                file.setClient(client);
+            }
+        }
+
+        /* MARCHANDISES */
+        final List<FileItem> fileItems = new ArrayList<>();
+        if (document.getCONTENT() != null && document.getCONTENT().getMARCHANDISES() != null
+                && document.getCONTENT().getMARCHANDISES().getMARCHANDISE() != null) {
+            for (final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise : document.getCONTENT().getMARCHANDISES().getMARCHANDISE()) {
+                final FileItem fileItem = new FileItem();
+                final List<FileItemFieldValue> fileItemFieldValues = new ArrayList<>();
+                for (final FileItemField fileItemField : fileType.getFileItemFieldList()) {
+
+                    final FileItemFieldValue fileItemFieldValue = FileItemFieldValueCctCsv.generateFileItemFieldValueCctCSV(fileItem, fileItemField, marchandise);
+                    if (StringUtils.isNotBlank(fileItemFieldValue.getValue())) {
+
+                        fileItemFieldValues.add(fileItemFieldValue);
+                    }
+
+                }
+                fileItem.setFileItemFieldValueList(fileItemFieldValues);
+
+                if (document.getMESSAGE() != null && document.getMESSAGE().getNUMEROMESSAGE() != null) {
+                    fileItem.setNumEbmsMessage(document.getMESSAGE().getNUMEROMESSAGE());
+                }
+
+                if (marchandise.getLINENUMBER() != null) {
+
+                    fileItem.setLineNumber(marchandise.getLINENUMBER());
+
+                }
+
+                if (marchandise.getQUANTITE() != null) {
+
+                    fileItem.setQuantity(marchandise.getQUANTITE());
+                }
+
+                if (marchandise.getVALEURFOBDEVISE() != null) {
+
+                    fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
+                }
+
+                //				ServicesItem subfamily = null;
+                if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH())) {
+                    fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
+                    // ADD Decisions des articles
+                    if (marchandise.getDECISIONORGANISME() != null) {
+                        final DecisionOrganism decisionOrganism = new DecisionOrganism();
+                        decisionOrganism.setCode(marchandise.getDECISIONORGANISME().getCODE());
+                        decisionOrganism.setLibelle(marchandise.getDECISIONORGANISME().getLIBELLE());
+                        decisionOrganism.setObservation(marchandise.getDECISIONORGANISME().getOBSERVATION());
+
+                        decisionArticles.put(fileItem, decisionOrganism);
+                    }
+
+                    fileItems.add(fileItem);
+
+                }
+
+                file.setFileItemsList(fileItems);
+            }
+
         }
 
         /* PIECES JOINTES */

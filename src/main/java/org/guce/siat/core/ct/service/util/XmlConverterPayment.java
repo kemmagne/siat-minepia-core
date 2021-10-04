@@ -43,7 +43,7 @@ public class XmlConverterPayment extends AbstractXmlConverter {
     @Override
     public File convertDocumentToFile(final Serializable serializable) throws ParseException, ValidationException {
 
-        final PaymentDocument document = checkInstance(serializable);
+        PaymentDocument document = checkInstance(serializable);
 
         initXmlConverterService(document.getREFERENCEDOSSIER(), document.getMESSAGE(), document.getTYPEDOCUMENT(), null);
 

@@ -487,6 +487,20 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                     document = (org.guce.siat.jaxb.cct.CC_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
+                case CCT_CSV: {
+                    if (!FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat())) {
+                        final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CSV.JAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    } else {
+                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    }
+                    break;
+                }
                 case CQ_CT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CQ_CT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document

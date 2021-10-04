@@ -533,8 +533,7 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
             if (CollectionUtils.isNotEmpty(itemFlowList.get(0).getItemFlowsDataList())) {
                 itemFlowDataToInsert = itemFlowList.get(0).getItemFlowsDataList().get(0);
             }
-            ciDocument.getCONTENT().setDECISIONORGANISME(
-                    ConverterGuceSiatUtils.generateDecisionOrganisme(flowToExecute, itemFlowDataToInsert));
+            ciDocument.getCONTENT().setDECISIONORGANISME(ConverterGuceSiatUtils.generateDecisionOrganisme(flowToExecute, itemFlowDataToInsert));
 
         } else if (CollectionUtils.isEmpty(flowToExecute.getCopyRecipientsList())) {
             /* DECISION PAR ARTICLE */

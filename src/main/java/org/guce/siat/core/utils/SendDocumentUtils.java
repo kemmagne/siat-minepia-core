@@ -394,6 +394,17 @@ public final class SendDocumentUtils {
             jaxbMarshallerz.marshal(document, output);
             documentType = document.getTYPEDOCUMENT();
             service = document.getREFERENCEDOSSIER().getSERVICE();
+        } else if (documentSerializable instanceof org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT) {
+            jaxbContext = org.guce.siat.jaxb.cct.CCT_CSV.JAXBContextCreator.getInstance();
+            final org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT document = (org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT) documentSerializable;
+            jaxbMarshallerz = jaxbContext.createMarshaller();
+
+            final JAXBSource source = new JAXBSource(jaxbContext, document);
+            validateDocument(source, ConstantsXsdPaths.CCT_CSV_XSD_PATH);
+
+            jaxbMarshallerz.marshal(document, output);
+            documentType = document.getTYPEDOCUMENT();
+            service = document.getREFERENCEDOSSIER().getSERVICE();
         } else if (documentSerializable instanceof org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) {
             jaxbContext = org.guce.siat.jaxb.cct.CCT_CT_E.JAXBContextCreator.getInstance();
             final org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT document = (org.guce.siat.jaxb.cct.CCT_CT_E.DOCUMENT) documentSerializable;
