@@ -7,13 +7,17 @@
 package org.guce.siat.jaxb.cct.CCT_CSV;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.datatype.XMLGregorianCalendar;
 import org.guce.siat.utility.jaxb.common.PIECESJOINTES;
 
 /**
@@ -5481,24 +5485,23 @@ public class DOCUMENT implements Serializable {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "decisionorganisme",
         "codebureau",
         "typedemande",
         "client",
         "transitaire",
-        "signataire",
-        "destinataire",
+        "exportateur",
         "declarationdouane",
         "informationsgenerales",
-        "paiement",
+        "facture",
         "marchandises",
-        "observations",
+        "minepiainfo",
+        "paiement",
+        "signataire",
+        "decisionorganisme",
         "piecesjointes"
     })
     public static class CONTENT {
 
-        @XmlElement(name = "DECISION_ORGANISME")
-        protected org.guce.siat.utility.jaxb.common.DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "CODE_BUREAU")
         protected String codebureau;
         @XmlElement(name = "TYPE_DEMANDE")
@@ -5507,22 +5510,26 @@ public class DOCUMENT implements Serializable {
         protected DOCUMENT.CONTENT.CLIENT client;
         @XmlElement(name = "TRANSITAIRE")
         protected DOCUMENT.CONTENT.TRANSITAIRE transitaire;
-        @XmlElement(name = "SIGNATAIRE")
-        protected DOCUMENT.CONTENT.SIGNATAIRE signataire;
-        @XmlElement(name = "DESTINATAIRE")
-        protected DOCUMENT.CONTENT.DESTINATAIRE destinataire;
+        @XmlElement(name = "EXPORTATEUR")
+        protected DOCUMENT.CONTENT.EXPORTATEUR exportateur;
         @XmlElement(name = "DECLARATION_DOUANE")
         protected DOCUMENT.CONTENT.DECLARATIONDOUANE declarationdouane;
         @XmlElement(name = "INFORMATIONS_GENERALES")
         protected DOCUMENT.CONTENT.INFORMATIONSGENERALES informationsgenerales;
-        @XmlElement(name = "PAIEMENT")
-        protected org.guce.siat.utility.jaxb.common.PAIEMENT paiement;
+        @XmlElement(name = "FACTURE")
+        protected List<DOCUMENT.CONTENT.FACTURE> facture;
         @XmlElement(name = "MARCHANDISES")
         protected DOCUMENT.CONTENT.MARCHANDISES marchandises;
-        @XmlElement(name = "OBSERVATIONS")
-        protected String observations;
+        @XmlElement(name = "MINEPIA_INFO")
+        protected DOCUMENT.CONTENT.MINEPIAINFO minepiainfo;
+        @XmlElement(name = "PAIEMENT")
+        protected org.guce.siat.utility.jaxb.common.PAIEMENT paiement;
+        @XmlElement(name = "SIGNATAIRE")
+        protected DOCUMENT.CONTENT.SIGNATAIRE signataire;
+        @XmlElement(name = "DECISION_ORGANISME")
+        protected org.guce.siat.utility.jaxb.common.DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "PIECES_JOINTES")
-        protected PIECESJOINTES piecesjointes;
+        protected org.guce.siat.utility.jaxb.common.PIECESJOINTES piecesjointes;
 
         /**
          * Obtient la valeur de la propriété decisionorganisme.
@@ -5627,6 +5634,26 @@ public class DOCUMENT implements Serializable {
         }
 
         /**
+         * Obtient la valeur de la propriété exportateur.
+         *
+         * @return possible object is {@link DOCUMENT.CONTENT.EXPORTATEUR }
+         *
+         */
+        public DOCUMENT.CONTENT.EXPORTATEUR getEXPORTATEUR() {
+            return exportateur;
+        }
+
+        /**
+         * Définit la valeur de la propriété exportateur.
+         *
+         * @param value allowed object is {@link DOCUMENT.CONTENT.EXPORTATEUR }
+         *
+         */
+        public void setEXPORTATEUR(DOCUMENT.CONTENT.EXPORTATEUR value) {
+            this.exportateur = value;
+        }
+
+        /**
          * Obtient la valeur de la propriété signataire.
          *
          * @return possible object is {@link DOCUMENT.CONTENT.SIGNATAIRE }
@@ -5644,26 +5671,6 @@ public class DOCUMENT implements Serializable {
          */
         public void setSIGNATAIRE(DOCUMENT.CONTENT.SIGNATAIRE value) {
             this.signataire = value;
-        }
-
-        /**
-         * Obtient la valeur de la propriété destinataire.
-         *
-         * @return possible object is {@link DOCUMENT.CONTENT.DESTINATAIRE }
-         *
-         */
-        public DOCUMENT.CONTENT.DESTINATAIRE getDESTINATAIRE() {
-            return destinataire;
-        }
-
-        /**
-         * Définit la valeur de la propriété destinataire.
-         *
-         * @param value allowed object is {@link DOCUMENT.CONTENT.DESTINATAIRE }
-         *
-         */
-        public void setDESTINATAIRE(DOCUMENT.CONTENT.DESTINATAIRE value) {
-            this.destinataire = value;
         }
 
         /**
@@ -5711,6 +5718,35 @@ public class DOCUMENT implements Serializable {
         }
 
         /**
+         * Gets the value of the facture property.
+         *
+         * <p>
+         * This accessor method returns a reference to the live list, not a
+         * snapshot. Therefore any modification you make to the returned list
+         * will be present inside the JAXB object. This is why there is not a
+         * <CODE>set</CODE> method for the facture property.
+         *
+         * <p>
+         * For example, to add a new item, do as follows:
+         * <pre>
+         *    getFACTURE().add(newItem);
+         * </pre>
+         *
+         *
+         * <p>
+         * Objects of the following type(s) are allowed in the list
+         * {@link DOCUMENT.CONTENT.FACTURE }
+         *
+         *
+         */
+        public List<DOCUMENT.CONTENT.FACTURE> getFACTURE() {
+            if (facture == null) {
+                facture = new ArrayList<>();
+            }
+            return this.facture;
+        }
+
+        /**
          * Obtient la valeur de la propriété paiement.
          *
          * @return possible object is {@link DOCUMENT.CONTENT.PAIEMENT }
@@ -5751,23 +5787,23 @@ public class DOCUMENT implements Serializable {
         }
 
         /**
-         * Obtient la valeur de la propriété observations.
+         * Obtient la valeur de la propriété minepiainfo.
          *
-         * @return possible object is {@link String }
+         * @return possible object is {@link DOCUMENT.CONTENT.MINEPIAINFO }
          *
          */
-        public String getOBSERVATIONS() {
-            return observations;
+        public DOCUMENT.CONTENT.MINEPIAINFO getMINEPIAINFO() {
+            return minepiainfo;
         }
 
         /**
-         * Définit la valeur de la propriété observations.
+         * Définit la valeur de la propriété minepiainfo.
          *
-         * @param value allowed object is {@link String }
+         * @param value allowed object is {@link DOCUMENT.CONTENT.MINEPIAINFO }
          *
          */
-        public void setOBSERVATIONS(String value) {
-            this.observations = value;
+        public void setMINEPIAINFO(DOCUMENT.CONTENT.MINEPIAINFO value) {
+            this.minepiainfo = value;
         }
 
         /**
@@ -5789,6 +5825,347 @@ public class DOCUMENT implements Serializable {
          */
         public void setPIECESJOINTES(PIECESJOINTES value) {
             this.piecesjointes = value;
+        }
+
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;element name="MINEPIA_DATE_DEPART" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_NO_PERMIS_CITES" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_TEMPERATURE_PRODUIT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_NOMBRE_UNITES_EMBALLES" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_NATURE_EMBALLAGE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_ID_CONTENEURS_SCELLES" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_POUR" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_ESPECE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_NATURE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_TRAITEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_NB_COLIS" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_NB_APPROUVES" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *         &lt;element name="MINEPIA_MARCHANDISE_POIDS_NET" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "minepiadatedepart",
+            "minepianopermiscites",
+            "minepiatemperatureproduit",
+            "minepianombreunitesemballes",
+            "minepianatureemballage",
+            "minepiaidconteneursscelles",
+            "minepiamarchandisepour",
+            "minepiamarchandiseespece",
+            "minepiamarchandisenature",
+            "minepiamarchandisetraitement",
+            "minepiamarchandisenbcolis",
+            "minepiamarchandisenbapprouves",
+            "minepiamarchandisepoidsnet"
+        })
+        public static class MINEPIAINFO {
+
+            @XmlElement(name = "MINEPIA_DATE_DEPART")
+            protected String minepiadatedepart;
+            @XmlElement(name = "MINEPIA_NO_PERMIS_CITES")
+            protected String minepianopermiscites;
+            @XmlElement(name = "MINEPIA_TEMPERATURE_PRODUIT")
+            protected String minepiatemperatureproduit;
+            @XmlElement(name = "MINEPIA_NOMBRE_UNITES_EMBALLES")
+            protected String minepianombreunitesemballes;
+            @XmlElement(name = "MINEPIA_NATURE_EMBALLAGE")
+            protected String minepianatureemballage;
+            @XmlElement(name = "MINEPIA_ID_CONTENEURS_SCELLES")
+            protected String minepiaidconteneursscelles;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_POUR")
+            protected String minepiamarchandisepour;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_ESPECE")
+            protected String minepiamarchandiseespece;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_NATURE")
+            protected String minepiamarchandisenature;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_TRAITEMENT")
+            protected String minepiamarchandisetraitement;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_NB_COLIS")
+            protected BigInteger minepiamarchandisenbcolis;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_NB_APPROUVES")
+            protected String minepiamarchandisenbapprouves;
+            @XmlElement(name = "MINEPIA_MARCHANDISE_POIDS_NET")
+            protected Double minepiamarchandisepoidsnet;
+
+            /**
+             * Obtient la valeur de la propriété minepiadatedepart.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIADATEDEPART() {
+                return minepiadatedepart;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiadatedepart.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIADATEDEPART(String value) {
+                this.minepiadatedepart = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepianopermiscites.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIANOPERMISCITES() {
+                return minepianopermiscites;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepianopermiscites.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIANOPERMISCITES(String value) {
+                this.minepianopermiscites = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiatemperatureproduit.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIATEMPERATUREPRODUIT() {
+                return minepiatemperatureproduit;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiatemperatureproduit.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIATEMPERATUREPRODUIT(String value) {
+                this.minepiatemperatureproduit = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepianombreunitesemballes.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIANOMBREUNITESEMBALLES() {
+                return minepianombreunitesemballes;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepianombreunitesemballes.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIANOMBREUNITESEMBALLES(String value) {
+                this.minepianombreunitesemballes = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepianatureemballage.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIANATUREEMBALLAGE() {
+                return minepianatureemballage;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepianatureemballage.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIANATUREEMBALLAGE(String value) {
+                this.minepianatureemballage = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiaidconteneursscelles.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIAIDCONTENEURSSCELLES() {
+                return minepiaidconteneursscelles;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiaidconteneursscelles.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIAIDCONTENEURSSCELLES(String value) {
+                this.minepiaidconteneursscelles = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandisepour.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIAMARCHANDISEPOUR() {
+                return minepiamarchandisepour;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandisepour.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIAMARCHANDISEPOUR(String value) {
+                this.minepiamarchandisepour = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandiseespece.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIAMARCHANDISEESPECE() {
+                return minepiamarchandiseespece;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandiseespece.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIAMARCHANDISEESPECE(String value) {
+                this.minepiamarchandiseespece = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandisenature.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIAMARCHANDISENATURE() {
+                return minepiamarchandisenature;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandisenature.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIAMARCHANDISENATURE(String value) {
+                this.minepiamarchandisenature = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandisetraitement.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIAMARCHANDISETRAITEMENT() {
+                return minepiamarchandisetraitement;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandisetraitement.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIAMARCHANDISETRAITEMENT(String value) {
+                this.minepiamarchandisetraitement = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandisenbcolis.
+             *
+             * @return possible object is {@link BigInteger }
+             *
+             */
+            public BigInteger getMINEPIAMARCHANDISENBCOLIS() {
+                return minepiamarchandisenbcolis;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandisenbcolis.
+             *
+             * @param value allowed object is {@link BigInteger }
+             *
+             */
+            public void setMINEPIAMARCHANDISENBCOLIS(BigInteger value) {
+                this.minepiamarchandisenbcolis = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandisenbapprouves.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getMINEPIAMARCHANDISENBAPPROUVES() {
+                return minepiamarchandisenbapprouves;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandisenbapprouves.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setMINEPIAMARCHANDISENBAPPROUVES(String value) {
+                this.minepiamarchandisenbapprouves = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété minepiamarchandisepoidsnet.
+             *
+             * @return possible object is {@link Double }
+             *
+             */
+            public Double getMINEPIAMARCHANDISEPOIDSNET() {
+                return minepiamarchandisepoidsnet;
+            }
+
+            /**
+             * Définit la valeur de la propriété minepiamarchandisepoidsnet.
+             *
+             * @param value allowed object is {@link Double }
+             *
+             */
+            public void setMINEPIAMARCHANDISEPOIDSNET(Double value) {
+                this.minepiamarchandisepoidsnet = value;
+            }
+
         }
 
         /**
@@ -7902,18 +8279,18 @@ public class DOCUMENT implements Serializable {
             "telephonemobile",
             "fax"
         })
-        public static class DESTINATAIRE {
+        public static class EXPORTATEUR {
 
             @XmlElement(name = "RAISON_SOCIALE")
             protected String raisonsociale;
             @XmlElement(name = "ADRESSE")
-            protected DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE adresse;
+            protected DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE adresse;
             @XmlElement(name = "TELEPHONE_FIXE")
-            protected DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEFIXE telephonefixe;
+            protected DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE telephonefixe;
             @XmlElement(name = "TELEPHONE_MOBILE")
-            protected DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEMOBILE telephonemobile;
+            protected DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE telephonemobile;
             @XmlElement(name = "FAX")
-            protected DOCUMENT.CONTENT.DESTINATAIRE.FAX fax;
+            protected DOCUMENT.CONTENT.EXPORTATEUR.FAX fax;
 
             /**
              * Obtient la valeur de la propriété raisonsociale.
@@ -7939,10 +8316,10 @@ public class DOCUMENT implements Serializable {
              * Obtient la valeur de la propriété adresse.
              *
              * @return possible object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE }
              *
              */
-            public DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE getADRESSE() {
+            public DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE getADRESSE() {
                 return adresse;
             }
 
@@ -7950,10 +8327,10 @@ public class DOCUMENT implements Serializable {
              * Définit la valeur de la propriété adresse.
              *
              * @param value allowed object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE }
              *
              */
-            public void setADRESSE(DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE value) {
+            public void setADRESSE(DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE value) {
                 this.adresse = value;
             }
 
@@ -7961,10 +8338,10 @@ public class DOCUMENT implements Serializable {
              * Obtient la valeur de la propriété telephonefixe.
              *
              * @return possible object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEFIXE }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE }
              *
              */
-            public DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEFIXE getTELEPHONEFIXE() {
+            public DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE getTELEPHONEFIXE() {
                 return telephonefixe;
             }
 
@@ -7972,10 +8349,10 @@ public class DOCUMENT implements Serializable {
              * Définit la valeur de la propriété telephonefixe.
              *
              * @param value allowed object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEFIXE }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE }
              *
              */
-            public void setTELEPHONEFIXE(DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEFIXE value) {
+            public void setTELEPHONEFIXE(DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE value) {
                 this.telephonefixe = value;
             }
 
@@ -7983,10 +8360,10 @@ public class DOCUMENT implements Serializable {
              * Obtient la valeur de la propriété telephonemobile.
              *
              * @return possible object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEMOBILE }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE }
              *
              */
-            public DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEMOBILE getTELEPHONEMOBILE() {
+            public DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE getTELEPHONEMOBILE() {
                 return telephonemobile;
             }
 
@@ -7994,10 +8371,10 @@ public class DOCUMENT implements Serializable {
              * Définit la valeur de la propriété telephonemobile.
              *
              * @param value allowed object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEMOBILE }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE }
              *
              */
-            public void setTELEPHONEMOBILE(DOCUMENT.CONTENT.DESTINATAIRE.TELEPHONEMOBILE value) {
+            public void setTELEPHONEMOBILE(DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE value) {
                 this.telephonemobile = value;
             }
 
@@ -8005,10 +8382,10 @@ public class DOCUMENT implements Serializable {
              * Obtient la valeur de la propriété fax.
              *
              * @return possible object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.FAX }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.FAX }
              *
              */
-            public DOCUMENT.CONTENT.DESTINATAIRE.FAX getFAX() {
+            public DOCUMENT.CONTENT.EXPORTATEUR.FAX getFAX() {
                 return fax;
             }
 
@@ -8016,10 +8393,10 @@ public class DOCUMENT implements Serializable {
              * Définit la valeur de la propriété fax.
              *
              * @param value allowed object is
-             *     {@link DOCUMENT.CONTENT.DESTINATAIRE.FAX }
+             *     {@link DOCUMENT.CONTENT.EXPORTATEUR.FAX }
              *
              */
-            public void setFAX(DOCUMENT.CONTENT.DESTINATAIRE.FAX value) {
+            public void setFAX(DOCUMENT.CONTENT.EXPORTATEUR.FAX value) {
                 this.fax = value;
             }
 
@@ -8129,7 +8506,7 @@ public class DOCUMENT implements Serializable {
                 @XmlElement(name = "BP")
                 protected String bp;
                 @XmlElement(name = "PAYS_ADRESSE")
-                protected DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE.PAYSADRESSE paysadresse;
+                protected DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE paysadresse;
                 @XmlElement(name = "VILLE")
                 protected String ville;
                 @XmlElement(name = "EMAIL")
@@ -8201,10 +8578,10 @@ public class DOCUMENT implements Serializable {
                  * Obtient la valeur de la propriété paysadresse.
                  *
                  * @return possible object is
-                 *     {@link DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE.PAYSADRESSE }
+                 *     {@link DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE }
                  *
                  */
-                public DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE.PAYSADRESSE getPAYSADRESSE() {
+                public DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE getPAYSADRESSE() {
                     return paysadresse;
                 }
 
@@ -8212,10 +8589,10 @@ public class DOCUMENT implements Serializable {
                  * Définit la valeur de la propriété paysadresse.
                  *
                  * @param value allowed object is
-                 *     {@link DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE.PAYSADRESSE }
+                 *     {@link DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE }
                  *
                  */
-                public void setPAYSADRESSE(DOCUMENT.CONTENT.DESTINATAIRE.ADRESSE.PAYSADRESSE value) {
+                public void setPAYSADRESSE(DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE value) {
                     this.paysadresse = value;
                 }
 
@@ -8633,6 +9010,1359 @@ public class DOCUMENT implements Serializable {
                  */
                 public void setNUMERO(String value) {
                     this.numero = value;
+                }
+
+            }
+
+        }
+
+        /**
+         * <p>
+         * Classe Java pour anonymous complex type.
+         *
+         * <p>
+         * Le fragment de schéma suivant indique le contenu attendu figurant
+         * dans cette classe.
+         *
+         * <pre>
+         * &lt;complexType>
+         *   &lt;complexContent>
+         *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *       &lt;sequence>
+         *         &lt;sequence>
+         *           &lt;element name="NUMERO_FACTURE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="DATE_FACTURE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="TYPE_FACTURE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="EMETTEUR" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="TITULAIRE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="MONTANT_HT" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/>
+         *           &lt;element name="AUTRE_MONTANT" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/>
+         *           &lt;element name="OBJET" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="ETAT_TAXE" type="{http://www.w3.org/2001/XMLSchema}boolean" minOccurs="0"/>
+         *           &lt;element name="TVA" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="MONTANT_TOTAL" type="{http://www.w3.org/2001/XMLSchema}float" minOccurs="0"/>
+         *           &lt;element name="SIGNATAIRE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="OBSERVATION_FACTURE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *           &lt;element name="PAIEMENTS" minOccurs="0">
+         *             &lt;complexType>
+         *               &lt;complexContent>
+         *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                   &lt;sequence>
+         *                     &lt;element name="PAIEMENT" maxOccurs="unbounded" minOccurs="0">
+         *                       &lt;complexType>
+         *                         &lt;complexContent>
+         *                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                             &lt;sequence>
+         *                               &lt;element name="MONTANT_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+         *                               &lt;element name="DATE_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+         *                               &lt;element name="MODE_PAIEMENT" minOccurs="0">
+         *                                 &lt;complexType>
+         *                                   &lt;complexContent>
+         *                                     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                                       &lt;sequence>
+         *                                         &lt;element name="CODE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                                         &lt;element name="LIBELLE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+         *                                       &lt;/sequence>
+         *                                     &lt;/restriction>
+         *                                   &lt;/complexContent>
+         *                                 &lt;/complexType>
+         *                               &lt;/element>
+         *                               &lt;element name="OBJET_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *                               &lt;element name="OBSERVATION_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *                               &lt;element name="SIGNATAIRE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *                               &lt;element name="ETAT_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *                               &lt;element name="NUMERO_RECU" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+         *                             &lt;/sequence>
+         *                           &lt;/restriction>
+         *                         &lt;/complexContent>
+         *                       &lt;/complexType>
+         *                     &lt;/element>
+         *                   &lt;/sequence>
+         *                 &lt;/restriction>
+         *               &lt;/complexContent>
+         *             &lt;/complexType>
+         *           &lt;/element>
+         *           &lt;element name="LIGNES_FACTURE" minOccurs="0">
+         *             &lt;complexType>
+         *               &lt;complexContent>
+         *                 &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                   &lt;sequence>
+         *                     &lt;element name="LIGNE_FACTURE" maxOccurs="unbounded" minOccurs="0">
+         *                       &lt;complexType>
+         *                         &lt;complexContent>
+         *                           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                             &lt;sequence>
+         *                               &lt;element name="NUMERO_LIGNE" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="NOM" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="DESCRIPTION" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="255"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="QUANTITE" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="UNITE" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="PRIX_UNITAIRE" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="MONTANT_HT" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="MONTANT_TVA" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                               &lt;element name="MONTANT_TTC" minOccurs="0">
+         *                                 &lt;simpleType>
+         *                                   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                                     &lt;maxLength value="35"/>
+         *                                   &lt;/restriction>
+         *                                 &lt;/simpleType>
+         *                               &lt;/element>
+         *                             &lt;/sequence>
+         *                           &lt;/restriction>
+         *                         &lt;/complexContent>
+         *                       &lt;/complexType>
+         *                     &lt;/element>
+         *                   &lt;/sequence>
+         *                 &lt;/restriction>
+         *               &lt;/complexContent>
+         *             &lt;/complexType>
+         *           &lt;/element>
+         *         &lt;/sequence>
+         *       &lt;/sequence>
+         *     &lt;/restriction>
+         *   &lt;/complexContent>
+         * &lt;/complexType>
+         * </pre>
+         *
+         *
+         */
+        @XmlAccessorType(XmlAccessType.FIELD)
+        @XmlType(name = "", propOrder = {
+            "numerofacture",
+            "datefacture",
+            "typefacture",
+            "emetteur",
+            "titulaire",
+            "montantht",
+            "autremontant",
+            "objet",
+            "etattaxe",
+            "tva",
+            "montanttotal",
+            "signataire",
+            "observationfacture",
+            "paiements",
+            "lignesfacture"
+        })
+        public static class FACTURE {
+
+            @XmlElement(name = "NUMERO_FACTURE")
+            protected String numerofacture;
+            @XmlElement(name = "DATE_FACTURE")
+            protected String datefacture;
+            @XmlElement(name = "TYPE_FACTURE")
+            protected String typefacture;
+            @XmlElement(name = "EMETTEUR")
+            protected String emetteur;
+            @XmlElement(name = "TITULAIRE")
+            protected String titulaire;
+            @XmlElement(name = "MONTANT_HT")
+            protected Float montantht;
+            @XmlElement(name = "AUTRE_MONTANT")
+            protected Float autremontant;
+            @XmlElement(name = "OBJET")
+            protected String objet;
+            @XmlElement(name = "ETAT_TAXE")
+            protected Boolean etattaxe;
+            @XmlElement(name = "TVA")
+            protected String tva;
+            @XmlElement(name = "MONTANT_TOTAL")
+            protected Float montanttotal;
+            @XmlElement(name = "SIGNATAIRE")
+            protected String signataire;
+            @XmlElement(name = "OBSERVATION_FACTURE")
+            protected String observationfacture;
+            @XmlElement(name = "PAIEMENTS")
+            protected DOCUMENT.CONTENT.FACTURE.PAIEMENTS paiements;
+            @XmlElement(name = "LIGNES_FACTURE")
+            protected DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE lignesfacture;
+
+            /**
+             * Obtient la valeur de la propriété numerofacture.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getNUMEROFACTURE() {
+                return numerofacture;
+            }
+
+            /**
+             * Définit la valeur de la propriété numerofacture.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setNUMEROFACTURE(String value) {
+                this.numerofacture = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété datefacture.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getDATEFACTURE() {
+                return datefacture;
+            }
+
+            /**
+             * Définit la valeur de la propriété datefacture.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setDATEFACTURE(String value) {
+                this.datefacture = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété typefacture.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getTYPEFACTURE() {
+                return typefacture;
+            }
+
+            /**
+             * Définit la valeur de la propriété typefacture.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setTYPEFACTURE(String value) {
+                this.typefacture = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété emetteur.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getEMETTEUR() {
+                return emetteur;
+            }
+
+            /**
+             * Définit la valeur de la propriété emetteur.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setEMETTEUR(String value) {
+                this.emetteur = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété titulaire.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getTITULAIRE() {
+                return titulaire;
+            }
+
+            /**
+             * Définit la valeur de la propriété titulaire.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setTITULAIRE(String value) {
+                this.titulaire = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété montantht.
+             *
+             * @return possible object is {@link Float }
+             *
+             */
+            public Float getMONTANTHT() {
+                return montantht;
+            }
+
+            /**
+             * Définit la valeur de la propriété montantht.
+             *
+             * @param value allowed object is {@link Float }
+             *
+             */
+            public void setMONTANTHT(Float value) {
+                this.montantht = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété autremontant.
+             *
+             * @return possible object is {@link Float }
+             *
+             */
+            public Float getAUTREMONTANT() {
+                return autremontant;
+            }
+
+            /**
+             * Définit la valeur de la propriété autremontant.
+             *
+             * @param value allowed object is {@link Float }
+             *
+             */
+            public void setAUTREMONTANT(Float value) {
+                this.autremontant = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété objet.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getOBJET() {
+                return objet;
+            }
+
+            /**
+             * Définit la valeur de la propriété objet.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setOBJET(String value) {
+                this.objet = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété etattaxe.
+             *
+             * @return possible object is {@link Boolean }
+             *
+             */
+            public Boolean isETATTAXE() {
+                return etattaxe;
+            }
+
+            /**
+             * Définit la valeur de la propriété etattaxe.
+             *
+             * @param value allowed object is {@link Boolean }
+             *
+             */
+            public void setETATTAXE(Boolean value) {
+                this.etattaxe = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété tva.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getTVA() {
+                return tva;
+            }
+
+            /**
+             * Définit la valeur de la propriété tva.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setTVA(String value) {
+                this.tva = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété montanttotal.
+             *
+             * @return possible object is {@link Float }
+             *
+             */
+            public Float getMONTANTTOTAL() {
+                return montanttotal;
+            }
+
+            /**
+             * Définit la valeur de la propriété montanttotal.
+             *
+             * @param value allowed object is {@link Float }
+             *
+             */
+            public void setMONTANTTOTAL(Float value) {
+                this.montanttotal = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété signataire.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getSIGNATAIRE() {
+                return signataire;
+            }
+
+            /**
+             * Définit la valeur de la propriété signataire.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setSIGNATAIRE(String value) {
+                this.signataire = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété observationfacture.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getOBSERVATIONFACTURE() {
+                return observationfacture;
+            }
+
+            /**
+             * Définit la valeur de la propriété observationfacture.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setOBSERVATIONFACTURE(String value) {
+                this.observationfacture = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété paiements.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS }
+             *
+             */
+            public DOCUMENT.CONTENT.FACTURE.PAIEMENTS getPAIEMENTS() {
+                return paiements;
+            }
+
+            /**
+             * Définit la valeur de la propriété paiements.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS }
+             *
+             */
+            public void setPAIEMENTS(DOCUMENT.CONTENT.FACTURE.PAIEMENTS value) {
+                this.paiements = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété lignesfacture.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE }
+             *
+             */
+            public DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE getLIGNESFACTURE() {
+                return lignesfacture;
+            }
+
+            /**
+             * Définit la valeur de la propriété lignesfacture.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE }
+             *
+             */
+            public void setLIGNESFACTURE(DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE value) {
+                this.lignesfacture = value;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="LIGNE_FACTURE" maxOccurs="unbounded" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="NUMERO_LIGNE" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="NOM" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="DESCRIPTION" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="255"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="QUANTITE" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="UNITE" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="PRIX_UNITAIRE" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="MONTANT_HT" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="MONTANT_TVA" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                   &lt;element name="MONTANT_TTC" minOccurs="0">
+             *                     &lt;simpleType>
+             *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *                         &lt;maxLength value="35"/>
+             *                       &lt;/restriction>
+             *                     &lt;/simpleType>
+             *                   &lt;/element>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "lignefacture"
+            })
+            public static class LIGNESFACTURE {
+
+                @XmlElement(name = "LIGNE_FACTURE")
+                protected List<DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE> lignefacture;
+
+                /**
+                 * Gets the value of the lignefacture property.
+                 *
+                 * <p>
+                 * This accessor method returns a reference to the live list,
+                 * not a snapshot. Therefore any modification you make to the
+                 * returned list will be present inside the JAXB object. This is
+                 * why there is not a <CODE>set</CODE> method for the
+                 * lignefacture property.
+                 *
+                 * <p>
+                 * For example, to add a new item, do as follows:
+                 * <pre>
+                 *    getLIGNEFACTURE().add(newItem);
+                 * </pre>
+                 *
+                 *
+                 * <p>
+                 * Objects of the following type(s) are allowed in the list
+                 * {@link DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE }
+                 *
+                 *
+                 */
+                public List<DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE> getLIGNEFACTURE() {
+                    if (lignefacture == null) {
+                        lignefacture = new ArrayList<>();
+                    }
+                    return this.lignefacture;
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="NUMERO_LIGNE" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="NOM" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="DESCRIPTION" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="255"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="QUANTITE" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="UNITE" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="PRIX_UNITAIRE" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="MONTANT_HT" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="MONTANT_TVA" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *         &lt;element name="MONTANT_TTC" minOccurs="0">
+                 *           &lt;simpleType>
+                 *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+                 *               &lt;maxLength value="35"/>
+                 *             &lt;/restriction>
+                 *           &lt;/simpleType>
+                 *         &lt;/element>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "numeroligne",
+                    "nom",
+                    "description",
+                    "quantite",
+                    "unite",
+                    "prixunitaire",
+                    "montantht",
+                    "montanttva",
+                    "montantttc"
+                })
+                public static class LIGNEFACTURE {
+
+                    @XmlElement(name = "NUMERO_LIGNE")
+                    protected String numeroligne;
+                    @XmlElement(name = "NOM")
+                    protected String nom;
+                    @XmlElement(name = "DESCRIPTION")
+                    protected String description;
+                    @XmlElement(name = "QUANTITE")
+                    protected String quantite;
+                    @XmlElement(name = "UNITE")
+                    protected String unite;
+                    @XmlElement(name = "PRIX_UNITAIRE")
+                    protected String prixunitaire;
+                    @XmlElement(name = "MONTANT_HT")
+                    protected String montantht;
+                    @XmlElement(name = "MONTANT_TVA")
+                    protected String montanttva;
+                    @XmlElement(name = "MONTANT_TTC")
+                    protected String montantttc;
+
+                    /**
+                     * Obtient la valeur de la propriété numeroligne.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNUMEROLIGNE() {
+                        return numeroligne;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété numeroligne.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNUMEROLIGNE(String value) {
+                        this.numeroligne = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété nom.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNOM() {
+                        return nom;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété nom.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNOM(String value) {
+                        this.nom = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété description.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getDESCRIPTION() {
+                        return description;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété description.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setDESCRIPTION(String value) {
+                        this.description = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété quantite.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getQUANTITE() {
+                        return quantite;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété quantite.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setQUANTITE(String value) {
+                        this.quantite = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété unite.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getUNITE() {
+                        return unite;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété unite.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setUNITE(String value) {
+                        this.unite = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété prixunitaire.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getPRIXUNITAIRE() {
+                        return prixunitaire;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété prixunitaire.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setPRIXUNITAIRE(String value) {
+                        this.prixunitaire = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété montantht.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getMONTANTHT() {
+                        return montantht;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété montantht.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setMONTANTHT(String value) {
+                        this.montantht = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété montanttva.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getMONTANTTVA() {
+                        return montanttva;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété montanttva.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setMONTANTTVA(String value) {
+                        this.montanttva = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété montantttc.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getMONTANTTTC() {
+                        return montantttc;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété montantttc.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setMONTANTTTC(String value) {
+                        this.montantttc = value;
+                    }
+
+                }
+
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="PAIEMENT" maxOccurs="unbounded" minOccurs="0">
+             *           &lt;complexType>
+             *             &lt;complexContent>
+             *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                 &lt;sequence>
+             *                   &lt;element name="MONTANT_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+             *                   &lt;element name="DATE_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+             *                   &lt;element name="MODE_PAIEMENT" minOccurs="0">
+             *                     &lt;complexType>
+             *                       &lt;complexContent>
+             *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *                           &lt;sequence>
+             *                             &lt;element name="CODE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *                             &lt;element name="LIBELLE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+             *                           &lt;/sequence>
+             *                         &lt;/restriction>
+             *                       &lt;/complexContent>
+             *                     &lt;/complexType>
+             *                   &lt;/element>
+             *                   &lt;element name="OBJET_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+             *                   &lt;element name="OBSERVATION_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+             *                   &lt;element name="SIGNATAIRE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+             *                   &lt;element name="ETAT_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+             *                   &lt;element name="NUMERO_RECU" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+             *                 &lt;/sequence>
+             *               &lt;/restriction>
+             *             &lt;/complexContent>
+             *           &lt;/complexType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "paiement"
+            })
+            public static class PAIEMENTS {
+
+                @XmlElement(name = "PAIEMENT")
+                protected List<DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT> paiement;
+
+                /**
+                 * Gets the value of the paiement property.
+                 *
+                 * <p>
+                 * This accessor method returns a reference to the live list,
+                 * not a snapshot. Therefore any modification you make to the
+                 * returned list will be present inside the JAXB object. This is
+                 * why there is not a <CODE>set</CODE> method for the paiement
+                 * property.
+                 *
+                 * <p>
+                 * For example, to add a new item, do as follows:
+                 * <pre>
+                 *    getPAIEMENT().add(newItem);
+                 * </pre>
+                 *
+                 *
+                 * <p>
+                 * Objects of the following type(s) are allowed in the list
+                 * {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT }
+                 *
+                 *
+                 */
+                public List<DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT> getPAIEMENT() {
+                    if (paiement == null) {
+                        paiement = new ArrayList<>();
+                    }
+                    return this.paiement;
+                }
+
+                /**
+                 * <p>
+                 * Classe Java pour anonymous complex type.
+                 *
+                 * <p>
+                 * Le fragment de schéma suivant indique le contenu attendu
+                 * figurant dans cette classe.
+                 *
+                 * <pre>
+                 * &lt;complexType>
+                 *   &lt;complexContent>
+                 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *       &lt;sequence>
+                 *         &lt;element name="MONTANT_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}decimal" minOccurs="0"/>
+                 *         &lt;element name="DATE_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}dateTime" minOccurs="0"/>
+                 *         &lt;element name="MODE_PAIEMENT" minOccurs="0">
+                 *           &lt;complexType>
+                 *             &lt;complexContent>
+                 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                 *                 &lt;sequence>
+                 *                   &lt;element name="CODE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                 *                   &lt;element name="LIBELLE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                 *                 &lt;/sequence>
+                 *               &lt;/restriction>
+                 *             &lt;/complexContent>
+                 *           &lt;/complexType>
+                 *         &lt;/element>
+                 *         &lt;element name="OBJET_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+                 *         &lt;element name="OBSERVATION_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+                 *         &lt;element name="SIGNATAIRE" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+                 *         &lt;element name="ETAT_PAIEMENT" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+                 *         &lt;element name="NUMERO_RECU" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+                 *       &lt;/sequence>
+                 *     &lt;/restriction>
+                 *   &lt;/complexContent>
+                 * &lt;/complexType>
+                 * </pre>
+                 *
+                 *
+                 */
+                @XmlAccessorType(XmlAccessType.FIELD)
+                @XmlType(name = "", propOrder = {
+                    "montantpaiement",
+                    "datepaiement",
+                    "modepaiement",
+                    "objetpaiement",
+                    "observationpaiement",
+                    "signataire",
+                    "etatpaiement",
+                    "numerorecu"
+                })
+                public static class PAIEMENT {
+
+                    @XmlElement(name = "MONTANT_PAIEMENT")
+                    protected BigDecimal montantpaiement;
+                    @XmlElement(name = "DATE_PAIEMENT")
+                    @XmlSchemaType(name = "dateTime")
+                    protected XMLGregorianCalendar datepaiement;
+                    @XmlElement(name = "MODE_PAIEMENT")
+                    protected DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT modepaiement;
+                    @XmlElement(name = "OBJET_PAIEMENT")
+                    protected String objetpaiement;
+                    @XmlElement(name = "OBSERVATION_PAIEMENT")
+                    protected String observationpaiement;
+                    @XmlElement(name = "SIGNATAIRE")
+                    protected String signataire;
+                    @XmlElement(name = "ETAT_PAIEMENT")
+                    protected String etatpaiement;
+                    @XmlElement(name = "NUMERO_RECU")
+                    protected String numerorecu;
+
+                    /**
+                     * Obtient la valeur de la propriété montantpaiement.
+                     *
+                     * @return possible object is {@link BigDecimal }
+                     *
+                     */
+                    public BigDecimal getMONTANTPAIEMENT() {
+                        return montantpaiement;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété montantpaiement.
+                     *
+                     * @param value allowed object is {@link BigDecimal }
+                     *
+                     */
+                    public void setMONTANTPAIEMENT(BigDecimal value) {
+                        this.montantpaiement = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété datepaiement.
+                     *
+                     * @return possible object is {@link XMLGregorianCalendar }
+                     *
+                     */
+                    public XMLGregorianCalendar getDATEPAIEMENT() {
+                        return datepaiement;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété datepaiement.
+                     *
+                     * @param value allowed object is
+                     *     {@link XMLGregorianCalendar }
+                     *
+                     */
+                    public void setDATEPAIEMENT(XMLGregorianCalendar value) {
+                        this.datepaiement = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété modepaiement.
+                     *
+                     * @return possible object is
+                     *     {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT }
+                     *
+                     */
+                    public DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT getMODEPAIEMENT() {
+                        return modepaiement;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété modepaiement.
+                     *
+                     * @param value allowed object is
+                     *     {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT }
+                     *
+                     */
+                    public void setMODEPAIEMENT(DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT value) {
+                        this.modepaiement = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété objetpaiement.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getOBJETPAIEMENT() {
+                        return objetpaiement;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété objetpaiement.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setOBJETPAIEMENT(String value) {
+                        this.objetpaiement = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété observationpaiement.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getOBSERVATIONPAIEMENT() {
+                        return observationpaiement;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété observationpaiement.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setOBSERVATIONPAIEMENT(String value) {
+                        this.observationpaiement = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété signataire.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getSIGNATAIRE() {
+                        return signataire;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété signataire.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setSIGNATAIRE(String value) {
+                        this.signataire = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété etatpaiement.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getETATPAIEMENT() {
+                        return etatpaiement;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété etatpaiement.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setETATPAIEMENT(String value) {
+                        this.etatpaiement = value;
+                    }
+
+                    /**
+                     * Obtient la valeur de la propriété numerorecu.
+                     *
+                     * @return possible object is {@link String }
+                     *
+                     */
+                    public String getNUMERORECU() {
+                        return numerorecu;
+                    }
+
+                    /**
+                     * Définit la valeur de la propriété numerorecu.
+                     *
+                     * @param value allowed object is {@link String }
+                     *
+                     */
+                    public void setNUMERORECU(String value) {
+                        this.numerorecu = value;
+                    }
+
+                    /**
+                     * <p>
+                     * Classe Java pour anonymous complex type.
+                     *
+                     * <p>
+                     * Le fragment de schéma suivant indique le contenu attendu
+                     * figurant dans cette classe.
+                     *
+                     * <pre>
+                     * &lt;complexType>
+                     *   &lt;complexContent>
+                     *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+                     *       &lt;sequence>
+                     *         &lt;element name="CODE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                     *         &lt;element name="LIBELLE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+                     *       &lt;/sequence>
+                     *     &lt;/restriction>
+                     *   &lt;/complexContent>
+                     * &lt;/complexType>
+                     * </pre>
+                     *
+                     *
+                     */
+                    @XmlAccessorType(XmlAccessType.FIELD)
+                    @XmlType(name = "", propOrder = {
+                        "code",
+                        "libelle"
+                    })
+                    public static class MODEPAIEMENT {
+
+                        @XmlElement(name = "CODE", required = true)
+                        protected String code;
+                        @XmlElement(name = "LIBELLE", required = true)
+                        protected String libelle;
+
+                        /**
+                         * Obtient la valeur de la propriété code.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getCODE() {
+                            return code;
+                        }
+
+                        /**
+                         * Définit la valeur de la propriété code.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setCODE(String value) {
+                            this.code = value;
+                        }
+
+                        /**
+                         * Obtient la valeur de la propriété libelle.
+                         *
+                         * @return possible object is {@link String }
+                         *
+                         */
+                        public String getLIBELLE() {
+                            return libelle;
+                        }
+
+                        /**
+                         * Définit la valeur de la propriété libelle.
+                         *
+                         * @param value allowed object is {@link String }
+                         *
+                         */
+                        public void setLIBELLE(String value) {
+                            this.libelle = value;
+                        }
+
+                    }
+
                 }
 
             }
@@ -14990,7 +16720,7 @@ public class DOCUMENT implements Serializable {
              */
             public List<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> getMARCHANDISE() {
                 if (marchandise == null) {
-                    marchandise = new ArrayList<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE>();
+                    marchandise = new ArrayList<>();
                 }
                 return this.marchandise;
             }
@@ -18735,7 +20465,7 @@ public class DOCUMENT implements Serializable {
                      */
                     public List<DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE> getDETAILFACTURE() {
                         if (detailfacture == null) {
-                            detailfacture = new ArrayList<DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE>();
+                            detailfacture = new ArrayList<>();
                         }
                         return this.detailfacture;
                     }
