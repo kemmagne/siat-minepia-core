@@ -405,7 +405,18 @@ public final class SendDocumentUtils {
             jaxbMarshallerz.marshal(document, output);
             documentType = document.getTYPEDOCUMENT();
             service = document.getREFERENCEDOSSIER().getSERVICE();
-        } else if (documentSerializable instanceof org.guce.siat.jaxb.cct.PVE.DOCUMENT) {
+        } else if (documentSerializable instanceof org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT) {
+            jaxbContext = org.guce.siat.jaxb.cct.CCS_MINSANTE.JAXBContextCreator.getInstance();
+            final org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT document = (org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT) documentSerializable;
+            jaxbMarshallerz = jaxbContext.createMarshaller();
+
+            final JAXBSource source = new JAXBSource(jaxbContext, document);
+            //validateDocument(source, ConstantsXsdPaths.CCS_MINSANTE_XSD_PATH);
+
+            jaxbMarshallerz.marshal(document, output);
+            documentType = document.getTYPEDOCUMENT();
+            service = document.getREFERENCEDOSSIER().getSERVICE();
+        }else if (documentSerializable instanceof org.guce.siat.jaxb.cct.PVE.DOCUMENT) {
             jaxbContext = org.guce.siat.jaxb.cct.PVE.JAXBContextCreator.getInstance();
             final org.guce.siat.jaxb.cct.PVE.DOCUMENT document = (org.guce.siat.jaxb.cct.PVE.DOCUMENT) documentSerializable;
             jaxbMarshallerz = jaxbContext.createMarshaller();

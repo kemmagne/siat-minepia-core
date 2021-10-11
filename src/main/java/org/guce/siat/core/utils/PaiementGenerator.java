@@ -10,6 +10,7 @@ import org.guce.siat.common.utils.ebms.UtilitiesException;
 import org.guce.siat.common.utils.enums.FlowCode;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
+import org.guce.siat.core.ct.service.util.XmlConverterCcsMinsante;
 import org.guce.siat.utility.jaxb.common.PAIEMENT;
 import org.guce.siat.utility.jaxb.common.PAIEMENT.BENEFICIAIRE;
 import org.guce.siat.utility.jaxb.common.PAIEMENT.CHARGEUR;
@@ -18,6 +19,8 @@ import org.guce.siat.utility.jaxb.common.PAIEMENT.FACTURE;
 import org.guce.siat.utility.jaxb.common.PAIEMENT.FACTURE.DETAILFACTURES;
 import org.guce.siat.utility.jaxb.common.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE;
 import org.guce.siat.utility.jaxb.common.PAIEMENT.PARTIEVERSANTE;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -26,6 +29,7 @@ import org.guce.siat.utility.jaxb.common.PAIEMENT.PARTIEVERSANTE;
 public final class PaiementGenerator
 {
 
+    private static final Logger LOG = LoggerFactory.getLogger(XmlConverterCcsMinsante.class);
 	/**
 	 * Instantiates a new paiement generator.
 	 */
@@ -55,6 +59,10 @@ public final class PaiementGenerator
 					.getClient().getNumContribuable());
 			partieVersante.setRAISONSOCIALE(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile()
 					.getClient().getCompanyName());
+                        chargeur.setNUMEROCONTRIBUABLE(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile()
+					.getClient().getNumContribuable());
+			chargeur.setRAISONSOCIALE(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile()
+					.getClient().getCompanyName());
 			//	partieVersante.setNOM(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getSender().getFirstName());
 			//	partieVersante.setLIEU(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getSender().getAdministration()
 			//		.getLabelFr());
@@ -63,7 +71,7 @@ public final class PaiementGenerator
 		final org.guce.siat.utility.jaxb.common.PAIEMENT.SIGNATAIRE signataire = new org.guce.siat.utility.jaxb.common.PAIEMENT.SIGNATAIRE();
 		if (Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
 				FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_CT_92.name(),
-				FlowCode.FL_AP_167.name(), FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name()).contains(
+				FlowCode.FL_AP_167.name(), FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name(), FlowCode.FL_CT_158.name()).contains(
 				flowCode))
 		{
 			paiement.setFACTURE(new FACTURE());
@@ -100,7 +108,7 @@ public final class PaiementGenerator
 			ENCAISSEMENT encaissement = null;
 			try
 			{
-				//Ecaissement
+				//Encaissement
 				encaissement = new ENCAISSEMENT();
 				encaissement.setNUMERORECU(paymentData.getNumRecu());
 				encaissement.setNATURE(paymentData.getNatureEncaissement());
@@ -119,6 +127,7 @@ public final class PaiementGenerator
 			catch (final UtilitiesException e)
 			{
 				e.printStackTrace();
+                                LOG.error(e.getMessage());
 			}
 			paiement.setENCAISSEMENT(encaissement);
 			signataire.setNOM(paymentData.getNomSignature());

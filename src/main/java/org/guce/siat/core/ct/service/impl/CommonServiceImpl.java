@@ -17,6 +17,7 @@ import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundExcept
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
 import org.guce.siat.common.dao.AuditDao;
@@ -641,7 +642,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentResultDao.delete(draftTreatmentResult);
                 this.deleteAttachedReports(attachments);
             } // Facturation
-            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name()).contains(flowCode)) {
+            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name(), FlowCode.FL_CT_158.name()).contains(flowCode)) {
                 rollbackBilling = true;
             } // Rendez-vous
             else if (Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_118.name()).contains(flowCode)) {
@@ -1436,9 +1437,10 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         } else {
             paymentDataDao.update(paymentData);
         }
-
-        paymentData.setRefFacture(new DecimalFormat("FAC-SIAT-000000").format(paymentData.getId()));
-        paymentDataDao.update(paymentData);
+        if (StringUtils.isEmpty(paymentData.getRefFacture())) {
+            paymentData.setRefFacture(new DecimalFormat("FAC-SIAT-000000").format(paymentData.getId()));
+            paymentDataDao.update(paymentData);
+        }
     }
 
 

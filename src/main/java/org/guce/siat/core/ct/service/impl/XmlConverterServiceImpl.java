@@ -127,6 +127,7 @@ import org.guce.siat.core.ct.model.WoodSpecification;
 import org.guce.siat.core.ct.service.CotationService;
 import org.guce.siat.core.ct.service.util.XmlConverter;
 import org.guce.siat.core.ct.service.util.XmlConverterAeMINADER;
+import org.guce.siat.core.ct.service.util.XmlConverterCcsMinsante;
 import org.guce.siat.core.ct.service.util.XmlConverterCctCtExp;
 import org.guce.siat.core.ct.service.util.XmlConverterPayment;
 import org.guce.siat.core.ct.service.util.XmlConverterPve;
@@ -552,7 +553,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return true, if is payment request
      */
     private boolean isPaymentRequest(final FlowGuceSiat flowGuceSiat) {
-        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name())
+        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_160.name())
                 .contains(flowGuceSiat.getFlowSiat());
     }
 
@@ -1324,7 +1325,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
         } else if (Arrays.asList(FileTypeCode.CCT_CT, FileTypeCode.CC_CT, FileTypeCode.CQ_CT).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_93.name());
-        } else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
+        } else if (FileTypeCode.CCS_MINSANTE.equals(fileTypeCode)) {
+            flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_160.name());
+        }else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_166.name());
         } else {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_168.name());
@@ -1350,7 +1353,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             // Add Payment_ItemFlow
             final PaymentItemFlow paymentItemFlow = new PaymentItemFlow();
-
             paymentItemFlow.setPaymentData(paymentDataNew);
             paymentItemFlow.setItemFlow(savedItemFlow);
             paymentItemFlow.setDeleted(Boolean.FALSE);
@@ -1797,6 +1799,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 observation = retrievedocument.getCONTENT().getOBSERVATIONS();
             }
         }
+        if (document instanceof org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT) {
+            final org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT retrievedocument = (org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT) document;
+            if (retrievedocument.getCONTENT() != null) {
+                observation = retrievedocument.getCONTENT().getOBSERVATIONS();
+            }
+        }
 
         if (observation != null) {
             final DataType dataTypeObservation = dataTypeDao.findDataTypeByNameAndFlowCode(flowToExecute, DataTypeNameEnnumeration.OBSERVATION);
@@ -1973,6 +1981,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             numEbmsMessage = returnedDocument.getMESSAGE().getNUMEROMESSAGE();
             guceSiatBureau = guceSiatBureauDao.findByBureauGuce(returnedDocument.getCONTENT().getCODEBUREAU());
             fileToReturn = convertDocumentToFileVtdMINSANTE(returnedDocument);
+        } else if (document instanceof org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT) {
+            xmlConverter = new XmlConverterCcsMinsante(this);
+            fileToReturn = xmlConverter.convertDocumentToFile(document);
         } else if (document instanceof org.guce.siat.jaxb.ap.AI_MINMIDT.DOCUMENT) {
             final org.guce.siat.jaxb.ap.AI_MINMIDT.DOCUMENT returnedDocument = (org.guce.siat.jaxb.ap.AI_MINMIDT.DOCUMENT) document;
             flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(returnedDocument.getTYPEDOCUMENT());
@@ -2168,6 +2179,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     return convertFileToDocumentAiMINSANTE(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                 case AT_MINSANTE:
                     return convertFileToDocumentAtMINSANTE(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
+                case CCS_MINSANTE:                   
+                        xmlConverter = new XmlConverterCcsMinsante(this);
+                        return xmlConverter.convertFileToDocument(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                 case DI_MINADER:
                     return convertFileToDocumentDiMINADER(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                 case PIVPSRP_MINADER:
