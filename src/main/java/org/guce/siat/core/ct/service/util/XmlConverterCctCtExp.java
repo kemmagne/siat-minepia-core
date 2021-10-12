@@ -102,6 +102,7 @@ public class XmlConverterCctCtExp extends AbstractXmlConverter {
         if (file.getNumeroDossierBase() != null) {
             final File parent = xmlConverterService.getFileDao().findByNumDossierGuce(file.getNumeroDossierBase());
             file.setParent(parent);
+            file.setAssignedUser(parent.getAssignedUser());
         }
 
         if (FlowCode.FL_CT_61.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())) {
