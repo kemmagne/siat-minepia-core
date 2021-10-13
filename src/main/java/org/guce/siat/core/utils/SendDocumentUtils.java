@@ -411,7 +411,7 @@ public final class SendDocumentUtils {
             jaxbMarshallerz = jaxbContext.createMarshaller();
 
             final JAXBSource source = new JAXBSource(jaxbContext, document);
-            //validateDocument(source, ConstantsXsdPaths.CCS_MINSANTE_XSD_PATH);
+            validateDocument(source, ConstantsXsdPaths.CCS_MINSANTE_XSD_PATH);
 
             jaxbMarshallerz.marshal(document, output);
             documentType = document.getTYPEDOCUMENT();
