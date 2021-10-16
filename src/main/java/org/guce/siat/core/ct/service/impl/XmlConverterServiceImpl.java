@@ -2444,6 +2444,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
                     .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
+
+            ciDocument.getCONTENT().setNUMEROCSVMINEPIA(file.getNumeroDossier());
+            ciDocument.getCONTENT().setDATECSVMINEPIA(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
         }
 //        if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
 //                && Arrays.asList(FlowCode.FL_CT_92.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_159.name()).contains(flowToExecute.getCode())) {
@@ -2463,6 +2466,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             PAIEMENT.FACTURE facture = new PAIEMENT.FACTURE();
 
             ItemFlow itemFlow = itemFlowList.get(0);
+
+            List<ItemFlowData> flowDatas = itemFlow.getItemFlowsDataList();
+            paymentData.setMontantHt((long) Integer.parseInt(flowDatas.get(0).getValue()));
+            dao.update(paymentData);
 
             facture.setREFERENCEFACTURE(paymentData.getRefFacture());
             facture.setTYPEFACTURE(file.getFileType().getPaymentFileType());
@@ -6158,6 +6165,25 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         return file;
     }
 
+    private void setNumeroDossierModif(File current) {
+
+        String numeroDossier = current.getNumeroDossier();
+
+        File root = fileDao.findByNumDossierGuce(numeroDossier);
+        if (root == null) {
+            return;
+        }
+
+        List<File> children = root.getChildrenList();
+        String suffix = new DecimalFormat("M00").format(children.size() + 1);
+        numeroDossier = numeroDossier.concat(suffix);
+
+        current.setNumeroDossier(numeroDossier);
+        current.setParent(root);
+        current.setNumeroDossierBase(root.getNumeroDossier());
+        numDossier = numeroDossier;
+    }
+
     /**
      * Convert document to file.
      *
@@ -6236,6 +6262,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 file.setDestinataire(document.getROUTAGE().getDESTINATAIRE());
             }
 
+            setNumeroDossierModif(file);
         }
 
         /* ADD CLIENT */
@@ -6363,9 +6390,17 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     fileItem.setQuantity(marchandise.getQUANTITE());
                 }
 
+                if ("NaN".equals(fileItem.getQuantity())) {
+                    fileItem.setQuantity(marchandise.getPOIDS());
+                }
+
                 if (marchandise.getVALEURFOBDEVISE() != null) {
 
                     fileItem.setFobValue(marchandise.getVALEURFOBDEVISE());
+                }
+
+                if ("NaN".equals(fileItem.getFobValue())) {
+                    fileItem.setFobValue(null);
                 }
 
                 //				ServicesItem subfamily = null;
