@@ -4,6 +4,7 @@
 package org.guce.siat.core.ct.service.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
@@ -15,6 +16,7 @@ import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.impl.AbstractServiceImpl;
+import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
 import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.model.PaymentItemFlow;
@@ -119,8 +121,12 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
             // Update File item and execute flow
             fileItem.setDraft(Boolean.FALSE);
 
-            //le STEP dépond du nombre des cotation
-            fileItem.setStep(paymentFlow.getFromStep());
+            if (Arrays.asList(FileTypeCode.CCT_CSV).contains(currentFile.getFileType().getCode())) {
+                fileItem.setStep(paymentFlow.getToStep());
+            } else {
+                //le STEP dépond du nombre des cotation
+                fileItem.setStep(paymentFlow.getFromStep());
+            }
             fileItemDao.update(fileItem);
         }
 
