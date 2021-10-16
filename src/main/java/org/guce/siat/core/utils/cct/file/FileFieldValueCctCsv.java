@@ -981,6 +981,13 @@ public class FileFieldValueCctCsv {
                 }
                 break;
             }
+            case "INFORMATIONS_GENERALES_OBSERVATIONS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDECISIONORGANISME() != null
+                        && document.getCONTENT().getDECISIONORGANISME().getOBSERVATION() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDECISIONORGANISME().getOBSERVATION());
+                }
+                break;
+            }
             case "MINEPIA_DATE_DEPART": {
                 if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIADATEDEPART());
