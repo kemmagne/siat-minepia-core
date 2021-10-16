@@ -5486,6 +5486,8 @@ public class DOCUMENT implements Serializable {
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
         "codebureau",
+        "datecsvminepia",
+        "numerocsvminepia",
         "typedemande",
         "client",
         "transitaire",
@@ -5504,6 +5506,10 @@ public class DOCUMENT implements Serializable {
 
         @XmlElement(name = "CODE_BUREAU")
         protected String codebureau;
+        @XmlElement(name = "DATE_CSV_MINEPIA")
+        protected String datecsvminepia;
+        @XmlElement(name = "NUMERO_CSV_MINEPIA")
+        protected String numerocsvminepia;
         @XmlElement(name = "TYPE_DEMANDE")
         protected String typedemande;
         @XmlElement(name = "CLIENT")
@@ -5571,6 +5577,46 @@ public class DOCUMENT implements Serializable {
          */
         public void setCODEBUREAU(String value) {
             this.codebureau = value;
+        }
+
+        /**
+         * Obtient la valeur de la propriété datecsvminepia.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getDATECSVMINEPIA() {
+            return datecsvminepia;
+        }
+
+        /**
+         * Définit la valeur de la propriété datecsvminepia.
+         *
+         * @param value allowed object is {@link String }
+         *
+         */
+        public void setDATECSVMINEPIA(String value) {
+            this.datecsvminepia = value;
+        }
+
+        /**
+         * Obtient la valeur de la propriété numerocsvminepia.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getNUMEROCSVMINEPIA() {
+            return numerocsvminepia;
+        }
+
+        /**
+         * Définit la valeur de la propriété numerocsvminepia.
+         *
+         * @param value allowed object is {@link String }
+         *
+         */
+        public void setNUMEROCSVMINEPIA(String value) {
+            this.numerocsvminepia = value;
         }
 
         /**

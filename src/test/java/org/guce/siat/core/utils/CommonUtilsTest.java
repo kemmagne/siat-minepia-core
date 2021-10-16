@@ -163,4 +163,10 @@ public class CommonUtilsTest {
         }
     }
 
+    @Test
+    public void testNaN() {
+        System.out.println("org.guce.siat.core.utils.CommonUtilsTest.testNaN()");
+//        Integer.parseInt("NaN");
+    }
+
 }
