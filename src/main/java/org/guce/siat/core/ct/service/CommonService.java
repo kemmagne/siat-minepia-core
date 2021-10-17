@@ -25,6 +25,7 @@ import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
+import org.guce.siat.core.ct.model.TreatmentInfosCCSMinsante;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
@@ -105,6 +106,8 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void takeDecisionAndSaveInterceptionNotification(InterceptionNotification interceptionNotif, List<ItemFlow> itemFlows);
 
     void takeDecisionAndSaveTreatmentInfos(TreatmentInfos treatmentInfos, List<ItemFlow> itemFlows) throws Exception;
+    
+    void takeDecisionAndSaveTreatmentInfosCCSMinsante(TreatmentInfosCCSMinsante treatmentInfos, List<ItemFlow> itemFlows) throws Exception;
 
     void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers);
 

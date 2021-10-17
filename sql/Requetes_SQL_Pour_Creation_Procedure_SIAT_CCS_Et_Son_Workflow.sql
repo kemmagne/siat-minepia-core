@@ -1,114 +1,113 @@
 UPDATE SIAT_CT.MINISTRY m SET m.CODE = 'MINSANTE' WHERE m.ID = 75;
-/*========================= Ajout de la procédure Certificat de contrôle MINSANTE =============================*/
-INSERT INTO FILE_TYPE (ID, CODE, LABEL_EN, LABEL_FR) VALUES (FILE_TYPE_SEQ.nextVal,'CCS_MINSANTE', 'Certificat de contrôle sanitaire MINSANTE', 'Certificat de contrôle MINSANTE');
-/*========================= Affecter la procédure CCS_MINSANTE au Ministère MINSANTE ===================*/
+/*========================= Ajout de la procï¿½dure Certificat de contrï¿½le MINSANTE =============================*/
+INSERT INTO FILE_TYPE (ID, CODE, LABEL_EN, LABEL_FR) VALUES (FILE_TYPE_SEQ.nextVal,'CCS_MINSANTE', 'Certificat de contrï¿½le sanitaire MINSANTE', 'Certificat de contrï¿½le MINSANTE');
+/*========================= Affecter la procï¿½dure CCS_MINSANTE au Ministï¿½re MINSANTE ===================*/
 INSERT INTO MINISTRY_FILE_TYPE (MINISTRY_ID, FILE_TYPE_ID) VALUES ((SELECT m.ID FROM SIAT_CT.MINISTRY m WHERE m.CODE='MINSANTE'), (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'));
-/*========================  Affecter la procédure CCS_MINSANTE à un service =========================================*/
+/*========================  Affecter la procï¿½dure CCS_MINSANTE ï¿½ un service =========================================*/
 INSERT INTO FILE_TYPE_SERVICE (ID,FILE_TYPE_ID,SERVICE_ID) VALUES (FILE_TYPE_SERVICE_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT ser.ID FROM SIAT_CT.SERVICE ser WHERE ser.ABREVIATION='SCCT-Minsante'));
-/*========================= Définir les rôles qui ont accès à la procédure ================================*/
+/*========================= Dï¿½finir les rï¿½les qui ont accï¿½s ï¿½ la procï¿½dure ================================*/
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'SUPER'));
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'AR'));
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'AC1'));
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'INS'));
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'CA'));
 INSERT INTO FILE_TYPE_AUTHORITY (FILE_TYPE_ID, AUTHORITY_ID) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'SIGN'));
-/*======================== Définir les étapes de la procédure, si elles n'existent pas il faut les créer, ensuite affecter à ces étapes les rôles qui ont accès à ces dernières et enfin affecter ces étapes à la
-procédure CCS_MINSANTE =========================================*/
+/*======================== Dï¿½finir les ï¿½tapes de la procï¿½dure, si elles n'existent pas il faut les crï¿½er, ensuite affecter ï¿½ ces ï¿½tapes les rï¿½les qui ont accï¿½s ï¿½ ces derniï¿½res et enfin affecter ces ï¿½tapes ï¿½ la
+procï¿½dure CCS_MINSANTE =========================================*/
 
----- 1- ST_CT_01 (Dépôt des certificat de contrôle sanitaire). Elle existe déjà. -----------------------
----- 2- ST_CT_02 (Recevabilité). Elle existe déjà. -----------------------------------
----- 3- ST_CT_03 (Cotation). Elle existe déjà. ----------------------------------------
----- 4- ST_CT_04 (Etude approfondie). Elle existe déjà. ------------------------------
----- 5- ST_CT_42 (Paiement). Elle existe déjà. ------------------------------
----- 6- ST_CT_54 (Signature du certificat de contrôle sanitaire). Elle existe déjà. --------------------
----- 7- ST_CT_05 (Rejet de la demande de certificat de contrôle sanitaire). Elle existe déjà. ----------
----- 8- ST_CT_06 (Autorisation du certificat de contrôle sanitaire). Elle existe déjà. ----------------
+---- 1- ST_CT_01 (Dï¿½pï¿½t des certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. -----------------------
+---- 2- ST_CT_02 (Recevabilitï¿½). Elle existe dï¿½jï¿½. -----------------------------------
+---- 3- ST_CT_03 (Cotation). Elle existe dï¿½jï¿½. ----------------------------------------
+---- 4- ST_CT_04 (Etude approfondie). Elle existe dï¿½jï¿½. ------------------------------
+---- 5- ST_CT_42 (Paiement). Elle existe dï¿½jï¿½. ------------------------------
+---- 6- ST_CT_54 (Signature du certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. --------------------
+---- 7- ST_CT_05 (Rejet de la demande de certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. ----------
+---- 8- ST_CT_06 (Autorisation du certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. ----------------
 
------------- Les rôles nécessaires ont déjà été affectées à ces différentes étapes --------------------------
+------------ Les rï¿½les nï¿½cessaires ont dï¿½jï¿½ ï¿½tï¿½ affectï¿½es ï¿½ ces diffï¿½rentes ï¿½tapes --------------------------
 
------------- Affecter ces étapes à la procédure CCS_MINSANTE ----------------------------------------------
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_01'), 0, 'Folder filing for a Control Certificate', 'Dépôt de dossier du Certificat de contrôle');
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_05'), 0, 'Reject a Control Certificate file', 'Rejet de dossier de Certificat de contrôle');
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_06'), 0, 'Validation of the Control Certificate', 'Validation de Certificat de contrôle');
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_02'), 0, 'Admissibility of a Control Certificate', 'Recevabilité de Certificat de contrôle');
+------------ Affecter ces ï¿½tapes ï¿½ la procï¿½dure CCS_MINSANTE ----------------------------------------------
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_01'), 0, 'Folder filing for a Control Certificate', 'Dï¿½pï¿½t de dossier du Certificat de contrï¿½le');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_05'), 0, 'Reject a Control Certificate file', 'Rejet de dossier de Certificat de contrï¿½le');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_06'), 0, 'Validation of the Control Certificate', 'Validation de Certificat de contrï¿½le');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_02'), 0, 'Admissibility of a Control Certificate', 'Recevabilitï¿½ de Certificat de contrï¿½le');
 INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_03'), 0, 'Quotation step', 'Etape de cotation');
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_04'), 0, 'Depth study of the file step', 'Etape d''étude approfondie du dossier');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_04'), 0, 'Depth study of the file step', 'Etape d''ï¿½tude approfondie du dossier');
 INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_42'), 0, 'Certificat Fees Payment', 'Paiement des frais du certficat');
-INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_31'), 0, 'Signature of the of Health Control Certificate', 'Signature du Certificat de contrôle sanitaire');
+INSERT INTO FILE_TYPE_STEP (FILE_TYPE_ID, STEP_ID, IS_CT_DECISION, LABEL_EN, LABEL_FR) VALUES ((SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_31'), 0, 'Signature of the of Health Control Certificate', 'Signature du Certificat de contrï¿½le sanitaire');
 
-/*======================== Définir les décisions de la procédure, si elles n'existent pas il faut les créer et enfin affecter ces décisions à la
-procédure CCS_MINSANTE =========================================*/
+/*======================== Dï¿½finir les dï¿½cisions de la procï¿½dure, si elles n'existent pas il faut les crï¿½er et enfin affecter ces dï¿½cisions ï¿½ la
+procï¿½dure CCS_MINSANTE =========================================*/
 
 
----- Création d'un nouveau flow pour retourner un dossier de l'étape d'étude approfondie à une étape de cotation --------------
-INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES (FLOW_SEQ.nextVal, 'FL_CT_157',24, 0,'Validation of the Control Certificate for Depth study', 'Validation du certificat pour étude approfondie', 0, (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_02'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_04'));
+---- Crï¿½ation d'un nouveau flow pour retourner un dossier de l'ï¿½tape d'ï¿½tude approfondie ï¿½ une ï¿½tape de cotation --------------
+INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES (FLOW_SEQ.nextVal, 'FL_CT_157',24, 0,'Validation of the Control Certificate for Depth study', 'Validation du certificat pour ï¿½tude approfondie', 0, (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_02'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_04'));
 
----- Création d'un nouveau flow de facturation pour passer de l'étape d'étude approfondie à l'étape de paiement --------------
+---- Crï¿½ation d'un nouveau flow de facturation pour passer de l'ï¿½tape d'ï¿½tude approfondie ï¿½ l'ï¿½tape de paiement --------------
 INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES (FLOW_SEQ.nextVal, 'FL_CT_158',24, 0,'Facturation des frais du certificat', 'Facturation des frais du certificat', 1, (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_04'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_42'));
 
------- Création des COPY_RECIPIENTS pour le FLOW FL_CT_158 ----------------------
+------ Crï¿½ation des COPY_RECIPIENTS pour le FLOW FL_CT_158 ----------------------
 NSERT INTO COPY_RECIPIENT (ID, FLOW_ID, TO_AUTHORITY_ID) VALUES (COPY_RECIPIENT_SEQ.nextVal, (SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_158'), (SELECT auth.ID FROM SIAT_CT.AUTHORITY auth WHERE auth.ROLE = 'CON'));
 
 
----- Création d'un nouveau flow d'encaissement pour passer de l'étape de paiement pour passer à l'étape de signature --------------
-INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES (FLOW_SEQ.nextVal, 'FL_CT_160',24, 0,'Encaissement', 'Encaissement', 1, (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_42'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_31'));
+---- Crï¿½ation d'un nouveau flow d'encaissement pour passer de l'ï¿½tape de paiement pour passer ï¿½ l'ï¿½tape de signature --------------
+INSERT INTO FLOW (ID, CODE, DURATION, IS_COTA, LABELEN, LABELFR, OUTGOING, FROM_STEP, TO_STEP) VALUES (FLOW_SEQ.nextVal, 'FL_CT_160',24, 0,'Encaissement', 'Encaissement', 1, (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_42'), (SELECT st.ID FROM SIAT_CT.STEP st WHERE st.CODE = 'ST_CT_04'));
 
----- Ajout des champs à renseigner lors de la prise de cette décision ----------------
+---- Ajout des champs ï¿½ renseigner lors de la prise de cette dï¿½cision ----------------
 
 INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES (DATA_TYPE_SEQ.nextVal, (SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_158'), 'Observation',  0, 'inputTextarea' );
 
 INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES (DATA_TYPE_SEQ.nextVal, (SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_160'), 'Observation',  0, 'inputTextarea' );
 
-INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES (DATA_TYPE_SEQ.nextVal, (SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_08'), 'Numéro du CCS',  1, 'inputText' );
+INSERT INTO DATA_TYPE (ID, FLOW_ID, LABEL, REQUIRED, TYPE) VALUES (DATA_TYPE_SEQ.nextVal, (SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_08'), 'Numï¿½ro du CCS',  1, 'inputText' );
 
----- 1- ST_CT_01 (Dépôt des certificat de contrôle sanitaire). Elle existe déjà. -----------------------
-    ----- 1- FL_CT_01 (Certificat de contrôle du MINSANTE)
----- 2- ST_CT_02 (Recevabilité). Elle existe déjà. -----------------------------------
-    ----- 1- FL_CT_02 (Complément d'information suite recevabilité) ------------------
-    ----- 2- FL_CT_04 (Rejet du Certificat de contrôle suite recevabilité) -------------------
-    ----- 3- FL_CT_05 (Validation du Certificat de contrôle pour cotation) -------------------
-	----- 4- FL_CT_157 (Validation du certificat pour étude approfondie) --------------------------------
----- 3- ST_CT_03 (Cotation). Elle existe déjà. ----------------------------------------
-    ----- 1- FL_CT_06 (Cotation pour étude) ------------------------------------------
----- 4- ST_CT_04 (Etude approfondie). Elle existe déjà. -------------------------------------
-    ----- 1- FL_CT_91 (Rejet Certificat de contrôle suite étude ------------------------------
-    ----- 2- FL_CT_07 (Acception Certificat de contrôle suite étude) ------------------------ 
-    ----- 3- FL_CT_24 (Complément d'information suite étude) ------------------------
+---- 1- ST_CT_01 (Dï¿½pï¿½t des certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. -----------------------
+    ----- 1- FL_CT_01 (Certificat de contrï¿½le du MINSANTE)
+---- 2- ST_CT_02 (Recevabilitï¿½). Elle existe dï¿½jï¿½. -----------------------------------
+    ----- 1- FL_CT_02 (Complï¿½ment d'information suite recevabilitï¿½) ------------------
+    ----- 2- FL_CT_04 (Rejet du Certificat de contrï¿½le suite recevabilitï¿½) -------------------
+    ----- 3- FL_CT_05 (Validation du Certificat de contrï¿½le pour cotation) -------------------
+	----- 4- FL_CT_157 (Validation du certificat pour ï¿½tude approfondie) --------------------------------
+---- 3- ST_CT_03 (Cotation). Elle existe dï¿½jï¿½. ----------------------------------------
+    ----- 1- FL_CT_06 (Cotation pour ï¿½tude) ------------------------------------------
+---- 4- ST_CT_04 (Etude approfondie). Elle existe dï¿½jï¿½. -------------------------------------
+    ----- 1- FL_CT_91 (Rejet Certificat de contrï¿½le suite ï¿½tude ------------------------------
+    ----- 2- FL_CT_07 (Acception Certificat de contrï¿½le suite ï¿½tude) ------------------------ 
+    ----- 3- FL_CT_24 (Complï¿½ment d'information suite ï¿½tude) ------------------------
 	----- 4- FL_CT_158 (Facturation) --------------------------------
----- 5- ST_CT_42 (Paiement). Elle existe déjà. --------------------
+---- 5- ST_CT_42 (Paiement). Elle existe dï¿½jï¿½. --------------------
     ---- 1- FL_CT_160 (Encaissement) ----------------------------------
----- 6- ST_CT_31 (Signature du certificat de contrôle sanitaire). Elle existe déjà. --------------------
-    ---- 1- FL_CT_08 (Autorisation Certificat de contrôle) ----------------------------------
-    ---- 2- FL_CT_76 (Refus Signature - Retour vers étude approfondie ---------------
----- 7- ST_CT_05 (Fin Rejet de la demande de certificat de contrôle sanitaire). Elle existe déjà. ----------
----- 8- ST_CT_06 (Fin signature du certificat de contrôle sanitaire). Elle existe déjà. ----------------
+---- 6- ST_CT_31 (Signature du certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. --------------------
+    ---- 1- FL_CT_08 (Autorisation Certificat de contrï¿½le) ----------------------------------
+    ---- 2- FL_CT_76 (Refus Signature - Retour vers ï¿½tude approfondie ---------------
+---- 7- ST_CT_05 (Fin Rejet de la demande de certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. ----------
+---- 8- ST_CT_06 (Fin signature du certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. ----------------
 
----- 1- ST_CT_01 (Dépôt des certificat de contrôle sanitaire). Elle existe déjà. -----------------------
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Request for Sanitary Control Certificate','Demande de Certificat de contrôle sanitaire',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_01'));
----- 2- ST_CT_02 (Recevabilité). Elle existe déjà. -----------------------------------
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Control Certificate','Complément d''information de Certificat de contrôle',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_02'));
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection of Control Certificate','Rejet de Certificat de contrôle',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_04'));
----- INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of the Control Certificate for Quotation','Validation de Certificat de contrôle pour cotation',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_05'));
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Billing certificate Fees','Facturation des frais du certificat',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_158'));
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of Certificate for Depth study','Validation du certificat pour étude approfondie',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_157'));
----- 3- ST_CT_03 (Cotation). Elle exite déjà. ----------------------------------------
+---- 1- ST_CT_01 (Dï¿½pï¿½t des certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. -----------------------
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Request for Sanitary Control Certificate','Demande de Certificat de contrï¿½le sanitaire',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_01'));
+---- 2- ST_CT_02 (Recevabilitï¿½). Elle existe dï¿½jï¿½. -----------------------------------
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Control Certificate','Complï¿½ment d''information de Certificat de contrï¿½le',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_02'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection of Control Certificate','Rejet de Certificat de contrï¿½le',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_04'));
+---- INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of the Control Certificate for Quotation','Validation de Certificat de contrï¿½le pour cotation',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_05'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of Certificate for Depth study','Validation du certificat pour ï¿½tude approfondie',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_157'));
+---- 3- ST_CT_03 (Cotation). Elle exite dï¿½jï¿½. ----------------------------------------
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Cancel Quotation','Annulation de la cotation',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_06'));
----- 4- ST_CT_04 (Etude approfondie). Elle existe déjà. -------------------------------------
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection of the Control Certificate','Rejet suite de Certificat de contrôle ',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_91'));
+---- 4- ST_CT_04 (Etude approfondie). Elle existe dï¿½jï¿½. -------------------------------------
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Rejection of the Control Certificate','Rejet suite de Certificat de contrï¿½le ',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_91'));
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validate request for signature','Validation de la demande pour signature',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_07'));
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Control Certificate','Complément d''information de Certificat de contrôle',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_24'));
-
----- 5- ST_CT_64 (Paiement). Elle existe déjà. -------------------------------------
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Additional information for the Control Certificate','Complï¿½ment d''information de Certificat de contrï¿½le',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_24'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Billing certificate Fees','Facturation des frais du certificat',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_158'));
+---- 5- ST_CT_64 (Paiement). Elle existe dï¿½jï¿½. -------------------------------------
 INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Encaissement des frais du certificat','Encaissement des frais du certficat',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_160'));
 
----- 6- ST_CT_54 (Signature du certificat de contrôle sanitaire). Elle existe déjà. --------------------
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Decision Refusal - Back to treatment of the Control Certificate','Refus Décision - Retour vers étude de  Certificat de contrôle',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_76'));
-INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of the Control Certificate','Validation du certificat de contrôle',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_08'));
+---- 6- ST_CT_54 (Signature du certificat de contrï¿½le sanitaire). Elle existe dï¿½jï¿½. --------------------
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Decision Refusal - Back to treatment of the Control Certificate','Refus Dï¿½cision - Retour vers ï¿½tude de  Certificat de contrï¿½le',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_76'));
+INSERT INTO FILE_TYPE_FLOW (LABEL_EN,LABEL_FR,FILE_TYPE_ID,FLOW_ID) VALUES ('Validation of the Control Certificate','Validation du certificat de contrï¿½le',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),(SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_08'));
 
-/*========================  Définir les infirmations nécessaires pour l'impression des livrable de la procédure CCS_MINSANTE =========================================*/
+/*========================  Dï¿½finir les infirmations nï¿½cessaires pour l'impression des livrable de la procï¿½dure CCS_MINSANTE =========================================*/
 INSERT INTO FILE_TYPE_FLOW_REPORT(ID, REPORT_CLASS_NAME, REPORT_NAME, FILE_FIELD_NAME, FILE_TYPE_ID, FLOW_ID, ORGANISM_ID) VALUES (FILE_TYPE_FLOW_REPORT_SEQ.nextVal, 'org.guce.siat.web.reports.exporter.CcsMinsanteFormExporter', 'CCS_MINSANTE.pdf','NUMERO_CCS_MINSANTE', (SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'), (SELECT f.ID FROM SIAT_CT.FLOW f WHERE f.CODE = 'FL_CT_08'), (SELECT org.ID FROM SIAT_CT.ORGANISM org WHERE org.ABREVIATION = 'D-CCT-Minsante'));
 
-/*========================  Définir les correspondances entre les flows SIAT et les flux entrants et sortants de orchestra pour la procédure CCS_MINSANTE =========================================*/
+/*========================  Dï¿½finir les correspondances entre les flows SIAT et les flux entrants et sortants de orchestra pour la procï¿½dure CCS_MINSANTE =========================================*/
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (FLOW_GUCE_SIAT_SEQ.nextVal,'CCS001','FL_CT_01',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'));
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (FLOW_GUCE_SIAT_SEQ.nextVal,'CCS002','FL_CT_02',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'));
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (FLOW_GUCE_SIAT_SEQ.nextVal,'CCS002','FL_CT_24',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'));
@@ -119,10 +118,10 @@ INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (FLOW_
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (FLOW_GUCE_SIAT_SEQ.nextVal,'CCS602','FL_CT_160',(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'));
 INSERT INTO FLOW_GUCE_SIAT (ID,FLOW_GUCE, FLOW_SIAT, FILE_TYPE_ID) VALUES (FLOW_GUCE_SIAT_SEQ.nextVal,'CCS011',NULL,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'));
 
-/*========================  Définir la correspondances entre les informations pour la génération du certificat de contrôle sanitaire et  =========================================*/
+/*========================  Dï¿½finir la correspondances entre les informations pour la gï¿½nï¿½ration du certificat de contrï¿½le sanitaire et  =========================================*/
 INSERT INTO REPORT_ORGANISM( ID,  SEQUENCE,  VALUE, FILE_TYPE_FLOW_REPORT, ORGANISM)VALUES( REPORT_ORGANISME_SEQ.nextVal,  0,  '/MINSANTE/D-CCT-Minsante/SDCCT-Minsante/',  (SELECT ftfr.ID FROM SIAT_CT.FILE_TYPE_FLOW_REPORT ftfr WHERE ftfr.FILE_FIELD_NAME ='NUMERO_CCS_MINSANTE'),  (SELECT org.ID FROM SIAT_CT.ORGANISM org WHERE org.ABREVIATION='D-CCT-Minsante'));
 
-/*======================== Définir les champs supplémentaires des dossiers pour la procédure CCS_MINSANTE =========================================*/
+/*======================== Dï¿½finir les champs supplï¿½mentaires des dossiers pour la procï¿½dure CCS_MINSANTE =========================================*/
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'CODE_BUREAU','Code Bureau','Office Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'General'),1);
 
 
@@ -135,14 +134,14 @@ INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_ADRESSE_PAYSADDRESS_CODEPAYS','Adresse Pays (Code Pays)','Address Country (Country Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_ADRESSE_PAYSADDRESS_NOMPAYS','Adresse Pays (Nom Pays)','Address Country (Country Name)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_ADRESSE_VILLE','Adresse (Ville)','Address (City)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_ADRESSE_ADRESSEELECTRONIQUE','Adresse (Adresse Électronique)','Address (e-mail Address)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_ADRESSE_ADRESSEELECTRONIQUE','Adresse (Adresse ï¿½lectronique)','Address (e-mail Address)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_ADRESSE_SITEWEB','Adresse (Site Web)','Address (Web Site)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_FIXE_INDICATIFPAYS','Téléphone Fixe (Indicatif Pays)','Telephone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_FIXE_NUMERO','Téléphone Fixe (Numéro)','Telephone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_MOBILE_INDICATIFPAYS','Téléphone Mobile (Indicatif Pays)','Mobile Phone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_MOBILE_NUMERO','Téléphone Mobile (Numéro)','Mobile Phone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_FIXE_INDICATIFPAYS','Tï¿½lï¿½phone Fixe (Indicatif Pays)','Telephone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_FIXE_NUMERO','Tï¿½lï¿½phone Fixe (Numï¿½ro)','Telephone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_MOBILE_INDICATIFPAYS','Tï¿½lï¿½phone Mobile (Indicatif Pays)','Mobile Phone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_TELEPHONE_MOBILE_NUMERO','Tï¿½lï¿½phone Mobile (Numï¿½ro)','Mobile Phone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_FAX_INDICATIFPAYS','Fax (Indicatif Pays)','Fax (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_FAX_NUMERO','Fax (Numéro)','Fax (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'EXPORTATEUR_FAX_NUMERO','Fax (Numï¿½ro)','Fax (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Provider'),1);
 
 
 ---------------------------------- TRANSITAIRE --------------
@@ -155,22 +154,22 @@ INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_ADRESSE_PAYSADDRESS_CODEPAYS','Adresse Pays (Code Pays)','Address Country (Country Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_ADRESSE_PAYSADDRESS_NOMPAYS','Adresse Pays (Nom Pays)','Address Country (Country Name)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_ADRESSE_VILLE','Adresse (Ville)','Address (City)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_ADRESSE_ADRESSEELECTRONIQUE','Adresse (Adresse Électronique)','Address (e-mail Address)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_ADRESSE_ADRESSEELECTRONIQUE','Adresse (Adresse ï¿½lectronique)','Address (e-mail Address)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_ADRESSE_SITEWEB','Adresse (Site Web)','Address (Web Site)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_FIXE_INDICATIFPAYS','Téléphone Fixe (Indicatif Pays)','Telephone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_FIXE_NUMERO','Téléphone Fixe (Numéro)','Telephone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_MOBILE_INDICATIFPAYS','Téléphone Mobile (Indicatif Pays)','Mobile Phone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_MOBILE_NUMERO','Téléphone Mobile (Numéro)','Mobile Phone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_FIXE_INDICATIFPAYS','Tï¿½lï¿½phone Fixe (Indicatif Pays)','Telephone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_FIXE_NUMERO','Tï¿½lï¿½phone Fixe (Numï¿½ro)','Telephone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_MOBILE_INDICATIFPAYS','Tï¿½lï¿½phone Mobile (Indicatif Pays)','Mobile Phone (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_TELEPHONE_MOBILE_NUMERO','Tï¿½lï¿½phone Mobile (Numï¿½ro)','Mobile Phone (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_FAX_INDICATIFPAYS','Fax (Indicatif Pays)','Fax (Country Dialing Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_FAX_NUMERO','Fax (Numéro)','Fax (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSITAIRE_FAX_NUMERO','Fax (Numï¿½ro)','Fax (Number)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Freight Forwarder'),1);
 
 
 ---------------------------------- FACTURE --------------
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_NUMERO_FACTURE','Numéro facture','Bill number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_NUMERO_FACTURE','Numï¿½ro facture','Bill number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_DATE_FACTURE','Date de la facture','Bill Date',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_MONTANT_FACTURE','Montant Facture','Bill Amount',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_DEVISE_FACTURE_CODE','Code Devise','Currency Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_DEVISE_FACTURE_LIBELLE','Libellé Devise','Currency Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_DEVISE_FACTURE_LIBELLE','Libellï¿½ Devise','Currency Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'FACTURE_MONTANT_CFA_FACTURE','Montant FCFA','XAF Amount',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Bill'),1);
 
 ---------------------------------- TRANSPORT --------------
@@ -180,14 +179,14 @@ INSERT INTO SIAT_CT.FIELD_GROUP (ID,LABEL_EN,LABEL_FR) VALUES (SIAT_CT.FIELD_GRO
 ------------------FILE_FIELD-------------------------------
 
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MOYEN_TRANSPORT_CODE','Code Moyen Transport','Transport Way Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MOYEN_TRANSPORT_LIBELLE','Libellé Moyen Transport','Transport Way Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MOYEN_TRANSPORT_LIBELLE','Libellï¿½ Moyen Transport','Transport Way Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MOYEN_TRANSPORT_IMMO','Code IMMO','IMMO Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MOYEN_TRANSPORT_MMSC','Code MMSC','MMSC Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MODE_TRANSPORT_CODE','Code Mode Transport','Transport Mode Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MODE_TRANSPORT_LIBELLE','Libellé MOde Transport','Transport Mode Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_MODE_TRANSPORT_LIBELLE','Libellï¿½ MOde Transport','Transport Mode Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_NUMERO_BL','Numero BL','BL Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_LIEU_DEDOUANEMENT_UNLOCODE','Code Lieu Dedouanement','Discharging Place Code',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_LIEU_DEDOUANEMENT_LIBELLE','Libellé Lieu Dédouanement','Dischargin Place Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_LIEU_DEDOUANEMENT_LIBELLE','Libellï¿½ Lieu Dï¿½douanement','Dischargin Place Label',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_PAYS_ORIGINE_CODE_PAYS','Pays Origine (Code)','Origin Country (Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_PAYS_ORIGINE_NOM_PAYS','Pays Origine (Nom)','Origin Country (Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'TRANSPORT_PAYS_PROVENANCE_CODE_PAYS','Pays Provenance (Code)','Country Of origin (Code)',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Transport'),1);
@@ -197,27 +196,27 @@ INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_
 
 
 ------GENERAL ----------------------------------------------------
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'NUMERO_CCS_MINSANTE','Numéro Certificat','Certificat number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'General'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'NUMERO_CCS_MINSANTE','Numï¿½ro Certificat','Certificat number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'General'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'CCS_MINSANTE_DATE','Date de signature','Signature date',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'General'),1);
 ------SIGNATAIRE ----------------------------------------------------
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'SIGNATAIRE_NOM','Nom Signataire','Signatory Name',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Signatory'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'SIGNATAIRE_QUALITE','Qualité Signataire','Signatory Function',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Signatory'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'SIGNATAIRE_QUALITE','Qualitï¿½ Signataire','Signatory Function',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Signatory'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'SIGNATAIRE_LIEU','Lieu Signature','Signature Place',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Signatory'),1);
 INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'SIGNATAIRE_DATE','Date Signature','Signature Date',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Signatory'),1);
 
 ------DOCUMENTS ----------------------------------------------------
 INSERT INTO SIAT_CT.FIELD_GROUP (ID,LABEL_EN,LABEL_FR) VALUES (SIAT_CT.FIELD_GROUP_SEQ.NEXTVAL,'Documents','Documents');
 
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DOCUMENTS_NUMERO_DI','Numéro DI','DI Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Documents'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DOCUMENTS_NUMERO_VTP','Numéro VTP','VTP Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Documents'),1);
-INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DOCUMENTS_NUMERO_VTD','Numéro VTD','VTD Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Documents'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DOCUMENTS_NUMERO_DI','Numï¿½ro DI','DI Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Documents'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DOCUMENTS_NUMERO_VTP','Numï¿½ro VTP','VTP Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Documents'),1);
+INSERT INTO FILE_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,REPEATABLE,GROUP_ID,UPDATABLE) VALUES (FILE_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DOCUMENTS_NUMERO_VTD','Numï¿½ro VTD','VTD Number',0,(SELECT fg.ID FROM SIAT_CT.FIELD_GROUP fg WHERE fg.LABEL_EN = 'Documents'),1);
 
-/*======================== Définir les champs supplémentaires des marchandises des dossiers pour la procédure CCS_MINSANTE =========================================*/
+/*======================== Dï¿½finir les champs supplï¿½mentaires des marchandises des dossiers pour la procï¿½dure CCS_MINSANTE =========================================*/
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'AMM','AMM','AMM',1,1,0);
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'MODE_EMBALAGE','Mode emballage','Packaging Mode',1,1,0);
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'DESCRIPTION','Description','Description',1,1,0);
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'POIDS','Poids','Weight',1,1,0);
-INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'UNITE','Unité','Unit',1,1,0);
+INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'UNITE','Unitï¿½','Unit',1,1,0);
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'VOLUME','Volume','Volume',1,1,0);
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'NOM_COMMERCIAL','Nom Commercial','Trade Name',1,1,0);
 INSERT INTO FILE_ITEM_FIELD (ID,FILE_TYPE_ID,CODE,LABEL_FR,LABEL_EN,GROUP_ID,UPDATABLE,REPEATABLE) VALUES (FILE_ITEM_FIELD_SEQ.nextVal,(SELECT ft.ID FROM SIAT_CT.FILE_TYPE ft WHERE ft.CODE='CCS_MINSANTE'),'NOMBRE_COLIS','Nombre de colis','Packages count',1,1,0);

@@ -67,6 +67,7 @@ import org.guce.siat.core.ct.dao.InspectionReportDao;
 import org.guce.siat.core.ct.dao.InterceptionNotificationDao;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
 import org.guce.siat.core.ct.dao.SampleDao;
+import org.guce.siat.core.ct.dao.TreatmentInfosCCSMinsanteDao;
 import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
 import org.guce.siat.core.ct.dao.TreatmentPartDao;
@@ -89,6 +90,7 @@ import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
+import org.guce.siat.core.ct.model.TreatmentInfosCCSMinsante;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
@@ -241,6 +243,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     @Autowired
     private TreatmentInfosDao treatmentInfosDao;
+    
+    @Autowired
+    private TreatmentInfosCCSMinsanteDao treatmentInfosCCSMinsanteDao;
 
     @Autowired
     private ApprovedDecisionDao approvedDecisionDao;
@@ -888,6 +893,28 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         // Update fileItems : Set draft = true
         fileItemDao.saveOrUpdateList(fileItemList);
     }
+    
+    @Override
+    public void takeDecisionAndSaveTreatmentInfosCCSMinsante(TreatmentInfosCCSMinsante treatmentInfos, List<ItemFlow> itemFlowsToAdd) throws Exception {
+        final List<FileItem> fileItemList = new ArrayList<>();
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            final TreatmentInfosCCSMinsante ti = CommonUtils.clone(treatmentInfos);
+
+            ti.setItemFlow(itemFlow);
+            treatmentInfosCCSMinsanteDao.save(ti);
+
+            // Set draft = true to be updated
+            final FileItem item = itemFlow.getFileItem();
+            item.setDraft(Boolean.TRUE);
+            fileItemList.add(item);
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+    
 
     @Override
     public void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers) {
