@@ -530,6 +530,12 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
             ciDocument.getCONTENT().getMARCHANDISES().getMARCHANDISE().addAll(marchandiseList);
 
         }
+        // ******* AJOUT NUMERO_CCS et DATE SIGNATURE *********///
+        if(file.getSignatory() != null && file.getSignatureDate() != null){
+            ciDocument.getCONTENT().setNUMEROCCSMINSANTE(file.getNumeroDossier());
+            ciDocument.getCONTENT().setDATECCSMINSANTE(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
+        }
+         
         // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
 
         ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT.CONTENT.SIGNATAIRE());

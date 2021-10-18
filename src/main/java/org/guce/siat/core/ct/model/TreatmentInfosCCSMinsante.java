@@ -468,6 +468,10 @@ public class TreatmentInfosCCSMinsante extends AbstractModel implements Serializ
     public boolean isCcsMinsanteDrugProducts() {
         return this.drugs || this.medicalDevices || this.tropicalCorticosteroids || this.laboratoryProducts || this.packagingSfProducts;
     }
+    
+    public boolean isCcsMinsanteFoodProducts() {
+        return this.productFoodIHC || this.fleaMarket || this.thriftShop || this.hygienSanitationProducts || this.vehicle;
+    }
 
     @Override
     public String toString() {
