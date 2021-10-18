@@ -2440,7 +2440,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (flowGuceSiat != null) {
             ciDocument.setTYPEDOCUMENT(flowGuceSiat.getFlowGuce());
         }
-        if (FlowCode.FL_CT_89.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_08.name().equals(flowToExecute.getCode())) {
+        if (Arrays.asList(FlowCode.FL_CT_89.name(), FlowCode.FL_CT_08.name(), FlowCode.FL_CT_114.name()).contains(flowToExecute.getCode())) {
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
                     .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
