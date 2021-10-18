@@ -200,6 +200,7 @@ import org.guce.siat.core.utils.monotoring.item.FileItemFieldValueIrmpMINCOMMERC
 import org.guce.siat.jaxb.ap.VT_MINEPDED.DOCUMENT.CONTENT;
 import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT;
 import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE;
+import org.guce.siat.utility.jaxb.common.PAIEMENT;
 import org.guce.siat.utility.jaxb.common.PIECESJOINTES;
 import org.guce.siat.utility.jaxb.common.PIECESJOINTES.PIECEJOINTE;
 import org.guce.siat.utility.jaxb.common.PaymentDocument;
@@ -552,7 +553,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return true, if is payment request
      */
     private boolean isPaymentRequest(final FlowGuceSiat flowGuceSiat) {
-        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name())
+        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_AP_VT1_03.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name())
                 .contains(flowGuceSiat.getFlowSiat());
     }
 
@@ -907,7 +908,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         Flow firstFlow = null;
         if (null != file.getFileType().getCode()) {
             switch (file.getFileType().getCode()) {
-                case VT_MINEPIA:
                 case VT_MINEPDED:
                 case AT_MINEPIA:
                 case AIE_MINADER:
@@ -955,6 +955,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         //Les flows initiaux pour les demandes de modification
         final List<String> updatedFirstFlows = Arrays.asList(FlowCode.FL_CT_110.name());
         List<DataType> dataTypeOfFistFlows = null;
+        final List<ItemFlow> itemFlowsToAdd = new ArrayList<>();
         for (final FileItem fileItem : fileItemList) {
             final ItemFlow itemFlow = new ItemFlow();
             itemFlow.setSender(declarant1);
@@ -963,6 +964,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             itemFlow.setFileItem(fileItem);
             itemFlow.setFlow(firstFlow);
             itemFlowDao.save(itemFlow);
+            itemFlowsToAdd.add(itemFlow);
             fileItem.setDraft(Boolean.FALSE);
             fileItem.setStep(firstFlow.getToStep());
             fileItemDao.save(fileItem);
@@ -978,6 +980,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                         itemFlowDataDao.save(itemFlowData);
                     }
                 }
+            }
+            if (FlowCode.FL_CT_110.name().equals(firstFlow.getCode())) {
+                commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
             }
         }
 
@@ -2114,6 +2119,65 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         return fileToReturn;
     }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+     */
+    public PaymentData getPaymentDataFromDocumentAndFile(final Serializable document, File file) throws ParseException, ValidationException {
+        PaymentData paymentData = new PaymentData();
+        PAIEMENT paymentDocument;
+        if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && document instanceof org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) {
+            final org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT returnedDocument = (org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) document;
+            flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(returnedDocument.getTYPEDOCUMENT());
+            refSiat = returnedDocument.getREFERENCEDOSSIER().getREFERENCESIAT();
+            numDossier = returnedDocument.getREFERENCEDOSSIER().getNUMERODOSSIER();
+            numEbmsMessage = returnedDocument.getMESSAGE().getNUMEROMESSAGE();
+            guceSiatBureau = guceSiatBureauDao.findByBureauGuce(returnedDocument.getCONTENT().getCODEBUREAU());
+            fileToReturn = convertDocumentToFileVtMINEPIA(returnedDocument);
+            
+            paymentDocument = returnedDocument.getCONTENT().getPAIEMENT();
+            paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
+            if(file.getFileItemsList() != null && !file.getFileItemsList().isEmpty()){
+                FileItem fi = file.getFileItemsList().get(0);
+                PaymentItemFlow paymentItemFlow = new PaymentItemFlow(false, fi.getId(), fi.getNsh());
+                
+                paymentData.getPaymentItemFlowList().add();
+            }
+        }
+    }
+    
+    private void savePaymentDataInExecuteFirsflow() {
+        paymentData = new PaymentData();
+
+        paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
+        for (final FileItem fi : currentFile.getFileItemsList()) {
+            paymentData.getPaymentItemFlowList().add(new PaymentItemFlow(false, fi.getId(), fi.getNsh()));
+        }
+        Long invoiceTotalAmount = 0L;
+        Long totalTva = 0L;
+        for (PaymentItemFlow pi : paymentData.getPaymentItemFlowList()) {
+            if (pi.getMontantHt() == null) {
+                pi.setMontantHt(0L);
+            }
+            if (pi.getMontantTva() == null) {
+                pi.setMontantTva(0L);
+            }
+
+            invoiceTotalAmount += pi.getMontantHt();
+            totalTva += pi.getMontantTva();
+        }
+
+        if (invoiceOtherAmount == null) {
+            invoiceOtherAmount = 0L;
+        }
+
+        invoiceTotalTtcAmount = invoiceTotalAmount + totalTva + invoiceOtherAmount;
+
+        paymentData.setMontantHt(invoiceTotalAmount);
+        paymentData.setMontantTva(totalTva);
+        paymentData.setAutreMontant(invoiceOtherAmount);
+    }
 
     /*
 	 * (non-Javadoc)
@@ -2709,7 +2773,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
-                        FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name())
+                        FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name(), FlowCode.FL_AP_VT1_03.name())
                         .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT());
             final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
@@ -2749,46 +2813,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                             String.format("%s %s", itemFlowList.get(0).getSender().getFirstName(), itemFlowList.get(0).getSender()
                                     .getLastName()));
             ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlowList.get(0).getSender().getPosition().getCode());
-            // Set RT Decision
-            ciDocument.getCONTENT().setDECISION(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT.DECISION());
-            final ItemFlow decisionItemFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
-                    ACCEPT_AP_FLOW_LIST);
-            if (decisionItemFlow != null) {
-                ciDocument.getCONTENT().getDECISION().setDECISIONGENERALE(decisionItemFlow.getFlow().getLabelFr());
-                final List<ItemFlowData> itemFlowDataList = decisionItemFlow.getItemFlowsDataList();
-
-                for (final ItemFlowData itemFlowData : itemFlowDataList) {
-                    switch (itemFlowData.getDataType().getLabel()) {
-                        case "Spécification technique":
-                            ciDocument.getCONTENT().getDECISION().setSPECIFICATIONTECHNIQUE(itemFlowData.getValue());
-                            break;
-                        case "Condition":
-                            ciDocument.getCONTENT().getDECISION().setCONDITION(itemFlowData.getValue());
-                            break;
-                        case "Consigne":
-                            ciDocument.getCONTENT().getDECISION().setCONSIGNE(itemFlowData.getValue());
-                            break;
-                        case "Quantité accordé":
-                            ciDocument.getCONTENT().getDECISION().setQUANTITEACCORDE(itemFlowData.getValue());
-                            break;
-                        case "Date validité":
-                            try {
-                                if (StringUtils.isNotBlank(itemFlowData.getValue())) {
-                                    ciDocument
-                                            .getCONTENT()
-                                            .getDECISION()
-                                            .setDATEVALIDITE(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
-                                }
-                            } catch (final ParseException e) {
-                                logger.info(Objects.toString(e), e);
-                                ciDocument.getCONTENT().getDECISION().setDATEVALIDITE(null);
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
 
         }
 
@@ -6918,47 +6942,6 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             decisionOrganism.setObservation(document.getCONTENT().getDECISIONORGANISME().getOBSERVATION());
 
             decisionDossier.put(file, decisionOrganism);
-        }
-
-        /* PAYS */
-        if (document.getCONTENT() != null && document.getCONTENT().getPROVENANCE() != null
-                && document.getCONTENT().getPROVENANCE().getPAYSORIGINE() != null
-                && document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getCODEPAYS() != null) {
-            Country countryOfOrigin = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSORIGINE()
-                    .getCODEPAYS());
-            if (countryOfOrigin != null) {
-                file.setCountryOfOrigin(countryOfOrigin);
-            } else {
-                countryOfOrigin = new Country();
-                if (document.getCONTENT() != null && document.getCONTENT().getPROVENANCE() != null
-                        && document.getCONTENT().getPROVENANCE().getPAYSORIGINE() != null) {
-                    countryOfOrigin.setCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getCODEPAYS());
-                    countryOfOrigin.setCountryName(document.getCONTENT().getPROVENANCE().getPAYSORIGINE().getNOMPAYS());
-
-                    countryDao.save(countryOfOrigin);
-                    file.setCountryOfOrigin(countryOfOrigin);
-                }
-            }
-        }
-
-        if (document.getCONTENT() != null && document.getCONTENT().getPROVENANCE() != null
-                && document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE() != null
-                && document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getCODEPAYS() != null) {
-            Country countryOfProvenance = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getPROVENANCE()
-                    .getPAYSPROVENANCE().getCODEPAYS());
-            if (countryOfProvenance != null) {
-                file.setCountryOfProvenance(countryOfProvenance);
-            } else {
-                countryOfProvenance = new Country();
-                if (document.getCONTENT() != null && document.getCONTENT().getPROVENANCE() != null
-                        && document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE() != null) {
-                    countryOfProvenance.setCountryIdAlpha2(document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getCODEPAYS());
-                    countryOfProvenance.setCountryName(document.getCONTENT().getPROVENANCE().getPAYSPROVENANCE().getNOMPAYS());
-
-                    countryDao.save(countryOfProvenance);
-                    file.setCountryOfProvenance(countryOfProvenance);
-                }
-            }
         }
         return file;
     }
