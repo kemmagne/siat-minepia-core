@@ -72,6 +72,10 @@ public final class PaiementGenerator
 					paymentData.getAutreMontant() != null ? paymentData.getAutreMontant().toString() : null);
 			paiement.getFACTURE().setMONTANTHT(paymentData.getMontantHt() != null ? paymentData.getMontantHt().toString() : null);
 			paiement.getFACTURE().setMONTANTTVA(paymentData.getMontantTva() != null ? paymentData.getMontantTva().toString() : null);
+                        final Long montantTTC = (paymentData.getMontantTva() != null ? paymentData.getMontantTva() : 0L)
+						+ (paymentData.getMontantHt() != null ? paymentData.getMontantHt() : 0L)
+                                                + (paymentData.getAutreMontant()!= null ? paymentData.getAutreMontant(): 0L);
+                        paiement.getFACTURE().setMONTANTTTC(montantTTC.toString());
 			paiement.getFACTURE().setDETAILFACTURES(new DETAILFACTURES());
 			paiement.getFACTURE().setREFERENCEFACTURE(paymentData.getRefFacture());
 			for (final PaymentItemFlow elmt : paymentData.getPaymentItemFlowList())

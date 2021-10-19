@@ -981,7 +981,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     }
                 }
             }
-            if (FlowCode.FL_CT_110.name().equals(firstFlow.getCode())) {
+            if (FlowCode.FL_AP_VT1_01.name().equals(firstFlow.getCode())) {
+                
                 commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
             }
         }
@@ -2129,54 +2130,25 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         PAIEMENT paymentDocument;
         if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && document instanceof org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) {
             final org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT returnedDocument = (org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) document;
-            flowGuceSiat = flowGuceSiatDao.findFlowGuceSiatByFlowGuce(returnedDocument.getTYPEDOCUMENT());
-            refSiat = returnedDocument.getREFERENCEDOSSIER().getREFERENCESIAT();
-            numDossier = returnedDocument.getREFERENCEDOSSIER().getNUMERODOSSIER();
-            numEbmsMessage = returnedDocument.getMESSAGE().getNUMEROMESSAGE();
-            guceSiatBureau = guceSiatBureauDao.findByBureauGuce(returnedDocument.getCONTENT().getCODEBUREAU());
-            fileToReturn = convertDocumentToFileVtMINEPIA(returnedDocument);
             
             paymentDocument = returnedDocument.getCONTENT().getPAIEMENT();
             paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
+            Long montantHT = paymentDocument.getFACTURE().getMONTANTHT() != null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTHT()) : 0L;
+            Long montantTVA = paymentDocument.getFACTURE().getMONTANTTVA()!= null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTTVA()) : 0L;
+            Long montantTTC = paymentDocument.getFACTURE().getMONTANTTTC() != null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTTTC()) : 0L;
             if(file.getFileItemsList() != null && !file.getFileItemsList().isEmpty()){
                 FileItem fi = file.getFileItemsList().get(0);
                 PaymentItemFlow paymentItemFlow = new PaymentItemFlow(false, fi.getId(), fi.getNsh());
-                
-                paymentData.getPaymentItemFlowList().add();
+                paymentItemFlow.setMontantHt(montantHT);
+                paymentItemFlow.setMontantTva(montantTVA);
+                paymentData.getPaymentItemFlowList().add(paymentItemFlow);
             }
+            paymentData.setMontantHt(montantHT);
+            paymentData.setMontantTva(montantTVA);
+            paymentData.setMontantEncaissement(montantTTC.doubleValue());
+            paymentData.setNatureFrais("Frais du visa technique");
         }
-    }
-    
-    private void savePaymentDataInExecuteFirsflow() {
-        paymentData = new PaymentData();
-
-        paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
-        for (final FileItem fi : currentFile.getFileItemsList()) {
-            paymentData.getPaymentItemFlowList().add(new PaymentItemFlow(false, fi.getId(), fi.getNsh()));
-        }
-        Long invoiceTotalAmount = 0L;
-        Long totalTva = 0L;
-        for (PaymentItemFlow pi : paymentData.getPaymentItemFlowList()) {
-            if (pi.getMontantHt() == null) {
-                pi.setMontantHt(0L);
-            }
-            if (pi.getMontantTva() == null) {
-                pi.setMontantTva(0L);
-            }
-
-            invoiceTotalAmount += pi.getMontantHt();
-            totalTva += pi.getMontantTva();
-        }
-
-        if (invoiceOtherAmount == null) {
-            invoiceOtherAmount = 0L;
-        }
-
-        invoiceTotalTtcAmount = invoiceTotalAmount + totalTva + invoiceOtherAmount;
-
-        paymentData.setMontantHt(invoiceTotalAmount);
-        paymentData.setMontantTva(totalTva);
-        paymentData.setAutreMontant(invoiceOtherAmount);
+        return paymentData;
     }
 
     /*
