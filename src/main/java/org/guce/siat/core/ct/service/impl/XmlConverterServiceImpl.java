@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.TimeZone;
+import java.util.logging.Level;
 import javax.persistence.PersistenceException;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisConnectionException;
 import org.apache.chemistry.opencmis.commons.exceptions.CmisContentAlreadyExistsException;
@@ -124,6 +125,7 @@ import org.guce.siat.core.ct.model.PaymentItemFlow;
 import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.WoodSpecification;
+import org.guce.siat.core.ct.service.CommonService;
 import org.guce.siat.core.ct.service.CotationService;
 import org.guce.siat.core.ct.service.util.XmlConverter;
 import org.guce.siat.core.ct.service.util.XmlConverterAeMINADER;
@@ -261,6 +263,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     @Autowired
     private CotationService cotationService;
+    
+    @Autowired
+    private CommonService commonService;
 
     @Autowired
     private AppointmentDao appointmentDao;
@@ -771,7 +776,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 }
             }
 
-            executeFirstFlow(addedFile);
+            executeFirstFlow(addedFile, document);
 
             if (xmlConverter != null) {
                 xmlConverter.update(addedFile, document);
@@ -904,7 +909,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      *
      * @param file the file
      */
-    private void executeFirstFlow(final File file) {
+    private void executeFirstFlow(final File file, final Serializable document) {
         Flow firstFlow = null;
         if (null != file.getFileType().getCode()) {
             switch (file.getFileType().getCode()) {
@@ -981,9 +986,16 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     }
                 }
             }
-            if (FlowCode.FL_AP_VT1_01.name().equals(firstFlow.getCode())) {
-                
-                commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
+            if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && FlowCode.FL_AP_VT1_01.name().equals(firstFlow.getCode())) {
+                PaymentData  paymentData;
+                try {
+                    paymentData = getPaymentDataFromDocumentAndFile(document, file);
+                    commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
+                } catch (ParseException ex) {
+                    java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (ValidationException ex) {
+                    java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
 
