@@ -55,6 +55,10 @@ public final class PaiementGenerator
 					.getClient().getNumContribuable());
 			partieVersante.setRAISONSOCIALE(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile()
 					.getClient().getCompanyName());
+                        chargeur.setNUMEROCONTRIBUABLE(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile()
+					.getClient().getNumContribuable());
+			chargeur.setRAISONSOCIALE(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile()
+					.getClient().getCompanyName());
 			//	partieVersante.setNOM(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getSender().getFirstName());
 			//	partieVersante.setLIEU(paymentData.getPaymentItemFlowList().get(0).getItemFlow().getSender().getAdministration()
 			//		.getLabelFr());
@@ -112,7 +116,6 @@ public final class PaiementGenerator
 				encaissement.setMONTANT(paymentData.getMontantEncaissement() != null ? paymentData.getMontantEncaissement()
 						.toString() : null);
 				encaissement.setOBSERVATIONS(paymentData.getObservation());
-				partieVersante = new PARTIEVERSANTE();
 
 				final Entity bureau = paymentData.getPaymentItemFlowList().get(0).getItemFlow().getFileItem().getFile().getBureau();
 				beneficiaire.setCODE(bureau.getService().getSubDepartment().getOrganism().getMinistry().getLabelFr());
