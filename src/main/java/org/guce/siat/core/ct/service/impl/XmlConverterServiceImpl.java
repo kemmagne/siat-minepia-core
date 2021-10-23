@@ -2740,30 +2740,37 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         }
 
         if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode())) {
-            final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VT_MINEPIA_REPORT_FIELD,
-                    file);
-            if (!Objects.equals(reportNumberFieldValue, null)) {
-                ciDocument.getCONTENT().setNUMEROVTMINEPIA(reportNumberFieldValue.getValue());
+            //final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VT_MINEPIA_REPORT_FIELD,file);
+                ciDocument.getCONTENT().setNUMEROVTMINEPIA(file.getNumeroDossier());
+                if(file.getSignatureDate() != null){
+                    ciDocument.getCONTENT().setDATEVTMINEPIA(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
+                }
                 ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
                 ciDocument
                         .getCONTENT()
                         .getPIECESJOINTES()
                         .getPIECEJOINTE()
-                        .add(new PIECEJOINTE(file.getFileTypeGuce(), reportNumberFieldValue.getValue()
+                        .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getNumeroDossier()
                                 + ESBConstants.PDF_FILE_EXTENSION));
-            }
 
         }
-        if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
-                && Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
+        if (Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
                         FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
                         FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name(), FlowCode.FL_AP_VT1_03.name())
                         .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT());
-            final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
-                    FlowCode.valueOf(flowToExecute.getCode()));
-            final PaymentData paymentData = paymentDataDao.findPaymentDataByItemFlow(paymentFlow);
+            ItemFlow lastItemFlow;
+            PaymentData paymentData = null;
+            final List<ItemFlow> lastPaymentItemFlowList = itemFlowDao.findLastItemFlowsByFileAndFlow(file, FlowCode.FL_AP_VT1_01);
+            for (final ItemFlow itemFlow : lastPaymentItemFlowList) {
+                lastItemFlow = itemFlow;
+                paymentData = paymentDataDao.findPaymentDataByItemFlow(lastItemFlow);
+                if (paymentData != null) {
+                    break;
+                }
+            }
             ciDocument.getCONTENT().setPAIEMENT(PaiementGenerator.generatePaiement(paymentData, flowToExecute.getCode()));
+
         }
         /* DETECTER SI DECISION PAR ARTICLE OU PAR DOSSIER */
 

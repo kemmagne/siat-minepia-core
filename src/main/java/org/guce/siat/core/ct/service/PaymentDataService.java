@@ -28,6 +28,7 @@ public interface PaymentDataService extends AbstractService<PaymentData> {
      * @param loggedUser the logged user
      * @param flowToExecute the flow to execute
      * @param paymentData the payment data
+     * @return 
      */
     PaymentData takeDecisionForPayment(File currentFile, User loggedUser, Flow flowToExecute, final PaymentData paymentData);
 
