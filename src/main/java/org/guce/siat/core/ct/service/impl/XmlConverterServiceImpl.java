@@ -958,7 +958,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         final User declarant1 = userDao.getUserByLogin("DECLARANT");
         final List<FileItem> fileItemList = fileItemDao.findFileItemsByFile(file);
         //Les flows initiaux pour les demandes de modification
-        final List<String> updatedFirstFlows = Arrays.asList(FlowCode.FL_CT_110.name());
+        final List<String> updatedFirstFlows = Arrays.asList(FlowCode.FL_CT_110.name(), FlowCode.FL_AP_VT1_05.name());
         List<DataType> dataTypeOfFistFlows = null;
         final List<ItemFlow> itemFlowsToAdd = new ArrayList<>();
         for (final FileItem fileItem : fileItemList) {
