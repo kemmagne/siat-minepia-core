@@ -459,6 +459,19 @@ public class FileFieldValueCcsMinsante {
                 }
                 break;
             }
+            case "INFORMATIONS_GENERALES_REFERENCE_OBSERVATIONS": {
+                if (document.getCONTENT() != null && document.getCONTENT() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getOBSERVATIONS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_REFERENCE_BASE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getREFERENCEBASE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getREFERENCEBASE());
+                    file.setNumeroDossierBase(document.getCONTENT().getREFERENCEBASE());
+                }
+                break;
+            }
             
             default:
                 int fieldType = org.guce.siat.core.utils.FileFieldValueUtils.FIELD_TYPE_STRING;

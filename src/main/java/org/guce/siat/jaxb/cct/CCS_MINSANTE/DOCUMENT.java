@@ -1801,6 +1801,13 @@ import org.guce.siat.utility.jaxb.common.ROUTAGE;
  *                                 &lt;/restriction>
  *                               &lt;/simpleType>
  *                             &lt;/element>
+ *                             &lt;element name="REFERENCE_BASE" minOccurs="0">
+ *                               &lt;simpleType>
+ *                                  &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+ *                                  &lt;maxLength value="255"/>
+ *                                  &lt;/restriction>
+ *                               &lt;/simpleType>
+ *                             &lt;/element>
  *                           &lt;/sequence>
  *                         &lt;/restriction>
  *                       &lt;/complexContent>
@@ -3658,6 +3665,7 @@ public class DOCUMENT implements Serializable {
         "signataire",
         "decisionorganisme",
         "observations",
+        "referencebase",
         "piecesjointes"
     })
     public static class CONTENT implements Serializable {
@@ -3692,6 +3700,8 @@ public class DOCUMENT implements Serializable {
         protected DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "OBSERVATIONS")
         protected String observations;
+        @XmlElement(name = "REFERENCE_BASE")
+        protected String referencebase;
         @XmlElement(name = "PIECES_JOINTES")
         protected PIECESJOINTES piecesjointes;
 
@@ -3997,6 +4007,30 @@ public class DOCUMENT implements Serializable {
          */
         public void setOBSERVATIONS(String value) {
             this.observations = value;
+        }
+        
+        /**
+         * Obtient la valeur de la propriété referencebase.
+         * 
+         * @return
+         *     possible object is
+         *     {@link String }
+         *     
+         */
+        public String getREFERENCEBASE() {
+            return referencebase;
+        }
+
+        /**
+         * Définit la valeur de la propriété referencebase.
+         * 
+         * @param value
+         *     allowed object is
+         *     {@link String }
+         *     
+         */
+        public void setREFERENCEBASE(String value) {
+            this.referencebase = value;
         }
 
         /**
