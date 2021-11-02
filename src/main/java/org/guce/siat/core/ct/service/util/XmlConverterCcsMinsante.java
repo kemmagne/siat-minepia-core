@@ -213,6 +213,8 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
                 if (marchandise.getQUANTITE() != null) {
 
                     fileItem.setQuantity(marchandise.getQUANTITE());
+                }else if (marchandise.getPOIDS() != null){
+                    fileItem.setQuantity(marchandise.getPOIDS()); 
                 }
 
                 if (marchandise.getVALEURFOBDEVISE() != null) {
