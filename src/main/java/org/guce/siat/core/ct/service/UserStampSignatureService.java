@@ -19,7 +19,7 @@ public interface UserStampSignatureService extends AbstractService<UserStampSign
      */
     UserStampSignature findUserStampSignatureByUser(User user);
     
-    UserStampSignature saveUserStampSignature(User user, byte[] signatureData, String signatureFileName, byte[] stampData, String stampFileName) throws IOException;
+    UserStampSignature getUserSignatureAndStampByUserAndSignatureAndStamp(User user, byte[] signatureData, String signatureFileName, byte[] stampData, String stampFileName) throws IOException;
     
     public InputStream getUserSignature(User user) throws Exception;
     

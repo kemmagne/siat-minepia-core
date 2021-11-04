@@ -2,6 +2,7 @@ package org.guce.siat.core.ct.service.util;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -104,12 +105,6 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
         file.setFileFieldValueList(fileFieldValues);
         file.setFileType(fileType);
 
-        // Set Parent File
-        if (file.getNumeroDossierBase() != null) {
-            final File parent = xmlConverterService.getFileDao().findByNumDossierGuce(file.getNumeroDossierBase());
-            file.setParent(parent);
-        }
-
         if (FlowCode.FL_CT_61.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())) {
 
             if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getREFERENCEGUCE() != null) {
@@ -145,8 +140,15 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
                 file.setNumeroDemande(document.getREFERENCEDOSSIER().getNUMERODEMANDE());
             }
 
-            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODOSSIER() != null) {
+            if (xmlConverterService.getNumDossier() != null) {
+                file.setNumeroDossier(xmlConverterService.getNumDossier());
+            } else if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODOSSIER() != null) {
                 file.setNumeroDossier(document.getREFERENCEDOSSIER().getNUMERODOSSIER());
+            }
+
+            // Set Numero dossier and parent File for modification file
+            if (FlowCode.FL_CT_CCS_01.name().equals(xmlConverterService.getFlowGuceSiat().getFlowSiat())) {
+                setNumeroDossierModif(file);
             }
 
             if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getDATECREATION() != null) {
@@ -213,8 +215,8 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
                 if (marchandise.getQUANTITE() != null) {
 
                     fileItem.setQuantity(marchandise.getQUANTITE());
-                }else if (marchandise.getPOIDS() != null){
-                    fileItem.setQuantity(marchandise.getPOIDS()); 
+                } else if (marchandise.getPOIDS() != null) {
+                    fileItem.setQuantity(marchandise.getPOIDS());
                 }
 
                 if (marchandise.getVALEURFOBDEVISE() != null) {
@@ -489,6 +491,7 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
         } else {
             ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, false));
             ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
+            
         }
 
         /* DETECTER SI DECISION PAR ARTICLE OU PAR DOSSIER */
@@ -533,13 +536,12 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
 
         }
         // ******* AJOUT NUMERO_CCS et DATE SIGNATURE *********///
-        if(file.getSignatory() != null && file.getSignatureDate() != null){
+        if (file.getSignatory() != null && file.getSignatureDate() != null) {
             ciDocument.getCONTENT().setNUMEROCCSMINSANTE(file.getNumeroDossier());
             ciDocument.getCONTENT().setDATECCSMINSANTE(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
         }
-         
-        // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
 
+        // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
         ciDocument.getCONTENT().setSIGNATAIRE(new org.guce.siat.jaxb.cct.CCS_MINSANTE.DOCUMENT.CONTENT.SIGNATAIRE());
         ciDocument.getCONTENT().getSIGNATAIRE().setDATE(EbmsUtility.date2UTC(Calendar.getInstance().getTime(), TimeZone.getDefault()));
         ciDocument.getCONTENT()
@@ -554,7 +556,6 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
 
         return ciDocument;
     }
-    
 
     private void updateContainers(org.guce.siat.jaxb.cct.PVE.DOCUMENT document, File file) {
 
@@ -582,4 +583,22 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
         xmlConverterService.getDao().update(containers);
     }
 
+    private void setNumeroDossierModif(File current) {
+
+        String numeroDossier = current.getNumeroDossier();
+
+        File root = xmlConverterService.getFileDao().findByNumDossierGuce(numeroDossier);
+        if (root == null) {
+            return;
+        }
+
+        List<File> children = root.getChildrenList();
+        String suffix = new DecimalFormat("M00").format(children.size() + 1);
+        numeroDossier = numeroDossier.concat(suffix);
+
+        current.setNumeroDossier(numeroDossier);
+        current.setParent(root);
+        current.setNumeroDossierBase(root.getNumeroDossier());
+        xmlConverterService.setNumDossier(numeroDossier);
+    }
 }

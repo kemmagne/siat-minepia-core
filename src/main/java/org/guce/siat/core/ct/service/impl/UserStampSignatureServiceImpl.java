@@ -100,7 +100,7 @@ public class UserStampSignatureServiceImpl extends AbstractServiceImpl<UserStamp
     }
 
     @Override
-    public UserStampSignature saveUserStampSignature(User user, byte[] signatureData, String signatureFileName, byte[] stampData, String stampFileName) throws IOException {
+    public UserStampSignature getUserSignatureAndStampByUserAndSignatureAndStamp(User user, byte[] signatureData, String signatureFileName, byte[] stampData, String stampFileName) throws IOException {
         UserStampSignature userStampSignature = userStampSignatureDao.findUserStampSignatureByUser(user);
         if (userStampSignature == null) {
             userStampSignature = new UserStampSignature();
@@ -162,12 +162,7 @@ public class UserStampSignatureServiceImpl extends AbstractServiceImpl<UserStamp
             }
             if (stampData != null && StringUtils.isNotEmpty(stampFileName)) {
                 userStampSignature.setStampPath(directory.toString() + AlfrescoDirectoriesInitializer.SLASH + stampFileName);
-            }
-            if (userStampSignature.getId() != null) {
-                userStampSignatureDao.update(userStampSignature);
-            } else {
-                userStampSignatureDao.save(userStampSignature);
-            }
+            }           
         }
         return userStampSignature;
     }
