@@ -527,7 +527,7 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
         }
         // ******* AJOUT NUMERO_CCS et DATE SIGNATURE *********///
         if (file.getSignatory() != null && file.getSignatureDate() != null) {
-            ciDocument.getCONTENT().setNUMEROCCSMINSANTE(file.getNumeroDossier());
+            ciDocument.getCONTENT().setNUMEROCCSMINSANTE(file.getParent() != null ? file.getParent().getNumeroDossier() : file.getNumeroDossier());
             ciDocument.getCONTENT().setDATECCSMINSANTE(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
         }
 
