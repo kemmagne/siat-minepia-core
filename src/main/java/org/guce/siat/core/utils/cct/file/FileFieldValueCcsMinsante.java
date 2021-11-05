@@ -459,7 +459,7 @@ public class FileFieldValueCcsMinsante {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_REFERENCE_OBSERVATIONS": {
+            case "INFORMATIONS_GENERALES_OBSERVATIONS": {
                 if (document.getCONTENT() != null && document.getCONTENT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getOBSERVATIONS());
                 }
