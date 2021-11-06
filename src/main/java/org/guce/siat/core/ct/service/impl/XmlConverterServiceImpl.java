@@ -555,7 +555,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return true, if is payment request
      */
     private boolean isPaymentRequest(final FlowGuceSiat flowGuceSiat) {
-        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name())
+        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_167.name())
                 .contains(flowGuceSiat.getFlowSiat());
     }
 
@@ -1307,7 +1307,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         final Flow flowToExecute;
         FileTypeCode fileTypeCode = fileFromSiat.getFileType().getCode();
-        if (Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
+        if (Arrays.asList(FileTypeCode.CCT_CSV).contains(fileTypeCode)) {
+            flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_167.name());
+        } else if (Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_123.name());
         } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_126.name());
@@ -1363,7 +1365,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
 
             //le STEP dépond du nombre des cotation
-            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name()).contains(flowToExecute.getCode())) {
+            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_167.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
@@ -2144,7 +2146,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case CCT_CT:
                     return convertFileToDocumentCctCT(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                 case CCT_CSV:
-                    if (!FlowCode.FL_CT_123.name().equals(flowToExecute.getCode())) {
+                    if (!FlowCode.FL_CT_167.name().equals(flowToExecute.getCode())) {
                         return convertFileToDocumentCctCSV(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     } else {
                         xmlConverter = new XmlConverterPayment(this);
@@ -2440,7 +2442,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         if (flowGuceSiat != null) {
             ciDocument.setTYPEDOCUMENT(flowGuceSiat.getFlowGuce());
         }
-        if (Arrays.asList(FlowCode.FL_CT_89.name(), FlowCode.FL_CT_08.name(), FlowCode.FL_CT_114.name()).contains(flowToExecute.getCode())) {
+        if (Arrays.asList(FlowCode.FL_CT_162.name(), FlowCode.FL_CT_169.name()).contains(flowToExecute.getCode())) {
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
                     .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getReferenceGuce() + ESBConstants.PDF_FILE_EXTENSION));
@@ -6182,6 +6184,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         current.setParent(root);
         current.setNumeroDossierBase(root.getNumeroDossier());
         numDossier = numeroDossier;
+
+        if (FileTypeCode.CCT_CSV.equals(current.getFileType().getCode())) {
+            current.setAssignedUser(root.getAssignedUser());
+        }
     }
 
     /**
@@ -6390,7 +6396,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     fileItem.setQuantity(marchandise.getQUANTITE());
                 }
 
-                if ("NaN".equals(fileItem.getQuantity())) {
+                if ("NaN".equals(fileItem.getQuantity()) || fileItem.getQuantity() == null) {
                     fileItem.setQuantity(marchandise.getPOIDS());
                 }
 

@@ -88,6 +88,10 @@ public class XmlConverterPayment extends AbstractXmlConverter {
         ItemFlow paymentItemFlow = itemFlowList.get(0);
         PaymentData paymentData = xmlConverterService.getPaymentDataDao().findPaymentDataByItemFlow(paymentItemFlow);
 
+        PAIEMENT.FACTURE facture = new PAIEMENT.FACTURE();
+        facture.setREFERENCEFACTURE(paymentData.getRefFacture());
+        paiement.setFACTURE(facture);
+
         PAIEMENT.ENCAISSEMENT encaissement = new PAIEMENT.ENCAISSEMENT();
 
         encaissement.setCANALENCAISSEMENT(file.getDestinataire());

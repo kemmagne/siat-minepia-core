@@ -488,7 +488,7 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                     break;
                 }
                 case CCT_CSV: {
-                    if (!FlowCode.FL_CT_123.name().equals(flowGuceSiat.getFlowSiat())) {
+                    if (!FlowCode.FL_CT_167.name().equals(flowGuceSiat.getFlowSiat())) {
                         final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CSV.JAXBContextCreator.getInstance();
                         // Unmarshalling the document
                         final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
@@ -504,7 +504,6 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                 case CQ_CT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CQ_CT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
-                    System.out.println("jaxbContext null pour CQ_CT ? " + (jaxbContext == null));
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
                     document = (org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;

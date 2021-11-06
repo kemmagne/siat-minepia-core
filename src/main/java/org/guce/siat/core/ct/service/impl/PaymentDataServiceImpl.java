@@ -122,7 +122,7 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
             fileItem.setDraft(Boolean.FALSE);
 
             if (Arrays.asList(FileTypeCode.CCT_CSV).contains(currentFile.getFileType().getCode())) {
-                fileItem.setStep(paymentFlow.getToStep());
+                fileItem.setStep(flowToExecute.getToStep());
             } else {
                 //le STEP dépond du nombre des cotation
                 fileItem.setStep(paymentFlow.getFromStep());
