@@ -370,6 +370,12 @@ public class FileFieldValueVtMINEPIA {
                 }
                 break;
             }
+            case "INFORMATIONS_GENERALES_OBSERVATIONS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getOBSERVATIONS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getOBSERVATIONS());
+                }
+                break;
+            }
 
             default:
                 break;

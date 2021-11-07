@@ -263,7 +263,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
     @Autowired
     private CotationService cotationService;
-    
+
     @Autowired
     private CommonService commonService;
 
@@ -987,7 +987,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 }
             }
             if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && FlowCode.FL_AP_VT1_01.name().equals(firstFlow.getCode())) {
-                PaymentData  paymentData;
+                PaymentData paymentData;
                 try {
                     paymentData = getPaymentDataFromDocumentAndFile(document, file);
                     commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
@@ -2132,7 +2132,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         return fileToReturn;
     }
-    
+
     /*
 	 * (non-Javadoc)
 	 *
@@ -2142,13 +2142,13 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         PAIEMENT paymentDocument;
         if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && document instanceof org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) {
             final org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT returnedDocument = (org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT) document;
-            
+
             paymentDocument = returnedDocument.getCONTENT().getPAIEMENT();
             paymentData.setPaymentItemFlowList(new ArrayList<PaymentItemFlow>());
             Long montantHT = paymentDocument.getFACTURE().getMONTANTHT() != null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTHT()) : 0L;
-            Long montantTVA = paymentDocument.getFACTURE().getMONTANTTVA()!= null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTTVA()) : 0L;
+            Long montantTVA = paymentDocument.getFACTURE().getMONTANTTVA() != null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTTVA()) : 0L;
             Long montantTTC = paymentDocument.getFACTURE().getMONTANTTTC() != null ? Long.parseLong(paymentDocument.getFACTURE().getMONTANTTTC()) : 0L;
-            if(file.getFileItemsList() != null && !file.getFileItemsList().isEmpty()){
+            if (file.getFileItemsList() != null && !file.getFileItemsList().isEmpty()) {
                 FileItem fi = file.getFileItemsList().get(0);
                 PaymentItemFlow paymentItemFlow = new PaymentItemFlow(false, fi.getId(), fi.getNsh());
                 paymentItemFlow.setMontantHt(montantHT);
@@ -2739,25 +2739,24 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
         }
 
-        if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode())) {
-            //final FileFieldValue reportNumberFieldValue = fileFieldValueDao.findValueByFileFieldAndFile(VT_MINEPIA_REPORT_FIELD,file);
-                ciDocument.getCONTENT().setNUMEROVTMINEPIA(file.getNumeroDossier());
-                if(file.getSignatureDate() != null){
-                    ciDocument.getCONTENT().setDATEVTMINEPIA(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
-                }
-                ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
-                ciDocument
-                        .getCONTENT()
-                        .getPIECESJOINTES()
-                        .getPIECEJOINTE()
-                        .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getNumeroDossier()
-                                + ESBConstants.PDF_FILE_EXTENSION));
+        if (FlowCode.FL_AP_107.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_VT1_06.name().equals(flowToExecute.getCode())) {
+            ciDocument.getCONTENT().setNUMEROVTMINEPIA(file.getParent() != null ? file.getParent().getNumeroDossier() : file.getNumeroDossier());
+            if (file.getSignatureDate() != null) {
+                ciDocument.getCONTENT().setDATEVTMINEPIA(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
+            }
+            ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
+            ciDocument
+                    .getCONTENT()
+                    .getPIECESJOINTES()
+                    .getPIECEJOINTE()
+                    .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getNumeroDossier()
+                            + ESBConstants.PDF_FILE_EXTENSION));
 
         }
         if (Arrays.asList(FlowCode.FL_AP_160.name(), FlowCode.FL_AP_161.name(), FlowCode.FL_AP_162.name(),
-                        FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
-                        FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name(), FlowCode.FL_AP_VT1_03.name())
-                        .contains(flowToExecute.getCode())) {
+                FlowCode.FL_AP_163.name(), FlowCode.FL_AP_164.name(), FlowCode.FL_AP_165.name(), FlowCode.FL_AP_166.name(),
+                FlowCode.FL_AP_193.name(), FlowCode.FL_AP_194.name(), FlowCode.FL_AP_VT1_03.name())
+                .contains(flowToExecute.getCode())) {
             ciDocument.setCONTENT(new org.guce.siat.jaxb.ap.VT_MINEPIA.DOCUMENT.CONTENT());
             ItemFlow lastItemFlow;
             PaymentData paymentData = null;
@@ -6732,8 +6731,15 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 file.setNumeroDemande(document.getREFERENCEDOSSIER().getNUMERODEMANDE());
             }
 
-            if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODOSSIER() != null) {
+            if (StringUtils.isNotEmpty(numDossier)) {
+                file.setNumeroDossier(numDossier);
+            } else if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODOSSIER() != null) {
                 file.setNumeroDossier(document.getREFERENCEDOSSIER().getNUMERODOSSIER());
+            }
+
+            //Set numéro dossier and parent file for modification file
+            if (FlowCode.FL_AP_VT1_05.name().equals(flowGuceSiat.getFlowSiat())) {
+                this.setNumeroDossierModifForVtMinepia(file);
             }
 
             if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getDATECREATION() != null) {
@@ -16417,4 +16423,23 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         return savedFile;
     }
 
+    private void setNumeroDossierModifForVtMinepia(File current) {
+
+        String numeroDossier = current.getNumeroDossier();
+
+        File root = fileDao.findByNumDossierGuce(numeroDossier);
+        if (root == null) {
+            return;
+        }
+
+        List<File> children = root.getChildrenList();
+        String suffix = new DecimalFormat("M00").format(children.size() + 1);
+        numeroDossier = numeroDossier.concat(suffix);
+
+        current.setNumeroDossier(numeroDossier);
+        current.setParent(root);
+        current.setNumeroDossierBase(root.getNumeroDossier());
+        numDossier = numeroDossier;
+
+    }
 }
