@@ -1,0 +1,85 @@
+/**
+ * Author:  tadzotsa
+ * Created: 7 nov. 2021
+ */
+
+INSERT INTO SIAT_CT.FILE_TYPE (ID,CODE,LABEL_EN,LABEL_FR) VALUES (SIAT_CT.FILE_TYPE_SEQ.NEXTVAL,'IM_CARG_MINCOMMERCE','Expédition import - instruments de mesure','Expédition import - instruments de mesure');
+
+INSERT INTO SIAT_CT.FILE_ITEM_FIELD (ID,CODE,LABEL_EN,LABEL_FR,REPEATABLE,UPDATABLE,FILE_TYPE_ID,GROUP_ID) VALUES (SIAT_CT.FILE_ITEM_FIELD_SEQ.NEXTVAL,'UNITE','Unit','Unité',0,0,(SELECT ID FROM SIAT_CT.FILE_TYPE WHERE CODE = 'IM_CARG_MINCOMMERCE'),1);
+INSERT INTO SIAT_CT.FILE_ITEM_FIELD (ID,CODE,LABEL_EN,LABEL_FR,REPEATABLE,UPDATABLE,FILE_TYPE_ID,GROUP_ID) VALUES (SIAT_CT.FILE_ITEM_FIELD_SEQ.NEXTVAL,'CATEGORIE','Unit','Unité',0,0,(SELECT ID FROM SIAT_CT.FILE_TYPE WHERE CODE = 'IM_CARG_MINCOMMERCE'),1);
+INSERT INTO SIAT_CT.FILE_ITEM_FIELD (ID,CODE,LABEL_EN,LABEL_FR,REPEATABLE,UPDATABLE,FILE_TYPE_ID,GROUP_ID) VALUES (SIAT_CT.FILE_ITEM_FIELD_SEQ.NEXTVAL,'MODELE','Model','Modèle',0,0,(SELECT ID FROM SIAT_CT.FILE_TYPE WHERE CODE = 'IM_CARG_MINCOMMERCE'),1);
+INSERT INTO SIAT_CT.FILE_ITEM_FIELD (ID,CODE,LABEL_EN,LABEL_FR,REPEATABLE,UPDATABLE,FILE_TYPE_ID,GROUP_ID) VALUES (SIAT_CT.FILE_ITEM_FIELD_SEQ.NEXTVAL,'MARQUE','Mark','Marque',0,0,(SELECT ID FROM SIAT_CT.FILE_TYPE WHERE CODE = 'IM_CARG_MINCOMMERCE'),1);
+
+INSERT INTO SIAT_CT.FLOW (ID,CODE,IS_COTA,LABELEN,LABELFR,OUTGOING) VALUES (SIAT_CT.FLOW_SEQ.NEXTVAL,'FL_CT_173',0,'Notification','Notification',0);
+
+INSERT INTO SIAT_CT.FLOW_GUCE_SIAT (ID,FLOW_GUCE,FLOW_SIAT,FILE_TYPE_ID) VALUES (SIAT_CT.FLOW_GUCE_SIAT_SEQ.NEXTVAL,'CG001','FL_CT_173',(SELECT ID FROM SIAT_CT.FILE_TYPE WHERE CODE = 'IM_CARG_MINCOMMERCE'));
+
+CREATE OR REPLACE VIEW SIAT_CT.IM_CARG_MINCOMMERCE_FILE_ITEM
+AS SELECT
+    EXTRACT(YEAR FROM F.CREATED_DATE)       YEAR,
+    FI.NSH_ID                               NSH,
+    (
+        SELECT
+            NUM_CONTRIBUABLE
+        FROM
+            COMPANY
+        WHERE
+            ID = F.CLIENT_ID
+    )                                       IMPORTER_NIU,
+    (
+        SELECT
+            COMPANY_NAME
+        FROM
+            COMPANY
+        WHERE
+            ID = F.CLIENT_ID
+    )                                       IMPORTER_NAME,
+    F.COUNTRY_OF_PROVENANCE                     PROVENANCE_COUNTRY_CODE,
+    (
+        SELECT
+            COUNTRY_NAME
+        FROM
+            REP_COUNTRY
+        WHERE
+            COUNTRY_ID_ALPHA2 = F.COUNTRY_OF_PROVENANCE
+    )                                       PROVENANCE_COUNTRY_LABEL,
+    (
+        SELECT
+            FIFV.VALUE
+        FROM
+                 FILE_ITEM_FIELD_VALUE FIFV
+            JOIN FILE_ITEM_FIELD FIF ON FIF.ID = FIFV.FILE_ITEM_FIELD_ID
+                                        AND FIF.FILE_TYPE_ID = FT.ID
+                                        AND FIF.CODE = 'CATEGORIE'
+        WHERE
+            FILE_ITEM_ID = FI.ID
+    )                                       CATEGORY,
+    (
+        SELECT
+            FIFV.VALUE
+        FROM
+                 FILE_ITEM_FIELD_VALUE FIFV
+            JOIN FILE_ITEM_FIELD FIF ON FIF.ID = FIFV.FILE_ITEM_FIELD_ID
+                                        AND FIF.FILE_TYPE_ID = FT.ID
+                                        AND FIF.CODE = 'MODELE'
+        WHERE
+            FILE_ITEM_ID = FI.ID
+    )                                       MODEL,
+    (
+        SELECT
+            FIFV.VALUE
+        FROM
+                 FILE_ITEM_FIELD_VALUE FIFV
+            JOIN FILE_ITEM_FIELD FIF ON FIF.ID = FIFV.FILE_ITEM_FIELD_ID
+                                        AND FIF.FILE_TYPE_ID = FT.ID
+                                        AND FIF.CODE = 'MARQUE'
+        WHERE
+            FILE_ITEM_ID = FI.ID
+    )                                       MARK,
+    FI.QUANTITY                             QUANTITY,
+    FI.VALEUR_FOB                           VALUE
+FROM
+         FILES F
+    JOIN FILE_TYPE  FT ON FT.ID = F.FILE_TYPE_ID
+                         AND FT.CODE = 'IM_CARG_MINCOMMERCE'
+    JOIN FILE_ITEM  FI ON FI.FILE_ID = F.ID;

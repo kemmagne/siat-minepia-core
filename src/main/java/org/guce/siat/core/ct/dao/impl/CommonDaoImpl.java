@@ -42,6 +42,7 @@ import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.FileItemFilter;
 import org.guce.siat.core.ct.filter.Filter;
 import org.guce.siat.core.ct.filter.HistoricClientFilter;
+import org.guce.siat.core.ct.filter.ImCargFilter;
 import org.guce.siat.core.ct.filter.InspectionDestribFilter;
 import org.guce.siat.core.ct.filter.PaymentFilter;
 import org.guce.siat.core.ct.filter.SampleFilter;
@@ -1487,6 +1488,141 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         query.setParameter("fileId", file.getId());
 
         return query.getResultList();
+    }
+
+    @Override
+    public List<File> findImCargFiles(ImCargFilter filter) {
+
+        StringBuilder builder = new StringBuilder("SELECT f FROM File f WHERE f.fileType.code = :imCargFileType");
+
+        if (filter.getFromDate() != null) {
+            builder.append(" AND f.createdDate >= :fromDate");
+        }
+
+        if (filter.getToDate() != null) {
+            builder.append(" AND f.createdDate <= :toDate");
+        }
+
+        if (StringUtils.isNotBlank(filter.getNiu())) {
+            builder.append(" AND f.client != null AND f.client.numContribuable = :niu");
+        }
+
+        TypedQuery<File> query = super.entityManager.createQuery(builder.toString(), File.class);
+
+        query.setParameter("imCargFileType", FileTypeCode.IM_CARG_MINCOMMERCE);
+
+        if (filter.getFromDate() != null) {
+            query.setParameter("fromDate", filter.getFromDate());
+        }
+
+        if (filter.getToDate() != null) {
+            query.setParameter("toDate", filter.getToDate());
+        }
+
+        if (StringUtils.isNotBlank(filter.getNiu())) {
+            query.setParameter("niu", filter.getNiu());
+        }
+
+        return query.getResultList();
+
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByProduct(ImCargFilter filter) {
+
+        String q = "SELECT NSH, YEAR, SUM(TO_NUMBER(QUANTITY)) QUANTITY, SUM(TO_NUMBER(VALUE)) VALUE FROM IM_CARG_MINCOMMERCE_FILE_ITEM WHERE %s GROUP BY NSH, YEAR";
+
+        String where = buildImCargStatsWhere(filter);
+        q = String.format(q, where);
+        Query query = super.entityManager.createNativeQuery(q);
+
+        setQueryParameters(filter, query);
+
+        List<Object[]> list = query.getResultList();
+
+        return list;
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByImporter(ImCargFilter filter) {
+
+        String q = "SELECT IMPORTER_NIU, YEAR, SUM(TO_NUMBER(QUANTITY)) QUANTITY, SUM(TO_NUMBER(VALUE)) VALUE FROM IM_CARG_MINCOMMERCE_FILE_ITEM WHERE %s GROUP BY IMPORTER_NIU, YEAR";
+
+        String where = buildImCargStatsWhere(filter);
+        q = String.format(q, where);
+        Query query = super.entityManager.createNativeQuery(q);
+
+        setQueryParameters(filter, query);
+
+        List<Object[]> list = query.getResultList();
+
+        return list;
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByCountry(ImCargFilter filter) {
+
+        String q = "SELECT PROVENANCE_COUNTRY_CODE, YEAR, SUM(TO_NUMBER(QUANTITY)) QUANTITY, SUM(TO_NUMBER(VALUE)) VALUE FROM IM_CARG_MINCOMMERCE_FILE_ITEM WHERE %s GROUP BY PROVENANCE_COUNTRY_CODE, YEAR";
+
+        String where = buildImCargStatsWhere(filter);
+        q = String.format(q, where);
+        Query query = super.entityManager.createNativeQuery(q);
+
+        setQueryParameters(filter, query);
+
+        List<Object[]> list = query.getResultList();
+
+        return list;
+    }
+
+    private String buildImCargStatsWhere(ImCargFilter filter) {
+        StringBuilder builderWhere = new StringBuilder("1=1");
+        if (StringUtils.isNotBlank(filter.getYearStart())) {
+            builderWhere.append(" AND YEAR >= :yearStart");
+        }
+        if (StringUtils.isNotBlank(filter.getYearEnd())) {
+            builderWhere.append(" AND YEAR <= :yearEnd");
+        }
+        if (StringUtils.isNotBlank(filter.getNiu())) {
+            builderWhere.append(" AND IMPORTER_NIU = :niu");
+        }
+        if (StringUtils.isNotBlank(filter.getProvenanceCountry())) {
+            builderWhere.append(" AND PROVENANCE_COUNTRY_CODE = :provenanceCountry");
+        }
+        if (StringUtils.isNotBlank(filter.getCategory())) {
+            builderWhere.append(" AND CATEGORY = :category");
+        }
+        if (StringUtils.isNotBlank(filter.getModel())) {
+            builderWhere.append(" AND MODEL = :model");
+        }
+        if (StringUtils.isNotBlank(filter.getMark())) {
+            builderWhere.append(" AND MARK = :mark");
+        }
+        return builderWhere.toString();
+    }
+
+    private void setQueryParameters(ImCargFilter filter, Query query) {
+        if (StringUtils.isNotBlank(filter.getYearStart())) {
+            query.setParameter("yearStart", filter.getYearStart());
+        }
+        if (StringUtils.isNotBlank(filter.getYearEnd())) {
+            query.setParameter("yearEnd", filter.getYearEnd());
+        }
+        if (StringUtils.isNotBlank(filter.getNiu())) {
+            query.setParameter("niu", filter.getNiu());
+        }
+        if (StringUtils.isNotBlank(filter.getProvenanceCountry())) {
+            query.setParameter("provenanceCountry", filter.getProvenanceCountry());
+        }
+        if (StringUtils.isNotBlank(filter.getCategory())) {
+            query.setParameter("category", filter.getCategory());
+        }
+        if (StringUtils.isNotBlank(filter.getModel())) {
+            query.setParameter("model", filter.getModel());
+        }
+        if (StringUtils.isNotBlank(filter.getMark())) {
+            query.setParameter("mark", filter.getMark());
+        }
     }
 
 }
