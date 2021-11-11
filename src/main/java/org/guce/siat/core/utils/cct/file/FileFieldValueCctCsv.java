@@ -1,22 +1,17 @@
 package org.guce.siat.core.utils.cct.file;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileField;
 import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.service.ApplicationPropretiesService;
 import org.guce.siat.common.utils.FileFieldValueUtils;
-import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT;
-import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.INSPECTION.CONTENEURS.CONTENEUR;
+import org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT;
 
 /**
- * The Class FileFieldValueCct.
+ *
+ * @author tadzotsa
  */
-public class FileFieldValueCct {
+public class FileFieldValueCctCsv {
 
     /**
      * Generate file field value cc ct.
@@ -27,21 +22,17 @@ public class FileFieldValueCct {
      * @param applicationPropretiesService the application propreties service
      * @return the file field value
      */
-    public static FileFieldValue generateFileFieldValueCctCT(File file, FileField fileField, DOCUMENT document, ApplicationPropretiesService applicationPropretiesService) {
+    public static FileFieldValue generateFileFieldValueCctCSV(File file, FileField fileField, DOCUMENT document, ApplicationPropretiesService applicationPropretiesService) {
+
         FileFieldValueUtils.applicationPropretiesService = applicationPropretiesService;
         FileFieldValue fileFieldValue = new FileFieldValue();
         fileFieldValue.setFileField(fileField);
         fileFieldValue.setFile(file);
+
         switch (fileField.getCode()) {
             case "CODE_BUREAU": {
                 if (document.getCONTENT() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getCODEBUREAU());
-                }
-                break;
-            }
-            case "TYPE_DEMANDE": {
-                if (document.getCONTENT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getTYPEDEMANDE());
                 }
                 break;
             }
@@ -181,109 +172,121 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "DESTINATAIRE_RAISONSOCIALE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getRAISONSOCIALE());
+            case "EXPORTATEUR_RAISONSOCIALE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getRAISONSOCIALE());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_ADRESSE1": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE1());
+            case "EXPORTATEUR_ADRESSE_ADRESSE1": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getADRESSE1());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_ADRESSE2": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE2());
+            case "EXPORTATEUR_ADRESSE_ADRESSE2": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getADRESSE2());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_BP": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getBP());
+            case "EXPORTATEUR_ADRESSE_BP": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getBP());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_PAYSADDRESS_CODEPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getCODEPAYS());
+            case "EXPORTATEUR_ADRESSE_PAYSADDRESS_CODEPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE().getPAYSADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getPAYSADRESSE().getCODEPAYS());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_PAYSADDRESS_NOMPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getNOMPAYS());
+            case "EXPORTATEUR_ADRESSE_PAYSADDRESS_NOMPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE().getPAYSADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getPAYSADRESSE().getNOMPAYS());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_VILLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getVILLE());
+            case "EXPORTATEUR_ADRESSE_VILLE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getVILLE());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_ADRESSEELECTRONIQUE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getEMAIL());
+            case "EXPORTATEUR_ADRESSE_ADRESSEELECTRONIQUE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getEMAIL());
                 }
                 break;
             }
-            case "DESTINATAIRE_ADRESSE_SITEWEB": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getSITEWEB());
+            case "EXPORTATEUR_ADRESSE_SITEWEB": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getADRESSE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getADRESSE().getSITEWEB());
                 }
                 break;
             }
-            case "DESTINATAIRE_TELEPHONE_FIXE_INDICATIFPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE().getINDICATIFPAYS());
+            case "EXPORTATEUR_TELEPHONE_FIXE_INDICATIFPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getTELEPHONEFIXE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getTELEPHONEFIXE().getINDICATIFPAYS());
                 }
                 break;
             }
-//            case "DESTINATAIRE_TELEPHONE_FIXE_NUMERO": {
-//                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-//                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE() != null) {
-//                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEFIXE().getNUMERO());
-//                }
-//                break;
-//            }
-            case "DESTINATAIRE_TELEPHONE_MOBILE_INDICATIFPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE().getINDICATIFPAYS());
+            case "EXPORTATEUR_TELEPHONE_FIXE_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getTELEPHONEFIXE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getTELEPHONEFIXE().getNUMERO());
                 }
                 break;
             }
-//            case "DESTINATAIRE_TELEPHONE_MOBILE_NUMERO": {
-//                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-//                        && document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
-//                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getTELEPHONEMOBILE().getNUMERO());
-//                }
-//                break;
-//            }
-            case "DESTINATAIRE_FAX_INDICATIFPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getFAX() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getFAX().getINDICATIFPAYS());
+            case "EXPORTATEUR_TELEPHONE_MOBILE_INDICATIFPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getTELEPHONEMOBILE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getTELEPHONEMOBILE().getINDICATIFPAYS());
                 }
                 break;
             }
-            case "DESTINATAIRE_FAX_NUMERO": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getFAX() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getFAX().getNUMERO());
+            case "EXPORTATEUR_TELEPHONE_MOBILE_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getTELEPHONEMOBILE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getTELEPHONEMOBILE().getNUMERO());
+                }
+                break;
+            }
+            case "EXPORTATEUR_FAX_INDICATIFPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getFAX() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getFAX().getINDICATIFPAYS());
+                }
+                break;
+            }
+            case "EXPORTATEUR_FAX_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getEXPORTATEUR() != null
+                        && document.getCONTENT().getEXPORTATEUR().getFAX() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getEXPORTATEUR().getFAX().getNUMERO());
+                }
+                break;
+            }
+            case "DECLARATION_DOUANE_NUMERO": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDECLARATIONDOUANE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDECLARATIONDOUANE().getNUMERO());
+                }
+                break;
+            }
+            case "DECLARATION_DOUANE_DATE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDECLARATIONDOUANE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDECLARATIONDOUANE().getDATE());
                 }
                 break;
             }
@@ -689,6 +692,34 @@ public class FileFieldValueCct {
                 }
                 break;
             }
+            case "INFORMATIONS_GENERALES_PAYS_ORIGINE_CODEPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_PAYS_ORIGINE_NOMPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_PAYS_DESTINATION_CODEPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
+                }
+                break;
+            }
+            case "INFORMATIONS_GENERALES_PAYS_DESTINATION_NOMPAYS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
+                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS());
+                }
+                break;
+            }
             case "INFORMATIONS_GENERALES_CONDITIONS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getCONDITIONS());
@@ -803,14 +834,14 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_RAISONSOCIALE": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_RAISONSOCIALE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null) {
                     fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getRAISONSOCIALE());
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_ADRESSE1": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_ADRESSE1": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null) {
@@ -819,7 +850,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_ADRESSE2": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_ADRESSE2": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null) {
@@ -828,7 +859,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_BP": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_BP": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null) {
@@ -836,7 +867,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_PAYSADDRESS_CODEPAYS": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_PAYSADDRESS_CODEPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null
@@ -846,7 +877,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_PAYSADDRESS_NOMPAYS": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_PAYSADDRESS_NOMPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null
@@ -856,7 +887,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_VILLE": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_VILLE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null) {
@@ -865,7 +896,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_ADRESSEELECTRONIQUE": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_ADRESSEELECTRONIQUE": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null) {
@@ -874,7 +905,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_ADRESSE_SITEWEB": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_ADRESSE_SITEWEB": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getADRESSE() != null) {
@@ -883,7 +914,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_TELEPHONE_FIXE_INDICATIFPAYS": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_TELEPHONE_FIXE_INDICATIFPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getTELEPHONEFIXE() != null) {
@@ -892,7 +923,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_TELEPHONE_FIXE_NUMERO": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_TELEPHONE_FIXE_NUMERO": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getTELEPHONEFIXE() != null) {
@@ -901,7 +932,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_TELEPHONE_MOBILE_INDICATIFPAYS": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_TELEPHONE_MOBILE_INDICATIFPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
@@ -910,7 +941,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_TELEPHONE_MOBILE_NUMERO": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_TELEPHONE_MOBILE_NUMERO": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getTELEPHONEMOBILE() != null) {
@@ -919,7 +950,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_FAX_INDICATIFPAYS": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_FAX_INDICATIFPAYS": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getFAX() != null) {
@@ -928,7 +959,7 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INFORMATIONS_GENERALES_DESTINATAIRE_FAX_NUMERO": {
+            case "INFORMATIONS_GENERALES_EXPORTATEUR_FAX_NUMERO": {
                 if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE() != null
                         && document.getCONTENT().getINFORMATIONSGENERALES().getDESTINATAIRE().getFAX() != null) {
@@ -950,617 +981,111 @@ public class FileFieldValueCct {
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_REGION_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getREGION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getREGION().getCODE());
+            case "INFORMATIONS_GENERALES_OBSERVATIONS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getDECISIONORGANISME() != null
+                        && document.getCONTENT().getDECISIONORGANISME().getOBSERVATION() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getDECISIONORGANISME().getOBSERVATION());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_REGION_LIBELLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getREGION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getREGION().getLIBELLE());
+            case "MINEPIA_DATE_DEPART": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIADATEDEPART());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_DEPARTEMENT_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getDEPARTEMENT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getDEPARTEMENT().getCODE());
+            case "MINEPIA_NO_PERMIS_CITES": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIANOPERMISCITES());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_DEPARTEMENT_LIBELLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getDEPARTEMENT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getDEPARTEMENT().getLIBELLE());
+            case "MINEPIA_TEMPERATURE_PRODUIT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIATEMPERATUREPRODUIT());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_ARRONDISSEMENT_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getARRONDISSEMENT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getARRONDISSEMENT().getCODE());
+            case "MINEPIA_NOMBRE_UNITES_EMBALLES": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIANOMBREUNITESEMBALLES());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_ARRONDISSEMENT_LIBELLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getARRONDISSEMENT() != null) {
-                    fileFieldValue
-                            .setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getARRONDISSEMENT().getLIBELLE());
+            case "MINEPIA_NATURE_EMBALLAGE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIANATUREEMBALLAGE());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_VILLAGE_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getVILLAGE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getVILLAGE().getCODE());
+            case "MINEPIA_ID_CONTENEURS_SCELLES": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAIDCONTENEURSSCELLES());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_INSPECTION_VILLAGE_LIBELLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getVILLAGE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getVILLAGE().getLIBELLE());
+            case "MINEPIA_MARCHANDISE_POUR": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISEPOUR());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_ADRESSE1": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getADRESSE1());
+            case "MINEPIA_MARCHANDISE_ESPECE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISEESPECE());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_ADRESSE2": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getADRESSE2());
+            case "MINEPIA_MARCHANDISE_NATURE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISENATURE());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_BP": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getBP());
+            case "MINEPIA_MARCHANDISE_TRAITEMENT": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISETRAITEMENT());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_PAYSADDRESS_CODEPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getPAYSADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getPAYSADRESSE()
-                            .getCODEPAYS());
+            case "MINEPIA_MARCHANDISE_NB_COLIS": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISENBCOLIS() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISENBCOLIS().toString());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_PAYSADDRESS_NOMPAYS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getPAYSADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getPAYSADRESSE()
-                            .getNOMPAYS());
+            case "MINEPIA_MARCHANDISE_NB_APPROUVES": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISENBAPPROUVES());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_VILLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getVILLE());
+            case "MINEPIA_MARCHANDISE_POIDS_NET": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISEPOIDSNET() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getMINEPIAMARCHANDISEPOIDSNET().toString());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_ADRESSEELECTRONIQUE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getEMAIL());
+            case "MINEPIA_LIEU_ORIGINE_NOM": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE().getNOM());
                 }
                 break;
             }
-            case "INSPECTION_LIEU_ADRESSE_SITEWEB": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getLIEUINSPECTION().getADRESSE().getSITEWEB());
+            case "MINEPIA_LIEU_ORIGINE_ADRESSE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE().getADRESSE());
                 }
                 break;
             }
-            case "INSPECTION_NUMERO_LOT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINSPECTION().getNUMEROLOT());
+            case "MINEPIA_ZONE_ORIGINE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getZONEORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getZONEORIGINE());
                 }
                 break;
             }
-            case "EXPEDITION_DATE_EXPEDITION_DATE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getEXPEDITION() != null
-                        && document.getCONTENT().getEXPEDITION().getDATEEXPEDITION() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getEXPEDITION()
-                            .getDATEEXPEDITION().getDATE()));
-                }
-                break;
-            }
-            case "EXPEDITION_DATE_EXPEDITION_HEURE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getEXPEDITION() != null
-                        && document.getCONTENT().getEXPEDITION().getDATEEXPEDITION() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getEXPEDITION().getDATEEXPEDITION().getHEURE());
-                }
-                break;
-            }
-            case "INSPECTION_CONTENEURS_CONTENEUR": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINSPECTION() != null
-                        && document.getCONTENT().getINSPECTION().getCONTENEURS() != null
-                        && CollectionUtils.isNotEmpty(document.getCONTENT().getINSPECTION().getCONTENEURS().getCONTENEUR())) {
-                    final List<String> columns = new ArrayList<String>();
-                    columns.add("Identification");
-                    columns.add("Type equipement");
-                    columns.add("Remplissage");
-                    columns.add("Scelles");
-                    final List<String> filedsValuesList = new ArrayList<String>();
-
-                    final int elementSize = document.getCONTENT().getINSPECTION().getCONTENEURS().getCONTENEUR().size();
-                    for (int i = 0; i < elementSize; i++) {
-                        if (document.getCONTENT().getINSPECTION().getCONTENEURS().getCONTENEUR().get(i) != null) {
-                            final CONTENEUR currentEssai = document.getCONTENT().getINSPECTION().getCONTENEURS().getCONTENEUR().get(i);
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getIDENTIFICATION()) ? currentEssai
-                                    .getIDENTIFICATION() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getTYPEEQUIPMENT()) ? currentEssai
-                                    .getTYPEEQUIPMENT() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getREMPLISSAGE()) ? currentEssai.getREMPLISSAGE()
-                                    : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getSCELLES()) ? currentEssai.getSCELLES() : "-");
-                        }
-                    }
-                    fileFieldValue.setValue(FileFieldValueUtils.addValueRepetable(filedsValuesList, columns, null));
-                }
-                break;
-            }
-            case "DATE_DEPART": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getDateDepart() != null) {
-                    fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getCvs().getDateDepart()));
-                }
-                break;
-            }
-            case "TEMPERATURE_PRODUIT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getTemperatureProduit() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getTemperatureProduit());
-                }
-                break;
-            }
-            case "NOMBRE_UNITES_EMBALLES": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getNbUniteEmballe() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getNbUniteEmballe());
-                }
-                break;
-            }
-            case "NATURE_EMBALLAGE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getNatureEmballage() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getNatureEmballage());
-                }
-                break;
-            }
-            case "MARCHANDISE_POUR": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandisePour() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandisePour());
-                }
-                break;
-            }
-            case "MARCHANDISE_ESPECE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandiseEspece() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandiseEspece());
-                }
-                break;
-            }
-            case "MARCHANDISE_NATURE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandiseNature() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandiseNature());
-                }
-                break;
-            }
-            case "MARCHANDISE_TRAITEMENT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandiseTraitement() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandiseTraitement());
-                }
-                break;
-            }
-            case "MARCHANDISE_NB_COLIS": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandiseNbColis() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandiseNbColis());
-                }
-                break;
-            }
-            case "MARCHANDISE_NB_APPROUVES": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandiseNbApprouves() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandiseNbApprouves());
-                }
-                break;
-            }
-            case "MARCHANDISE_POIDS_NET": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getMarchandisePoidsNet() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getMarchandisePoidsNet());
-                }
-                break;
-            }
-            case "NO_PERMIS_CITES": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getPermitCITESNumber() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getPermitCITESNumber());
-                }
-                break;
-            }
-            case "ID_CONTENEURS_SCELLES": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCvs() != null
-                        && document.getCONTENT().getCvs().getIdContainersSeals() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCvs().getIdContainersSeals());
-                }
-                break;
-            }
-            case "EXPEDITEUR_RAISON_SOCIAL": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getRAISONSOCIALE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getRAISONSOCIALE());
-                }
-                break;
-            }
-            case "EXPEDITEUR_ADRESSE1": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE1() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE1());
-                }
-                break;
-            }
-            case "EXPEDITEUR_ADRESSE2": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE2() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getADRESSE2());
-                }
-                break;
-            }
-            case "EXPEDITEUR_BP": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getBP() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getBP());
-                }
-                break;
-            }
-            case "EXPEDITEUR_PAYS_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getCODEPAYS());
-                }
-                break;
-            }
-            case "EXPEDITEUR_PAYS_NOM": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getNOMPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getPAYSADRESSE().getNOMPAYS());
-                }
-                break;
-            }
-            case "EXPEDITEUR_VILLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getVILLE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getVILLE());
-                }
-                break;
-            }
-            case "EXPEDITEUR_EMAIL": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getEMAIL() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getEMAIL());
-                }
-                break;
-            }
-            case "EXPEDITEUR_SITE_WEB": {
-                if (document.getCONTENT() != null && document.getCONTENT().getDESTINATAIRE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE() != null
-                        && document.getCONTENT().getDESTINATAIRE().getADRESSE().getSITEWEB() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getDESTINATAIRE().getADRESSE().getSITEWEB());
-                }
-                break;
-            }
-            case "CERTIFICATE_NUMBER": {
-                if (document.getREFERENCEDOSSIER() != null && document.getREFERENCEDOSSIER().getNUMERODEMANDE() != null) {
-                    fileFieldValue.setValue(document.getREFERENCEDOSSIER().getNUMERODEMANDE());
-                }
-                break;
-            }
-            case "DESTINATAIRE_RAISON_SOCIAL": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getRAISONSOCIALE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getRAISONSOCIALE());
-                }
-                break;
-            }
-            case "DESTINATAIRE_NUMERO_CONTRIBUABLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getNUMEROCONTRIBUABLE());
-                }
-                break;
-            }
-            case "DESTINATAIRE_ADRESSE1": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE1());
-                }
-                break;
-            }
-            case "DESTINATAIRE_ADRESSE2": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getADRESSE2());
-                }
-                break;
-            }
-            case "DESTINATAIRE_BP": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getBP() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getBP());
-                }
-                break;
-            }
-            case "DESTINATAIRE_PAYS_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getCODEPAYS());
-                }
-                break;
-            }
-            case "DESTINATAIRE_PAYS_NOM": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getPAYSADRESSE().getNOMPAYS());
-                }
-                break;
-            }
-            case "DESTINATAIRE_VILLE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getVILLE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getVILLE());
-                }
-                break;
-            }
-            case "DESTINATAIRE_EMAIL": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getEMAIL() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getEMAIL());
-                }
-                break;
-            }
-            case "DESTINATAIRE_SITE_WEB": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE() != null
-                        && document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getADRESSE().getSITEWEB());
-                }
-                break;
-            }
-            case "DESTINATAIRE_TELEPHONE_MOBILE_INDICATIF": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getINDICATIFPAYS());
-                }
-                break;
-            }
-            case "DESTINATAIRE_TELEPHONE_MOBILE_NUMERO": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEMOBILE().getNUMERO());
-                }
-                break;
-            }
-            case "DESTINATAIRE_TELEPHONE_FIXE_INDICATIF": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getINDICATIFPAYS());
-                }
-                break;
-            }
-            case "DESTINATAIRE_TELEPHONE_FIXE_NUMERO": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE() != null
-                        && document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getTELEPHONEFIXE().getNUMERO());
-                }
-                break;
-            }
-            case "DESTINATAIRE_TELEPHONE_FAX_INDICATIF": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getFAX() != null
-                        && document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getFAX().getINDICATIFPAYS());
-                }
-                break;
-            }
-            case "DESTINATAIRE_TELEPHONE_FAX_NUMERO": {
-                if (document.getCONTENT() != null && document.getCONTENT().getCLIENT() != null
-                        && document.getCONTENT().getCLIENT().getFAX() != null
-                        && document.getCONTENT().getCLIENT().getFAX().getNUMERO() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getCLIENT().getFAX().getNUMERO());
-                }
-                break;
-            }
-            case "NUMERO_CCT_CT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
-                }
-                break;
-            }
-            case "PAYS_ORIGINE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getNOMPAYS());
-                }
-                break;
-            }
-            case "PAYS_ORIGINE_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSORIGINE().getCODEPAYS());
-                }
-                break;
-            }
-            case "ZONE_ORIGINE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
-//                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
-                }
-                break;
-            }
-            case "PAYS_DESTINATION": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getNOMPAYS());
-                }
-                break;
-            }
-            case "PAYS_DESTINATION_CODE": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getPAYSDESTINATION().getCODEPAYS());
-                }
-                break;
-            }
-            case "VILLE_DESTINATION": {
-                if (document.getCONTENT() != null && document.getCONTENT().getNUMEROCCTCT() != null) {
-//                    fileFieldValue.setValue(document.getCONTENT().getNUMEROCCTCT());
-                }
-                break;
-            }
-            case "NUMERO_LTA_CONNAISSEMENT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getNUMCONNAISSEMENTLTA() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getNUMCONNAISSEMENTLTA());
-                }
-                break;
-            }
-            case "MODE_TRANSPORT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMODETRANSPORT() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMODETRANSPORT().getCODE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMODETRANSPORT().getCODE());
-                }
-                break;
-            }
-            case "MOYEN_TRANSPORT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMOYENTRANSPORT() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMOYENTRANSPORT().getCODE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getTRANSPORT().getMOYENTRANSPORT().getCODE());
-                }
-                break;
-            }
-            case "LIEU_ORIGINE": {
-//                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-//                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT() != null
-//                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getUNLOCODE() != null) {
-//                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getUNLOCODE());
-//                }
-                break;
-            }
-            case "LIEU_CHARGEMENT": {
-                if (document.getCONTENT() != null && document.getCONTENT().getINFORMATIONSGENERALES() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT() != null
-                        && document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getLIBELLE() != null) {
-                    fileFieldValue.setValue(document.getCONTENT().getINFORMATIONSGENERALES().getLIEUCHARGEMENT().getLIBELLE());
-                }
-                break;
-            }
-            case "CCT_CONTENEURS_CONTENEUR": {
-                if (document.getCONTENT() != null
-                        && document.getCONTENT().getCONTENEURS() != null
-                        && CollectionUtils.isNotEmpty(document.getCONTENT().getCONTENEURS().getCONTENEUR())) {
-                    final List<String> columns = new ArrayList<>();
-                    columns.add("Identification");
-                    columns.add("Type");
-                    columns.add("Scelles");
-                    columns.add("Poids");
-                    columns.add("Volume");
-                    final List<String> filedsValuesList = new ArrayList<String>();
-
-                    final int elementSize = document.getCONTENT().getCONTENEURS().getCONTENEUR().size();
-                    for (int i = 0; i < elementSize; i++) {
-                        if (document.getCONTENT().getCONTENEURS().getCONTENEUR().get(i) != null) {
-                            final DOCUMENT.CONTENT.CONTENEURS.CONTENEUR currentEssai = document.getCONTENT().getCONTENEURS().getCONTENEUR().get(i);
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getNUMEROCONTENEUR()) ? currentEssai
-                                    .getNUMEROCONTENEUR() : "/");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getTYPE()) ? currentEssai
-                                    .getTYPE() : "-");
-                            String scelles = StringUtils.isNotBlank(currentEssai.getSELLE1()) ? currentEssai.getSELLE1() : "-";
-                            filedsValuesList.add(scelles);
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getPOIDS()) ? currentEssai
-                                    .getPOIDS() : "-");
-                            filedsValuesList.add(StringUtils.isNotBlank(currentEssai.getVOLUME()) ? currentEssai
-                                    .getVOLUME() : "-");
-                        }
-                    }
-                    fileFieldValue.setValue(FileFieldValueUtils.addValueRepetable(filedsValuesList, columns, null));
-                }
-                break;
-            }
-            default:
-                break;
         }
+
         return fileFieldValue;
     }
 

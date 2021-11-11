@@ -3,12 +3,13 @@ package org.guce.siat.core.utils.cct.item;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileItemField;
 import org.guce.siat.common.model.FileItemFieldValue;
-import org.guce.siat.jaxb.cct.CCT_CT.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE;
+import org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT;
 
 /**
- * The Class FileItemFieldValueCct.
+ *
+ * @author tadzotsa
  */
-public class FileItemFieldValueCct {
+public class FileItemFieldValueCctCsv {
 
     /**
      * Generate file field value_ cc t_ ct.
@@ -18,10 +19,12 @@ public class FileItemFieldValueCct {
      * @param marchandise the marchandise
      * @return the file field value
      */
-    public static FileItemFieldValue generateFileItemFieldValueCctCT(FileItem fileItem, FileItemField fileItemField, MARCHANDISE marchandise) {
+    public static FileItemFieldValue generateFileItemFieldValueCctCSV(FileItem fileItem, FileItemField fileItemField, DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise) {
+
         FileItemFieldValue fileItemFieldValue = new FileItemFieldValue();
         fileItemFieldValue.setFileItem(fileItem);
         fileItemFieldValue.setFileItemField(fileItemField);
+
         switch (fileItemField.getCode()) {
             case "CATEGORIES": {
                 fileItemFieldValue.setValue(marchandise.getCATEGORIE());
@@ -71,54 +74,54 @@ public class FileItemFieldValueCct {
                 }
                 break;
             }
-            case "ADRESSE_STOCKAGE_ADRESSE1": {
-                if (marchandise.getADRESSESTOCKAGE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getADRESSE1());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_ADRESSE2": {
-                if (marchandise.getADRESSESTOCKAGE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getADRESSE2());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_BP": {
-                if (marchandise.getADRESSESTOCKAGE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getBP());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_PAYS_ADRESSE_CODE_PAYS": {
-                if (marchandise.getADRESSESTOCKAGE() != null && marchandise.getADRESSESTOCKAGE().getPAYSADRESSE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getPAYSADRESSE().getCODEPAYS());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_PAYS_ADRESSE_NOM_PAYS": {
-                if (marchandise.getADRESSESTOCKAGE() != null && marchandise.getADRESSESTOCKAGE().getPAYSADRESSE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getPAYSADRESSE().getNOMPAYS());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_VILLE": {
-                if (marchandise.getADRESSESTOCKAGE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getVILLE());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_EMAIL": {
-                if (marchandise.getADRESSESTOCKAGE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getEMAIL());
-                }
-                break;
-            }
-            case "ADRESSE_STOCKAGE_SITE_WEB": {
-                if (marchandise.getADRESSESTOCKAGE() != null) {
-                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getSITEWEB());
-                }
-                break;
-            }
+//            case "ADRESSE_STOCKAGE_ADRESSE1": {
+//                if (marchandise.getADRESSESTOCKAGE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getADRESSE1());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_ADRESSE2": {
+//                if (marchandise.getADRESSESTOCKAGE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getADRESSE2());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_BP": {
+//                if (marchandise.getADRESSESTOCKAGE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getBP());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_PAYS_ADRESSE_CODE_PAYS": {
+//                if (marchandise.getADRESSESTOCKAGE() != null && marchandise.getADRESSESTOCKAGE().getPAYSADRESSE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getPAYSADRESSE().getCODEPAYS());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_PAYS_ADRESSE_NOM_PAYS": {
+//                if (marchandise.getADRESSESTOCKAGE() != null && marchandise.getADRESSESTOCKAGE().getPAYSADRESSE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getPAYSADRESSE().getNOMPAYS());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_VILLE": {
+//                if (marchandise.getADRESSESTOCKAGE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getVILLE());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_EMAIL": {
+//                if (marchandise.getADRESSESTOCKAGE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getEMAIL());
+//                }
+//                break;
+//            }
+//            case "ADRESSE_STOCKAGE_SITE_WEB": {
+//                if (marchandise.getADRESSESTOCKAGE() != null) {
+//                    fileItemFieldValue.setValue(marchandise.getADRESSESTOCKAGE().getSITEWEB());
+//                }
+//                break;
+//            }
             case "NOM_COMMERCIAL": {
                 fileItemFieldValue.setValue(marchandise.getNOMCOMMERCIAL());
                 break;
@@ -175,9 +178,12 @@ public class FileItemFieldValueCct {
                 fileItemFieldValue.setValue(marchandise.getMODEEMBALLAGE());
                 break;
             }
-            default:
+            case "DESCRIPTION": {
+                fileItemFieldValue.setValue(marchandise.getDESCRIPTION());
                 break;
+            }
         }
+
         return fileItemFieldValue;
     }
 

@@ -17,19 +17,12 @@ import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.service.impl.XmlConverterServiceImpl;
 import org.guce.siat.utility.jaxb.common.PAIEMENT;
 import org.guce.siat.utility.jaxb.common.PaymentDocument;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ht
  */
 public class XmlConverterPayment extends AbstractXmlConverter {
-
-    /**
-     * The Constant LOG.
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(XmlConverterPayment.class);
 
     public XmlConverterPayment(XmlConverterServiceImpl xmlConverterService) {
         super(xmlConverterService);
@@ -43,7 +36,7 @@ public class XmlConverterPayment extends AbstractXmlConverter {
     @Override
     public File convertDocumentToFile(final Serializable serializable) throws ParseException, ValidationException {
 
-        final PaymentDocument document = checkInstance(serializable);
+        PaymentDocument document = checkInstance(serializable);
 
         initXmlConverterService(document.getREFERENCEDOSSIER(), document.getMESSAGE(), document.getTYPEDOCUMENT(), null);
 
@@ -87,6 +80,10 @@ public class XmlConverterPayment extends AbstractXmlConverter {
 
         ItemFlow paymentItemFlow = itemFlowList.get(0);
         PaymentData paymentData = xmlConverterService.getPaymentDataDao().findPaymentDataByItemFlow(paymentItemFlow);
+
+        PAIEMENT.FACTURE facture = new PAIEMENT.FACTURE();
+        facture.setREFERENCEFACTURE(paymentData.getRefFacture());
+        paiement.setFACTURE(facture);
 
         PAIEMENT.ENCAISSEMENT encaissement = new PAIEMENT.ENCAISSEMENT();
 

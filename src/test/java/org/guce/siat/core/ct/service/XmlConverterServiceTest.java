@@ -26,8 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @author ht
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {DataSourceConfig.class})
+//@RunWith(SpringJUnit4ClassRunner.class)
+//@ContextConfiguration(classes = {DataSourceConfig.class})
 public class XmlConverterServiceTest {
 
     @Autowired

@@ -487,10 +487,23 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                     document = (org.guce.siat.jaxb.cct.CC_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
+                case CCT_CSV: {
+                    if (!Arrays.asList(FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name()).contains(flowGuceSiat.getFlowSiat())) {
+                        final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CCT_CSV.JAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    } else {
+                        final JAXBContext jaxbContext = PayDocJAXBContextCreator.getInstance();
+                        // Unmarshalling the document
+                        final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                        document = (PaymentDocument) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    }
+                    break;
+                }
                 case CQ_CT: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.cct.CQ_CT.JAXBContextCreator.getInstance();
                     // Unmarshalling the document
-                    System.out.println("jaxbContext null pour CQ_CT ? " + (jaxbContext == null));
                     final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
                     document = (org.guce.siat.jaxb.cct.CQ_CT.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;

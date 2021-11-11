@@ -1,0 +1,631 @@
+//
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.7
+// Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a>
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source.
+// Généré le : 2021.10.07 à 05:35:13 PM WAT
+//
+package org.guce.siat.jaxb.cct.CCT_CSV;
+
+import javax.xml.bind.annotation.XmlRegistry;
+
+/**
+ * This object contains factory methods for each Java content interface and Java
+ * element interface generated in the org.guce.orchestra.process.csv.binding
+ * package.
+ * <p>
+ * An ObjectFactory allows you to programatically construct new instances of the
+ * Java representation for XML content. The Java representation of XML content
+ * can consist of schema derived interfaces and classes representing the binding
+ * of schema type definitions, element declarations and model groups. Factory
+ * methods for each of these are provided in this class.
+ *
+ */
+@XmlRegistry
+public class ObjectFactory {
+
+    /**
+     * Create a new ObjectFactory that can be used to create new instances of
+     * schema derived classes for package:
+     * org.guce.orchestra.process.csv.binding
+     *
+     */
+    public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT }
+     *
+     */
+    public DOCUMENT createDOCUMENT() {
+        return new DOCUMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT }
+     *
+     */
+    public DOCUMENT.CONTENT createDOCUMENTCONTENT() {
+        return new DOCUMENT.CONTENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT createDOCUMENTCONTENTPAIEMENT() {
+        return new DOCUMENT.CONTENT.PAIEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR createDOCUMENTCONTENTPAIEMENTCHARGEUR() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE createDOCUMENTCONTENTPAIEMENTCHARGEURADRESSE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FACTURE createDOCUMENTCONTENTPAIEMENTFACTURE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES createDOCUMENTCONTENTPAIEMENTFACTUREDETAILFACTURES() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES createDOCUMENTCONTENTMARCHANDISES() {
+        return new DOCUMENT.CONTENT.MARCHANDISES();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE createDOCUMENTCONTENTMARCHANDISESMARCHANDISE() {
+        return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.FACTURE }
+     *
+     */
+    public DOCUMENT.CONTENT.FACTURE createDOCUMENTCONTENTFACTURE() {
+        return new DOCUMENT.CONTENT.FACTURE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE }
+     *
+     */
+    public DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE createDOCUMENTCONTENTFACTURELIGNESFACTURE() {
+        return new DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS }
+     *
+     */
+    public DOCUMENT.CONTENT.FACTURE.PAIEMENTS createDOCUMENTCONTENTFACTUREPAIEMENTS() {
+        return new DOCUMENT.CONTENT.FACTURE.PAIEMENTS();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT createDOCUMENTCONTENTFACTUREPAIEMENTSPAIEMENT() {
+        return new DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES createDOCUMENTCONTENTINFORMATIONSGENERALES() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT createDOCUMENTCONTENTINFORMATIONSGENERALESTRANSPORT() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.EXPORTATEUR }
+     *
+     */
+    public DOCUMENT.CONTENT.EXPORTATEUR createDOCUMENTCONTENTEXPORTATEUR() {
+        return new DOCUMENT.CONTENT.EXPORTATEUR();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE }
+     *
+     */
+    public DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE createDOCUMENTCONTENTEXPORTATEURADRESSE() {
+        return new DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TRANSITAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.TRANSITAIRE createDOCUMENTCONTENTTRANSITAIRE() {
+        return new DOCUMENT.CONTENT.TRANSITAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE }
+     *
+     */
+    public DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE createDOCUMENTCONTENTTRANSITAIREADRESSE() {
+        return new DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT createDOCUMENTCONTENTCLIENT() {
+        return new DOCUMENT.CONTENT.CLIENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.ADRESSE }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.ADRESSE createDOCUMENTCONTENTCLIENTADRESSE() {
+        return new DOCUMENT.CONTENT.CLIENT.ADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.ERREURS }
+     *
+     */
+    public DOCUMENT.ERREURS createDOCUMENTERREURS() {
+        return new DOCUMENT.ERREURS();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.MESSAGE }
+     *
+     */
+    public DOCUMENT.MESSAGE createDOCUMENTMESSAGE() {
+        return new DOCUMENT.MESSAGE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.REFERENCEDOSSIER }
+     *
+     */
+    public DOCUMENT.REFERENCEDOSSIER createDOCUMENTREFERENCEDOSSIER() {
+        return new DOCUMENT.REFERENCEDOSSIER();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.ROUTAGE }
+     *
+     */
+    public DOCUMENT.ROUTAGE createDOCUMENTROUTAGE() {
+        return new DOCUMENT.ROUTAGE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.DECLARATIONDOUANE }
+     *
+     */
+    public DOCUMENT.CONTENT.DECLARATIONDOUANE createDOCUMENTCONTENTDECLARATIONDOUANE() {
+        return new DOCUMENT.CONTENT.DECLARATIONDOUANE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MINEPIAINFO }
+     *
+     */
+    public DOCUMENT.CONTENT.MINEPIAINFO createDOCUMENTCONTENTMINEPIAINFO() {
+        return new DOCUMENT.CONTENT.MINEPIAINFO();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.SIGNATAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.SIGNATAIRE createDOCUMENTCONTENTSIGNATAIRE() {
+        return new DOCUMENT.CONTENT.SIGNATAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.DECISIONORGANISME }
+     *
+     */
+    public DOCUMENT.CONTENT.DECISIONORGANISME createDOCUMENTCONTENTDECISIONORGANISME() {
+        return new DOCUMENT.CONTENT.DECISIONORGANISME();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE createDOCUMENTCONTENTPAIEMENTSIGNATAIRE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.SIGNATAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT createDOCUMENTCONTENTPAIEMENTENCAISSEMENT() {
+        return new DOCUMENT.CONTENT.PAIEMENT.ENCAISSEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE createDOCUMENTCONTENTPAIEMENTFICHERECETTE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FICHERECETTE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE createDOCUMENTCONTENTPAIEMENTPARTIEVERSANTE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.PARTIEVERSANTE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE createDOCUMENTCONTENTPAIEMENTBENEFICIAIRE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.BENEFICIAIRE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE createDOCUMENTCONTENTPAIEMENTCHARGEURTELEPHONEFIXE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEFIXE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE createDOCUMENTCONTENTPAIEMENTCHARGEURTELEPHONEMOBILE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.TELEPHONEMOBILE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX createDOCUMENTCONTENTPAIEMENTCHARGEURFAX() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.FAX();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTPAIEMENTCHARGEURADRESSEPAYSADRESSE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.CHARGEUR.ADRESSE.PAYSADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE createDOCUMENTCONTENTPAIEMENTFACTUREDETAILFACTURESDETAILFACTURE() {
+        return new DOCUMENT.CONTENT.PAIEMENT.FACTURE.DETAILFACTURES.DETAILFACTURE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DECISIONORGANISME
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DECISIONORGANISME createDOCUMENTCONTENTMARCHANDISESMARCHANDISEDECISIONORGANISME() {
+        return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.DECISIONORGANISME();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF createDOCUMENTCONTENTMARCHANDISESMARCHANDISECODETARIF() {
+        return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.CODETARIF();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE createDOCUMENTCONTENTMARCHANDISESMARCHANDISESOUSFAMILLE() {
+        return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.SOUSFAMILLE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE createDOCUMENTCONTENTMARCHANDISESMARCHANDISEPAYSORIGINE() {
+        return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.PAYSORIGINE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.LIEUSTOCKAGE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.LIEUSTOCKAGE createDOCUMENTCONTENTMARCHANDISESMARCHANDISELIEUSTOCKAGE() {
+        return new DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE.LIEUSTOCKAGE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE createDOCUMENTCONTENTFACTURELIGNESFACTURELIGNEFACTURE() {
+        return new DOCUMENT.CONTENT.FACTURE.LIGNESFACTURE.LIGNEFACTURE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT createDOCUMENTCONTENTFACTUREPAIEMENTSPAIEMENTMODEPAIEMENT() {
+        return new DOCUMENT.CONTENT.FACTURE.PAIEMENTS.PAIEMENT.MODEPAIEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUEXPORTATION
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUEXPORTATION createDOCUMENTCONTENTINFORMATIONSGENERALESLIEUEXPORTATION() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUEXPORTATION();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUCHARGEMENT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUCHARGEMENT createDOCUMENTCONTENTINFORMATIONSGENERALESLIEUCHARGEMENT() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUCHARGEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUDECHARGEMENT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUDECHARGEMENT createDOCUMENTCONTENTINFORMATIONSGENERALESLIEUDECHARGEMENT() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.LIEUDECHARGEMENT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSORIGINE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSORIGINE createDOCUMENTCONTENTINFORMATIONSGENERALESPAYSORIGINE() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSORIGINE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSDESTINATION
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSDESTINATION createDOCUMENTCONTENTINFORMATIONSGENERALESPAYSDESTINATION() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSDESTINATION();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSPROVENANCE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSPROVENANCE createDOCUMENTCONTENTINFORMATIONSGENERALESPAYSPROVENANCE() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.PAYSPROVENANCE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.TERMESVENTE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.TERMESVENTE createDOCUMENTCONTENTINFORMATIONSGENERALESTERMESVENTE() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.TERMESVENTE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT.MOYENTRANSPORT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT.MOYENTRANSPORT createDOCUMENTCONTENTINFORMATIONSGENERALESTRANSPORTMOYENTRANSPORT() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT.MOYENTRANSPORT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT.MODETRANSPORT
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT.MODETRANSPORT createDOCUMENTCONTENTINFORMATIONSGENERALESTRANSPORTMODETRANSPORT() {
+        return new DOCUMENT.CONTENT.INFORMATIONSGENERALES.TRANSPORT.MODETRANSPORT();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE }
+     *
+     */
+    public DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE createDOCUMENTCONTENTEXPORTATEURTELEPHONEFIXE() {
+        return new DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEFIXE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE createDOCUMENTCONTENTEXPORTATEURTELEPHONEMOBILE() {
+        return new DOCUMENT.CONTENT.EXPORTATEUR.TELEPHONEMOBILE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.EXPORTATEUR.FAX }
+     *
+     */
+    public DOCUMENT.CONTENT.EXPORTATEUR.FAX createDOCUMENTCONTENTEXPORTATEURFAX() {
+        return new DOCUMENT.CONTENT.EXPORTATEUR.FAX();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTEXPORTATEURADRESSEPAYSADRESSE() {
+        return new DOCUMENT.CONTENT.EXPORTATEUR.ADRESSE.PAYSADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEFIXE }
+     *
+     */
+    public DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEFIXE createDOCUMENTCONTENTTRANSITAIRETELEPHONEFIXE() {
+        return new DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEFIXE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEMOBILE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEMOBILE createDOCUMENTCONTENTTRANSITAIRETELEPHONEMOBILE() {
+        return new DOCUMENT.CONTENT.TRANSITAIRE.TELEPHONEMOBILE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TRANSITAIRE.FAX }
+     *
+     */
+    public DOCUMENT.CONTENT.TRANSITAIRE.FAX createDOCUMENTCONTENTTRANSITAIREFAX() {
+        return new DOCUMENT.CONTENT.TRANSITAIRE.FAX();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE.PAYSADRESSE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTTRANSITAIREADRESSEPAYSADRESSE() {
+        return new DOCUMENT.CONTENT.TRANSITAIRE.ADRESSE.PAYSADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.AGREMENTCOMMERCE }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.AGREMENTCOMMERCE createDOCUMENTCONTENTCLIENTAGREMENTCOMMERCE() {
+        return new DOCUMENT.CONTENT.CLIENT.AGREMENTCOMMERCE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.AGREMENTMETIER }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.AGREMENTMETIER createDOCUMENTCONTENTCLIENTAGREMENTMETIER() {
+        return new DOCUMENT.CONTENT.CLIENT.AGREMENTMETIER();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.PERMIS }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.PERMIS createDOCUMENTCONTENTCLIENTPERMIS() {
+        return new DOCUMENT.CONTENT.CLIENT.PERMIS();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.TELEPHONEFIXE }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.TELEPHONEFIXE createDOCUMENTCONTENTCLIENTTELEPHONEFIXE() {
+        return new DOCUMENT.CONTENT.CLIENT.TELEPHONEFIXE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.TELEPHONEMOBILE }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.TELEPHONEMOBILE createDOCUMENTCONTENTCLIENTTELEPHONEMOBILE() {
+        return new DOCUMENT.CONTENT.CLIENT.TELEPHONEMOBILE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.FAX }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.FAX createDOCUMENTCONTENTCLIENTFAX() {
+        return new DOCUMENT.CONTENT.CLIENT.FAX();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE
+     * }
+     *
+     */
+    public DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE createDOCUMENTCONTENTCLIENTADRESSEPAYSADRESSE() {
+        return new DOCUMENT.CONTENT.CLIENT.ADRESSE.PAYSADRESSE();
+    }
+
+    /**
+     * Create an instance of {@link DOCUMENT.ERREURS.ERREUR }
+     *
+     */
+    public DOCUMENT.ERREURS.ERREUR createDOCUMENTERREURSERREUR() {
+        return new DOCUMENT.ERREURS.ERREUR();
+    }
+
+}
