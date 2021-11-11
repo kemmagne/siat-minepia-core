@@ -555,7 +555,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
      * @return true, if is payment request
      */
     private boolean isPaymentRequest(final FlowGuceSiat flowGuceSiat) {
-        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_167.name())
+        return Arrays.asList(FlowCode.FL_AP_166.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name())
                 .contains(flowGuceSiat.getFlowSiat());
     }
 
@@ -1308,7 +1308,11 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         final Flow flowToExecute;
         FileTypeCode fileTypeCode = fileFromSiat.getFileType().getCode();
         if (Arrays.asList(FileTypeCode.CCT_CSV).contains(fileTypeCode)) {
-            flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_167.name());
+            if (fileFromSiat.getParent() == null) {
+                flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_167.name());
+            } else {
+                flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_175.name());
+            }
         } else if (Arrays.asList(FileTypeCode.CCT_CSV, FileTypeCode.CCT_CT_E, FileTypeCode.CCT_CT_E_ATP).contains(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_123.name());
         } else if (Arrays.asList(FileTypeCode.CCT_CT_E_PVI, FileTypeCode.CCT_CT_E_FSTP).contains(fileTypeCode)) {
@@ -1365,7 +1369,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
 
             //le STEP dépond du nombre des cotation
-            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_167.name()).contains(flowToExecute.getCode())) {
+            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
@@ -2146,7 +2150,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 case CCT_CT:
                     return convertFileToDocumentCctCT(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                 case CCT_CSV:
-                    if (!FlowCode.FL_CT_167.name().equals(flowToExecute.getCode())) {
+                    if (!Arrays.asList(FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name()).contains(flowToExecute.getCode())) {
                         return convertFileToDocumentCctCSV(file, fileItemList, itemFlowList, flowToExecute, fgsByFAndFT);
                     } else {
                         xmlConverter = new XmlConverterPayment(this);
@@ -2450,17 +2454,21 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().setNUMEROCSVMINEPIA(file.getNumeroDossier());
             ciDocument.getCONTENT().setDATECSVMINEPIA(DateUtils.formatSimpleDate(DateUtils.GUCE_DATE, file.getSignatureDate()));
         }
-//        if (CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
-//                && Arrays.asList(FlowCode.FL_CT_92.name(), FlowCode.FL_CT_93.name(), FlowCode.FL_CT_159.name()).contains(flowToExecute.getCode())) {
-//            ciDocument.setCONTENT(new org.guce.siat.jaxb.cct.CCT_CSV.DOCUMENT.CONTENT());
-//            final ItemFlow paymentFlow = itemFlowDao.findItemFlowByFileItemAndFlow(itemFlowList.get(0).getFileItem(),
-//                    FlowCode.valueOf(flowToExecute.getCode()));
-//            final PaymentData paymentData = paymentDataDao.findPaymentDataByItemFlow(paymentFlow);
-//            ciDocument.getCONTENT().setPAIEMENT(PaiementGenerator.generatePaiement(paymentData, flowToExecute.getCode()));
-//        }
+
+        // ROUTAGE
+        ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce(file));
+
+        // REFERENCE DOSSIER
+        if (FlowCode.FL_CT_63.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_62.name().equals(flowToExecute.getCode())) {
+            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, true));
+            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessageAnnulation()));
+        } else {
+            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, false));
+            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
+        }
 
         // SI FACTURATION
-        if (FlowCode.FL_CT_159.name().equals(flowToExecute.getCode())) {
+        if (Arrays.asList(FlowCode.FL_CT_159.name(), FlowCode.FL_CT_174.name()).contains(flowToExecute.getCode())) {
             PaymentData paymentData = getPaymentDataDao().findPaymentDataByFileItem(file.getFileItemsList().get(0));
 
             PAIEMENT paiement = new PAIEMENT();
@@ -2504,19 +2512,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().getSIGNATAIRE().setQUALITE(itemFlow.getSender().getPosition().getLabelFr());
 
             ciDocument.getCONTENT().setPAIEMENT(paiement);
-        }
-
-        // ROUTAGE
-        ciDocument.setROUTAGE(ConverterGuceSiatUtils.generateRoutageSiatToGuce(file));
-
-        // REFERENCE DOSSIER
-        if (FlowCode.FL_CT_63.name().equals(flowToExecute.getCode()) || FlowCode.FL_CT_62.name().equals(flowToExecute.getCode())) {
-            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, true));
-            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0)
-                    .getNumEbmsMessageAnnulation()));
-        } else {
-            ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, false));
-            ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
+            ciDocument.getREFERENCEDOSSIER().setNUMERODOSSIER(file.getNumeroDossier());
         }
 
         /* DETECTER SI DECISION PAR ARTICLE OU PAR DOSSIER */

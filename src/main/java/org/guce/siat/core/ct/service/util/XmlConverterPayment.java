@@ -17,19 +17,12 @@ import org.guce.siat.core.ct.model.PaymentData;
 import org.guce.siat.core.ct.service.impl.XmlConverterServiceImpl;
 import org.guce.siat.utility.jaxb.common.PAIEMENT;
 import org.guce.siat.utility.jaxb.common.PaymentDocument;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
  * @author ht
  */
 public class XmlConverterPayment extends AbstractXmlConverter {
-
-    /**
-     * The Constant LOG.
-     */
-    private static final Logger LOG = LoggerFactory.getLogger(XmlConverterPayment.class);
 
     public XmlConverterPayment(XmlConverterServiceImpl xmlConverterService) {
         super(xmlConverterService);

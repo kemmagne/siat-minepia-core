@@ -5899,6 +5899,37 @@ public class DOCUMENT implements Serializable {
          *         &lt;element name="MINEPIA_MARCHANDISE_NB_COLIS" type="{http://www.w3.org/2001/XMLSchema}integer" minOccurs="0"/>
          *         &lt;element name="MINEPIA_MARCHANDISE_NB_APPROUVES" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
          *         &lt;element name="MINEPIA_MARCHANDISE_POIDS_NET" type="{http://www.w3.org/2001/XMLSchema}double" minOccurs="0"/>
+         *         &lt;element name="LIEU_ORIGINE" minOccurs="0">
+         *           &lt;complexType>
+         *             &lt;complexContent>
+         *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+         *                 &lt;sequence>
+         *                   &lt;element name="NOM" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                   &lt;element name="ADRESSE" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
+         *                 &lt;/sequence>
+         *               &lt;/restriction>
+         *             &lt;/complexContent>
+         *           &lt;/complexType>
+         *         &lt;/element>
+         *         &lt;element name="ZONE_ORIGINE" minOccurs="0">
+         *           &lt;simpleType>
+         *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *               &lt;maxLength value="255"/>
+         *             &lt;/restriction>
+         *           &lt;/simpleType>
+         *         &lt;/element>
          *       &lt;/sequence>
          *     &lt;/restriction>
          *   &lt;/complexContent>
@@ -5921,7 +5952,9 @@ public class DOCUMENT implements Serializable {
             "minepiamarchandisetraitement",
             "minepiamarchandisenbcolis",
             "minepiamarchandisenbapprouves",
-            "minepiamarchandisepoidsnet"
+            "minepiamarchandisepoidsnet",
+            "lieuorigine",
+            "zoneorigine"
         })
         public static class MINEPIAINFO {
 
@@ -5951,6 +5984,10 @@ public class DOCUMENT implements Serializable {
             protected String minepiamarchandisenbapprouves;
             @XmlElement(name = "MINEPIA_MARCHANDISE_POIDS_NET")
             protected Double minepiamarchandisepoidsnet;
+            @XmlElement(name = "LIEU_ORIGINE")
+            protected DOCUMENT.CONTENT.MINEPIAINFO.LIEUORIGINE lieuorigine;
+            @XmlElement(name = "ZONE_ORIGINE")
+            protected String zoneorigine;
 
             /**
              * Obtient la valeur de la propriété minepiadatedepart.
@@ -6210,6 +6247,137 @@ public class DOCUMENT implements Serializable {
              */
             public void setMINEPIAMARCHANDISEPOIDSNET(Double value) {
                 this.minepiamarchandisepoidsnet = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété lieuorigine.
+             *
+             * @return possible object is
+             *     {@link DOCUMENT.CONTENT.MINEPIAINFO.LIEUORIGINE }
+             *
+             */
+            public DOCUMENT.CONTENT.MINEPIAINFO.LIEUORIGINE getLIEUORIGINE() {
+                return lieuorigine;
+            }
+
+            /**
+             * Définit la valeur de la propriété lieuorigine.
+             *
+             * @param value allowed object is
+             *     {@link DOCUMENT.CONTENT.MINEPIAINFO.LIEUORIGINE }
+             *
+             */
+            public void setLIEUORIGINE(DOCUMENT.CONTENT.MINEPIAINFO.LIEUORIGINE value) {
+                this.lieuorigine = value;
+            }
+
+            /**
+             * Obtient la valeur de la propriété zoneorigine.
+             *
+             * @return possible object is {@link String }
+             *
+             */
+            public String getZONEORIGINE() {
+                return zoneorigine;
+            }
+
+            /**
+             * Définit la valeur de la propriété zoneorigine.
+             *
+             * @param value allowed object is {@link String }
+             *
+             */
+            public void setZONEORIGINE(String value) {
+                this.zoneorigine = value;
+            }
+
+            /**
+             * <p>
+             * Classe Java pour anonymous complex type.
+             *
+             * <p>
+             * Le fragment de schéma suivant indique le contenu attendu figurant
+             * dans cette classe.
+             *
+             * <pre>
+             * &lt;complexType>
+             *   &lt;complexContent>
+             *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+             *       &lt;sequence>
+             *         &lt;element name="NOM" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *         &lt;element name="ADRESSE" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
+             *       &lt;/sequence>
+             *     &lt;/restriction>
+             *   &lt;/complexContent>
+             * &lt;/complexType>
+             * </pre>
+             *
+             *
+             */
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "nom",
+                "adresse"
+            })
+            public static class LIEUORIGINE {
+
+                @XmlElement(name = "NOM")
+                protected String nom;
+                @XmlElement(name = "ADRESSE")
+                protected String adresse;
+
+                /**
+                 * Obtient la valeur de la propriété nom.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getNOM() {
+                    return nom;
+                }
+
+                /**
+                 * Définit la valeur de la propriété nom.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setNOM(String value) {
+                    this.nom = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété adresse.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getADRESSE() {
+                    return adresse;
+                }
+
+                /**
+                 * Définit la valeur de la propriété adresse.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setADRESSE(String value) {
+                    this.adresse = value;
+                }
+
             }
 
         }
@@ -16633,6 +16801,13 @@ public class DOCUMENT implements Serializable {
          *                       &lt;/restriction>
          *                     &lt;/simpleType>
          *                   &lt;/element>
+         *                   &lt;element name="DESCRIPTION" minOccurs="0">
+         *                     &lt;simpleType>
+         *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+         *                         &lt;maxLength value="255"/>
+         *                       &lt;/restriction>
+         *                     &lt;/simpleType>
+         *                   &lt;/element>
          *                   &lt;element name="NBR_CERTIFICAT" minOccurs="0">
          *                     &lt;simpleType>
          *                       &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -16766,7 +16941,7 @@ public class DOCUMENT implements Serializable {
              */
             public List<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE> getMARCHANDISE() {
                 if (marchandise == null) {
-                    marchandise = new ArrayList<>();
+                    marchandise = new ArrayList<DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE>();
                 }
                 return this.marchandise;
             }
@@ -16972,6 +17147,13 @@ public class DOCUMENT implements Serializable {
              *             &lt;/restriction>
              *           &lt;/simpleType>
              *         &lt;/element>
+             *         &lt;element name="DESCRIPTION" minOccurs="0">
+             *           &lt;simpleType>
+             *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
+             *               &lt;maxLength value="255"/>
+             *             &lt;/restriction>
+             *           &lt;/simpleType>
+             *         &lt;/element>
              *         &lt;element name="NBR_CERTIFICAT" minOccurs="0">
              *           &lt;simpleType>
              *             &lt;restriction base="{http://www.w3.org/2001/XMLSchema}string">
@@ -17086,6 +17268,7 @@ public class DOCUMENT implements Serializable {
                 "categorie",
                 "nombotanique",
                 "nature",
+                "description",
                 "nbrcertificat",
                 "nbrlotscolis",
                 "numerolots",
@@ -17133,6 +17316,8 @@ public class DOCUMENT implements Serializable {
                 protected String nombotanique;
                 @XmlElement(name = "NATURE")
                 protected String nature;
+                @XmlElement(name = "DESCRIPTION")
+                protected String description;
                 @XmlElement(name = "NBR_CERTIFICAT")
                 protected String nbrcertificat;
                 @XmlElement(name = "NBR_LOTS_COLIS")
@@ -17500,6 +17685,26 @@ public class DOCUMENT implements Serializable {
                  */
                 public void setNATURE(String value) {
                     this.nature = value;
+                }
+
+                /**
+                 * Obtient la valeur de la propriété description.
+                 *
+                 * @return possible object is {@link String }
+                 *
+                 */
+                public String getDESCRIPTION() {
+                    return description;
+                }
+
+                /**
+                 * Définit la valeur de la propriété description.
+                 *
+                 * @param value allowed object is {@link String }
+                 *
+                 */
+                public void setDESCRIPTION(String value) {
+                    this.description = value;
                 }
 
                 /**

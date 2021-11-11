@@ -178,6 +178,10 @@ public class FileItemFieldValueCctCsv {
                 fileItemFieldValue.setValue(marchandise.getMODEEMBALLAGE());
                 break;
             }
+            case "DESCRIPTION": {
+                fileItemFieldValue.setValue(marchandise.getDESCRIPTION());
+                break;
+            }
         }
 
         return fileItemFieldValue;

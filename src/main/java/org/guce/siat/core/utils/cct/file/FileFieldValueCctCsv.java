@@ -1066,6 +1066,24 @@ public class FileFieldValueCctCsv {
                 }
                 break;
             }
+            case "MINEPIA_LIEU_ORIGINE_NOM": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE().getNOM());
+                }
+                break;
+            }
+            case "MINEPIA_LIEU_ORIGINE_ADRESSE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getLIEUORIGINE().getADRESSE());
+                }
+                break;
+            }
+            case "MINEPIA_ZONE_ORIGINE": {
+                if (document.getCONTENT() != null && document.getCONTENT().getMINEPIAINFO() != null && document.getCONTENT().getMINEPIAINFO().getZONEORIGINE() != null) {
+                    fileFieldValue.setValue(document.getCONTENT().getMINEPIAINFO().getZONEORIGINE());
+                }
+                break;
+            }
         }
 
         return fileFieldValue;
