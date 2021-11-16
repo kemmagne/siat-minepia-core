@@ -13,6 +13,7 @@ import org.guce.siat.common.model.User;
 import org.guce.siat.common.service.AbstractService;
 import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
+import org.guce.siat.core.ct.filter.ImCargFilter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
 import org.guce.siat.core.ct.model.AnalyseResult;
@@ -311,5 +312,13 @@ public interface CommonService extends AbstractService<ItemFlow> {
     void updatePottingPresent(PottingPresent pottingPresent);
 
     List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file);
+
+    List<org.guce.siat.common.model.File> findImCargFiles(ImCargFilter filter);
+
+    List<Object[]> findImCargStatisticsByProduct(ImCargFilter filter);
+
+    List<Object[]> findImCargStatisticsByImporter(ImCargFilter filter);
+
+    List<Object[]> findImCargStatisticsByCountry(ImCargFilter filter);
 
 }

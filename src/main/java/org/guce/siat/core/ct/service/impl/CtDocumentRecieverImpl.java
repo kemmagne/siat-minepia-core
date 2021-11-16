@@ -516,6 +516,13 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                     document = (org.guce.siat.jaxb.monitoring.DE_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
+                case IM_CARG_MINCOMMERCE: {
+                    final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.IM_CARG_MINCOMMERCE.JAXBContextCreator.getInstance();
+                    // Unmarshalling the document
+                    final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                    document = (org.guce.siat.jaxb.monitoring.IM_CARG_MINCOMMERCE.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    break;
+                }
                 case IDI: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.monitoring.IDI.JAXBContextCreator.getInstance();
                     // Unmarshalling the document

@@ -74,6 +74,7 @@ import org.guce.siat.core.ct.dao.TreatmentPartDao;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
 import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
+import org.guce.siat.core.ct.filter.ImCargFilter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
 import org.guce.siat.core.ct.model.AnalyseResult;
@@ -1585,6 +1586,26 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Override
     public List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file) {
         return commonDao.findPottingPresentsByFile(file);
+    }
+
+    @Override
+    public List<org.guce.siat.common.model.File> findImCargFiles(ImCargFilter filter) {
+        return commonDao.findImCargFiles(filter);
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByProduct(ImCargFilter filter) {
+        return commonDao.findImCargStatisticsByProduct(filter);
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByImporter(ImCargFilter filter) {
+        return commonDao.findImCargStatisticsByImporter(filter);
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByCountry(ImCargFilter filter) {
+        return commonDao.findImCargStatisticsByCountry(filter);
     }
 
 }
