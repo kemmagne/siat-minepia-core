@@ -464,6 +464,9 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
                 }
             }
             ciDocument.getCONTENT().setPAIEMENT(PaiementGenerator.generatePaiement(paymentData, flowToExecute.getCode()));
+            if(ciDocument.getCONTENT().getPAIEMENT() != null && ciDocument.getCONTENT().getPAIEMENT().getFACTURE() != null){
+                ciDocument.getCONTENT().getPAIEMENT().getFACTURE().setTYPEFACTURE(file.getFileType().getPaymentFileType());
+            }
             if (FlowCode.FL_CT_158.name().equals(flowToExecute.getCode())) {
 //                String pjType = "INVOICE";
 //                ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
