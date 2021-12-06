@@ -17,6 +17,7 @@ import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundExcept
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Predicate;
 import org.apache.commons.collections.Transformer;
+import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.AbstractJpaDao;
 import org.guce.siat.common.dao.AppointmentDao;
 import org.guce.siat.common.dao.AuditDao;
@@ -66,12 +67,14 @@ import org.guce.siat.core.ct.dao.InspectionReportDao;
 import org.guce.siat.core.ct.dao.InterceptionNotificationDao;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
 import org.guce.siat.core.ct.dao.SampleDao;
+import org.guce.siat.core.ct.dao.TreatmentInfosCCSMinsanteDao;
 import org.guce.siat.core.ct.dao.TreatmentInfosDao;
 import org.guce.siat.core.ct.dao.TreatmentOrderDao;
 import org.guce.siat.core.ct.dao.TreatmentPartDao;
 import org.guce.siat.core.ct.dao.TreatmentResultDao;
 import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
+import org.guce.siat.core.ct.filter.ImCargFilter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.AnalysePart;
 import org.guce.siat.core.ct.model.AnalyseResult;
@@ -88,6 +91,7 @@ import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.PottingReport;
 import org.guce.siat.core.ct.model.Sample;
 import org.guce.siat.core.ct.model.TreatmentInfos;
+import org.guce.siat.core.ct.model.TreatmentInfosCCSMinsante;
 import org.guce.siat.core.ct.model.TreatmentOrder;
 import org.guce.siat.core.ct.model.TreatmentPart;
 import org.guce.siat.core.ct.model.TreatmentResult;
@@ -240,6 +244,9 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
 
     @Autowired
     private TreatmentInfosDao treatmentInfosDao;
+    
+    @Autowired
+    private TreatmentInfosCCSMinsanteDao treatmentInfosCCSMinsanteDao;
 
     @Autowired
     private ApprovedDecisionDao approvedDecisionDao;
@@ -641,7 +648,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentResultDao.delete(draftTreatmentResult);
                 this.deleteAttachedReports(attachments);
             } // Facturation
-            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name()).contains(flowCode)) {
+            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name(), FlowCode.FL_CT_158.name()).contains(flowCode)) {
                 rollbackBilling = true;
             } // Rendez-vous
             else if (Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_118.name()).contains(flowCode)) {
@@ -887,6 +894,28 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         // Update fileItems : Set draft = true
         fileItemDao.saveOrUpdateList(fileItemList);
     }
+    
+    @Override
+    public void takeDecisionAndSaveTreatmentInfosCCSMinsante(TreatmentInfosCCSMinsante treatmentInfos, List<ItemFlow> itemFlowsToAdd) throws Exception {
+        final List<FileItem> fileItemList = new ArrayList<>();
+        for (final ItemFlow itemFlow : itemFlowsToAdd) {
+            itemFlowDao.save(itemFlow);
+
+            final TreatmentInfosCCSMinsante ti = CommonUtils.clone(treatmentInfos);
+
+            ti.setItemFlow(itemFlow);
+            treatmentInfosCCSMinsanteDao.save(ti);
+
+            // Set draft = true to be updated
+            final FileItem item = itemFlow.getFileItem();
+            item.setDraft(Boolean.TRUE);
+            fileItemList.add(item);
+        }
+
+        // Update fileItems : Set draft = true
+        fileItemDao.saveOrUpdateList(fileItemList);
+    }
+    
 
     @Override
     public void takeDecisionAndSavePottingInformations(List<PottingPresent> pottingPresents, List<Container> containers) {
@@ -1436,9 +1465,10 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         } else {
             paymentDataDao.update(paymentData);
         }
-
-        paymentData.setRefFacture(new DecimalFormat("FAC-SIAT-000000").format(paymentData.getId()));
-        paymentDataDao.update(paymentData);
+        if (StringUtils.isEmpty(paymentData.getRefFacture())) {
+            paymentData.setRefFacture(new DecimalFormat("FAC-SIAT-000000").format(paymentData.getId()));
+            paymentDataDao.update(paymentData);
+        }
     }
 
 
@@ -1556,6 +1586,26 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
     @Override
     public List<PottingPresent> findPottingPresentsByFile(org.guce.siat.common.model.File file) {
         return commonDao.findPottingPresentsByFile(file);
+    }
+
+    @Override
+    public List<org.guce.siat.common.model.File> findImCargFiles(ImCargFilter filter) {
+        return commonDao.findImCargFiles(filter);
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByProduct(ImCargFilter filter) {
+        return commonDao.findImCargStatisticsByProduct(filter);
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByImporter(ImCargFilter filter) {
+        return commonDao.findImCargStatisticsByImporter(filter);
+    }
+
+    @Override
+    public List<Object[]> findImCargStatisticsByCountry(ImCargFilter filter) {
+        return commonDao.findImCargStatisticsByCountry(filter);
     }
 
 }

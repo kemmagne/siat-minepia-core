@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <actions>
-    <action>
-        <actionName>CUSTOM-deploy</actionName>
-        <displayName>deploy</displayName>
-        <goals>
-            <goal>clean</goal>
-            <goal>deploy</goal>
-        </goals>
-    </action>
-    <action>
-        <actionName>CUSTOM-skip-test-build</actionName>
-        <displayName>skip-test-build</displayName>
+        <action>
+            <actionName>CUSTOM-deploy</actionName>
+            <displayName>deploy</displayName>
+            <goals>
+                <goal>clean</goal>
+                <goal>deploy</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>CUSTOM-skip-test-build</actionName>
+            <displayName>skip-test-build</displayName>
 
-        <goals>
-            <goal>clean</goal>
-            <goal>install</goal>
-        </goals>
-        <properties>
-            <skipTests>true</skipTests>
-        </properties>
-    </action>
-    <action>
-        <actionName>CUSTOM-deploy-skiping-test</actionName>
-        <displayName>deploy-skiping-test</displayName>
-        <goals>
-            <goal>clean</goal>
-            <goal>deploy</goal>
-        </goals>
-        <properties>
-            <skipTests>true</skipTests>
-        </properties>
-    </action>
-</actions>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        <action>
+            <actionName>CUSTOM-deploy-skiping-test</actionName>
+            <displayName>deploy-skiping-test</displayName>
+            <goals>
+                <goal>deploy</goal>
+            </goals>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
+        </action>
+        
+    </actions>
