@@ -570,7 +570,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
             fileDao.update(prepareFileFromSiat(fileFromSiat, fileConverted));
 
-            /* PRESENTS */
+            /* CONTENEURS */
             if (document instanceof org.guce.siat.jaxb.cct.PVE.DOCUMENT) {
                 populateContainers((org.guce.siat.jaxb.cct.PVE.DOCUMENT) document, fileFromSiat);
             }

@@ -10,6 +10,7 @@ import org.guce.siat.common.model.User;
 import org.guce.siat.common.utils.enums.FileTypeCode;
 import org.guce.siat.core.ct.filter.CteFilter;
 import org.guce.siat.core.ct.filter.Filter;
+import org.guce.siat.core.ct.filter.ImCargFilter;
 import org.guce.siat.core.ct.model.AnalyseOrder;
 import org.guce.siat.core.ct.model.PottingPresent;
 import org.guce.siat.core.ct.model.Sample;
@@ -186,5 +187,13 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
     void updatePottingPresent(PottingPresent pottingPresent);
 
     List<PottingPresent> findPottingPresentsByFile(File file);
+
+    List<File> findImCargFiles(org.guce.siat.core.ct.filter.ImCargFilter filter);
+
+    List<Object[]> findImCargStatisticsByProduct(ImCargFilter filter);
+
+    List<Object[]> findImCargStatisticsByImporter(ImCargFilter filter);
+
+    List<Object[]> findImCargStatisticsByCountry(ImCargFilter filter);
 
 }
