@@ -1393,7 +1393,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             // Update File item and execute flow
             fileItem.setDraft(Boolean.FALSE);
 
-            //le STEP dépond du nombre des cotation
+            //le STEP dÃ©pond du nombre des cotation
             if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_160.name(), FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
             } else {

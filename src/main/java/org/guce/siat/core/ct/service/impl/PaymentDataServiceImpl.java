@@ -124,7 +124,7 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
             //le STEP dépond du nombre des cotation
             if (Arrays.asList(FileTypeCode.VT_MINEPIA, FileTypeCode.CCT_CSV, FileTypeCode.CCS_MINSANTE).contains(currentFile.getFileType().getCode())){
                 fileItem.setStep(flowToExecute.getToStep());
-            }else{
+            } else {
                 fileItem.setStep(paymentFlow.getFromStep());
             }
             fileItemDao.update(fileItem);
