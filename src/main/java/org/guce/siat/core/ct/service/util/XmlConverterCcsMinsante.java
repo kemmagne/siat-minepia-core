@@ -467,6 +467,12 @@ public class XmlConverterCcsMinsante extends AbstractXmlConverter {
             if(ciDocument.getCONTENT().getPAIEMENT() != null && ciDocument.getCONTENT().getPAIEMENT().getFACTURE() != null){
                 ciDocument.getCONTENT().getPAIEMENT().getFACTURE().setTYPEFACTURE(file.getFileType().getPaymentFileType());
             }
+            if(file.getBureau() != null && file.getBureau().getCode() != null){
+                String codeBenif = (file.getBureau().getCode().contains("MINSANTE") || file.getBureau().getCode().contains("Minsante")) ? file.getBureau().getCode() : file.getBureau().getCode()+"-MINSANTE";
+                String libelleBenif = (file.getBureau().getCode().contains("MINSANTE") || file.getBureau().getCode().contains("Minsante")) ? file.getBureau().getCode() : file.getBureau().getCode()+" MINSANTE";
+                ciDocument.getCONTENT().getPAIEMENT().getBENEFICIAIRE().setCODE(codeBenif);
+                ciDocument.getCONTENT().getPAIEMENT().getBENEFICIAIRE().setLIBELLE(libelleBenif);
+            }
             if (FlowCode.FL_CT_158.name().equals(flowToExecute.getCode())) {
 //                String pjType = "INVOICE";
 //                ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
