@@ -9,8 +9,8 @@
         <version>1.2.3</version>
     </parent>
 
-    <artifactId>siat-ct-core</artifactId>
-    <name>siat-ct-core</name>
+    <artifactId>siat-ct-minader-core</artifactId>
+    <name>siat-ct-minader-core</name>
     <version>2.3.36</version>
 
     <profiles>
