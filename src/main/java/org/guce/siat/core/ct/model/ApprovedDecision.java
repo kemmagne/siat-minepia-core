@@ -137,7 +137,6 @@ public class ApprovedDecision extends AbstractModel implements Serializable {
         this.officialPosition = officialPosition;
     }
 
-    
     public String getProductTemperature() {
         return productTemperature;
     }
