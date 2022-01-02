@@ -101,10 +101,10 @@ public class CommonUtils {
 
     public static void addAttachmentsToGED(PropertiesLoader propertiesLoader, AlfrescoDirectoryCreator alfrescoDirectoryCreator, org.guce.siat.common.model.File savedFile, Map<String, byte[]> attached) throws IOException {
         // Add PJ to GED
-        if(attached == null || attached.isEmpty()){
+        if (attached == null || attached.isEmpty()) {
             return;
         }
-        if(savedFile == null){
+        if (savedFile == null) {
             return;
         }
         LOG.info("Liste des fichiers attachés : {}", attached.size());
@@ -143,7 +143,10 @@ public class CommonUtils {
         directory.append(AlfrescoDirectoriesInitializer.SLASH);
         directory.append(savedFile.getNumeroDossier());
         CmisUtils.sendDocument(attachedFiles, CmisSession.getInstance(), directory.toString());
-        LOG.info("################# Attachment Path is {} ", attachmentRootFolder);
+        LOG.info("################# Attachment Path is {} ", directory.toString());
+        for (File attachedFile : attachedFiles) {
+            attachedFile.delete();
+        }
     }
 
     public static Map<String, Object> generateAperak(EbxmlPropertiesService propertiesService, CtDocumentRecieverImpl documentReciever, String xmlContent, XPath xPath, byte[] message, org.guce.siat.common.model.File savedFile) throws JAXBException, SAXException, IOException, XPathExpressionException {

@@ -191,9 +191,6 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
             LOG.info("################### getReceivedDocument finished");
             org.guce.siat.common.model.File savedFile = xmlConverterService.saveReceivedFileAndAttachmentsAndExecuteFlow(document, attached);
             LOG.info("saveReceivedFileAndExecuteFlow finished");
-//            if (attached != null && !attached.isEmpty()) {
-//                CommonUtils.addAttachmentsToGED(propertiesLoader, alfrescoDirectoryCreator, savedFile, attached);
-//            }
             // SIAT reference must be sent in the APERAK_F
             aperakDocument = generateAperakDocument(xmlContent, xPath, AperakType.APERAK_K.getCode(), null, savedFile);
             LOG.info("############## generateAperakDocument K finished");
