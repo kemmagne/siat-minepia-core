@@ -28,7 +28,6 @@ import org.apache.chemistry.opencmis.commons.exceptions.CmisContentAlreadyExists
 import org.apache.chemistry.opencmis.commons.exceptions.CmisObjectNotFoundException;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.SerializationUtils;
 import org.apache.commons.lang.StringUtils;
 import org.guce.siat.common.dao.AdministrationDao;
 import org.guce.siat.common.dao.AppointmentDao;
@@ -70,7 +69,6 @@ import org.guce.siat.common.model.FileFieldValue;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.FileItemField;
 import org.guce.siat.common.model.FileItemFieldValue;
-import org.guce.siat.common.model.FileMarshall;
 import org.guce.siat.common.model.FileType;
 import org.guce.siat.common.model.Flow;
 import org.guce.siat.common.model.FlowGuceSiat;
@@ -964,7 +962,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         final List<FileItem> fileItemList = fileItemDao.findFileItemsByFile(file);
         //Les flows initiaux pour les demandes de modification
         final List<String> updatedFirstFlows = Arrays.asList(FlowCode.FL_CT_110.name(), FlowCode.FL_AP_VT1_05.name(), FlowCode.FL_CT_CCS_01.name());
-        List<DataType> dataTypeOfFistFlows = null;
+        List<DataType> dataTypeOfFistFlows;
         final List<ItemFlow> itemFlowsToAdd = new ArrayList<>();
         for (final FileItem fileItem : fileItemList) {
             final ItemFlow itemFlow = new ItemFlow();
@@ -1039,35 +1037,35 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileFromSiat.setFileTypeGucePaiement(fileConverted.getFileTypeGucePaiement());
             fileFromSiat.setNumeroDemandePaiement(fileConverted.getNumeroDemandePaiement());
         }
-        if (isAmendment(flowGuceSiat)) {
-            try {
-                Serializable object;
-                switch (fileFromSiat.getFileType().getCode()) {
-                    case BSBE_MINFOF:
-                        object = convertFileToDocumentBsbeMINFOF(fileFromSiat, fileFromSiat.getFileItemsList(), null, new Flow(FlowCode.FL_AP_107.name()), flowGuceSiat);
-                        break;
-                    default:
-                        object = null;
-                }
-                if (object != null) {
-                    FileMarshall fileTypeCode = fileMarshallDao.findByFile(fileFromSiat);
-                    boolean fileItem = true;
-                    if (fileTypeCode == null) {
-                        fileTypeCode = new FileMarshall(fileFromSiat);
-                        fileItem = false;
-                    }
-
-                    fileTypeCode.setMarshall(SerializationUtils.serialize(object));
-                    if (fileItem) {
-                        fileMarshallDao.update(fileTypeCode);
-                    } else {
-                        fileMarshallDao.save(fileTypeCode);
-                    }
-                }
-            } catch (UtilitiesException ex) {
-                logger.error(XmlConverterServiceImpl.class.getName(), ex);
-            }
-        }
+//        if (isAmendment(flowGuceSiat)) {
+//            try {
+//                Serializable object;
+//                switch (fileFromSiat.getFileType().getCode()) {
+//                    case BSBE_MINFOF:
+//                        object = convertFileToDocumentBsbeMINFOF(fileFromSiat, fileFromSiat.getFileItemsList(), null, new Flow(FlowCode.FL_AP_107.name()), flowGuceSiat);
+//                        break;
+//                    default:
+//                        object = null;
+//                }
+//                if (object != null) {
+//                    FileMarshall fileTypeCode = fileMarshallDao.findByFile(fileFromSiat);
+//                    boolean fileItem = true;
+//                    if (fileTypeCode == null) {
+//                        fileTypeCode = new FileMarshall(fileFromSiat);
+//                        fileItem = false;
+//                    }
+//
+//                    fileTypeCode.setMarshall(SerializationUtils.serialize(object));
+//                    if (fileItem) {
+//                        fileMarshallDao.update(fileTypeCode);
+//                    } else {
+//                        fileMarshallDao.save(fileTypeCode);
+//                    }
+//                }
+//            } catch (UtilitiesException ex) {
+//                logger.error(XmlConverterServiceImpl.class.getName(), ex);
+//            }
+//        }
         List<FileFieldValue> newFileFieldValueList = null;
         if (CollectionUtils.isNotEmpty(fileConverted.getFileFieldValueList())) {
             for (final FileFieldValue fileFieldValue : fileFromSiat.getFileFieldValueList()) {
