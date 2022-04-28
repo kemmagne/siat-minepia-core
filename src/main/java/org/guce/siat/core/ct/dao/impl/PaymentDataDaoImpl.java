@@ -53,6 +53,7 @@ public class PaymentDataDaoImpl extends AbstractJpaDaoImpl<PaymentData> implemen
                 final String hqlString = "SELECT p.primaryKey.paymentData FROM PaymentItemFlow p WHERE p.deleted=false AND p.primaryKey.itemFlow.id = :itemFlowId";
                 final TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlString, PaymentData.class);
                 query.setParameter("itemFlowId", itemFlow.getId());
+                query.setMaxResults(1);
 
                 return query.getSingleResult();
 
