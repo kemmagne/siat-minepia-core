@@ -1323,7 +1323,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         List<FileItem> fileItems = fileItemDao.findFileItemsByFile(fileFromSiat);
         FileItem item = fileItems.get(0);
-        if (!Arrays.asList(StepCode.ST_CT_42, StepCode.ST_CT_61).contains(item.getStep().getStepCode())) {
+        if (!Arrays.asList(StepCode.ST_CT_42, StepCode.ST_CT_61, StepCode.ST_AP_64).contains(item.getStep().getStepCode())) {
             return;
         }
 
