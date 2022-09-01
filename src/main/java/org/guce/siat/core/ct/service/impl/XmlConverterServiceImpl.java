@@ -1357,7 +1357,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_93.name());
         } else if (FileTypeCode.CCS_MINSANTE.equals(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_160.name());
-        } else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
+        } else if (FileTypeCode.VT_MINEPIA.equals(fileTypeCode)) {
+            flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_VT1_03.name());
+        }else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_166.name());
         } else {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_168.name());
@@ -1392,7 +1394,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setDraft(Boolean.FALSE);
 
             //le STEP dÃ©pond du nombre des cotation
-            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_160.name(), FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name()).contains(flowToExecute.getCode())) {
+            if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_160.name(), FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name(), FlowCode.FL_AP_VT1_03.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
