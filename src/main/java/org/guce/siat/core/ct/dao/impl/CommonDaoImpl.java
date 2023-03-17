@@ -124,6 +124,10 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         hqlQuery.append("LEFT OUTER JOIN fi.file.fileFieldValueList ffv ");
         hqlQuery.append("WHERE fi.file.fileType.code IN (:fileTypeCodes) ");
         params.put("fileTypeCodes", fileTypeCodes);
+        if (StringUtils.isNotEmpty(filter.getFileNumber())) {
+            hqlQuery.append(" AND fi.file.numeroDossier IN (:numeroDossier)");
+            params.put("numeroDossier", filter.getFileNumber());
+        }
 
         if (CollectionUtils.isNotEmpty(bureausList)) {
             hqlQuery.append(" AND fi.file.bureau IN (:bureausList)");
