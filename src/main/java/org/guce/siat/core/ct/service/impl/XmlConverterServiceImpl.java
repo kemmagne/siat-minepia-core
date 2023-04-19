@@ -830,6 +830,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     }
                     fileItemDao.save(fileItem);
                 }
+                if (flowToExecute.getToStep() != null) {
+                    fileFromSiat.setStep(flowToExecute.getToStep());
+                    fileDao.update(fileFromSiat);
+                }
             }
         }
 
@@ -853,6 +857,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     fileItem.setStep(flowToExecute.getToStep());
                 }
                 fileItemDao.update(fileItem);
+            }
+            if (flowToExecute.getToStep() != null) {
+                fileconverted.setStep(flowToExecute.getToStep());
+                fileDao.update(fileconverted);
             }
         }
 
@@ -1002,6 +1010,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             }
         }
 
+        file.setStep(firstFlow.getToStep());
+        fileDao.update(file);
         if (FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode())) {
             cotationService.dispatch(file, firstFlow);
         }
@@ -1290,6 +1300,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setStep(flowToExecute.getToStep());
             fileItemDao.save(fileItem);
         }
+        
+        fileFromSiat.setStep(flowToExecute.getToStep());
+        fileDao.update(fileFromSiat);
 
         for (final ItemFlow itemFlow : itemFlowsToAdd) {
             itemFlowDao.save(itemFlow);
@@ -1359,7 +1372,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_CT_160.name());
         } else if (FileTypeCode.VT_MINEPIA.equals(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_VT1_03.name());
-        }else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
+        } else if (!FileTypeCode.PIVPSRP_MINADER.equals(fileTypeCode)) {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_166.name());
         } else {
             flowToExecute = flowDao.findFlowByCode(FlowCode.FL_AP_168.name());
@@ -1396,12 +1409,15 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             //le STEP dÃ©pond du nombre des cotation
             if (Arrays.asList(FlowCode.FL_CT_123.name(), FlowCode.FL_CT_126.name(), FlowCode.FL_CT_135.name(), FlowCode.FL_CT_145.name(), FlowCode.FL_CT_160.name(), FlowCode.FL_CT_167.name(), FlowCode.FL_CT_175.name(), FlowCode.FL_AP_VT1_03.name()).contains(flowToExecute.getCode())) {
                 fileItem.setStep(flowToExecute.getToStep());
+                fileFromSiat.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
+                fileFromSiat.setStep(paymentFlow.getToStep());
             }
             fileItemDao.update(fileItem);
         }
 
+        fileDao.update(fileFromSiat);
         paymentData.setDateEncaissement(Calendar.getInstance().getTime());
         if (document instanceof org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT) {
             final org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT jaxbDocument = (org.guce.siat.jaxb.ap.EH_MINADER.DOCUMENT) document;

@@ -204,6 +204,97 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
         return query.getResultList();
 
     }
+    
+    @Transactional(readOnly = true)
+    @Override
+    public List<File> findFileByFilter(Filter filter, List<Administration> administrations, List<Long> fileTypeIdList) {
+        Map<String, Object> params = new HashMap<>();
+        StringBuilder hqlQuery = new StringBuilder();
+        List<Bureau> bureausList = SiatUtils.findCombinedBureausByAdministrationList(administrations);
+
+        hqlQuery.append("SELECT DISTINCT f FROM File f ");
+        hqlQuery.append("WHERE f.fileType.id IN (:fileTypeIdList) ");
+        params.put("fileTypeIdList", fileTypeIdList);
+        if (StringUtils.isNotEmpty(filter.getFileNumber())) {
+            hqlQuery.append(" AND f.numeroDossier IN (:numeroDossier)");
+            params.put("numeroDossier", filter.getFileNumber());
+        }
+
+        if (CollectionUtils.isNotEmpty(bureausList)) {
+            hqlQuery.append(" AND f.bureau IN (:bureausList)");
+            params.put("bureausList", bureausList);
+        }
+        if (filter.getFromDate() != null && filter.getToDate() == null) {
+            hqlQuery.append(" AND f.createdDate >= TO_DATE(:createdDate,'");
+            hqlQuery.append(DateUtils.PATTERN_YYYY_MM_DD_HH24_MI_SS);
+            hqlQuery.append("')");
+            params.put("createdDate", DateUtils.formatSimpleDateForOracle(filter.getFromDate()));
+        }
+
+        if (filter.getFromDate() == null && filter.getToDate() != null) {
+            hqlQuery.append(" AND f.createdDate < :createDate ");
+
+            params.put("createDate", DateUtils.addDays(filter.getToDate(), 1));
+        }
+
+        if (filter.getFromDate() != null && filter.getToDate() != null) {
+            hqlQuery.append(" AND f.createdDate >= :fromDate");
+            hqlQuery.append(" AND f.createdDate < :toDate ");
+            params.put("fromDate", filter.getFromDate());
+            params.put("toDate", DateUtils.addDays(filter.getToDate(), 1));
+        }
+        if (filter instanceof AssignedFileItemFilter) {
+            List<StepCode> stepCodes = new ArrayList<>();
+            AssignedFileItemFilter assignedFileItemFilter = (AssignedFileItemFilter) filter;
+            // afficher uniquement les dossiers en attente de traitement
+            stepCodes.add(StepCode.ST_CT_48);
+            stepCodes.add(StepCode.ST_CT_04);
+            params.put("stepCodes", stepCodes);
+            hqlQuery.append(" AND  f.step.stepCode IN (:stepCodes)");
+            if (assignedFileItemFilter.getFileType() != null) {
+                hqlQuery.append(" AND  f.fileType.id = :fileTypeId");
+                params.put("fileTypeId", assignedFileItemFilter.getFileType().getId());
+            }
+        } else if (filter instanceof FileItemFilter) {
+            FileItemFilter fileItemFilter = (FileItemFilter) filter;
+
+            if (fileItemFilter.getStep() != null) {
+                hqlQuery.append(" AND  f.step.id = :stepId");
+                params.put("stepId", fileItemFilter.getStep().getId());
+            }
+
+            if (fileItemFilter.getFileType() != null) {
+                hqlQuery.append(" AND  f.fileType.id = :fileTypeId");
+                params.put("fileTypeId", fileItemFilter.getFileType().getId());
+            }
+
+            hqlQuery.append(advancedFileItemFilter(fileItemFilter, params));
+        } else if (filter instanceof PaymentFilter) {
+            List<StepCode> stepCodes = new ArrayList<>();
+            stepCodes.add(StepCode.ST_AP_64);
+            stepCodes.add(StepCode.ST_AP_65);
+            stepCodes.add(StepCode.ST_CT_42);
+            stepCodes.add(StepCode.ST_CT_61);
+            // afficher uniquement les Dossier en attente dans l'etape PAIEMENT
+            params.put("stepCodes", stepCodes);
+            hqlQuery.append(" AND  f.step.stepCode IN (:stepCodes)");
+
+            PaymentFilter paymentFilter = (PaymentFilter) filter;
+
+            if (paymentFilter.getOperator() != null) {
+                hqlQuery.append(" AND  f.client.numContribuable = :numContribuable");
+                params.put("numContribuable", paymentFilter.getOperator().getNumContribuable());
+            }
+
+        }
+        TypedQuery<File> query = super.entityManager.createQuery(hqlQuery.toString(), File.class);
+
+        for (Entry<String, Object> entry : params.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
+        }
+        return query.getResultList();
+
+    }
 
     /**
      * Advanced file item filter.
