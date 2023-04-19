@@ -1095,6 +1095,34 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
         }
         return commonDao.findByFilter(filter, administrations, fileTypeCodes);
     }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.core.ct.service.FileItemService#findByFilter2(org.guce.siat.core.ct.utils.fiter.FileItemFilter,
+	 * org.guce.siat.common.model.User, org.guce.siat.common.model.Administration, java.util.List)
+     */
+    @SuppressWarnings("unchecked")
+    @Transactional(readOnly = true)
+    @Override
+    public List<org.guce.siat.common.model.File> findByFilter2(final Filter filter, final User loggedUser, final Administration administration) {
+
+        final List<FileType> fileTypesByUser = userAuthorityFileTypeDao.findFilesTypesByAuthorizedUser(loggedUser);
+
+        final List<Long> fileTypeIdList = (List<Long>) CollectionUtils.collect(fileTypesByUser, new Transformer() {
+            @Override
+            public Object transform(final Object fileType) {
+                return ((FileType) fileType).getId();
+            }
+        });
+
+        List<Administration> administrations = new ArrayList<>();
+        administrations.add(administration);
+        if (loggedUser.getAdministrationExtendRoles() != null) {
+            administrations.add(loggedUser.getAdministrationExtendRoles());
+        }
+        return commonDao.findFileByFilter(filter, administrations, fileTypeIdList);
+    }
 
     /*
 	 * (non-Javadoc)

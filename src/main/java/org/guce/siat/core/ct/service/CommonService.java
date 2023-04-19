@@ -152,6 +152,16 @@ public interface CommonService extends AbstractService<ItemFlow> {
      * @return the list
      */
     List<FileItem> findByFilter(final Filter filter, User loggedUser, final Administration administration);
+    
+    /**
+     * Find by filter.
+     *
+     * @param filter the filter
+     * @param loggedUser the logged user
+     * @param administration the administration
+     * @return the list
+     */
+    List<org.guce.siat.common.model.File> findByFilter2(final Filter filter, User loggedUser, final Administration administration);
 
     /**
      * Find statistic by filter.

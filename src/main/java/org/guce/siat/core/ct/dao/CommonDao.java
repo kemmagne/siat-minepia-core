@@ -42,6 +42,7 @@ public interface CommonDao extends AbstractJpaDao<ItemFlow> {
     List<FileItem> findByFilter(Filter filter, Administration administration, List<FileTypeCode> fileTypeCodes);
 
     List<FileItem> findByFilter(final Filter filter, final List<Administration> administrations, final List<FileTypeCode> fileTypeCodes);
+    List<File> findFileByFilter(final Filter filter, final List<Administration> administrations, final List<Long> fileTypeIdList);
 
     /**
      * Find statistic by filter.
