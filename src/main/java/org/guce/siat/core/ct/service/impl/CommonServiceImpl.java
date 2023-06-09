@@ -648,7 +648,7 @@ public class CommonServiceImpl extends AbstractServiceImpl<ItemFlow> implements 
                 treatmentResultDao.delete(draftTreatmentResult);
                 this.deleteAttachedReports(attachments);
             } // Facturation
-            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name(), FlowCode.FL_CT_158.name()).contains(flowCode)) {
+            else if (Arrays.asList(FlowCode.FL_CT_120.name(), FlowCode.FL_CT_124.name(), FlowCode.FL_CT_132.name(), FlowCode.FL_CT_143.name(), FlowCode.FL_CT_158.name(), FlowCode.FL_CT_159.name(), FlowCode.FL_CT_174.name()).contains(flowCode)) {
                 rollbackBilling = true;
             } // Rendez-vous
             else if (Arrays.asList(FlowCode.FL_CT_104.name(), FlowCode.FL_CT_118.name()).contains(flowCode)) {
