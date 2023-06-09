@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.dao.FileDao;
 import org.guce.siat.common.dao.FileItemDao;
 import org.guce.siat.common.dao.ItemFlowDao;
 import org.guce.siat.common.model.File;
@@ -50,6 +51,10 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
      */
     @Autowired
     private FileItemDao fileItemDao;
+    
+    @Autowired
+    private FileDao fileDao;
+
 
     /*
 	 * (non-Javadoc)
@@ -124,12 +129,15 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
             //le STEP dépond du nombre des cotation
             if (Arrays.asList(FileTypeCode.VT_MINEPIA, FileTypeCode.CCT_CSV, FileTypeCode.CCS_MINSANTE).contains(currentFile.getFileType().getCode())){
                 fileItem.setStep(flowToExecute.getToStep());
+                currentFile.setStep(flowToExecute.getToStep());
             } else {
                 fileItem.setStep(paymentFlow.getFromStep());
+                currentFile.setStep(paymentFlow.getFromStep());
             }
             fileItemDao.update(fileItem);
         }
 
+        fileDao.update(currentFile);
         paymentDataNew.setPaymentItemFlowList(paymentItemFlowList);
         paymentDataDao.save(paymentDataNew);
 
