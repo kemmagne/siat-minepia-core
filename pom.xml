@@ -11,7 +11,7 @@
 
     <artifactId>siat-ct-minepia-core</artifactId>
     <name>siat-ct-minepia-core</name>
-    <version>2.4.10</version>
+    <version>2.4.11</version>
     
     <properties>
         <jersey.version>2.25</jersey.version>
@@ -41,8 +41,8 @@
     <dependencies>
         <dependency>
             <groupId>org.guce.siat.common</groupId>
-            <artifactId>siat-common</artifactId>
-            <version>2.2.15</version>
+            <artifactId>siat-ct-minepia-common</artifactId>
+            <version>2.3.0</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -65,7 +65,7 @@
         <dependency>
             <groupId>com.oracle</groupId>
             <artifactId>ojdbc7</artifactId>
-            <version>12.1.0.2</version>
+            <version>12.2.0.1.0</version>
             <scope>test</scope>
         </dependency>
 
