@@ -41,8 +41,8 @@
     <dependencies>
         <dependency>
             <groupId>org.guce.siat.common</groupId>
-            <artifactId>siat-common</artifactId>
-            <version>2.2.18</version>
+            <artifactId>siat-ct-minepia-common</artifactId>
+            <version>1.0.0</version>
             <type>jar</type>
         </dependency>
         <dependency>
