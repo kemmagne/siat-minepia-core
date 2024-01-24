@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 import javax.persistence.TypedQuery;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.Transformer;
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
@@ -53,6 +54,38 @@ public class PaymentDataDaoImpl extends AbstractJpaDaoImpl<PaymentData> implemen
                 final String hqlString = "SELECT p.primaryKey.paymentData FROM PaymentItemFlow p WHERE p.deleted=false AND p.primaryKey.itemFlow.id = :itemFlowId";
                 final TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlString, PaymentData.class);
                 query.setParameter("itemFlowId", itemFlow.getId());
+                query.setMaxResults(1);
+
+                return query.getSingleResult();
+
+            } catch (NoResultException | NonUniqueResultException e) {
+                LOG.error(Objects.toString(e), e);
+            }
+
+        }
+        return null;
+
+    }
+    
+    /*
+	 * (non-Javadoc)
+	 *
+	 * @see org.guce.siat.core.co.dao.PaymentDataDao#findPaymentDataByItemFlowList(java.util.List)
+     */
+    @Override
+    public PaymentData findPaymentDataByItemFlowList(final List<ItemFlow> itemFlowList) {
+
+        if (!Objects.equals(itemFlowList, null) && CollectionUtils.isNotEmpty(itemFlowList)) {
+            try {
+                final List<Long> itemFlowIdList = (List<Long>) CollectionUtils.collect(itemFlowList, new Transformer() {
+                    @Override
+                    public Object transform(final Object itemFlow) {
+                        return ((ItemFlow) itemFlow).getId();
+                    }
+                });
+                final String hqlString = "SELECT p.primaryKey.paymentData FROM PaymentItemFlow p WHERE p.deleted=false AND p.primaryKey.itemFlow.id IN (:itemFlowIdList)";
+                final TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlString, PaymentData.class);
+                query.setParameter("itemFlowIdList", itemFlowIdList);
                 query.setMaxResults(1);
 
                 return query.getSingleResult();

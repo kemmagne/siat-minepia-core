@@ -1,5 +1,6 @@
 package org.guce.siat.core.ct.service;
 
+import java.util.List;
 import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.Flow;
@@ -20,6 +21,14 @@ public interface PaymentDataService extends AbstractService<PaymentData> {
      * @return the payment data
      */
     PaymentData findPaymentDataByItemFlow(ItemFlow itemFlow);
+    
+    /**
+     * Find payment data by item flow list.
+     *
+     * @param itemFlowList the item flow list
+     * @return the payment data
+     */
+    PaymentData findPaymentDataByItemFlowList(List<ItemFlow> itemFlowList);
 
     /**
      * Take decision for payment.
