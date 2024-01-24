@@ -87,6 +87,18 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
 
         return paymentDataDao.findPaymentDataByItemFlow(itemFlow);
     }
+    
+     /*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * org.guce.siat.core.co.service.PaymentDataDao#findPaymentDataByItemFlowList(java.util.List)
+     */
+    @Override
+    public PaymentData findPaymentDataByItemFlowList(final List<ItemFlow> itemFlowList) {
+
+        return paymentDataDao.findPaymentDataByItemFlowList(itemFlowList);
+    }
 
     /*
 	 * (non-Javadoc)
