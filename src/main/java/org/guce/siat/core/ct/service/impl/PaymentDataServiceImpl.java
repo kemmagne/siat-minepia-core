@@ -161,4 +161,8 @@ public class PaymentDataServiceImpl extends AbstractServiceImpl<PaymentData> imp
         return paymentDataDao.findPaymentDataByFileItem(fileItem);
     }
 
+    @Override
+    public PaymentData findPaymentDataByFile(File file) {
+        return paymentDataDao.findPaymentDataByFile(file);
+    }
 }

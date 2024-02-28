@@ -48,5 +48,13 @@ public interface PaymentDataService extends AbstractService<PaymentData> {
      * @return the payment data
      */
     PaymentData findPaymentDataByFileItem(FileItem fileItem);
+    
+    /**
+     * Find payment data by file.
+     *
+     * @param file the file
+     * @return the payment data
+     */
+    PaymentData findPaymentDataByFile(File file);
 
 }

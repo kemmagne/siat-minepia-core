@@ -3,7 +3,9 @@ package org.guce.siat.core.ct.dao.impl;
 import java.math.BigDecimal;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
@@ -11,6 +13,7 @@ import javax.persistence.TypedQuery;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.Transformer;
 import org.guce.siat.common.dao.impl.AbstractJpaDaoImpl;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.core.ct.dao.PaymentDataDao;
@@ -156,6 +159,39 @@ public class PaymentDataDaoImpl extends AbstractJpaDaoImpl<PaymentData> implemen
                     return new BigDecimal(pd2.getId()).compareTo(new BigDecimal(pd1.getId()));
                 }
             });
+
+            return list.get(0);
+        } catch (NoResultException | NonUniqueResultException e) {
+            LOG.error(Objects.toString(e), e);
+        }
+
+        return null;
+    }
+    
+    @Override
+    public PaymentData findPaymentDataByFile(final File file) {
+
+        try {
+            Map<String, Object> params = new HashMap<>();
+            StringBuilder hqlQuery = new StringBuilder();
+            hqlQuery.append("SELECT DISTINCT p.primaryKey.paymentData FROM PaymentItemFlow p ");
+            hqlQuery.append("join p.primaryKey.itemFlow it ");
+            hqlQuery.append("join it.fileItem fi ");
+            hqlQuery.append("join fi.file f ");
+            hqlQuery.append("WHERE f.id = :fileId ");
+            params.put("fileId", file.getId());
+
+            TypedQuery<PaymentData> query = super.entityManager.createQuery(hqlQuery.toString(), PaymentData.class);
+
+            for (Map.Entry<String, Object> entry : params.entrySet()) {
+                query.setParameter(entry.getKey(), entry.getValue());
+            }
+
+            List<PaymentData> list = query.getResultList();
+
+            if (CollectionUtils.isEmpty(list)) {
+                return null;
+            }
 
             return list.get(0);
         } catch (NoResultException | NonUniqueResultException e) {
