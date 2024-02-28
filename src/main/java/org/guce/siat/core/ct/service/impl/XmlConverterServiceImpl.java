@@ -997,19 +997,18 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     }
                 }
             }
-            if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && FlowCode.FL_AP_VT1_01.name().equals(firstFlow.getCode())) {
-                PaymentData paymentData;
-                try {
-                    paymentData = getPaymentDataFromDocumentAndFile(document, file);
-                    commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
-                } catch (ParseException ex) {
-                    java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (ValidationException ex) {
-                    java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        }
+        if (FileTypeCode.VT_MINEPIA.equals(file.getFileType().getCode()) && FlowCode.FL_AP_VT1_01.name().equals(firstFlow.getCode())) {
+            PaymentData paymentData;
+            try {
+                paymentData = getPaymentDataFromDocumentAndFile(document, file);
+                commonService.takeDacisionAndSavePayment(itemFlowsToAdd, paymentData);
+            } catch (ParseException ex) {
+                java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ValidationException ex) {
+                java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
         file.setStep(firstFlow.getToStep());
         fileDao.update(file);
         if (FileTypeCode.CCT_CT_E_PVE.equals(file.getFileType().getCode())) {
@@ -1300,7 +1299,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             fileItem.setStep(flowToExecute.getToStep());
             fileItemDao.save(fileItem);
         }
-        
+
         fileFromSiat.setStep(flowToExecute.getToStep());
         fileDao.update(fileFromSiat);
 

@@ -2,6 +2,7 @@ package org.guce.siat.core.ct.dao;
 
 import java.util.List;
 import org.guce.siat.common.dao.AbstractJpaDao;
+import org.guce.siat.common.model.File;
 import org.guce.siat.common.model.FileItem;
 import org.guce.siat.common.model.ItemFlow;
 import org.guce.siat.core.ct.model.PaymentData;
@@ -35,6 +36,14 @@ public interface PaymentDataDao extends AbstractJpaDao<PaymentData> {
      * @return the payment data
      */
     PaymentData findPaymentDataByFileItem(FileItem fileItem);
+    
+     /**
+     * Find payment data by file.
+     *
+     * @param file the file
+     * @return the payment data
+     */
+    PaymentData findPaymentDataByFile(File file);
 
     /**
      * Find payment item flow by item flow.
