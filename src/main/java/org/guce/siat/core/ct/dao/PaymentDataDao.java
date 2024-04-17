@@ -19,7 +19,7 @@ public interface PaymentDataDao extends AbstractJpaDao<PaymentData> {
      * @param itemFlow the item flow
      * @return the payment data
      */
-    PaymentData findPaymentDataByItemFlow(ItemFlow itemFlow);
+        PaymentData findPaymentDataByItemFlow(ItemFlow itemFlow);
     
     /**
      * Find payment data by item flow list.

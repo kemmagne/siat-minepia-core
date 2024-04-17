@@ -8,7 +8,7 @@ import org.guce.siat.common.model.FileItemFieldValue;
 /**
  * The Class FileItemFieldValueAtMINEPIA.
  */
-public class FileItemFieldValueAtMINEPIA
+public class FileItemFieldValueAtmMINEPIA
 {
 	/**
 	 * Generate file item field value_ a t_ minepia.
@@ -21,93 +21,237 @@ public class FileItemFieldValueAtMINEPIA
 	 *           the marchandise
 	 * @return the file item field value
 	 */
-	public static FileItemFieldValue generateFileItemFieldValueAtMINEPIA(final FileItem fileItem,
+	public static FileItemFieldValue generateFileItemFieldValueAtmMINEPIA(final FileItem fileItem,
 			final FileItemField fileItemField,
-			final org.guce.siat.jaxb.ap.AT_MINEPIA.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise)
+			final org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT.CONTENT.MARCHANDISES.MARCHANDISE marchandise)
 	{
 		final FileItemFieldValue fileItemFieldValue = new FileItemFieldValue();
 		fileItemFieldValue.setFileItem(fileItem);
 		fileItemFieldValue.setFileItemField(fileItemField);
 		switch (fileItemField.getCode())
 		{
-
-			case "QUANTITE_IMPORTEE":
+                    
+                 
+                    case "DESCRIPTION":
 			{
-				fileItemFieldValue.setValue(marchandise.getQUANTITEIMPORTEE());
-				break;
-			}
-			case "MODE_STOCKAGE_CODE":
-			{
-				if (marchandise.getMODESTOCKAGE() != null)
+				if (marchandise.getDESCRIPTION() != null)
 				{
-					fileItemFieldValue.setValue(marchandise.getMODESTOCKAGE().getCODE());
+                                    String description = marchandise.getDESCRIPTION();
+					fileItemFieldValue.setValue(marchandise.getDESCRIPTION());
 				}
 				break;
 			}
-			case "MODE_STOCKAGE_LIBELLE":
+			case "VALEUR_FOB_DEVISE":
 			{
-				if (marchandise.getMODESTOCKAGE() != null)
+				if (marchandise.getVALEURFOBDEVISE() != null)
 				{
-					fileItemFieldValue.setValue(marchandise.getMODESTOCKAGE().getLIBELLE());
+                                        String valeurOfFoBDevise = marchandise.getVALEURFOBDEVISE().toString();
+					fileItemFieldValue.setValue(marchandise.getVALEURFOBDEVISE().toString());
 				}
 				break;
 			}
-			case "USAGE":
+			case "LINE_NUMBER":
 			{
-				fileItemFieldValue.setValue(marchandise.getUSAGE());
+				if (marchandise.getLINENUMBER() != null)
+				{      
+                                        String lineNumber = marchandise.getLINENUMBER().toString();
+					fileItemFieldValue.setValue(marchandise.getLINENUMBER().toString());
+				}
 				break;
 			}
+			case "MODE_EMBALAGE":
+			{
+				if (marchandise.getMODEEMBALAGE() != null)
+				{
+					fileItemFieldValue.setValue(marchandise.getMODEEMBALAGE());
+				}
+				break;
+			}
+			case "NOMBRE_COLIS":
+			{
+				if (marchandise.getNOMBRECOLIS() != null)
+				{
+					fileItemFieldValue.setValue(marchandise.getNOMBRECOLIS().toString());
+				}
+				break;
+			}
+//			case "QUANTITE":
+//			{
+//				if (marchandise.getQUANTITE() != null)
+//				{
+//					fileItemFieldValue.setValue(marchandise.getQUANTITE().toString());
+//				}
+//				break;
+//			}
 			case "NOM_COMMERCIAL":
 			{
-				fileItemFieldValue.setValue(marchandise.getNOMCOMMERCIAL());
+				if (marchandise.getNOMCOMMERCIALE() != null)
+				{
+					fileItemFieldValue.setValue(marchandise.getNOMCOMMERCIALE());
+				}
 				break;
 			}
-			case "NOM_SCIENTIFIQUE":
+			case "MARCHANDISE_UNITE":
 			{
-				fileItemFieldValue.setValue(marchandise.getNOMSCIENTIFIQUE());
+				if (marchandise.getUNITE() != null)
+				{
+                                        
+					fileItemFieldValue.setValue(marchandise.getUNITE());
+                                         String Unity;
+                                        
+				}
 				break;
 			}
-			case "FORMULE_CHIMIQUE":
+                        
+                        	case "UNITE":
 			{
-				fileItemFieldValue.setValue(marchandise.getFORMULECHIMIQUE());
+				if (marchandise.getUNITE() != null)
+				{
+                                        
+					fileItemFieldValue.setValue(marchandise.getUNITE());
+                                        String Unity;
+				}
 				break;
 			}
-			case "SPECIFICATION_TECHNIQUE":
+                        
+//                        case "MARCHANDISE_POIDS":
+//			{
+//				if (marchandise.getPOIDS() != null)
+//				{       String poids = marchandise.getPOIDS();
+//					fileItemFieldValue.setValue(marchandise.getPOIDS());
+//				}
+//				break;
+//			}
+                        
+			case "VALEUR_CFA":
 			{
-				fileItemFieldValue.setValue(marchandise.getSPECIFICATIONTECHNIQUE());
+				if (marchandise.getVALEURCFA() != null)
+				{
+					fileItemFieldValue.setValue(marchandise.getVALEURCFA().toString());
+				}
 				break;
 			}
 			case "VOLUME":
 			{
-				fileItemFieldValue.setValue(marchandise.getVOLUME());
-				break;
-			}
-			case "UNITE":
-			{
-				fileItemFieldValue.setValue(marchandise.getUNITE());
-				break;
-			}
-			case "PAYS_ORIGINE_CODE":
-			{
-				if (marchandise.getPAYSORIGINE() != null)
+				if (marchandise.getVOLUME() != null)
 				{
-					fileItemFieldValue.setValue(marchandise.getPAYSORIGINE().getCODEPAYS());
+					fileItemFieldValue.setValue(marchandise.getVOLUME().toString());
 				}
 				break;
 			}
-			case "PAYS_ORIGINE_LIBELLE":
+//			case "POIDS":
+//			{
+//				if (marchandise.getPOIDS() != null)
+//				{
+//					fileItemFieldValue.setValue(marchandise.getPOIDS().toString());
+//				}
+//				break;
+//			}
+			case "CODE_TARIF_CODE_NSH":
 			{
-				if (marchandise.getPAYSORIGINE() != null)
+				if (marchandise.getCODETARIF() != null && marchandise.getCODETARIF().getCODENSH() != null)
 				{
-					fileItemFieldValue.setValue(marchandise.getPAYSORIGINE().getNOMPAYS());
+					fileItemFieldValue.setValue(marchandise.getCODETARIF().getCODENSH());
 				}
 				break;
 			}
-			case "POIDS":
+			case "CODE_TARIF_DESIGNATION":
 			{
-				fileItemFieldValue.setValue(marchandise.getPOIDS());
+				if (marchandise.getCODETARIF() != null && marchandise.getCODETARIF().getDESIGNATION() != null)
+				{
+					fileItemFieldValue.setValue(marchandise.getCODETARIF().getDESIGNATION());
+				}
+				break;
+			}	
+                        
+                        case "MARCHANDISE_QUANTITE":
+			{
+				if (marchandise.getQUANTITE() != null)
+				{
+                                       String quantity = marchandise.getQUANTITE();
+					fileItemFieldValue.setValue(marchandise.getQUANTITE());
+				}
 				break;
 			}
+                    
+
+//			case "MARCHANDISE_QUANTITE":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getQUANTITEIMPORTEE());
+//				break;
+//			}
+//			case "MODE_STOCKAGE_CODE":
+//			{
+//				if (marchandise.getMODESTOCKAGE() != null)
+//				{
+//					fileItemFieldValue.setValue(marchandise.getMODESTOCKAGE().getCODE());
+//				}
+//				break;
+//			}
+//			case "MODE_STOCKAGE_LIBELLE":
+//			{
+//				if (marchandise.getMODESTOCKAGE() != null)
+//				{
+//					fileItemFieldValue.setValue(marchandise.getMODESTOCKAGE().getLIBELLE());
+//				}
+//				break;
+//			}
+//			case "USAGE":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getUSAGE());
+//				break;
+//			}
+//			case "NOM_COMMERCIAL":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getNOMCOMMERCIAL());
+//				break;
+//			}
+//			case "NOM_SCIENTIFIQUE":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getNOMSCIENTIFIQUE());
+//				break;
+//			}
+//			case "FORMULE_CHIMIQUE":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getFORMULECHIMIQUE());
+//				break;
+//			}
+//			case "SPECIFICATION_TECHNIQUE":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getSPECIFICATIONTECHNIQUE());
+//				break;
+//			}
+//			case "VOLUME":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getVOLUME());
+//				break;
+//			}
+//			case "UNITE":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getUNITE());
+//				break;
+//			}
+//			case "PAYS_ORIGINE_CODE":
+//			{
+//				if (marchandise.getPAYSORIGINE() != null)
+//				{
+//					fileItemFieldValue.setValue(marchandise.getPAYSORIGINE().getCODEPAYS());
+//				}
+//				break;
+//			}
+//			case "PAYS_ORIGINE_LIBELLE":
+//			{
+//				if (marchandise.getPAYSORIGINE() != null)
+//				{
+//					fileItemFieldValue.setValue(marchandise.getPAYSORIGINE().getNOMPAYS());
+//				}
+//				break;
+//			}
+//			case "POIDS":
+//			{
+//				fileItemFieldValue.setValue(marchandise.getPOIDS());
+//				break;
+//			}
 			default:
 				break;
 		}

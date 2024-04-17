@@ -302,13 +302,21 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
         Serializable document = null;
         InputStream xmlInputStream = new ByteArrayInputStream(xmlBytes);
 
-        if (flowGuceSiat != null && FileTypeCode.AIE_MINADER.equals(flowGuceSiat.getFileType().getCode())) {
+        if (flowGuceSiat != null && flowGuceSiat.getFileType() != null && FileTypeCode.AIE_MINADER.equals(flowGuceSiat.getFileType().getCode())) {
             final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AIE_MINADER.JAXBContextCreator.getInstance();
             // Unmarshalling the document
             final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
             document = (org.guce.siat.jaxb.ap.AIE_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
         }
-        if (flowGuceSiat != null && flowGuceSiat.getFileType().getCode() != null) {
+        final Object flowGuceSiatAtmMinepia = flowGuceSiatService.findFlowGuceSiatFlowGuceAndFileType(flowSource, FileTypeCode.ATM_MINEPIA);
+        if(
+            flowGuceSiatAtmMinepia != null
+        ) {
+            final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.ATM_MINEPIA.JAXBContextCreator.getInstance();
+            // Unmarshalling the document
+            final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+            document = (org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+        } else if (flowGuceSiat != null && flowGuceSiat.getFileType().getCode() != null) {
             switch (flowGuceSiat.getFileType().getCode()) {
                 case AE_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.AE_MINADER.JAXBContextCreator.getInstance();
@@ -338,6 +346,16 @@ public class CtDocumentRecieverImpl extends AbstractDocumentReciever implements 
                     document = (org.guce.siat.jaxb.ap.CAT_MINADER.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
                     break;
                 }
+                
+                 case ATM_MINEPIA: {
+                    final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.ATM_MINEPIA.JAXBContextCreator.getInstance();
+                    // Unmarshalling the document
+                    final Unmarshaller jaxbUnmarshallerz = jaxbContext.createUnmarshaller();
+                    document = (org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT) jaxbUnmarshallerz.unmarshal(xmlInputStream);
+                    break;
+                }
+                
+                
                 case PIVPSRP_MINADER: {
                     final JAXBContext jaxbContext = org.guce.siat.jaxb.ap.PIVPSRP_MINADER.JAXBContextCreator.getInstance();
                     // Unmarshalling the document

@@ -1,5 +1,6 @@
-package org.guce.siat.jaxb.ap.AT_MINEPIA;
+package org.guce.siat.jaxb.ap.ATM_MINEPIA;
 
+import org.guce.siat.jaxb.ap.ATM_MINEPIA.*;
 import java.util.Objects;
 
 import javax.xml.bind.JAXBContext;
@@ -37,7 +38,7 @@ public final class JAXBContextCreator {
 	public static synchronized JAXBContext getInstance() {
 		try {
 			if (instance == null) {
-				instance = JAXBContext.newInstance(DOCUMENT.class);
+				instance = JAXBContext.newInstance(org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT.class);
 			}
 		} catch (final JAXBException e) {
 			LOG.error(Objects.toString(e), e);

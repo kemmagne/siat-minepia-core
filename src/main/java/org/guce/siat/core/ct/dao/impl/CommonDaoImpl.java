@@ -184,6 +184,7 @@ public class CommonDaoImpl extends AbstractJpaDaoImpl<ItemFlow> implements Commo
             stepCodes.add(StepCode.ST_AP_65);
             stepCodes.add(StepCode.ST_CT_42);
             stepCodes.add(StepCode.ST_CT_61);
+            stepCodes.add(StepCode.ST_AP_ATM_01);
             // afficher uniquement les Dossier en attente dans l'etape PAIEMENT
             params.put("stepCodes", stepCodes);
             hqlQuery.append(" AND  fi.step.stepCode IN (:stepCodes)");

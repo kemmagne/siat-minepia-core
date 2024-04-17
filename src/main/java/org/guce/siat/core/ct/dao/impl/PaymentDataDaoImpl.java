@@ -49,7 +49,7 @@ public class PaymentDataDaoImpl extends AbstractJpaDaoImpl<PaymentData> implemen
 	 *
 	 * @see org.guce.siat.core.co.dao.PaymentDataDao#findPaymentDataByItemFlow(org.guce.siat.common.model.ItemFlow)
      */
-    @Override
+   @Override
     public PaymentData findPaymentDataByItemFlow(final ItemFlow itemFlow) {
 
         if (!Objects.equals(itemFlow, null)) {

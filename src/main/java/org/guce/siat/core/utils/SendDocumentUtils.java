@@ -343,6 +343,18 @@ public final class SendDocumentUtils {
             jaxbMarshallerz.marshal(document, output);
             documentType = document.getTYPEDOCUMENT();
             service = document.getREFERENCEDOSSIER().getSERVICE();
+        } else if (documentSerializable instanceof org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT) {
+            jaxbContext = org.guce.siat.jaxb.ap.ATM_MINEPIA.JAXBContextCreator.getInstance();
+            final org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT document = (org.guce.siat.jaxb.ap.ATM_MINEPIA.DOCUMENT) documentSerializable;
+            jaxbMarshallerz = jaxbContext.createMarshaller();
+
+            final JAXBSource source = new JAXBSource(jaxbContext, document);
+            validateDocument(source, ConstantsXsdPaths.ATM_MINEPIA_XSD_PATH);
+
+            jaxbMarshallerz.marshal(document, output);
+
+            documentType = document.getTYPEDOCUMENT();
+            service = document.getREFERENCEDOSSIER().getSERVICE();
         }
 
         return output;
