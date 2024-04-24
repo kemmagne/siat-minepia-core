@@ -314,6 +314,14 @@ public class FileFieldValueAtmMINEPIA
 				}
 				break;
 			}
+                                                                                                case "IS_RENEWING":
+                                                                                                {
+                                                                                                        if (document.getCONTENT() != null)
+                                                                                                        {
+                                                                                                                fileFieldValue.setValue(String.valueOf(document.getCONTENT().isIsrenewing()));
+                                                                                                        }
+                                                                                                        break;
+                                                                                                }
 			case "CLIENT_ADRESSE_VILLE":
 			{
 				if (document.getCONTENT() != null && document.getCONTENT().getFOURNISSEUR() != null

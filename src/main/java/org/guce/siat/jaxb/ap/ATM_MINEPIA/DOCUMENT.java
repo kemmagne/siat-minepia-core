@@ -3475,7 +3475,8 @@ public class DOCUMENT implements Serializable{
         "paiement",
         "signataire",
         "decisionorganisme",
-        "piecesjointes"
+        "piecesjointes",
+        "isrenewing"
     })
     public static class CONTENT implements Serializable{
 
@@ -3505,6 +3506,8 @@ public class DOCUMENT implements Serializable{
         protected DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "PIECES_JOINTES")
         protected PIECESJOINTES piecesjointes;
+        @XmlElement(name = "IS_RENEW")
+        protected String isrenewing;
 
         /**
          * Gets the value of the codebureau property.
@@ -3542,6 +3545,17 @@ public class DOCUMENT implements Serializable{
             return numerovtminepia;
         }
 
+        public String isIsrenewing() {
+            return isrenewing;
+        }
+
+        public void setIsrenewing(String isrenewing) {
+            this.isrenewing = isrenewing;
+        }
+
+        
+        
+        
         /**
          * Sets the value of the numerovtminepia property.
          * 

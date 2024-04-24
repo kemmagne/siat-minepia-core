@@ -3403,6 +3403,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
                     .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
 
+            if(isRenewing(file)){
+                        ciDocument.getMESSAGE().setTYPEMESSAGE("RENEW");
+                     }
         }
           if (!CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_ATM_01.name(), FlowCode.FL_AP_ATM_02.name()).contains(flowToExecute.getCode())) {
@@ -3520,7 +3523,19 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         return ciDocument;
     }         
        
-    
+     public   boolean isRenewing(File file){
+             if(Objects.nonNull(file)  && !CollectionUtils.isEmpty(file.getFileFieldValueList())){
+                 List<FileFieldValue> fileFieldValues = file.getFileFieldValueList();
+                 if(CollectionUtils.isNotEmpty(fileFieldValues)){
+                     for (FileFieldValue fileFieldValue : fileFieldValues) {
+                     if(fileFieldValue.getFileField().getCode().trim().equals("IS_RENEWING") &&  Boolean.valueOf(fileFieldValue.getValue()))  {
+                         return Boolean.TRUE;
+                     }
+                 }
+                 }
+             }
+             return  Boolean.FALSE;
+         }
     
     
     
