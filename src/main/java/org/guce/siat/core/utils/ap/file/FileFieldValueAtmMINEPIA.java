@@ -492,6 +492,37 @@ public class FileFieldValueAtmMINEPIA
                            break;
                         } 
                          
+                         
+                         
+                         
+                     case "TRANSPORT_PAYS_ORIGINE_NOM_PAYS": {
+                        if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+                             && document.getCONTENT().getTRANSPORT().getPAYSORIGINE()!= null) {
+                             fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSORIGINE().getNOMPAYS());
+                            }
+                         break;
+                     }  
+                     
+//                    case "TRANSPORT_PAYS_DESTINATION_NOM_PAYS": {
+//                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+//                         && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null) {
+//                           fileFieldValue.setValue("CAMEROUN");
+//                         //  fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getNOMPAYS());
+//                           }
+//                         break;
+//                      }
+                    
+//                       case "TRANSPORT_PAYS_DESTINATION_CODE_PAYS": {
+//                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+//                         && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null) {
+//                           fileFieldValue.setValue("CM");
+//                         //  fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getNOMPAYS());
+//                           }
+//                         break;
+//                      }    
+//                    
+                  
+
                         case "TRANSPORT_MODE_DEDOUANEMENT_CODE":
                          {
                           if(document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null && document.getCONTENT().getTRANSPORT().getPAYSORIGINE()!= null)
@@ -511,7 +542,6 @@ public class FileFieldValueAtmMINEPIA
                         }  
                          
                      
-
                                  
                          //Mise a jour des Good
                          

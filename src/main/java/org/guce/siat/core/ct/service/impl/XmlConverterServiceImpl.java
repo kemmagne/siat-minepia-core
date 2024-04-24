@@ -3466,7 +3466,35 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
 
         }  
             
-            
+           
+        
+         if (ConverterGuceSiatUtils.isDecisionDossier(file, fileItemList)) {
+
+            ItemFlowData itemFlowDataToInsert = null;
+
+            if (CollectionUtils.isNotEmpty(itemFlowList.get(0).getItemFlowsDataList())) {
+                 if(FlowCode.FL_AP_ATM_16.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_ATM_29.name().equals(flowToExecute.getCode())){
+                     for(ItemFlowData itemFlowData:itemFlowList.get(0).getItemFlowsDataList()){
+                         if(itemFlowData.getDataType().getLabel().trim().equals("Observation")) itemFlowDataToInsert = itemFlowData;
+                         if(itemFlowData.getDataType().getCode() != null && itemFlowData.getDataType().getCode().trim().equals("SIGNATURE") ){
+                             try {
+                                 ciDocument.getCONTENT().setDATEATMEXP(SIMPLE_DATE_FORMAT.format(DATA_TYPE_DATE_PARSER.parse(itemFlowData.getValue())));
+                             } catch (ParseException ex) {
+                                 java.util.logging.Logger.getLogger(XmlConverterServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                             }
+                         }
+                     }
+                 }else{
+                     itemFlowDataToInsert = itemFlowList.get(0).getItemFlowsDataList().get(0);
+                 }
+            }            
+        }
+        
+        
+        
+        
+        
+        
             
         // ******* AJOUT SIGNATAIRE AUX FLUX DONT toStep IS FINAL *********///
         if (flowToExecute.getToStep() != null && BooleanUtils.isTrue(flowToExecute.getToStep().getIsFinal())) {
@@ -15588,25 +15616,25 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 }
                 fileItem.setFileItemFieldValueList(fileItemFieldValues);
 
-//                if (document.getMESSAGE() != null && document.getMESSAGE().getNUMEROMESSAGE() != null) {
-//                    fileItem.setNumEbmsMessage(document.getMESSAGE().getNUMEROMESSAGE());
-//                }
-//                
+                if (document.getMESSAGE() != null && document.getMESSAGE().getNUMEROMESSAGE() != null) {
+                    fileItem.setNumEbmsMessage(document.getMESSAGE().getNUMEROMESSAGE());
+                }
+                
                 if (marchandise.getQUANTITE() != null) {
                     fileItem.setQuantity(marchandise.getQUANTITE());
                 }
                  if (marchandise.getUNITE()!= null) {
                     fileItem.setUnit(marchandise.getUNITE());
                 }
-//                
-//                if (marchandise.getLINENUMBER() != null) {
-//                    fileItem.setLineNumber(marchandise.getLINENUMBER());
-//                }
-//             
-//              
-//                 if (marchandise.getPOIDS() != 0) {
-//                    fileItem.setWeight(marchandise.getPOIDS());
-//                }
+                
+                if (marchandise.getLINENUMBER() != null) {
+                    fileItem.setLineNumber(marchandise.getLINENUMBER());
+                }
+             
+              
+                 if (marchandise.getPOIDS() != 0) {
+                    fileItem.setWeight(marchandise.getPOIDS());
+                }
                   
               
                   

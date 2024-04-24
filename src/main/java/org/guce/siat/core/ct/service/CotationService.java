@@ -12,7 +12,10 @@ import org.guce.siat.common.model.User;
 public interface CotationService {
 
     void dispatch(File currentFile, Flow currentFlow);
+    void automaticQuotation(File currentFile, Flow currentFlow, User loggedUser);
 
+    
+    
     List<User> findCotationAgentsByBureauAndRoleAndProductType(File currentFile);
 
 }
