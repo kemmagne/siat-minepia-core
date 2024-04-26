@@ -31,7 +31,20 @@ public class FileItemFieldValueAtmMINEPIA
 		switch (fileItemField.getCode())
 		{
                     
-                 
+                    
+                    
+                    case "UNITE":
+			{
+				if (marchandise.getUNITE() != null)
+				{
+                                        
+					fileItemFieldValue.setValue(marchandise.getUNITE());
+                                         String Unity;
+                                        
+				}
+				break;
+			}
+
                     case "DESCRIPTION":
 			{
 				if (marchandise.getDESCRIPTION() != null)
@@ -103,16 +116,7 @@ public class FileItemFieldValueAtmMINEPIA
 				break;
 			}
                         
-                        	case "UNITE":
-			{
-				if (marchandise.getUNITE() != null)
-				{
-                                        
-					fileItemFieldValue.setValue(marchandise.getUNITE());
-                                        String Unity;
-				}
-				break;
-			}
+             
                         
 //                        case "MARCHANDISE_POIDS":
 //			{

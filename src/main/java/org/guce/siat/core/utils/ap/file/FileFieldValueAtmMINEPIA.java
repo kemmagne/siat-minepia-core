@@ -416,9 +416,9 @@ public class FileFieldValueAtmMINEPIA
                         	case "FACTURE_DATE_FACTURE":
 			{
 				if (document.getCONTENT() != null && document.getCONTENT().getFACTURE() != null
-                                      && document.getCONTENT().getFACTURE().getNUMEROFACTURE() != null)
+                                      && document.getCONTENT().getFACTURE().getDATEFACTURE() != null)
 				{
-					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getNUMEROFACTURE());
+					fileFieldValue.setValue(document.getCONTENT().getFACTURE().getDATEFACTURE());
 				}
 				break;
 			}
@@ -427,7 +427,7 @@ public class FileFieldValueAtmMINEPIA
                               
                         case "TRANSPORT_PAYS_PROVENANCE_NOM_PAYS":
                         {
-                          if(document.getCONTENT() != null && document.getCONTENT().getTRANSPORT().getPAYSPROVENANCE() != null)
+                          if(document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null && document.getCONTENT().getTRANSPORT().getPAYSPROVENANCE() != null)
                           {
                                fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSPROVENANCE().getNOMPAYS());
                           }
@@ -437,7 +437,7 @@ public class FileFieldValueAtmMINEPIA
                         
                         case "TRANSPORT_PAYS_PROVENANCE_CODE_PAYS":
                          {
-                          if(document.getCONTENT() != null && document.getCONTENT().getTRANSPORT().getPAYSORIGINE() != null)
+                          if(document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null && document.getCONTENT().getTRANSPORT().getPAYSORIGINE() != null)
                           {
                                fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSORIGINE().getNOMPAYS());
                           }
@@ -458,7 +458,7 @@ public class FileFieldValueAtmMINEPIA
                                      
                        case "TRANSPORT_DATE_ARRIVEE":
                          {
-                            if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT()!= null
+                            if (document.getCONTENT() != null  && document.getCONTENT().getTRANSPORT()!= null
                                      && document.getCONTENT().getTRANSPORT().getDATEARRIVEE() != null) {
                                  String dateArrivee = document.getCONTENT().getTRANSPORT().getDATEARRIVEE();
                                  fileFieldValue.setValue(FileFieldValueUtils.formatDatePattern(document.getCONTENT().getTRANSPORT().getDATEARRIVEE()));
@@ -468,14 +468,14 @@ public class FileFieldValueAtmMINEPIA
                         }
                          
                         case "TRANSPORT_LIEU_CHARGEMENT_UNLOCODE": {
-                                if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+                                if (document.getCONTENT() != null  && document.getCONTENT().getTRANSPORT() != null
                                         && document.getCONTENT().getTRANSPORT().getLIEUCHARGEMENT() != null) {
                                     fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getLIEUCHARGEMENT().getUNLOCODE());
                                 }
                                 break;
                             }
                         case "TRANSPORT_LIEU_DE_DECHARGEMENT_LIBELLE": {
-                            if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+                            if (document.getCONTENT() != null  && document.getCONTENT().getTRANSPORT() != null
                                     && document.getCONTENT().getTRANSPORT().getLIEUDEDOUANEMENT()!= null) {
                                 fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getLIEUDEDOUANEMENT().getLIBELLE());
                             }
@@ -511,24 +511,29 @@ public class FileFieldValueAtmMINEPIA
                          break;
                      }  
                      
-//                    case "TRANSPORT_PAYS_DESTINATION_NOM_PAYS": {
-//                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
-//                         && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null) {
-//                           fileFieldValue.setValue("CAMEROUN");
-//                         //  fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getNOMPAYS());
-//                           }
-//                         break;
-//                      }
+                    case "TRANSPORT_PAYS_DESTINATION_NOM_PAYS": {
+                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+                          && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null &&
+                               document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getNOMPAYS() != null
+                                 ) {
+                           
+                           fileFieldValue.setValue("CAMEROUN");
+                            fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getNOMPAYS());
+                           }
+                         break;
+                      }
                     
-//                       case "TRANSPORT_PAYS_DESTINATION_CODE_PAYS": {
-//                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
-//                         && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null) {
-//                           fileFieldValue.setValue("CM");
-//                         //  fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getNOMPAYS());
-//                           }
-//                         break;
-//                      }    
-//                    
+                       case "TRANSPORT_PAYS_DESTINATION_CODE_PAYS": {
+                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
+                         && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null &&
+                               document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getCODEPAYS() != null
+                               ) {
+                          // fileFieldValue.setValue("CM");
+                          fileFieldValue.setValue(document.getCONTENT().getTRANSPORT().getPAYSDESTINATION().getCODEPAYS());
+                           }
+                         break;
+                      }    
+                    
                   
 
                         case "TRANSPORT_MODE_DEDOUANEMENT_CODE":
