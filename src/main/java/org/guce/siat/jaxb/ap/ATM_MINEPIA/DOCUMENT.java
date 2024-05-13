@@ -3475,7 +3475,8 @@ public class DOCUMENT implements Serializable{
         "paiement",
         "signataire",
         "decisionorganisme",
-        "piecesjointes"
+        "piecesjointes",
+        "isrenewing"
     })
     public static class CONTENT implements Serializable{
 
@@ -3505,6 +3506,8 @@ public class DOCUMENT implements Serializable{
         protected DECISIONORGANISME decisionorganisme;
         @XmlElement(name = "PIECES_JOINTES")
         protected PIECESJOINTES piecesjointes;
+        @XmlElement(name = "IS_RENEW")
+        protected String isrenewing;
 
         /**
          * Gets the value of the codebureau property.
@@ -3542,6 +3545,17 @@ public class DOCUMENT implements Serializable{
             return numerovtminepia;
         }
 
+        public String isIsrenewing() {
+            return isrenewing;
+        }
+
+        public void setIsrenewing(String isrenewing) {
+            this.isrenewing = isrenewing;
+        }
+
+        
+        
+        
         /**
          * Sets the value of the numerovtminepia property.
          * 
@@ -8656,7 +8670,8 @@ public class DOCUMENT implements Serializable{
             "paysorigine",
             "lieuchargement",
             "modetransport",
-            "lieudedouanement"
+            "lieudedouanement",
+            "paysDestination"
         })
         public static class TRANSPORT {
 
@@ -8678,6 +8693,8 @@ public class DOCUMENT implements Serializable{
             protected DOCUMENT.CONTENT.TRANSPORT.MODETRANSPORT modetransport;
             @XmlElement(name = "LIEU_DEDOUANEMENT")
             protected DOCUMENT.CONTENT.TRANSPORT.LIEUDEDOUANEMENT lieudedouanement;
+            @XmlElement(name = "PAYS_DESTINATION")
+            protected DOCUMENT.CONTENT.TRANSPORT.PAYSDESTINATION paysDestination;
 
             /**
              * Gets the value of the numerobl property.
@@ -8798,6 +8815,7 @@ public class DOCUMENT implements Serializable{
             public void setPAYSPROVENANCE(DOCUMENT.CONTENT.TRANSPORT.PAYSPROVENANCE value) {
                 this.paysprovenance = value;
             }
+            
 
             /**
              * Gets the value of the paysorigine property.
@@ -8822,6 +8840,30 @@ public class DOCUMENT implements Serializable{
             public void setPAYSORIGINE(DOCUMENT.CONTENT.TRANSPORT.PAYSORIGINE value) {
                 this.paysorigine = value;
             }
+            
+            
+            
+            
+            public DOCUMENT.CONTENT.TRANSPORT.PAYSDESTINATION getPAYSDESTINATION() {
+                return paysDestination;
+            }
+
+            /**
+             * Sets the value of the paysorigine property.
+             * 
+             * @param value
+             *     allowed object is
+             *     {@link DOCUMENT.CONTENT.TRANSPORT.PAYSORIGINE }
+             *     
+             */
+            public void setPAYSDESTINATION(DOCUMENT.CONTENT.TRANSPORT.PAYSDESTINATION value) {
+                this.paysDestination = value;
+            }
+            
+            
+            
+            
+            
 
             /**
              * Gets the value of the lieuchargement property.
@@ -9314,6 +9356,69 @@ public class DOCUMENT implements Serializable{
                 "nompays"
             })
             public static class PAYSPROVENANCE {
+
+                @XmlElement(name = "CODE_PAYS")
+                protected String codepays;
+                @XmlElement(name = "NOM_PAYS")
+                protected String nompays;
+
+                /**
+                 * Gets the value of the codepays property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getCODEPAYS() {
+                    return codepays;
+                }
+
+                /**
+                 * Sets the value of the codepays property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setCODEPAYS(String value) {
+                    this.codepays = value;
+                }
+
+                /**
+                 * Gets the value of the nompays property.
+                 * 
+                 * @return
+                 *     possible object is
+                 *     {@link String }
+                 *     
+                 */
+                public String getNOMPAYS() {
+                    return nompays;
+                }
+
+                /**
+                 * Sets the value of the nompays property.
+                 * 
+                 * @param value
+                 *     allowed object is
+                 *     {@link String }
+                 *     
+                 */
+                public void setNOMPAYS(String value) {
+                    this.nompays = value;
+                }
+
+            }
+            
+            
+            @XmlAccessorType(XmlAccessType.FIELD)
+            @XmlType(name = "", propOrder = {
+                "codepays",
+                "nompays"
+            })
+            public static class PAYSDESTINATION {
 
                 @XmlElement(name = "CODE_PAYS")
                 protected String codepays;

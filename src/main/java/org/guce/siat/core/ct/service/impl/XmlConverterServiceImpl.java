@@ -3403,6 +3403,9 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.getCONTENT().getPIECESJOINTES().getPIECEJOINTE()
                     .add(new PIECEJOINTE(file.getFileTypeGuce(), file.getNumeroDossier() + ESBConstants.PDF_FILE_EXTENSION));
 
+            if(isRenewing(file)){
+                        ciDocument.getMESSAGE().setTYPEMESSAGE("RENEW");
+                     }
         }
           if (!CollectionUtils.isNotEmpty(flowToExecute.getCopyRecipientsList())
                 && Arrays.asList(FlowCode.FL_AP_ATM_01.name(), FlowCode.FL_AP_ATM_02.name()).contains(flowToExecute.getCode())) {
@@ -3520,7 +3523,19 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         return ciDocument;
     }         
        
-    
+     public   boolean isRenewing(File file){
+             if(Objects.nonNull(file)  && !CollectionUtils.isEmpty(file.getFileFieldValueList())){
+                 List<FileFieldValue> fileFieldValues = file.getFileFieldValueList();
+                 if(CollectionUtils.isNotEmpty(fileFieldValues)){
+                     for (FileFieldValue fileFieldValue : fileFieldValues) {
+                     if(fileFieldValue.getFileField().getCode().trim().equals("IS_RENEWING") &&  Boolean.valueOf(fileFieldValue.getValue()))  {
+                         return Boolean.TRUE;
+                     }
+                 }
+                 }
+             }
+             return  Boolean.FALSE;
+         }
     
     
     
@@ -15434,7 +15449,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             if (document.getROUTAGE() != null && document.getROUTAGE().getDESTINATAIRE() != null) {
                 file.setDestinataire(document.getROUTAGE().getDESTINATAIRE());
             }
-            if(FlowCode.FL_AP_ATM_21.name().equals(flowGuceSiat.getFlowSiat()) || FlowCode.FL_AP_ATM_01R.name().equals(flowGuceSiat.getFlowSiat())){
+            if(FlowCode.FL_AP_ATM_21.name().equals(flowGuceSiat.getFlowSiat())){
             //setNumeroDossierModif(file);
               String prefix = flowGuceSiat.getFlowSiat().equals(FlowCode.FL_AP_ATM_01R.name()) ? "P" : "M"; 
                           setNumeroDossierModifForAtmMinepia(file , prefix);
@@ -15535,7 +15550,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         /* PAYS */
         
       //TRANSPORT.PAYSORIGINE
-        if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT().getPAYSPROVENANCE() != null
+        if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT()!= null && document.getCONTENT().getTRANSPORT().getPAYSPROVENANCE() != null
                 && document.getCONTENT().getTRANSPORT().getPAYSORIGINE() != null
                 && document.getCONTENT().getFOURNISSEUR().getADRESSE().getPAYSADRESSE().getCODEPAYS() != null) {
             Country countryOfOrigin = countryDao.findCountryByCountryIdAlpha2(document.getCONTENT().getFOURNISSEUR().getADRESSE().getPAYSADRESSE().getCODEPAYS());
@@ -15623,8 +15638,8 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                 if (marchandise.getQUANTITE() != null) {
                     fileItem.setQuantity(marchandise.getQUANTITE());
                 }
-                 if (marchandise.getUNITE()!= null) {
-                    fileItem.setUnit(marchandise.getUNITE());
+                 if (marchandise.getUNITE()!= null && !marchandise.getUNITE().isEmpty()) {
+                    fileItem.setUnit(marchandise.getUNITE().toString());
                 }
                 
                 if (marchandise.getLINENUMBER() != null) {
@@ -15635,6 +15650,18 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                  if (marchandise.getPOIDS() != 0) {
                     fileItem.setWeight(marchandise.getPOIDS());
                 }
+<<<<<<< HEAD
+                
+                if (marchandise.getLINENUMBER() != null) {
+                    fileItem.setLineNumber(marchandise.getLINENUMBER());
+                }
+             
+              
+                 if (marchandise.getPOIDS() != 0) {
+                    fileItem.setWeight(marchandise.getPOIDS());
+                }
+=======
+>>>>>>> 8560e61faab6d97b297bc58192c78a43c1a6bee9
                   
               
                   
