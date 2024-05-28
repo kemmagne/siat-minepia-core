@@ -3396,7 +3396,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
             ciDocument.setREFERENCEDOSSIER(ConverterGuceSiatUtils.generateReferenceDossier(file, false));
             ciDocument.setMESSAGE(ConverterGuceSiatUtils.generateMessage(file.getFileItemsList().get(0).getNumEbmsMessage()));
         }
-        if (FlowCode.FL_AP_ATM_16.name().equals(flowToExecute.getCode())) {   
+        if (FlowCode.FL_AP_ATM_16.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_ATM_29.name().equals(flowToExecute.getCode())) {   
             ciDocument.getCONTENT().setDATEATMEXP(SIMPLE_DATE_FORMAT.format(new Date()));
             ciDocument.getCONTENT().setNUMEROVTMINEPIA(file.getNumeroDossier());
             ciDocument.getCONTENT().setPIECESJOINTES(new PIECESJOINTES());
@@ -3424,7 +3424,7 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
         ItemFlowData itemFlowDataToInsert = null;
 
              if (CollectionUtils.isNotEmpty(itemFlowList.get(0).getItemFlowsDataList())) {
-                 if(FlowCode.FL_AP_ATM_16.name().equals(flowToExecute.getCode())){
+                 if(FlowCode.FL_AP_ATM_16.name().equals(flowToExecute.getCode()) || FlowCode.FL_AP_ATM_29.name().equals(flowToExecute.getCode())){
                      for(ItemFlowData itemFlowData:itemFlowList.get(0).getItemFlowsDataList()){
                          if(itemFlowData.getDataType().getLabel().trim().equals("Observation")) itemFlowDataToInsert = itemFlowData;
                      }
@@ -15635,9 +15635,10 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                     fileItem.setNumEbmsMessage(document.getMESSAGE().getNUMEROMESSAGE());
                 }
                 
-                if (marchandise.getQUANTITE() != null) {
+                 if (marchandise.getQUANTITE() != null) {
                     fileItem.setQuantity(marchandise.getQUANTITE());
                 }
+
                  if (marchandise.getUNITE()!= null && !marchandise.getUNITE().isEmpty()) {
                     fileItem.setUnit(marchandise.getUNITE().toString());
                 }
@@ -15650,47 +15651,12 @@ public class XmlConverterServiceImpl extends AbstractXmlConverterService {
                  if (marchandise.getPOIDS() != 0) {
                     fileItem.setWeight(marchandise.getPOIDS());
                 }
-<<<<<<< HEAD
-                
-                if (marchandise.getLINENUMBER() != null) {
-                    fileItem.setLineNumber(marchandise.getLINENUMBER());
-                }
-             
-              
-                 if (marchandise.getPOIDS() != 0) {
-                    fileItem.setWeight(marchandise.getPOIDS());
-                }
-=======
->>>>>>> 8560e61faab6d97b297bc58192c78a43c1a6bee9
-                  
-              
-                  
-                  
-                //				ServicesItem subfamily = null;
-                if (marchandise.getCODETARIF() != null && StringUtils.isNotBlank(marchandise.getCODETARIF().getCODENSH())) {
-                    fileItem.setNsh(itemDao.findByGoodsItemCode(marchandise.getCODETARIF().getCODENSH()));
-                    //					if (marchandise.getSOUSFAMILLE() != null
-                    //							&& StringUtils.isNotBlank(marchandise.getSOUSFAMILLE().getCODESOUSFAMILLE()))
-                    //					{
-                    //						subfamily = servicesItemDao.findByNshAndCode(marchandise.getCODETARIF().getCODENSH(), marchandise
-                    //								.getSOUSFAMILLE().getCODESOUSFAMILLE());
-                    //
-                    //					}
-                    //					else
-                    //					{
-                    //						subfamily = servicesItemDao.findNativeServiceItemByNSH(marchandise.getCODETARIF().getCODENSH());
-                    //
-                    //					}
-                }
 
-                //				if (subfamily != null)
-                //				{
-                //					fileItem.setNsh(subfamily.getNsh());
-                //					fileItem.setSubfamily(subfamily);
-                //				}
-                //				else
-                //				{
-                //					throw new ValidationException(ExceptionConstants.NSH);
+              
+                  
+                  
+            
+          
                 //				}
                 fileItems.add(fileItem);
 

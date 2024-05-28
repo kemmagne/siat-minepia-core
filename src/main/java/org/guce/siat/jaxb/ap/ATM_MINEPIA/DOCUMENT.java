@@ -5745,7 +5745,7 @@ public class DOCUMENT implements Serializable{
         @XmlType(name = "", propOrder = {
             "numerofacture",
             "datefacture",
-            "montantfacture",
+            "isrenewing",
             "devisefacture"
         })
         public static class FACTURE {
@@ -5754,8 +5754,8 @@ public class DOCUMENT implements Serializable{
             protected String numerofacture;
             @XmlElement(name = "DATE_FACTURE")
             protected String datefacture;
-            @XmlElement(name = "MONTANT_FACTURE")
-            protected BigDecimal montantfacture;
+            @XmlElement(name = "IS_RENEW")
+            protected String isrenewing;
             @XmlElement(name = "DEVISE_FACTURE")
             protected DOCUMENT.CONTENT.FACTURE.DEVISEFACTURE devisefacture;
 
@@ -5815,8 +5815,8 @@ public class DOCUMENT implements Serializable{
              *     {@link BigDecimal }
              *     
              */
-            public BigDecimal getMONTANTFACTURE() {
-                return montantfacture;
+            public String getMONTANTFACTURE() {
+                return isrenewing;
             }
 
             /**
@@ -5827,8 +5827,8 @@ public class DOCUMENT implements Serializable{
              *     {@link BigDecimal }
              *     
              */
-            public void setMONTANTFACTURE(BigDecimal value) {
-                this.montantfacture = value;
+            public void setMONTANTFACTURE(String value) {
+                this.isrenewing = value;
             }
 
             /**

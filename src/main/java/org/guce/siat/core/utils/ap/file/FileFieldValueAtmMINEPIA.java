@@ -318,7 +318,9 @@ public class FileFieldValueAtmMINEPIA
                                                                                                 {
                                                                                                         if (document.getCONTENT() != null)
                                                                                                         {
-                                                                                                                fileFieldValue.setValue(String.valueOf(document.getCONTENT().isIsrenewing()));
+                                                                                                                String isrenewing = new String();
+                                                                                                                fileFieldValue.setValue(String.valueOf(isrenewing));
+                                                                                                                
                                                                                                         }
                                                                                                         break;
                                                                                                 }
@@ -511,7 +513,7 @@ public class FileFieldValueAtmMINEPIA
                          break;
                      }  
                      
-<<<<<<< HEAD
+
 //                    case "TRANSPORT_PAYS_DESTINATION_NOM_PAYS": {
 //                       if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
 //                         && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null) {
@@ -530,7 +532,7 @@ public class FileFieldValueAtmMINEPIA
 //                         break;
 //                      }    
 //                    
-=======
+
                     case "TRANSPORT_PAYS_DESTINATION_NOM_PAYS": {
                        if (document.getCONTENT() != null && document.getCONTENT().getTRANSPORT() != null
                           && document.getCONTENT().getTRANSPORT().getPAYSDESTINATION()!= null &&
@@ -554,7 +556,6 @@ public class FileFieldValueAtmMINEPIA
                          break;
                       }    
                     
->>>>>>> 8560e61faab6d97b297bc58192c78a43c1a6bee9
                   
 
                         case "TRANSPORT_MODE_DEDOUANEMENT_CODE":

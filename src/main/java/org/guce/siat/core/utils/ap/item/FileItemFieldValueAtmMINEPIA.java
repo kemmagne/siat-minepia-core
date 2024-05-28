@@ -168,15 +168,15 @@ public class FileItemFieldValueAtmMINEPIA
 				break;
 			}	
                         
-                        case "MARCHANDISE_QUANTITE":
-			{
-				if (marchandise.getQUANTITE() != null)
-				{
-                                       String quantity = marchandise.getQUANTITE();
-					fileItemFieldValue.setValue(marchandise.getQUANTITE());
-				}
-				break;
-			}
+//                        case "MARCHANDISE_QUANTITE":
+//			{
+//				if (marchandise.getQUANTITE() != null)
+//				{
+//                                       String quantity = marchandise.getQUANTITE();
+//					fileItemFieldValue.setValue(marchandise.getQUANTITE());
+//				}
+//				break;
+//			}
                     
 
 //			case "MARCHANDISE_QUANTITE":
